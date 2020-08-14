@@ -1,0 +1,1 @@
+<%=session.getAttribute("popupcontent")%>

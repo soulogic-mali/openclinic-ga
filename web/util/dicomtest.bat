@@ -1,0 +1,3 @@
+cd \Users\Frank\OneDrive\projects\openclinicnew\web\WEB-INF\lib
+java -cp dcm4che-core-5.22.2.jar;dcm4che-net-5.22.2.jar;dcm4che-image-5.22.2.jar;dcm4che-imageio-5.22.2.jar;dcm4che-imageio-opencv-5.22.2.jar;dcm4che-imageio-rle-5.22.2.jar;dcm4che-tool-common-5.22.2.jar;weasis-core-img-4.2.1.jar;jai_imageio-1.2-pre-dr-b04.jar;clibwrapper_jiio-1.2-pre-dr-b04.jar;slf4j-api-1.7.29.jar;slf4j-log4j12-1.7.29.jar;log4j-1.2.15.jar;commons-cli-1.4.jar;..\classes be.openclinic.archiving.Compress
+cd \Users\Frank\OneDrive\projects\openclinicnew\web\util

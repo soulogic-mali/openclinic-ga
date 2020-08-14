@@ -1,0 +1,52 @@
+<dhis2>
+	<!-- 
+		Configuration demo for ANTIM - Mali
+		Uid's have been extracted from default DHIS2 demo system for Sierra Leone 
+	 -->
+	<config>
+		<uri>http://217.64.107.109:8080</uri>
+		<api>/dhis/api</api>
+		<port>80</port>
+		<user>admin</user>
+		<password>Msante1234@@</password>
+	</config>
+	<!-- 
+		DataSet: Inpatient Morbidity/Mortality Summary 
+	-->
+	<dataset type="diagnosis" encountertype="admission" classification="icd10" uid="PLq9sJluXvc" label="Inpatient Morbidity/Mortality Summary">
+		<categoryOptionCombo type="age">
+			<option uid="pcKjEElpvqd" min="0" max="4" name="under 5 years"/>
+			<option uid="JkCyl4FMPVz" min="5" max="999" name="5 years and above"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement code="B50;B51;B52;B53;B54" uid="p4K11MFEWtw" label="Inpatient malaria cases" />
+		</dataelements>
+	</dataset>
+	<dataset type="diagnosis" mortality="true" encountertype="admission" classification="icd10" uid="PLq9sJluXvc" label="Inpatient Morbidity/Mortality Summary">
+		<categoryOptionCombo type="age">
+			<option uid="pcKjEElpvqd" min="0" max="4" name="under 5 years"/>
+			<option uid="JkCyl4FMPVz" min="5" max="999" name="5 years and above"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement code="B50;B51;B52;B53;B54" uid="wWy5TE9cQ0V" label="Inpatient malaria mortality cases"/>
+		</dataelements>
+	</dataset>
+	<dataset type="encounter" encountertype="admission" uid="PLq9sJluXvc" label="Inpatient Morbidity/Mortality Summary">
+		<categoryOptionCombo type="age">
+			<option uid="pcKjEElpvqd" min="0" max="4" name="under 5 years"/>
+			<option uid="JkCyl4FMPVz" min="5" max="999" name="5 years and above"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement uid="WHBtsCMZVAE" label="Inpatient cases"/>
+		</dataelements>
+	</dataset>
+	<dataset type="encounter" mortality="true" encountertype="admission" uid="PLq9sJluXvc" label="Inpatient Morbidity/Mortality Summary">
+		<categoryOptionCombo type="age">
+			<option uid="pcKjEElpvqd" min="0" max="4" name="under 5 years"/>
+			<option uid="JkCyl4FMPVz" min="5" max="999" name="5 years and above"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement uid="ZRVfMoPKK05" label="Inpatient mortality cases"/>
+		</dataelements>
+	</dataset>
+</dhis2>

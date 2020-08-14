@@ -1,0 +1,152 @@
+<fua>
+	<atencion>
+		<e1 maxsize="10"/>
+		<e2 size="3" padright=" "/>
+		<e3 size="2" padright=" "/>
+		<e4 size="8" padleft="0"/>
+		<e5 size="3" padleft="0"/>
+		<e6 size="8" padleft="0"/>
+		<e7 size="2" padright=" "/>
+		<e8 maxsize="2"/>
+		<e9 maxsize="10"/>
+		<e10 size="1" padright="N"/>
+		<e11 size="3" padright=" "/>
+		<e12 size="2" padright=" "/>
+		<e13 size="8" padright=" "/>
+		<e14 maxsize="3"/>
+		<e15 maxsize="1"/>
+		<e16 size="3" padright=" "/>
+		<e17 size="2" padright=" "/>
+		<e18 size="9" padleft="0"/>
+		<e19 maxsize="2"/>
+		<e20 size="1" padright=" "/>
+		<e21 maxsize="10"/>
+		<e22 maxsize="2"/>
+		<e23 size="2" padleft="0"/>
+		<e24 size="1" padright=" "/>
+		<e25 maxsize="10"/>
+		<e26 maxsize="40"/>
+		<e27 maxsize="40"/>
+		<e28 maxsize="35"/>
+		<e29 maxsize="35"/>
+		<e30 size="10" padright=" "/>
+		<e31 size="1" padright=" "/>
+		<e32 size="6" padleft="0"/>
+		<e33 maxsize="20"/>
+		<e34 size="1" padright=" "/>
+		<e35 size="1" padright="0"/>
+		<e36 size="1" padright=" "/>
+		<e37 maxsize="15"/>
+		<e38 maxsize="13"/>
+		<e39 maxsize="16"/>
+		<e40 size="8" padright=" "/>
+		<e41 maxsize="20"/>
+		<e42 size="3" padright=" "/>
+		<e43 size="1" padright=" "/>
+		<e44 size="1" padright=" "/>
+		<e45 size="1" padright=" "/>
+		<e46 size="10" padright=" "/>
+		<e47 size="10" padright=" "/>
+		<e48 size="8" padright=" "/>
+		<e49 maxsize="20"/>
+		<e50 size="10" padright=" "/>
+		<e51 size="2" padleft="0"/>
+		<e52 size="7" padleft="0"/>
+		<e53 maxsize="2"/>
+		<e54 maxsize="2"/>
+		<e55 maxsize="30"/>
+		<e56 maxsize="2"/>
+		<e57 size="1" padright="0"/>
+		<e58 size="1" padright=" "/>
+		<e59 size="10" padright=" "/>
+		<e60 size="8" padright=" "/>
+		<e61 maxsize="10"/>
+		<e62 size="2" padright=" "/>
+		<e63 maxsize="20"/>
+		<e64 size="6" padright=" "/>
+		<e65 size="10" padright=" "/>
+		<e66 size="3" padright=" "/>
+		<e67 size="2" padright=" "/>
+		<e68 size="6" padright=" "/>
+		<e69 size="3" padright=" "/>
+		<e70 size="2" padright=" "/>
+		<e71 size="10" padright=" "/>
+		<e72 size="1" padright=" "/>
+		<e73 maxsize="9"/>
+		<e74 size="2" padleft="0"/>
+		<e75 maxsize="10"/>
+		<e76 maxsize="1"/>
+		<e77 size="6" padleft="0"/>
+		<e78 size="5" padleft="0"/>
+		<e79 size="4" padright=" "/>
+		<e80 size="2" padright=" "/>
+		<e81 size="1" padright=" "/>
+		<e82 maxsize="10"/>
+		<e83 size="16" padright=" "/>
+		<e84 maxsize="250"/>
+		<e85 maxsize="9"/>
+	</atencion>
+	<diagnosticos>
+		<e1 maxsize="10"/>
+		<e2 maxsize="5"/>
+		<e3 maxsize="10"/>
+		<e4 size="1" padright="E"/>
+		<e5 size="1" padright=" "/>
+	</diagnosticos>
+	<medicamentos>
+		<e1 maxsize="10"/>
+		<e2 maxsize="13"/>
+		<e3 maxsize="10"/>
+		<e4 maxsize="10"/>
+		<e5 maxsize="10"/>
+		<e6 size="10" padright=" "/>
+		<e7 maxsize="20"/>
+	</medicamentos>
+	<smi>
+		<e1 maxsize="10"/>
+		<e2 size="3" padright=" "/>
+		<e3 maxsize="19"/>
+	</smi>
+	<insumos>
+		<e1 maxsize="10"/>
+		<e2 maxsize="5"/>
+		<e3 maxsize="10"/>
+		<e4 maxsize="10"/>
+		<e5 maxsize="10"/>
+		<e6 size="10" padright=" "/>
+		<e7 maxsize="20"/>
+	</insumos>
+	<procedimientos>
+		<e1 maxsize="10"/>
+		<e2 maxsize="15"/>
+		<e3 maxsize="10"/>
+		<e4 maxsize="10"/>
+		<e5 maxsize="10"/>
+		<e6 size="1" padright=" "/>
+		<e7 maxsize="50"/>
+		<e8 size="1" padright=" "/>
+		<e9 maxsize="9"/>
+		<e10 maxsize="2"/>
+		<e11 maxsize="4"/>
+	</procedimientos>
+	<reciennacido>
+		<e1 maxsize="10"/>
+		<e2 maxsize="2"/>
+		<e3 size="1" padright=" "/>
+		<e4 maxsize="10"/>
+		<e5 size="3" padright=" "/>
+		<e6 maxsize="2"/>
+		<e7 maxsize="9"/>
+		<e8 maxsize="2"/>
+		<e9 maxsize="40"/>
+		<e10 maxsize="40"/>
+		<e11 maxsize="35"/>
+		<e12 maxsize="35"/>
+		<e13 maxsize="10"/>
+		<e14 size="1" padright=" "/>
+	</reciennacido>
+	<serviciosadicionales>
+		<e1 maxsize="10"/>
+		<e2 size="3" padright=" "/>
+	</serviciosadicionales>
+</fua>

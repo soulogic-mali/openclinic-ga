@@ -1,0 +1,269 @@
+<report type='timefilters' version='1.0'>
+	<schedule type="daily"/>
+	<result type="maintitle">
+		<label>CCBRT DAILY ACTIVITIES REPORT</label>
+	</result>
+	<result type="subtitle">
+		<label>OUTPATIENT CONSULTATIONS</label>
+	</result>
+	<result type='counter'>
+		<label style='bold'>Total patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>STANDARD CLINIC OUTPATIENT CONSULTATIONS</label>
+	</result>
+	<result type='counter'>
+		<label style="bold">Total patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>STD.</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Ortho patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>STD.OTH</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Eye patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>STD.EYE</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Gyne patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>STD.GYN</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>VVF patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>STD.VVF</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Optical patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>STD.OPT</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Rehabilitation patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>STD.RHB</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>PRIVATE CLINIC OUTPATIENT CONSULTATIONS</label>
+	</result>
+	<result type='counter'>
+		<label style="bold">Total patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>PRV.</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Ortho patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>PRV.OTH</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Eye patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>PRV.EYE</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>ENT patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>PRV.ENT</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Gyne patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>PRV.GYN</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>VVF patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>PRV.VVF</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Optical patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>PRV.OPT</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Rehabilitation patients</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>PRV.RHB</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>LAB ORDERS</label>
+	</result>
+	<result type='counter'>
+		<label style='bold'>Total lab orders</label>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_LAB_REQUEST</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>MEDICAL IMAGING</label>
+	</result>
+	<result type='counter'>
+		<label style='bold'>Total patients served</label>
+		<filter type='pacspatients' periodfilter='true'>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Total studies</label>
+		<filter type='pacsstudy' periodfilter='true'>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Total series</label>
+		<filter type='pacsseries' periodfilter='true'>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>OUTPATIENT PHARMACY</label>
+	</result>
+	<result type='counter'>
+		<label style='bold'>Total patients served</label>
+		<filter type='drugdispensing' periodfilter='true' pharmacies='1.13,1.14'>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>Central pharmacy</label>
+		<filter type='drugdispensing' periodfilter='true' pharmacies='1.14'>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>OPD pharmacy</label>
+		<filter type='drugdispensing' periodfilter='true' pharmacies='1.13'>
+		</filter>
+	</result>
+</report>

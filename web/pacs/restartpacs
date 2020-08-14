@@ -1,0 +1,3 @@
+kill -9 $(ps aux | grep -v grep | grep dcmrcv | awk '{print $2}')
+cd /var/dcm4che/bin
+./dcmrcv OCPX:10555 -dest /var/tomcat/webapps/openclinic/scan/from >/var/log/dcm4che.log &

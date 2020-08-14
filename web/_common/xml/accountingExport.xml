@@ -1,0 +1,228 @@
+<exports>
+	<export type="patientsales">
+		<format>
+			<name>Patient sales</name>
+			<file>
+				<folder>c:/temp</folder>
+				<extension>csv</extension>
+				<name>
+					<prefix>PATIENTSALES_</prefix>
+					<format>yyyyMMddHHmmsss</format>
+					<suffix></suffix>
+				</name>
+			</file>
+			<delimiter>"</delimiter>
+			<separator>;</separator>
+			<header>true</header>
+			<newline><lf/></newline>
+		</format>
+		<header>
+			<line>
+				<column type="label">Code journal</column>
+				<column type="label">Date</column>
+				<column type="label">N° de compte</column>
+				<column type="label">Intitulé du compte</column>
+				<column type="label">Pièce</column>
+				<column type="label">Date de pièce</column>
+				<column type="label">Libellé</column>
+				<column type="label">Montant (associé au sens)</column>
+				<column type="label">Sens</column>
+				<column type="label">Date de l'échéance</column>
+			</line>
+		</header>
+		<body>
+			<line type="patient">
+				<column type="config" datatype="string" default="VE">ACC_PatientSalesJournalCode</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">date</column>
+				<column type="config" datatype="string" default="411">ACC_PatientSalesAccount</column>
+				<column type="config" datatype="string" default="Cash patient">ACC_PatientSalesAccountName</column>
+				<column type="object" datatype="string">invoiceuid</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">date</column>
+				<column type="config" datatype="string" default="Cash patient invoice">ACC_PatientSalesInvoiceName</column>
+				<column type="object" datatype="string">invoiceamount</column>
+				<column type="label">D</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">invoiceduedate</column>
+			</line>
+			<line type="costcenter">
+				<column type="config" datatype="string" default="VE">ACC_PatientSalesJournalCode</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">date</column>
+				<column type="object" datatype="string">invoicepartcostcenter</column>
+				<column type="object" datatype="string">invoicepartcostcentername</column>
+				<column type="object" datatype="string">invoiceuid</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">date</column>
+				<column type="config" datatype="string" default="Cash patient invoice">ACC_PatientSalesInvoiceName</column>
+				<column type="object" datatype="string">invoicepartamount</column>
+				<column type="label">C</column>
+				<column type="label"></column>
+			</line>
+		</body>
+	</export>
+	<export type="patientpayments">
+		<format>
+			<name>Patient payments</name>
+			<file>
+				<folder>c:/temp</folder>
+				<extension>csv</extension>
+				<name>
+					<prefix>PATIENTPAYMENTS_</prefix>
+					<format>yyyyMMddHHmmsss</format>
+					<suffix></suffix>
+				</name>
+			</file>
+			<delimiter>"</delimiter>
+			<separator>;</separator>
+			<header>true</header>
+			<newline><lf/></newline>
+		</format>
+		<header>
+			<line>
+				<column type="label">Code journal</column>
+				<column type="label">Date</column>
+				<column type="label">N° de compte</column>
+				<column type="label">Intitulé du compte</column>
+				<column type="label">Pièce</column>
+				<column type="label">Date de pièce</column>
+				<column type="label">Libellé</column>
+				<column type="label">Montant (associé au sens)</column>
+				<column type="label">Sens</column>
+			</line>
+		</header>
+		<body>
+			<line>
+				<column type="config" datatype="string" default="CA">ACC_PatientPaymentsJournalCode</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">date</column>
+				<column type="config" datatype="string" default="411">ACC_PatientSalesAccount</column>
+				<column type="config" datatype="string" default="Cash patient">ACC_PatientSalesAccountName</column>
+				<column type="object" datatype="string">invoiceuid</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">invoicedate</column>
+				<column type="config" datatype="string" default="Cash patient invoice">ACC_PatientSalesInvoiceName</column>
+				<column type="object" datatype="string">amount</column>
+				<column type="label">C</column>
+			</line>
+			<line>
+				<column type="config" datatype="string" default="CA">ACC_PatientSalesJournalCode</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">date</column>
+				<column type="object" datatype="string" default="531">ACC_CashAccount</column>
+				<column type="object" datatype="string" default="Cash account">ACC_CashAccountName</column>
+				<column type="object" datatype="string">invoiceuid</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">invoicedate</column>
+				<column type="config" datatype="string" default="Cash patient invoice">ACC_PatientSalesInvoiceName</column>
+				<column type="object" datatype="string">amount</column>
+				<column type="label">D</column>
+			</line>
+		</body>
+	</export>
+	<export type="insurersales">
+		<format>
+			<name>Patient sales</name>
+			<file>
+				<folder>c:/temp</folder>
+				<extension>csv</extension>
+				<name>
+					<prefix>INSURERSALES_</prefix>
+					<format>yyyyMMddHHmmsss</format>
+					<suffix></suffix>
+				</name>
+			</file>
+			<delimiter>"</delimiter>
+			<separator>;</separator>
+			<header>true</header>
+			<newline><lf/></newline>
+		</format>
+		<header>
+			<line>
+				<column type="label">Code journal</column>
+				<column type="label">Date</column>
+				<column type="label">N° de compte</column>
+				<column type="label">Intitulé du compte</column>
+				<column type="label">Pièce</column>
+				<column type="label">Date de pièce</column>
+				<column type="label">Libellé</column>
+				<column type="label">Montant (associé au sens)</column>
+				<column type="label">Sens</column>
+				<column type="label">Date de l'échéance</column>
+			</line>
+		</header>
+		<body>
+			<line>
+				<column type="config" datatype="string" default="VE">ACC_InsurerSalesJournalCode</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">date</column>
+				<column type="object" datatype="string">insureraccount</column>
+				<column type="object" datatype="string">insurername</column>
+				<column type="object" datatype="string">invoiceuid</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">invoicedate</column>
+				<column type="config" datatype="string" default="Insurer invoice">ACC_InsurerSalesInvoiceName</column>
+				<column type="object" datatype="string">invoiceamount</column>
+				<column type="label">D</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">invoiceduedate</column>
+			</line>
+			<line>
+				<column type="config" datatype="string" default="VE">ACC_InsurerSalesJournalCode</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">date</column>
+				<column type="object" datatype="string">invoicepartcostcenter</column>
+				<column type="object" datatype="string">invoicepartcostcentername</column>
+				<column type="object" datatype="string">invoiceuid</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">invoicedate</column>
+				<column type="config" datatype="string" default="Insurer invoice">ACC_InsurerSalesInvoiceName</column>
+				<column type="object" datatype="string">invoicepartamount</column>
+				<column type="label">C</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">invoiceduedate</column>
+			</line>
+		</body>
+	</export>
+	<export type="insurerpayments">
+		<format>
+			<name>Patient payments</name>
+			<file>
+				<folder>c:/temp</folder>
+				<extension>csv</extension>
+				<name>
+					<prefix>INSURERPAYMENTS_</prefix>
+					<format>yyyyMMddHHmmsss</format>
+					<suffix></suffix>
+				</name>
+			</file>
+			<delimiter>"</delimiter>
+			<separator>;</separator>
+			<header>true</header>
+			<newline><lf/></newline>
+		</format>
+		<header>
+			<line>
+				<column type="label">Code journal</column>
+				<column type="label">Date</column>
+				<column type="label">N° de compte</column>
+				<column type="label">Intitulé du compte</column>
+				<column type="label">Pièce</column>
+				<column type="label">Date de pièce</column>
+				<column type="label">Libellé</column>
+				<column type="label">Montant (associé au sens)</column>
+				<column type="label">Sens</column>
+			</line>
+		</header>
+		<body>
+			<line>
+				<column type="config" datatype="string" default="BP">ACC_InsurerPaymentsJournalCode</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">date</column>
+				<column type="object" datatype="string">insureraccount</column>
+				<column type="object" datatype="string">insurername</column>
+				<column type="object" datatype="string">invoiceuid</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">invoicedate</column>
+				<column type="config" datatype="string" default="Insurer invoice">ACC_InsurerSalesInvoiceName</column>
+				<column type="object" datatype="string">amount</column>
+				<column type="label">C</column>
+			</line>
+			<line>
+				<column type="config" datatype="string" default="BP">ACC_PatientSalesJournalCode</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">date</column>
+				<column type="object" datatype="string" default="5121">ACC_BankAccount</column>
+				<column type="object" datatype="string" default="Cash account">ACC_BankAccountName</column>
+				<column type="object" datatype="string">invoiceuid</column>
+				<column type="object" datatype="date" format="dd/MM/yyyy">invoicedate</column>
+				<column type="config" datatype="string" default="Insurer invoice">ACC_InsurerSalesInvoiceName</column>
+				<column type="object" datatype="string">amount</column>
+				<column type="label">D</column>
+			</line>
+		</body>
+	</export>
+</exports>

@@ -1,0 +1,181 @@
+<report type='timefilters' version='1.0'>
+	<schedule type="daily"/>
+	<result type="maintitle">
+		<label>HGR FSKi RAPPORT JOURNALIER</label>
+	</result>
+	<result type="subtitle">
+		<label>CONSULTATIONS EXTERNES</label>
+	</result>
+	<result type='counter'>
+		<label style='bold'>NOMBRE TOTAL DE PATIENTS</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.CON.EXT</element>
+						<element>CLI.CON.OPH</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>DISPENSAIRE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>CLI.CON.EXT</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>OPHTALMOLOGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>CLI.CON.OPH</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>HOSPITALISATIONS</label>
+	</result>
+	<result type='counter'>
+		<label style='bold'>NOMBRE TOTAL DE PATIENTS</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+			</select>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.HOS.CHI</element>
+						<element>CLI.HOS.GYN</element>
+						<element>CLI.HOS.MAT</element>
+						<element>CLI.HOS.CES</element>
+						<element>CLI.HOS.MI</element>
+						<element>CLI.HOS.PED</element>
+						<element>CLI.HOS.PRV</element>
+						<element>CLI.HOS.PTH</element>
+						<element>CLI.HOS.USI</element>
+					</value>
+				</field>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>CHIRURGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>CLI.HOS.CHI</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>MATERNITE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>CLI.HOS.MAT</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>CESARIENNES - SALLE8</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>CLI.HOS.CES</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>PEDIATRIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>CLI.HOS.PED</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>CHAMBRES PRIVEES</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>CLI.HOS.PRV</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>PATHFINDER</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>CLI.HOS.PTH</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>SOINS INTENSIFS</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>CLI.HOS.USI</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>DEMANDES LABORATOIRES</label>
+	</result>
+	<result type='counter'>
+		<label style='bold'>NOMBRE TOTAL DE DEMANDES</label>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_LAB_REQUEST</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+</report>

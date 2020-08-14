@@ -1,0 +1,67 @@
+/*===== CSS theme file for CalendarXP 8.0 =====*/
+.CalHead {cursor:default; text-align:center; font:bold 7.5pt Tahoma, arial, sans-serif; color:white;}
+.CalCell {cursor:pointer; text-align:center;background:red;}
+.CellAnchor {text-decoration:none; font:9pt arial;background:transparent;}
+.WeekHead {cursor:default; text-align:center; font:bold 10pt arial; color:white;}
+.WeekCol {cursor:default; text-align:center; background:#858A8F;}
+.WeekAnchor {text-decoration:none; font:bold 8pt arial; color:white;background:red;}
+
+.MonthNav {
+    font-family: arial;
+	font-size: 10px;
+	font-weight: normal;
+	color: white;
+	height : 17px;
+    border-left-width: 0px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-color: #858A8F;
+	border-top-color: #858A8F;
+	border-right-color: #858A8F;
+	border-bottom-color: #858A8F;
+	cursor: pointer;
+    background: url( "../../_img/button-bg.png" ) repeat-x;
+    background:#858A8F;
+}
+A.MonthNav:hover {color:#ffcc00;}
+A.MonthNav:active {color:red}
+
+.CalTop {text-align:center;}
+.CalMiddle {}
+.CalBottom {text-align:center;}
+
+.CalTitle {
+	FONT-WEIGHT: normal;
+	FONT-SIZE: 10px;
+	BACKGROUND: #ffffff;
+	COLOR: #333399;
+	BORDER-TOP-STYLE: groove;
+	FONT-FAMILY: arial;
+	BORDER-RIGHT-STYLE: groove;
+	BORDER-LEFT-STYLE: groove;
+	BORDER-BOTTOM-STYLE: groove;
+}
+
+.FreeDiv {}
+
+#outerTable {border:1px solid #ACB5BF;background:#ACB5BF;}
+#innerDiv {border:1px solid #ACB5BF;background:#858A8F;}
+
+/*====== Following are additional per-theme styles ======*/
+.Today {text-decoration:none; font:bold 9pt Tahoma, arial; color:white;}
+A.Today:hover {color:#ffcc00;}
+A.Today:active {color:red;}
+
+TR.Label{
+	color: black;
+	font-family: arial;
+	font-size: 9px;
+	font-weight: bolder;
+	text-align: center;
+	background-color: #BFC3C7;
+	padding-left: 5px;
+	padding-right: 1px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+}

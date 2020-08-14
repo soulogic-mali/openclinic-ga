@@ -1,0 +1,1 @@
+java -Xms64m -Xmx256m -classpath ../WEB-INF/classes:../WEB-INF/lib/dom4j-full.jar:../WEB-INF/lib/mail.jar:../WEB-INF/lib/log4j.jar:../WEB-INF/lib/commons-httpclient-3.1.jar:../WEB-INF/lib/primrose.jar:../WEB-INF/lib/mysql-connector-java-5.1.10-bin.jar:../WEB-INF/lib/sqljdbc4.jar be.mxs.common.util.io.syncLabware /var/tomcat/conf/db.cfg localhost 1433 CHUK_OPENCLINIC sa test 

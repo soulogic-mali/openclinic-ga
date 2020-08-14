@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<claim version="0.1">
+	<ids>
+		<id namespace='OpenClinic' type='HICID'>ABC123</id>
+	</ids>
+	<facility>
+		<ids>
+			<id namespace='SIS' type='DISA'>123</id>
+			<id namespace='SIS' type='UDR'>456</id>
+			<id namespace='SIS' type='RENAES'>1234</id>
+			<id namespace='SIS' type='UPS'>1234</id>
+		</ids>
+		<categories>
+			<ids>
+				<id namespace='SIS' type='FACILITYCATEGORY'>II</id>
+				<id namespace='SIS' type='FACILITYLEVEL'>II</id>
+			</ids>
+		</categories>
+		<agreements>
+			<ids>
+				<id namespace='SIS' type='AGREEMENT'>ABC012</id>
+			</ids>
+		</agreements>
+	</facility>
+	<replacements>
+		<ids>
+			<id namespace='OpenClinic' type='HICID'>ABC012</id>
+		</ids>
+	</replacements>
+	<insured>
+		<ids>
+			<id namespace='SIS' type='IDDOCUMENTTYPE'>1</id>
+			<id namespace='SIS' type='IDDOCUMENTID'>08765432</id>
+			<id namespace='SIS' type='COMPONENT'>1</id>
+			<id namespace='SIS' type='DISA'>123</id>
+			<id namespace='SIS' type='BATCH'>20</id>
+			<id namespace='SIS' type='INSURANCENUMBER'>20</id>
+			<id namespace='SIS' type='LINK'>01</id>
+			<id namespace='SIS' type='TABLETYPE'>01</id>
+			<id namespace='SIS' type='TABLEID'>01</id>
+			<id namespace='SIS' type='TABLEID'>01</id>
+		</ids>
+		<insurers>
+			<ids>
+				<id namespace='SIS' type='INSURERID'>SIS</id>
+				<id namespace='SIS' type='INSURERTYPE'>1</id>
+			</ids>
+		</insurers>
+		<names>
+			<lastnames>
+				<name></name>
+				<name type='father'></name>
+				<name type='mother'></name>
+			</lastnames>
+			<firstnames>
+				<name></name>
+				<name type='nickname'></name>
+			</firstnames>
+		</names>
+		<dateofbirth>19630823</dateofbirth>
+		<dateofdeath></dateofdeath>
+		<gender>M</gender>
+		<address>
+			<street></street>
+			<number></number>
+			<zipcode></zipcode>
+			<city></city>
+			<province></province>
+			<region></region>
+			<country></country>
+			<other type='hill'></other>
+			<other type='district'></other>
+			<other type='sector'></other>
+		</address>
+		<education>
+			<school>
+				<ids>
+					<id namespace='SIS' type='SCHOOLS'>22</id>
+				</ids>
+			</school>
+			<level>
+				<ids>
+					<id namespace='SIS' type='EDUCATIONLEVEL'>22</id>
+				</ids>
+			</level>
+			<diploma>
+				<ids>
+					<id namespace='SIS' type='DIPLOMA'>22</id>
+				</ids>
+			</diploma>
+			<section></section>
+			<course>
+				<ids>
+					<id namespace='SIS' type='COURSE'>22</id>
+				</ids>
+			</course>
+			<specialeducation>0</specialeducation>
+			<agreement></agreement>
+		</education>
+		<coverageplan>
+			<ids>
+				<id namespace='SIS' type='COVERAGEPLAN'>22</id>
+				<id namespace='SIS' type='FLEXIBLEOFFER'>22</id>
+			</ids>
+		</coverageplan>
+		<populationgroup>
+			<ids>
+				<id namespace='SIS' type='POPULATIONGROUP'>01</id>
+				<id namespace='SIS' type='ETHNICGROUP'>01</id>
+			</ids>
+		</populationgroup>
+		<authorizations>
+			<authorization>
+				<ids>
+					<id namespace='SIS' type='AUTHORIZATION'>123456</id>
+				</ids>
+				<athorizedamount></athorizedamount>
+			</authorization>
+		</authorizations>
+	</insured>
+	<encounter>
+		<ids>
+			<id namespane='OpenClinic' type='encounter'>1.123</id>
+			<id namespane='OpenClinic' type='healthrecord'>5678</id>
+		</ids>
+		<type>
+			<ids>
+				<id namespane='OpenClinic' type='encountertype'>visit</id>
+				<id namespane='SIS' type='ENCOUNTERTYPE'>1</id>
+				<id namespane='SIS' type='ENCOUNTERMODALITY'>1</id>
+			</ids>
+		</type>
+		<pregnancy>
+			<ids>
+				<id namespane='SIS' type='PREGNANCY'>0</id>
+			</ids>
+			<deliverydate type='estimated'></deliverydate>
+		</pregnancy>
+		<begin>20200221141500</begin>
+		<end>20200222121000</end>
+		<referral>
+			<ids>
+				<id namespace='OpenClinic' type='referredfromdocumentid'>5.345</id>
+				<id namespace='OpenClinic' type='referredtodocumentid'>5.345</id>
+			</ids>
+			<referredby>
+				<ids>
+					<id namespace='SIS' type='RENAES'>1230</id>
+				</ids>
+			</referredby>
+			<referredto>
+				<ids>
+					<id namespace='SIS' type='RENAES'>1230</id>
+				</ids>
+			</referredto>
+		</referral>
+		<care>
+			<ids>
+				<id namespace='SIS' type='TYPEOFCARE'>01</id>
+				<id namespace='SIS' type='CARELOCATION'>01</id>
+			</ids>
+			<careprovider>
+				<ids>
+					<id namespace='SIS' type='TYPEOFCAREPROVIDER'>01</id>
+					<id namespace='SIS' type='CAREPROVIDERQUALIFICATION'>01</id>
+					<id namespace='SIS' type='CAREPROVIDERSPECIALTY'>01</id>
+					<id namespace='SIS' type='CAREPROVIDERGRADUATED'>01</id>
+					<id namespace='SIS' type='COUNCELID'>0123456</id>
+					<id namespace='SIS' type='RNE'>01</id>
+					<id namespace='SIS' type='IDDOCUMENTTYPE'>1</id>
+					<id namespace='SIS' type='IDDOCUMENTID'>08765432</id>
+				</ids>
+			</careprovider>
+		</care>
+		<outcome>
+			<ids>
+				<id namespace='OpenClinic' type='outcome'>01</id>
+				<id namespace='SIS' type='OUTCOME'>01</id>
+			</ids>
+		</outcome>
+		<risks>
+			<ids>
+				<id namespace='SIS' type='HVB'>0</id>
+			</ids>
+		</risks>
+		<diagnoses>
+			<code classification='ICD10' type='primary' poa='0' newcase='1' certainty='final'>A0.0</code>
+		</diagnoses>
+	</encounter>
+	<comment></comment>
+	<services>
+		<products>
+			<product>
+				<ids>
+					<id namespace='SIS' type='DIGEMID'>1234</id>
+					<id namespace='SIS' type='PRODUCTTYPE'>M</id>
+				</ids>
+				<diagnosis classification='ICD10'>A0.0</diagnosis>
+				<prescription>
+					<ids>
+						<id namespace='OpenClinic' type='drugprescription'>1.56</id>
+					</ids>
+					<date>20200221110512</date>
+					<quantity></quantity>
+				</prescription>
+				<delivery>
+					<ids>
+						<id namespace='OpenClinic' type='drugdelivery'>1.66</id>
+						<id namespace='OpenClinic' type='drugdelivery'>1.67</id>
+					</ids>
+					<date>20200221110512</date>
+					<quantity></quantity>
+				</delivery>
+				<cost currency='SOL'>
+					<insurer></insurer>
+					<patient></patient>
+					<other></other>
+				</cost>
+			</product>
+		</products>
+		<procedures>
+			<procedure>
+				<ids>
+					<id namespace='SIS' type='PREVENTION'>02</id>
+					<id namespace='SIS' type='CPT'>1234</id>
+					<id namespace='SIS' type='PROCEDURETYPE'>1</id>
+				</ids>
+				<diagnosis classification='ICD10'>A0.0</diagnosis>
+				<prescription>
+					<ids>
+						<id namespace='OpenClinic' type='procedureprescription'></id>
+					</ids>
+					<date></date>
+					<quantity>1</quantity>
+				</prescription>
+				<delivery>
+					<date>20200221110512</date>
+					<quantity>1</quantity>
+				</delivery>
+				<outcome></outcome>
+				<performer>
+					<ids>
+						<id namespace='SIS' type='TYPEOFCAREPROVIDER'>01</id>
+						<id namespace='SIS' type='CAREPROVIDERQUALIFICATION'>01</id>
+						<id namespace='SIS' type='CAREPROVIDERSPECIALTY'>01</id>
+						<id namespace='SIS' type='CAREPROVIDERGRADUATED'>01</id>
+						<id namespace='SIS' type='COUNCELID'>0123456</id>
+						<id namespace='SIS' type='IDDOCUMENTTYPE'>1</id>
+						<id namespace='SIS' type='IDDOCUMENTID'>08765432</id>
+					</ids>
+				</performer>
+				<cost currency='SOL'>
+					<insurer></insurer>
+					<patient></patient>
+					<other></other>
+				</cost>
+			</procedure>
+		</procedures>
+		<otherservices>
+			<service>
+				<ids>
+					<id namespace='OpenClnic' type='SERVICETYPE'>123</id>
+					<id namespace='SIS' type='SERVICECODE'>123</id>
+				</ids>
+				<diagnosis classification='ICD10'>A0.0</diagnosis>
+				<prescription>
+					<ids>
+						<id namespace='OpenClinic' type='procedureprescription'></id>
+					</ids>
+					<date></date>
+					<quantity>1</quantity>
+				</prescription>
+				<delivery>
+					<date>20200221110512</date>
+					<quantity>1</quantity>
+				</delivery>
+				<outcome></outcome>
+				<performer>
+					<ids>
+						<id namespace='SIS' type='TYPEOFCAREPROVIDER'>01</id>
+						<id namespace='SIS' type='CAREPROVIDERQUALIFICATION'>01</id>
+						<id namespace='SIS' type='CAREPROVIDERSPECIALTY'>01</id>
+						<id namespace='SIS' type='CAREPROVIDERGRADUATED'>01</id>
+						<id namespace='SIS' type='COUNCELID'>0123456</id>
+						<id namespace='SIS' type='IDDOCUMENTTYPE'>1</id>
+						<id namespace='SIS' type='IDDOCUMENTID'>08765432</id>
+					</ids>
+				</performer>
+				<cost currency='SOL'>
+					<insurer></insurer>
+					<patient></patient>
+					<other></other>
+				</cost>
+			</service>
+		</otherservices>
+	</services>
+</claim>

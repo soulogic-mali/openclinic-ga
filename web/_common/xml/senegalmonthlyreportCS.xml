@@ -1,0 +1,4401 @@
+<report type='timefilters' version='1.0'>
+	<result type="title">
+		<label>UNITE DE TRIAGE</label>
+	</result>
+	<result type="title">
+		<label>CONSULTATIONS EXTERNES</label>
+	</result>
+	<result type="subtitle">
+		<label>TRIAGE</label>
+	</result>
+	<result type='counter'>
+		<label>consultations (Nouveaux cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.TRI' compare='like'>triageService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+		<filter type="rfe" periodfilter='false'>
+			<select>
+				<field name='encounteruid'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</field>
+				<field name='rfeflags'>
+					<value type='constant' compare='contains'>N</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.TRI' compare='like'>triageService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas, avec et sans données cliniques)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.TRI' compare='like'>triageService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>GARDE</label>
+	</result>
+	<result type='counter'>
+		<label>consultations (Nouveaux cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR' compare='like'>emergencyService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+		<filter type="rfe" periodfilter='false'>
+			<select>
+				<field name='encounteruid'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</field>
+				<field name='rfeflags'>
+					<value type='constant' compare='contains'>N</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR' compare='like'>emergencyService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas, avec et sans données cliniques)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR' compare='like'>emergencyService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Total consultations des infirmiers</label>
+	</result>
+	<result type='counter'>
+		<label>consultations (Nouveaux cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+		<filter type="rfe" periodfilter='false'>
+			<select>
+				<field name='encounteruid'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</field>
+				<field name='rfeflags'>
+					<value type='constant' compare='contains'>N</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas, avec et sans données cliniques)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Provenance des malades en consultation</label>
+	</result>
+	<result type="subtitle">
+		<label>TRIAGE</label>
+	</result>
+	<result type='counter'>
+		<label>Dans la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.TRI' compare='in'>triageService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont dans la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.TRI' compare='in'>triageService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='equals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors de la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.TRI' compare='in'>triageService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='notequals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors de la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.TRI' compare='in'>triageService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>3</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors pays</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.TRI' compare='in'>triageService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>4</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>GARDE</label>
+	</result>
+	<result type='counter'>
+		<label>Dans la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR' compare='in'>emergencyService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont dans la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR' compare='in'>emergencyService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='equals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors de la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR' compare='in'>emergencyService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='notequals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors de la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR' compare='in'>emergencyService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>3</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors pays</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR' compare='in'>emergencyService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>4</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Total consultations des infirmiers</label>
+	</result>
+	<result type='counter'>
+		<label>Dans la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont dans la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='equals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors de la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='notequals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors de la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>3</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors pays</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>4</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Références reçues en consultations </label>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de malades réferés</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés  d'une structure du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés d'une structure située hors du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>3</element>
+						<element>4</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont par le Cabinet privé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>privateclinic</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Références out</label>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés vers le centre de santé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>referencecs</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades référés à l'hôpital</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>reference</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Observations</label>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de malades en observation</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont réferés par une autre sturture du district</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont réferés par une autre structure hors du district</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>3</element>
+						<element>4</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Prise en charge financière des patients</label>
+	</result>
+	<result type="value">
+		<label>dont auprès des Mutuelles et assurance</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.GAR;CLI.TRI' compare='in'>nurseService</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="title">
+		<label>MEDECINS</label>
+	</result>
+	<result type="title">
+		<label>CONSULTATIONS EXTERNES </label>
+	</result>
+	<result type='counter'>
+		<label>consultations (Nouveaux cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+		<filter type="rfe" periodfilter='false'>
+			<select>
+				<field name='encounteruid'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</field>
+				<field name='rfeflags'>
+					<value type='constant' compare='contains'>N</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas, avec et sans données cliniques)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Provenance des malades en consultation</label>
+	</result>
+	<result type='counter'>
+		<label>Dans la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont dans la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='equals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors de la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='notequals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors de la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>3</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors pays</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>4</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Référés consultés par le médecin </label>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de malades réferés reçus</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés par les postes de santé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>healthcenter</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés par le service de triage</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>triage</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont par le Cabinet privé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>privateclinic</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés par une structure située hors du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>3</element>
+						<element>4</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Prise en charge financière des consultants</label>
+	</result>
+	<result type="value">
+		<label>dont auprès des Mutuelles et assurance</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MED' compare='like'>doctorService</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="title">
+		<label>MATERNITE</label>
+	</result>
+	<result type="title">
+		<label>CONSULTATIONS CURATIVES </label>
+	</result>
+	<result type='counter'>
+		<label>consultations (Nouveaux cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+		<filter type="rfe" periodfilter='false'>
+			<select>
+				<field name='encounteruid'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</field>
+				<field name='rfeflags'>
+					<value type='constant' compare='contains'>N</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas, avec et sans données cliniques)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Provenance des malades en consultation</label>
+	</result>
+	<result type='counter'>
+		<label>Dans la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont dans la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='equals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors de la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='notequals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors de la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>3</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors pays</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>4</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Référés consultés par le médecin </label>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de malades réferés reçus</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés par les postes de santé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>healthcenter</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés par le service de triage</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>triage</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont par le Cabinet privé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>privateclinic</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés par une structure située hors du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.MAT' compare='like'>maternityOPDService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>3</element>
+						<element>4</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="title">
+		<label>HOSPITALISATIONS</label>
+	</result>
+	<result type="subtitle">
+		<label>Nombre d'hospitalisés</label>
+	</result>
+	<result type='counter'>
+		<label>Nombre de malades hospitalisés</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Provenance des malades en consultation</label>
+	</result>
+	<result type='counter'>
+		<label>Dans la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont dans la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='equals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors de la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='notequals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors de la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>3</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors pays</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>4</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Références pour hospitalisations</label>
+	</result>
+	<result type='counter'>
+		<label>Nombre de malades réferés par une structure du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+						<element>triage</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés par le service de tri du CS</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>triage</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades provenant des autres structures du DS</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre de malades réferés par une structure située hors du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>3</element>
+						<element>4</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de malades réferés à l'unité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Devenir des hospitalisés</label>
+	</result>
+	<result type='counter'>
+		<label>Nombre d'hospitalisés exéatées</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='notequals'>escape</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre d'hospitalisés évadés</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>escape</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre d'hospitalisé transferés vers l'hopital</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>reference</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre d'hospitalisés transferés vers un autre service du centre de santé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>referencecs</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de décès</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>dead</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont durée d'hospitalisation inférieure à  48 heures</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>dead</value>
+				</field>
+				<field name='duration'>
+					<value type='constant' compare='smallerthan'>2</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont durée d'hospitalisation supérieure ou égale à 48 heures</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>dead</value>
+				</field>
+				<field name='duration'>
+					<value type='constant' compare='equalsorgreaterthan'>2</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Autres informations</label>
+	</result>
+	<result type="value">
+		<label>Nombre de journées d'hospitalisation des malades exéatées</label>
+		<filter type='encounter' periodfilter='true'>
+			<outputvalue>duration</outputvalue>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='notequals'>escape</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre de malades dont l'hospitalisation est supérieure ou égal à 48 heures</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='duration'>
+					<value type='constant' compare='equalsorgreaterthan'>2</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre de malades dont l'hospitalisation est inférieure à 48 heures</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='duration'>
+					<value type='constant' compare='smallerthan'>2</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT' compare='like'>maternityIPService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="title">
+		<label>AUTRES ACTIVITES</label>
+	</result>
+	<result type='counter' count='patientuid'>
+		<label>Nombre d'enfants vacinés</label>
+		<filter type='transaction' periodfilter='true'>
+			<output>patientuid</output>
+			<select>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_VACCINATION</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='encounter' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter' count='patientuid'>
+		<label>Nombre de premiers contacts en CPN</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_PRENATAL_CPNORDER'>
+				<value type='constant' compare='equals'>1</value>
+			</item>
+		</filter>
+	</result>
+	<result type='counter' count='patientuid'>
+		<label>de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_PRENATAL_CPNORDER'>
+				<value type='constant' compare='equals'>1</value>
+			</item>
+		</filter>
+	</result>
+	<result type='counter' count='patientuid'>
+		<label>hors zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_PRENATAL_CPNORDER'>
+				<value type='constant' compare='equals'>1</value>
+			</item>
+		</filter>
+	</result>
+	<result type='counter' count='patientuid'>
+		<label>Nombre de femmes ayant fait 4 CPN</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_PRENATAL_CPNORDER'>
+				<value type='constant' compare='equals'>4</value>
+			</item>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de CPN</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de CPON</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_POSTNATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+		</filter>
+	</result>
+	<result type="counter">
+		<label>Total Accouchements dans la structure</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>dont eutociques</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_DELIVERYTYPE'>
+				<value type='constant' compare='equals'>eutocia</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>dont dystociques</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_DELIVERYTYPE'>
+				<value type='constant' compare='equals'>dystocia</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>Nombre d'accouchements à domicile vus</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_DELIVERYLOCATION'>
+				<value type='constant' compare='equals'>home</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>Total accouchement cases de santé vus</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_DELIVERYLOCATION'>
+				<value type='constant' compare='equals'>case</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>Nombre de morts-nés frais</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_CHILDSTATUS'>
+				<value type='constant' compare='equals'>mnf</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>dont femmes référés par les postes de santé du district</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>healthcenter</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_CHILDSTATUS'>
+				<value type='constant' compare='equals'>mnf</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>Nombre de morts-nés macérés</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_CHILDSTATUS'>
+				<value type='constant' compare='equals'>mnm</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>dont femmes référés par les postes de santé du district</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>healthcenter</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_CHILDSTATUS'>
+				<value type='constant' compare='equals'>mnm</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>Nombre d'avortements</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_ABORTION</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>Nombre de décès néonatals</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_CHILDSTATUS'>
+				<value type='constant' compare='in'>
+					<element>mnf</element>
+					<element>mnm</element>
+					<element>dcd</element>
+				</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>Nombre de décès maternels</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_MOTHERSTATUS'>
+				<value type='constant' compare='equals'>dcd</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>dont femmes référés par les structures du district</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_MOTHERSTATUS'>
+				<value type='constant' compare='equals'>dcd</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>Nombre de complications obstétricales</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_COMPLICATIONS'>
+				<value type='constant' compare='notequals'></value>
+			</item>
+		</filter>
+	</result>	
+	<result type="subtitle">
+		<label>Prise en charge financière des consultantes</label>
+	</result>
+	<result type="value">
+		<label>dont auprès des Mutuelles et assurance</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.MAT;CLI.EXT.MAT' compare='in'>maternityService</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="title">
+		<label>HOSPITALISATIONS</label>
+	</result>
+	<result type="subtitle">
+		<label>Nombre d'hospitalisés</label>
+	</result>
+	<result type='counter'>
+		<label>Nombre de malades hospitalisés</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont âge inférieur à 14 ans</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type="admin" periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='age'>
+					<value type='constant' compare='smallerthan'>14</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Provenance des malades en consultation</label>
+	</result>
+	<result type='counter'>
+		<label>Dans la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont dans la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='equals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors de la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='notequals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors de la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>3</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors pays</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>4</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Références pour hospitalisations </label>
+	</result>
+	<result type='counter'>
+		<label>Nombre de malades réferés par une structure du district sanitaire </label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+						<element>triage</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés provenant du triage</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>triage</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades provenant des postes de santé, parapublics et privés non lucratifs </label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>healthcenter</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades provenant des cabinets privés</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>privateclinic</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre de malades réferés par une structure située hors du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>3</element>
+						<element>4</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de malades réferés à l'unité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+						<element>triage</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Devenir des hospitalisés </label>
+	</result>
+	<result type='counter'>
+		<label>Nombre d'hospitalisés guéris</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='in'>
+						<element>better</element>
+						<element>recovered</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre d'hospitalisés évadés</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>escape</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre d'hospitalisé transferés vers l'hopital</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>reference</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre d'hospitalisés transferés vers un autre service du centre de santé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>referencecs</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre d'hospitalisé exéatés</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='nonequals'>escape</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de décès</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>dead</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont durée d'hospitalisation inférieure à  48 heures</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='duration'>
+					<value type='constant' compare='equalsorgreaterthan'>2</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>dead</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont durée d'hospitalisation supérieure ou égale à 48 heures</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='duration'>
+					<value type='constant' compare='smallerthan'>2</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>dead</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Autres informations</label>
+	</result>
+	<result type="value">
+		<label>Nombre de journées d'hospitalisation des malades exéatées</label>
+		<filter type='encounter' periodfilter='true'>
+			<outputvalue>duration</outputvalue>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='outcome'>
+					<value type='constant' compare='notequals'>escape</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre de malades dont l'hospitalisation est supérieure ou égal à 48 heures</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='duration'>
+					<value type='constant' compare='equalsorgreaterthan'>2</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Nombre de malades dont l'hospitalisation est inférieure à 48 heures</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='duration'>
+					<value type='constant' compare='smallerthan'>2</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Prise en charge financière des patients</label>
+	</result>
+	<result type="value">
+		<label>dont auprès des Mutuelles et assurance</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type='counter'>
+		<label>dont enfants de 0 à 5 ans</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.HOSP.BLOC;CLI.HOSP.GEN' compare='in'>admissionService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='age'>
+					<value type='constant' compare='smallerthan'>5</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='title'>
+		<label>Chirurgie dentaire</label>
+	</result>
+	<result type="title">
+		<label>CONSULTATIONS EXTERNES</label>
+	</result>
+	<result type='counter'>
+		<label>consultations (Nouveaux cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+		<filter type="rfe" periodfilter='false'>
+			<select>
+				<field name='encounteruid'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</field>
+				<field name='rfeflags'>
+					<value type='constant' compare='contains'>N</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas, avec et sans données cliniques)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Provenance des malades en consultation</label>
+	</result>
+	<result type='counter'>
+		<label>Dans la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont dans la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='equals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors de la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='notequals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors de la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>3</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors pays</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>4</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Références reçues en consultations </label>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de malades réferés</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés  d'une structure du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés d'une structure située hors du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>3</element>
+						<element>4</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont par le Cabinet privé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>privateclinic</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Prise en charge financière des patients</label>
+	</result>
+	<result type="value">
+		<label>référés assurés/ mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>référés non assurés/ non mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='equals'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>non référés assurés/mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>residence</element>
+						<element>other</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>non référés non assurés/mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.DENT' compare='like'>dentalService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>residence</element>
+						<element>other</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='equals'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type='title'>
+		<label>Ophtalmologie</label>
+	</result>
+	<result type="title">
+		<label>CONSULTATIONS EXTERNES</label>
+	</result>
+	<result type='counter'>
+		<label>consultations (Nouveaux cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+		<filter type="rfe" periodfilter='false'>
+			<select>
+				<field name='encounteruid'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</field>
+				<field name='rfeflags'>
+					<value type='constant' compare='contains'>N</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>consultations (nouveaux et anciens cas, avec et sans données cliniques)</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Provenance des malades en consultation</label>
+	</result>
+	<result type='counter'>
+		<label>Dans la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont dans la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='equals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors de la commune</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='sector'>
+					<value type='config' default='BABA GARAGE' compare='notequals'>localSector</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors de la zone du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>3</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors pays</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>4</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Références reçues en consultations </label>
+	</result>
+	<result type='counter'>
+		<label>Nombre total de malades réferés</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés  d'une structure du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés d'une structure située hors du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>3</element>
+						<element>4</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont par le Cabinet privé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>privateclinic</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Prise en charge financière des patients</label>
+	</result>
+	<result type="value">
+		<label>référés assurés/ mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>référés non assurés/ non mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='equals'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>non référés assurés/mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>residence</element>
+						<element>other</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>non référés non assurés/mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.EXT.SPEC.OPHT' compare='like'>ophtalmologyService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>residence</element>
+						<element>other</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='equals'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type='title'>
+		<label>Radiologie</label>
+	</result>
+	<result type='counter'>
+		<label>Nombre total d'examens de radiologie effectués</label>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MIR2</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='subtitle'>
+		<label>Structure ayant demandé l'examen radiologique </label>
+	</result>	
+	<result type='counter'>
+		<label>Dans le district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.RAD' compare='like'>imagingService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont centre de santé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.RAD' compare='like'>imagingService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>hospital</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont postes de santé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.RAD' compare='like'>imagingService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>healthcenter</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Cabinet privé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.RAD' compare='like'>imagingService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>privateclinic</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.RAD' compare='like'>imagingService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>3</element>
+						<element>4</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Prise en charge financière des patients</label>
+	</result>
+	<result type="value">
+		<label>référés assurés/ mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.RAD' compare='like'>imagingService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>référés non assurés/ non mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.RAD' compare='like'>imagingService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='equals'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>non référés assurés/mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.RAD' compare='like'>imagingService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>residence</element>
+						<element>other</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>non référés non assurés/mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.RAD' compare='like'>imagingService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>residence</element>
+						<element>other</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='equals'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type='title'>
+		<label>Labo</label>
+	</result>
+	<result type='counter'>
+		<label>Nombre total d'analyses effectuées </label>
+		<filter type='labanalysis' periodfilter='true' count="transactionid">
+			<output>transactionid</output>
+			<select>
+				<field name='analysisresult'>
+					<value type='constant' compare='notequals'></value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='subtitle'>
+		<label>Structure ayant demandé l'examen radiologique </label>
+	</result>	
+	<result type='counter'>
+		<label>Dans le district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.LAB' compare='like'>labService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont centre de santé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.LAB' compare='like'>labService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>hospital</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont postes de santé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.LAB' compare='like'>labService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>healthcenter</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>1</element>
+						<element>2</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Cabinet privé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.LAB' compare='like'>labService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>privateclinic</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Hors du district sanitaire</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.LAB' compare='like'>labService</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='in'>
+						<element>3</element>
+						<element>4</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Prise en charge financière des patients</label>
+	</result>
+	<result type="value">
+		<label>référés assurés/ mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.LAB' compare='like'>labService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>référés non assurés/ non mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.LAB' compare='like'>labService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>healthcenter</element>
+						<element>hospital</element>
+						<element>otherhospital</element>
+						<element>privateclinic</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='equals'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>non référés assurés/mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.LAB' compare='like'>labService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>residence</element>
+						<element>other</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="value">
+		<label>non référés non assurés/mutualisés</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='serviceuid'>
+					<value type='config' default='CLI.PARAM.LAB' compare='like'>labService</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>residence</element>
+						<element>other</element>
+					</value>
+				</field>
+				<field name='insureramount'>
+					<value type='constant' compare='equals'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="subtitle">
+		<label>Analyses</label>
+	</result>
+	<result type='counter'>
+		<label>Bilan</label>
+		<filter type='labanalysis' periodfilter='true' count="transactionid">
+			<output>transactionid</output>
+			<select>
+				<field name='analysiscode'>
+					<value type='config' default='3030' compare='equals'>bilanLabcode</value>
+				</field>
+				<field name='analysisresult'>
+					<value type='constant' compare='notequals'></value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>Goutte épaisse</label>
+		<filter type='labanalysis' periodfilter='true' count="transactionid">
+			<output>transactionid</output>
+			<select>
+				<field name='analysiscode'>
+					<value type='config' default='2020' compare='equals'>thickdropLabcode</value>
+				</field>
+				<field name='analysisresult'>
+					<value type='constant' compare='notequals'></value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>VIH</label>
+		<filter type='labanalysis' periodfilter='true' count="transactionid">
+			<output>transactionid</output>
+			<select>
+				<field name='analysiscode'>
+					<value type='config' default='1050' compare='equals'>hivLabcode</value>
+				</field>
+				<field name='analysisresult'>
+					<value type='constant' compare='notequals'></value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>TB</label>
+		<filter type='labanalysis' periodfilter='true' count="transactionid">
+			<output>transactionid</output>
+			<select>
+				<field name='analysiscode'>
+					<value type='config' default='4065' compare='equals'>tbLabcode</value>
+				</field>
+				<field name='analysisresult'>
+					<value type='constant' compare='notequals'></value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='title'>
+		<label>CONFIGURATION</label>
+	</result>
+	<result type='configvalue'>
+		<label default='3030'>bilanLabcode</label>
+	</result>
+	<result type='configvalue'>
+		<label default='2020'>thickdropLabcode</label>
+	</result>
+	<result type='configvalue'>
+		<label default='1050'>hivLabcode</label>
+	</result>
+	<result type='configvalue'>
+		<label default='4065'>tbLabcode</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.PARAM.LAB'>labService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.PARAM.RAD'>imagingService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.EXT.SPEC.OPHT'>ophtalmologyService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.EXT.SPEC.DENT'>dentalService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.HOSP.BLOC;CLI.HOSP.GEN'>admissionService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.HOSP.MAT;CLI.EXT.MAT'>maternityService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.EXT.MAT'>maternityOPDService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.HOSP.MAT'>maternityIPService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.EXT.MED'>doctorService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.GAR;CLI.TRI'>nurseService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.GAR'>emergencyService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='CLI.TRI'>triageService</label>
+	</result>
+	<result type='configvalue'>
+		<label default='BABA GARAGE'>localSector</label>
+	</result>
+	<result type='configvalue'>
+		<label default='http://localhost/openclinic/_common/xml/senegalmonthlyreportPS.xml'>nationalReportTemplate</label>
+	</result>
+</report>

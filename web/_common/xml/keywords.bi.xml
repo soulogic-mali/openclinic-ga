@@ -1,0 +1,84 @@
+<keywords>
+	<domain id="ikirezi.functional.signs">
+		<keyword id="1" ikirezi="">
+			<term language="fr"><![CDATA[Acouph&egrave;nes]]></term>
+			<term language="en"><![CDATA[Tinnitus]]></term>
+		</keyword>
+		<keyword id="2" ikirezi="484">
+			<term language="fr"><![CDATA[Anorexie]]></term>
+			<term language="en"><![CDATA[Anorexia]]></term>
+		</keyword>
+		<keyword id="3" ikirezi="484">
+			<term language="fr"><![CDATA[Asth&eacute;nie]]></term>
+			<term language="en"><![CDATA[Asthenia]]></term>
+		</keyword>
+		<keyword id="5" ikirezi="152">
+			<term language="fr"><![CDATA[Ballonnements]]></term>
+			<term language="en"><![CDATA[Abdominal swelling]]></term>
+		</keyword>
+		<keyword id="6" ikirezi="513">
+			<term language="fr"><![CDATA[C&eacute;phal&eacute;es]]></term>
+			<term language="en"><![CDATA[Headache]]></term>
+		</keyword>
+		<keyword id="7" ikirezi="9">
+			<term language="fr"><![CDATA[Constipation]]></term>
+			<term language="en"><![CDATA[Constipation]]></term>
+		</keyword>
+		<keyword id="10" ikirezi="143">
+			<term language="fr"><![CDATA[Dysurie]]></term>
+			<term language="en"><![CDATA[Dysuria]]></term>
+		</keyword>
+		<keyword id="12" ikirezi="60">
+			<term language="fr"><![CDATA[Epreintes/t&eacute;nesme]]></term>
+			<term language="en"><![CDATA[Tenesmus]]></term>
+		</keyword>
+		<keyword id="13" ikirezi="">
+			<term language="fr"><![CDATA[Eructations]]></term>
+			<term language="en"><![CDATA[Belching]]></term>
+		</keyword>
+		<keyword id="14" ikirezi="164">
+			<term language="fr"><![CDATA[Essoufflement/dyspn&eacute;e]]></term>
+			<term language="en"><![CDATA[Dyspnoea]]></term>
+		</keyword>
+		<keyword id="15" ikirezi="">
+			<term language="fr"><![CDATA[Eternuements]]></term>
+			<term language="en"><![CDATA[Sneezing]]></term>
+		</keyword>
+		<keyword id="16" ikirezi="66">
+			<term language="fr"><![CDATA[Expectoration h&eacute;mopto&iuml;que]]></term>
+			<term language="en"><![CDATA[Haemoptoe]]></term>
+		</keyword>
+		<keyword id="17" ikirezi="45">
+			<term language="fr"><![CDATA[Expectoration muco purulente]]></term>
+			<term language="en"><![CDATA[Muco-purulent expectorations]]></term>
+		</keyword>
+		<keyword id="18" ikirezi="25">
+			<term language="fr"><![CDATA[Expectoration muqueuse]]></term>
+			<term language="en"><![CDATA[Mucous expectorations]]></term>
+		</keyword>
+		<keyword id="19" ikirezi="169">
+			<term language="fr"><![CDATA[Fi&egrave;vre]]></term>
+			<term language="en"><![CDATA[Fever]]></term>
+		</keyword>
+		<keyword id="20" ikirezi="114">
+			<term language="fr"><![CDATA[Frissons]]></term>
+			<term language="en"><![CDATA[Chills]]></term>
+		</keyword>
+		<keyword id="22" ikirezi="485">
+			<term language="fr"><![CDATA[Nause&eacute;s]]></term>
+			<term language="en"><![CDATA[Nausea]]></term>
+		</keyword>
+		<keyword id="25" ikirezi="44">
+			<term language="fr"><![CDATA[Prurit]]></term>
+			<term language="en"><![CDATA[Pruritus]]></term>
+		</keyword>
+		<keyword id="28" ikirezi="99">
+			<term language="fr"><![CDATA[Vertiges]]></term>
+			<term language="en"><![CDATA[Vertigo]]></term>
+		</keyword>
+		<keyword id="29" ikirezi="64">
+			<term language="fr"><![CDATA[Vomissements]]></term>
+			<term language="en"><![CDATA[Vomiting]]></term>
+		</keyword>
+	</domain>
+</keywords>

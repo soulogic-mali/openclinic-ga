@@ -1,0 +1,28 @@
+<Menus>
+	<Menu labelid="applications">
+		<Menu labelid="assets" accessrights="assets.select" url="/main.do?Page=assets/manage_assets.jsp"/>
+		<Menu labelid="maintenancePlans" accessrights="maintenanceplans.select" url="/main.do?Page=assets/manage_maintenancePlans.jsp"/>
+		<Menu labelid="maintenanceOperations" accessrights="maintenanceoperations.select" url="/main.do?Page=assets/manage_maintenanceOperations.jsp"/>
+	</Menu>
+	<Menu labelid="reports">
+		<Menu labelid="statistics.activitystats.jasperReports" accessrights="printableDocuments.select" url="javascript:jasperReportsGMAO();"/>
+		<Menu labelid="statistics.norms" accessrights="printableDocuments.select" url="/main.do?Page=assets/calculateNorms.jsp"/>
+		<Menu labelid="statistics.dashboards" accessrights="printableDocuments.select" url="/main.do?Page=assets/dashboard.jsp"/>
+	</Menu>
+	<Menu labelid="system">
+		<Menu labelid="myProfile" url="/main.do?Page=userprofile/index.jsp"/>
+		<Menu labelid="centerinfo" accessrights="system.centerinfo.select" url="/main.do?Page=center/index.jsp"/>
+		<Menu labelid="management" accessrights="system.management.select" url="/main.do?Page=system/menu.jsp"/>
+		<Menu labelid="permissions" accessrights="system.permissions.select" url="/main.do?Page=permissions/index.jsp"/>
+		<Menu labelid="toggleeditmode" accessrights="system.management.select" url="javascript:toggleEditMode(true);"/>
+		<Menu labelid="assetsynchronization" accessrights="gmao.synchronisation.select" url="/main.do?Page=assets/manageAssetSynchronization.jsp"/>
+	</Menu>
+	<Menu labelid="info">
+		<Menu labelid="help" url="javascript:showmanualgmao();"/>
+		<Menu labelid="sourceforge" url="javascript:showsourceforge();"/>
+		<Menu labelid="wiki" url="javascript:showwiki();"/>
+		<Menu labelid="versionhistory" url="javascript:showversionhistory();"/>
+		<Menu labelid="clinicalassistant" patientselected="true" accessrights="clinicalassistant.select" url="/main.do?Page=curative/clinicalAssistant.jsp"/>
+	</Menu>
+	<Menu labelid="library" url="javascript:showLibrary()"/>
+</Menus>

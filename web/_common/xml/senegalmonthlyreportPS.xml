@@ -1,0 +1,880 @@
+<report type='timefilters' version='1.0'>
+	<result type="title">
+		<label>CONSULTATIONS CURATIVES</label>
+	</result>
+	<result type="subtitle">
+		<label>consultants (Nouveaux cas)</label>
+	</result>
+	<result type='counter'>
+		<label>de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+		<filter type="rfe" periodfilter='false'>
+			<select>
+				<field name='encounteruid'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</field>
+				<field name='rfeflags'>
+					<value type='constant' compare='contains'>N</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+		<filter type="rfe" periodfilter='false'>
+			<select>
+				<field name='encounteruid'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</field>
+				<field name='rfeflags'>
+					<value type='constant' compare='contains'>N</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>consultations (nouveaux et anciens cas)</label>
+	</result>
+	<result type='counter'>
+		<label>de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CONSULTATIONS</value>
+				</field>
+				<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+					<value type='variable' compare='equals'>encounteruid</value>
+				</item>
+			</select>
+		</filter>
+	</result>
+	<result type="title">
+		<label>CONSULTATIONS PREVENTIVES</label>
+	</result>
+	<result type="subtitle">
+		<label>Nombre d'enfants vaccinés</label>
+	</result>	
+	<result type='counter' count='patientuid'>
+		<label>de la zone de responsabilité</label>
+		<filter type='transaction' periodfilter='true'>
+			<output>patientuid</output>
+			<select>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_VACCINATION</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='encounter' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter' count='patientuid'>
+		<label>hors zone de responsabilité</label>
+		<filter type='transaction' periodfilter='true'>
+			<output>patientuid</output>
+			<select>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_VACCINATION</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='encounter' periodfilter='true'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Nombre de premiers contacts en CPN</label>
+	</result>	
+	<result type='counter' count='patientuid'>
+		<label>de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_PRENATAL_CPNORDER'>
+				<value type='constant' compare='equals'>1</value>
+			</item>
+		</filter>
+	</result>
+	<result type='counter' count='patientuid'>
+		<label>hors zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_PRENATAL_CPNORDER'>
+				<value type='constant' compare='equals'>1</value>
+			</item>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Nombre de femmes ayant fait 4 CPN</label>
+	</result>	
+	<result type='counter' count='patientuid'>
+		<label>de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_PRENATAL_CPNORDER'>
+				<value type='constant' compare='equals'>4</value>
+			</item>
+		</filter>
+
+	</result>
+	<result type='counter' count='patientuid'>
+		<label>hors zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_PRENATAL_CPNORDER'>
+				<value type='constant' compare='equals'>4</value>
+			</item>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Nombre total de CPN</label>
+	</result>	
+	<result type='counter'>
+		<label>de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Nombre total de CPON</label>
+	</result>	
+	<result type='counter'>
+		<label>de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_POSTNATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_POSTNATAL</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+		</filter>
+	</result>
+	<result type="title">
+		<label>OBSERVATIONS</label>
+	</result>
+	<result type="subtitle">
+		<label>Nombre de malades mis en observation</label>
+	</result>	
+	<result type='counter'>
+		<label>de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>hors zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Nombre de décès</label>
+	</result>	
+	<result type='counter'>
+		<label>dans la structure</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>dead</value>
+				</field>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="title">
+		<label>MATERNITE</label>
+	</result>
+	<result type="subtitle">
+		<label>Accouchements assistés par du personnel qualifié dans la structure</label>
+	</result>
+	<result type="counter">
+		<label>de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_QUALIFICATION'>
+				<value type='constant' compare='in'>
+					<element>doctor</element>
+					<element>nurse</element>
+					<element>nurseassistant</element>
+					<element>sfe</element>
+				</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>hors zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_QUALIFICATION'>
+				<value type='constant' compare='in'>
+					<element>doctor</element>
+					<element>nurse</element>
+					<element>nurseassistant</element>
+					<element>sfe</element>
+				</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="subtitle">
+		<label>Nombre d'accouchements à domicile vus</label>
+	</result>
+	<result type="counter">
+		<label>de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_DELIVERYLOCATION'>
+				<value type='constant' compare='equals'>home</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>hors zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_DELIVERYLOCATION'>
+				<value type='constant' compare='equals'>home</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="subtitle">
+		<label>Nombre d'accouchements dans les cases de santé</label>
+	</result>
+	<result type="counter">
+		<label>de la zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_DELIVERYLOCATION'>
+				<value type='constant' compare='equals'>case</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>hors zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_DELIVERYLOCATION'>
+				<value type='constant' compare='equals'>case</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="subtitle">
+		<label>Nombre total d'accouchements enregistrés dans la zone</label>
+	</result>
+	<result type="counter">
+		<label>Nombre total</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>nombre d'accouchements eutociques</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_DELIVERYTYPE'>
+				<value type='constant' compare='equals'>eutocia</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>nombre d'accouchements dystociques</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_DELIVERYTYPE'>
+				<value type='constant' compare='equals'>dystocia</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>Nombre de morts-nés frais</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_CHILDSTATUS'>
+				<value type='constant' compare='equals'>mnf</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>Nombre de morts-nés macérés</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+			</select>
+		</filter>
+		<filter type='transaction' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='transactiontype'>
+					<value type='constant' compare='equals'>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES</value>
+				</field>
+			</select>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'>
+				<value type='variable' compare='equals'>encounteruid</value>
+			</item>
+			<item type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_DELIVERIES_CHILDSTATUS'>
+				<value type='constant' compare='equals'>mnm</value>
+			</item>
+		</filter>
+	</result>	
+	<result type="title">
+		<label>AUTRES INFORMATIONS</label>
+	</result>
+	<result type="subtitle">
+		<label>Nombre total de malades réferés</label>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés vers le centre de santé</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='outcome'>
+					<value type='constant' compare='equals'>referencecs</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label>dont nombre de malades réferés vers une autre structure</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='outcome'>
+					<value type='constant' compare='in'>
+						<element>contraference</element>
+						<element>reference</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>Provenance des malades réferés au Centre de santé</label>
+	</result>
+	<result type="counter">
+		<label>zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='equals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="counter">
+		<label>hors zone de responsabilité</label>
+		<filter type='encounter' periodfilter='true'>
+			<output>encounteruid</output>
+			<output>patientuid</output>
+			<select>
+				<field name='situation'>
+					<value type='constant' compare='notequals'>1</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+	<result type="title">
+		<label>FINANCES</label>
+	</result>
+	<result type="value">
+		<label>Total recettes de la période</label>
+		<select>
+		</select>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>totalincome</outputvalue>
+		</filter>
+	</result>	
+	<result type="subtitle">
+		<label>Provenance des recettes</label>
+	</result>
+	<result type="value">
+		<label>recettes propres</label>
+		<select>
+		</select>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>patientincome</outputvalue>
+		</filter>
+	</result>	
+	<result type="subtitle">
+		<label>Montant (cumul) à recouvrer à la fin du mois</label>
+	</result>
+	<result type="value">
+		<label>dont auprès des Mutuelles et assurance</label>
+		<select>
+		</select>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>insurerincome</outputvalue>
+		</filter>
+	</result>	
+	<result type="subtitle">
+		<label>Prise en charge financière des patients</label>
+	</result>
+	<result type="value">
+		<label>dont auprès des Mutuelles et assurance</label>
+		<filter type='income' periodfilter='true'>
+			<outputvalue>count</outputvalue>
+			<select>
+				<field name='insureramount'>
+					<value type='constant' compare='greaterthan'>0</value>
+				</field>
+			</select>
+		</filter>
+	</result>	
+</report>

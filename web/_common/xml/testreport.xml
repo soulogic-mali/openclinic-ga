@@ -1,0 +1,33 @@
+<report type='timefilters' version='1.0'>
+	<schedule type="monthly"/>
+	<result type="maintitle">
+		<label>Females under 5 in OPD EYE</label>
+	</result>
+	<result type="counter">
+		<label style='bold'>Total number of patients</label>
+		<filter type="encounter" periodfilter="true" unique="patientuid">
+			<output>patientuid</output>
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>%EYE</value>
+				</field>
+			</select>
+		</filter>
+		<filter type='admin' periodfilter='false'>
+			<select>
+				<field name='patientuid'>
+					<value type='variable' compare='equals'>patientuid</value>
+				</field>
+				<field name='gender'>
+					<value type='constant' compare='equals'>F</value>
+				</field>
+				<field name='age'>
+					<value type='constant' compare='smallerthan'>5</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+</report>

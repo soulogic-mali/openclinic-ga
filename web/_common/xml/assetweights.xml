@@ -1,0 +1,35 @@
+<weights>
+	<type="infrastructure">
+		<weight category="1" component="1">10</weight>
+		<weight category="1" component="2">10</weight>
+		<weight category="2" component="1">10</weight>
+		<weight category="2" component="2">10</weight>
+		<weight category="2" component="3">10</weight>
+		<weight category="3" component="1">10</weight>
+		<weight category="3" component="2">10</weight>
+		<weight category="3" component="3">10</weight>
+		<weight category="4" component="1">10</weight>
+		<weight category="4" component="2">10</weight>
+		<weight category="5" component="1">5</weight>
+		<weight category="5" component="2">5</weight>
+		<weight category="5" component="3">5</weight>
+		<weight category="5" component="4">5</weight>
+		<weight category="5" component="5">5</weight>
+		<weight category="5" component="6">5</weight>
+		<weight category="5" component="7">5</weight>
+		<weight category="5" component="8">1</weight>
+		<weight category="5" component="9">5</weight>
+		<weight category="5" component="10">1</weight>
+		<weight category="5" component="11">5</weight>
+		<weight category="5" component="12">5</weight>
+		<weight category="6" component="1">5</weight>
+		<weight category="6" component="2">5</weight>
+		<weight category="6" component="3">1</weight>
+		<weight category="6" component="4">1</weight>
+		<weight category="6" component="5">1</weight>
+		<weight category="6" component="6">1</weight>
+		<weight category="7" component="1">1</weight>
+		<weight category="7" component="2">1</weight>
+		<weight category="7" component="3">5</weight>
+	</type>
+</weights>

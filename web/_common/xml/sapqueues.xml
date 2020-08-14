@@ -1,0 +1,9 @@
+<queues>
+	<queue type="AR_INV" source="y:/sap/if_ar_inv/queue" destination="y:/sap/if_ar_inv/active"/>
+	<config>
+		<errorlog>y:/sap/if_ar_inv/error</errorlog>
+		<successlog>y:/sap/if_ar_inv/processed</successlog>
+		<dtwdb>y:/software/dtw.mdb</dtwdb>
+		<sapurl>jdbc:sqlserver://localhost:1433;databaseName=openclinic;user=dba;password=qwerty@123;</sapurl>
+	</config>
+</queues>

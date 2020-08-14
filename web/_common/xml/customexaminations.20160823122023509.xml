@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Examinations> 
+  <Row>
+    <id>10002</id>
+    <creationDate>25/08/2016</creationDate>
+    <userId>4</userId>
+    <class>customExamination</class>
+    <transactiontype>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CUSTOMEXAMINATION10002</transactiontype>
+    <fr>Test screen</fr>
+    <en>Test screen</en>
+  </Row>
+</Examinations>

@@ -1,0 +1,394 @@
+<report type='timefilters' version='1.0'>
+	<schedule type="daily"/>
+	<result type="maintitle">
+		<label>HPGRB RAPPORT JOURNALIER</label>
+	</result>
+	<result type="subtitle">
+		<label>CONSULTATIONS EXTERNES</label>
+	</result>
+	<result type='counter'>
+		<label style='bold'>NOMBRE TOTAL DE PATIENTS</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.CHI.CON</element>
+						<element>CLI.CHI.URG</element>
+						<element>CLI.DEN</element>
+						<element>CLI.DER.CON</element>
+						<element>CLI.GYN.CON</element>
+						<element>CLI.INT.CON</element>
+						<element>CLI.INT.END</element>
+						<element>CLI.INT.URG</element>
+						<element>CLI.OPH.CON</element>
+						<element>CLI.OPH.URG</element>
+						<element>CLI.ORL.CON</element>
+						<element>CLI.ORL.URG</element>
+						<element>CLI.PED.CON</element>
+						<element>CLI.PED.URG</element>
+						<element>CLI.PED.CNT</element>
+						<element>CLI.STO.CON</element>
+						<element>CLI.STO.URG</element>
+						<element>CLI.URG</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>CHIRURGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.CHI.CON</element>
+						<element>CLI.CHI.URG</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>DENTISTERIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.DEN</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>DERMATOLOGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.DER.CON</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>GYNECOLOGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.GYN.CON</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>MEDECINE INTERNE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.INT.CON</element>
+						<element>CLI.INT.END</element>
+						<element>CLI.INT.URG</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>OPHTALMOLOGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.OPH.CON</element>
+						<element>CLI.OPH.URG</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>ORL</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.ORL.CON</element>
+						<element>CLI.ORL.URG</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>PEDIATRIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.PED.CON</element>
+						<element>CLI.PED.URG</element>
+						<element>CLI.PED.CNT</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>STOMATOLOGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.STO.CON</element>
+						<element>CLI.STO.URG</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>URGENCES</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.URG</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type="subtitle">
+		<label>HOSPITALISATIONS</label>
+	</result>
+	<result type='counter'>
+		<label style='bold'>NOMBRE TOTAL DE PATIENTS</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.CHI.HOS</element>
+						<element>CLI.DER.HOS</element>
+						<element>CLI.GYN.MAT</element>
+						<element>CLI.GYN.HOS</element>
+						<element>CLI.HOSP</element>
+						<element>CLI.INT.HOS</element>
+						<element>CLI.OPH.HOS</element>
+						<element>CLI.ORL.HOS</element>
+						<element>CLI.PED.HOS</element>
+						<element>CLI.PED.NEO</element>
+						<element>CLI.STO.HOS</element>
+						<element>CLI.USI</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>CHIRURGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.CHI.HOS</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>DERMATOLOGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.DER.HOS</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>MATERNITE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.GYN.MAT</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>GYNECOLOGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.GYN.HOS</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>CHAMBRES PRIVEES</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.HOSP</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>MEDECINE INTERNE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.INT.HOS</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>OPHTALMOLOGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.OPH.HOS</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>ORL</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.ORL.HOS</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>PEDIATRIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.PED.HOS</element>
+						<element>CLI.PED.NEO</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>STOMATOLOGIE</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.STO.HOS</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>SOINS INTENSIFS</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CLI.USI</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+</report>

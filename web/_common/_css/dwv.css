@@ -1,0 +1,20 @@
+html,
+body {
+  height: 100%;
+}
+
+#dwv {
+  height: 80%;
+}
+
+.layerContainer {
+  position: relative;
+}
+
+.imageLayer {
+  position: absolute;
+}
+
+.drawDiv {
+  position: absolute;
+}

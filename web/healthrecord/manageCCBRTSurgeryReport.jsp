@@ -1,0 +1,657 @@
+<%@page import="be.mxs.common.model.vo.healthrecord.TransactionVO,
+                be.mxs.common.model.vo.healthrecord.ItemVO,
+                be.openclinic.pharmacy.Product,
+                java.text.DecimalFormat,
+                be.openclinic.medical.*,
+                be.openclinic.system.Transaction,
+                be.openclinic.system.Item,
+                java.util.*" %>
+<%@include file="/includes/validateUser.jsp"%>
+<%@page errorPage="/includes/error.jsp"%>
+<%!
+    //--- GET PRODUCT -----------------------------------------------------------------------------
+    private Product getProduct(String sProductUid) {
+        // search for product in products-table
+        Product product = new Product();
+        product = product.get(sProductUid);
+
+        if (product != null && product.getName() == null) {
+            // search for product in product-history-table
+            product = product.getProductFromHistory(sProductUid);
+        }
+
+        return product;
+    }
+
+    //--- GET ACTIVE PRESCRIPTIONS FROM RS --------------------------------------------------------
+    private Vector getActivePrescriptionsFromRs(StringBuffer prescriptions, Vector vActivePrescriptions, String sWebLanguage) throws SQLException {
+        Vector idsVector = new Vector();
+        java.util.Date tmpDate;
+        Product product = null;
+        String sClass = "1", sPrescriptionUid = "", sDateBeginFormatted = "", sDateEndFormatted = "",
+                sProductName = "", sProductUid = "", sPreviousProductUid = "", sTimeUnit = "", sTimeUnitCount = "",
+                sUnitsPerTimeUnit = "", sPrescrRule = "", sProductUnit = "", timeUnitTran = "";
+        DecimalFormat unitCountDeci = new DecimalFormat("#.#");
+        SimpleDateFormat stdDateFormat = ScreenHelper.stdDateFormat;
+
+        // frequently used translations
+        String detailsTran = getTranNoLink("web", "showdetails", sWebLanguage),
+                deleteTran = getTranNoLink("Web", "delete", sWebLanguage);
+        Iterator iter = vActivePrescriptions.iterator();
+
+        // run thru found prescriptions
+        Prescription prescription;
+
+        while (iter.hasNext()) {
+            prescription = (Prescription)iter.next();
+            sPrescriptionUid = prescription.getUid();
+            // alternate row-style
+            if (sClass.equals("")) sClass = "1";
+            else sClass = "";
+
+            idsVector.add(sPrescriptionUid);
+
+            // format begin date
+            tmpDate = prescription.getBegin();
+            if (tmpDate != null) sDateBeginFormatted = stdDateFormat.format(tmpDate);
+            else sDateBeginFormatted = "";
+
+            // format end date
+            tmpDate = prescription.getEnd();
+            if (tmpDate != null) sDateEndFormatted = stdDateFormat.format(tmpDate);
+            else sDateEndFormatted = "";
+
+            // only search product-name when different product-UID
+            sProductUid = prescription.getProductUid();
+            if (!sProductUid.equals(sPreviousProductUid)) {
+                sPreviousProductUid = sProductUid;
+                product = getProduct(sProductUid);
+                if (product != null) {
+                    sProductName = product.getName();
+                } else {
+                    sProductName = "";
+                }
+                if (sProductName.length() == 0) {
+                    sProductName = "<font color='red'>"+getTran(null,"web", "nonexistingproduct", sWebLanguage)+"</font>";
+                }
+            }
+
+            //*** compose prescriptionrule (gebruiksaanwijzing) ***
+            // unit-stuff
+            sTimeUnit = prescription.getTimeUnit();
+            sTimeUnitCount = Integer.toString(prescription.getTimeUnitCount());
+            sUnitsPerTimeUnit = Double.toString(prescription.getUnitsPerTimeUnit());
+
+            // only compose prescriptio-rule if all data is available
+            if (!sTimeUnit.equals("0") && !sTimeUnitCount.equals("0") && !sUnitsPerTimeUnit.equals("0")) {
+                sPrescrRule = getTran(null,"web.prescriptions", "prescriptionrule", sWebLanguage);
+                sPrescrRule = sPrescrRule.replaceAll("#unitspertimeunit#", unitCountDeci.format(Double.parseDouble(sUnitsPerTimeUnit)));
+                if (product != null) {
+                    sProductUnit = product.getUnit();
+                } else {
+                    sProductUnit = "";
+                }
+                // productunits
+                if (Double.parseDouble(sUnitsPerTimeUnit) == 1) {
+                    sProductUnit = getTran(null,"product.unit", sProductUnit, sWebLanguage);
+                } else {
+                    sProductUnit = getTran(null,"product.unit", sProductUnit, sWebLanguage);
+                }
+                sPrescrRule = sPrescrRule.replaceAll("#productunit#", sProductUnit.toLowerCase());
+
+                // timeunits
+                if (Integer.parseInt(sTimeUnitCount) == 1) {
+                    sPrescrRule = sPrescrRule.replaceAll("#timeunitcount#", "");
+                    timeUnitTran = getTran(null,"prescription.timeunit", sTimeUnit, sWebLanguage);
+                } else {
+                    sPrescrRule = sPrescrRule.replaceAll("#timeunitcount#", sTimeUnitCount);
+                    timeUnitTran = getTran(null,"prescription.timeunits", sTimeUnit, sWebLanguage);
+                }
+                sPrescrRule = sPrescrRule.replaceAll("#timeunit#", timeUnitTran.toLowerCase());
+            }
+
+            //*** display prescription in one row ***
+            prescriptions.append("<tr class='list"+sClass+"' onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\" title='"+detailsTran+"'>")
+                    .append("<td align='center'><img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' border='0' title='"+deleteTran+"' onclick=\"doDelete('"+sPrescriptionUid+"');\">")
+                    .append("<td onclick=\"doShowDetails('"+sPrescriptionUid+"');\" >"+sProductName+"</td>")
+                    .append("<td onclick=\"doShowDetails('"+sPrescriptionUid+"');\" >"+sDateBeginFormatted+"</td>")
+                    .append("<td onclick=\"doShowDetails('"+sPrescriptionUid+"');\" >"+sDateEndFormatted+"</td>")
+                    .append("<td onclick=\"doShowDetails('"+sPrescriptionUid+"');\" >"+sPrescrRule.toLowerCase()+"</td>")
+                    .append("</tr>");
+        }
+        return idsVector;
+    }
+
+    private class TransactionID {
+        public int transactionid = 0;
+        public int serverid = 0;
+    }
+
+    //--- GET MY TRANSACTION ID -------------------------------------------------------------------
+    private TransactionID getMyTransactionID(String sPersonId, String sItemTypes, JspWriter out) {
+        TransactionID transactionID = new TransactionID();
+        Transaction transaction = Transaction.getSummaryTransaction(sItemTypes, sPersonId);
+        try {
+            if (transaction != null) {
+                String sUpdateTime = ScreenHelper.getSQLDate(transaction.getUpdatetime());
+                transactionID.transactionid = transaction.getTransactionId();
+                transactionID.serverid = transaction.getServerid();
+                out.print(sUpdateTime);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (Debug.enabled) Debug.println(e.getMessage());
+        }
+        return transactionID;
+    }
+
+    //--- GET MY ITEM VALUE -----------------------------------------------------------------------
+    private String getMyItemValue(TransactionID transactionID, String sItemType, String sWebLanguage) {
+        String sItemValue = "";
+        Vector vItems = Item.getItems(Integer.toString(transactionID.transactionid), Integer.toString(transactionID.serverid), sItemType);
+        Iterator iter = vItems.iterator();
+
+        Item item;
+
+        while (iter.hasNext()) {
+            item = (Item) iter.next();
+            sItemValue = item.getValue();//checkString(rs.getString(1));
+            sItemValue = getTranNoLink("Web.Occup", sItemValue, sWebLanguage);
+        }
+        return sItemValue;
+    }
+%>
+
+<%=checkPermission(out,"occup.operationprotocol","select",activeUser)%>
+
+<form id="transactionForm" name="transactionForm" method="POST" action='<c:url value="/healthrecord/updateTransaction.do"/>?ts=<%=getTs()%>'>
+    <bean:define id="transaction" name="be.mxs.webapp.wl.session.SessionContainerFactory.WO_SESSION_CONTAINER" property="currentTransactionVO"/>
+	<%=checkPrestationToday(activePatient.personid,false,activeUser,(TransactionVO)transaction)%>
+  
+    <input type="hidden" id="transactionId" name="currentTransactionVO.<TransactionVO[hashCode=<bean:write name="transaction" scope="page" property="transactionId"/>]>.transactionId" value="<bean:write name="transaction" scope="page" property="transactionId"/>"/>
+    <input type="hidden" id="serverId" name="currentTransactionVO.<TransactionVO[hashCode=<bean:write name="transaction" scope="page" property="transactionId"/>]>.serverId" value="<bean:write name="transaction" scope="page" property="serverId"/>"/>
+    <input type="hidden" id="transactionType" name="currentTransactionVO.<TransactionVO[hashCode=<bean:write name="transaction" scope="page" property="transactionId"/>]>.transactionType" value="<bean:write name="transaction" scope="page" property="transactionType"/>"/>
+    <input type="hidden" readonly name="be.mxs.healthrecord.updateTransaction.actionForwardKey" value="/main.do?Page=curative/index.jsp&ts=<%=getTs()%>"/>
+    <input type="hidden" readonly name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_DEPARTMENT" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_DEPARTMENT" translate="false" property="value"/>"/>
+    <input type="hidden" readonly name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_CONTEXT" translate="false" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_CONTEXT" translate="false" property="value"/>"/>
+
+    <%=writeHistoryFunctions(((TransactionVO)transaction).getTransactionType(),sWebLanguage)%>
+    <%=contextHeader(request,sWebLanguage)%>
+
+    <%
+        TransactionVO tran = (TransactionVO)transaction;
+    
+        String sTransactionStart    = getItemType(tran.getItems(),sPREFIX+"ITEM_TYPE_OPERATION_PROTOCOL_START"),
+               sTransactionEnd      = getItemType(tran.getItems(),sPREFIX+"ITEM_TYPE_OPERATION_PROTOCOL_END"),
+               sTransactionDuration = getItemType(tran.getItems(),sPREFIX+"ITEM_TYPE_OPERATION_PROTOCOL_DURATION");
+    %>
+
+    <table class="list" width="100%" cellspacing="1">
+		<tr>
+			<td style="vertical-align:top;padding:0;" class="admin2" width="50%">
+			    <table class="list" cellspacing="1" cellpadding="0" width="100%">
+			        <%-- DATE --%>
+			        <tr>
+			            <td class="admin" colspan="2" width='150px'>
+			                <a href="javascript:openHistoryPopup();" title="<%=getTranNoLink("Web.Occup","History",sWebLanguage)%>">...</a>&nbsp;
+			                <%=getTran(request,"Web.Occup","medwan.common.date",sWebLanguage)%>
+			            </td>
+			            <td class="admin2">
+			                <input type="text" class="text" size="12" maxLength="10" name="currentTransactionVO.<TransactionVO[hashCode=<bean:write name="transaction" scope="page" property="transactionId"/>]>.updateTime" value="<mxs:propertyAccessorI18N name="transaction" scope="page" property="updateTime" formatType="date"/>" id="trandate" OnBlur='checkDate(this)'>
+			                <script>writeTranDate();</script>
+			            </td>
+			        </tr>
+			
+		        	<tr>
+			            <td class="admin" colspan='2'><%=getTran(request,"web","starthour",sWebLanguage)%>&nbsp;</td>
+		        		<td>
+				        	<table width='100%' cellspacing='0' cellpadding='0'>
+				        		<tr>
+						            <td class="admin2">
+						                <select class="text" id="beginHourSelect" onchange="calculateDuration();">
+						                    <option/>
+						                    <%for(int i = 0; i < 24; i++){%>
+						                    <option value="<%=i%>"><%=i%></option>
+						                <%}%>
+						                </select> :
+						                <select class="text" id="beginMinutSelect" onchange="calculateDuration();">
+						                    <option value="00" selected="selected">00</option>
+						                    <%
+						                    	for(int n=1;n<60;n++){
+						                    		String time = ""+n;
+						                    		if(n<10){
+						                    			time="0"+n;
+						                    		}
+						                    		out.println("<option value='"+time+"'>"+time+"</option>");
+						                    	}
+						                    %>
+						                </select>
+						                <input id="ITEM_TYPE_OPERATION_PROTOCOL_START" type="hidden" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_START" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_START" property="value"/>"/>
+										<script>
+										    var setBeginHourIntSelect = function(){
+										
+										        var hours = $("beginHourSelect").options;
+										        var min = $("beginMinutSelect").options;
+										        var hourToTest = parseInt($("ITEM_TYPE_OPERATION_PROTOCOL_START").value.split(":")[0]);
+										
+										        var minToTest = parseInt($("ITEM_TYPE_OPERATION_PROTOCOL_START").value.split(":")[1]);
+										        for(var i=0;i<hours.length;i++){
+										           if(hours[i].value==hourToTest){
+										                $("beginHourSelect").selectedIndex = i;
+										               break;
+										            }
+										        }
+										        for(var i=0;i<min.length;i++){
+										           if(min[i].value==minToTest){
+										               $("beginMinutSelect").selectedIndex = i;
+										               break;
+										            }
+										        }
+										    }
+										    setBeginHourIntSelect();
+										</script>
+						            </td>
+						            <td class="admin"><%=getTran(request,"web","endhour",sWebLanguage)%>&nbsp;</td>
+						            <td class="admin2">
+						                <select class="text" id="endHourSelect" onchange="calculateDuration();">
+						                    <option/>
+						                    <%for(int i = 0; i < 24; i++){%>
+						                    <option value="<%=i%>"><%=i%></option>
+						                <%}%>
+						                </select> :
+						                <select class="text" id="endMinutSelect" onchange="calculateDuration();">
+						                    <option value="00" selected="selected">00</option>
+						                    <%
+						                    	for(int n=1;n<60;n++){
+						                    		String time = ""+n;
+						                    		if(n<10){
+						                    			time="0"+n;
+						                    		}
+						                    		out.println("<option value='"+time+"'>"+time+"</option>");
+						                    	}
+						                    %>
+						                </select>
+						                <input id="ITEM_TYPE_OPERATION_PROTOCOL_END" type="hidden" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_END" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_END" property="value"/>"/>
+										<script>
+										    var setEndHourIntSelect = function(){
+										
+										        var hours = $("endHourSelect").options;
+										        var min = $("endMinutSelect").options;
+										        var hourToTest = parseInt($("ITEM_TYPE_OPERATION_PROTOCOL_END").value.split(":")[0]);
+										
+										        var minToTest = parseInt($("ITEM_TYPE_OPERATION_PROTOCOL_END").value.split(":")[1]);
+										        for(var i=0;i<hours.length;i++){
+										           if(hours[i].value==hourToTest){
+										                $("endHourSelect").selectedIndex = i;
+										               break;
+										            }
+										        }
+										        for(var i=0;i<min.length;i++){
+										           if(min[i].value==minToTest){
+										               $("endMinutSelect").selectedIndex = i;
+										               break;
+										            }
+										        }
+										    }
+										    setEndHourIntSelect();
+										</script>
+						            </td>
+						            <td class="admin"><%=getTran(request,"web","duration",sWebLanguage)%>&nbsp;</td>
+						            <td class="admin2">
+						            	<span id='duration'></span>
+						        	</td>
+						        </tr>
+						    </table>
+						</td>
+			        </tr>
+
+			        <%-- INTERVENTION --%>
+			        <tr>
+			            <td class="admin" colspan="2"><%=getTran(request,"openclinic.chuk","intervention",sWebLanguage)%></td>
+			            <td class="admin2">
+			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_INTERVENTION")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_INTERVENTION" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_INTERVENTION" property="value"/></textarea>
+			            </td>
+			        </tr>
+			
+			        <%-- GROUP COMPOSITION ------------------------------------------------------%>
+			        <%-- SURGEONS --%>
+			        <tr>
+			            <td class="admin" rowspan="3" width="100"><%=getTran(request,"openclinic.chuk","group.composition",sWebLanguage)%></td>
+			            <td class="admin2"><%=getTran(request,"openclinic.chuk","surgeons",sWebLanguage)%></td>
+						<td colspan="2">
+							<table width='100%' cellspacing='0' cellpadding='0'>
+								<tr>
+						            <td class="admin2">
+						                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_SURGEONS")%> class="text" cols="30" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGEONS" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGEONS" property="value"/></textarea>
+						            </td>
+						            <td class="admin2"><%=getTran(request,"openclinic.chuk","assistants",sWebLanguage)%></td>
+						            <td class="admin2" width='1px'>
+						                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_ASSISTANTS")%> class="text" cols="30" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ASSISTANTS" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ASSISTANTS" property="value"/></textarea>
+						            </td>
+						        </tr>
+					        </table>
+					    </td>
+			        </tr>
+			
+			        <%-- ANESTHESISTS --%>
+			        <tr>
+			            <td class="admin2"><%=getTran(request,"openclinic.chuk","anasthesists",sWebLanguage)%></td>
+			            <td class="admin2">
+			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_ANASTHESISTS")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANASTHESISTS" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANASTHESISTS" property="value"/></textarea>
+			            </td>
+			        </tr>
+			
+			        <%-- NURSES --%>
+			        <tr>
+			            <td class="admin2"><%=getTran(request,"openclinic.chuk","scrubnurse",sWebLanguage)%></td>
+						<td colspan="2">
+							<table width='100%' cellspacing='0' cellpadding='0'>
+								<tr>
+						            <td class="admin2">
+						                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_NURSES")%> class="text" cols="30" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_NURSES" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_NURSES" property="value"/></textarea>
+						            </td>
+						            <td class="admin2"><%=getTran(request,"openclinic.chuk","circulatingnurse",sWebLanguage)%></td>
+						            <td class="admin2" width='1px'>
+						                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_CIRCULATINGNURSE")%> class="text" cols="30" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_CIRCULATINGNURSE" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_CIRCULATINGNURSE" property="value"/></textarea>
+						            </td>
+						        </tr>
+					        </table>
+					    </td>
+			        </tr>
+			
+			        <%-- INSTALLATION --%>
+			        <tr>
+			            <td class="admin" colspan="2"><%=getTran(request,"openclinic.chuk","patient.installation",sWebLanguage)%></td>
+			            <td class="admin2">
+	                		<select id="act1" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_PATIENT_INSTALLATION" property="itemId"/>]>.value">
+		            			<option/>
+		            			<%=ScreenHelper.writeSelect(request,"surgery.patientposition",(((TransactionVO)transaction).getItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_PATIENT_INSTALLATION")).getValue(),sWebLanguage,false,true) %>
+	                		</select>
+			            </td>
+			        </tr>
+			
+			        <%-- APROVAL --%>
+			        <tr>
+			            <td class="admin" colspan="2"><%=getTran(request,"openclinic.chuk","aproval",sWebLanguage)%></td>
+			            <td class="admin2">
+			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_APROVAL")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_APROVAL" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_APROVAL" property="value"/></textarea>
+			            </td>
+			        </tr>
+			
+			        <%-- OBSERVATIONS --%>
+			        <tr>
+			            <td class="admin" colspan="2"><%=getTran(request,"openclinic.chuk","observations",sWebLanguage)%></td>
+			            <td class="admin2">
+			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_OBSERVATION")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_OBSERVATION" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_OBSERVATION" property="value"/></textarea>
+			            </td>
+			        </tr>
+					
+			        <tr>
+			            <td class="admin" colspan="2"><%=getTran(request,"openclinic.chuk","anesthesia.act",sWebLanguage)%></td>
+			            <td class="admin2">
+			            	<table width='100%'>
+				                <tr>
+				                	<td>
+				                		<select id="act1" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACT1" property="itemId"/>]>.value">
+					            			<option/>
+					            			<%=ScreenHelper.writeSelect(request,"anesthesiaacts.ccbrt",(((TransactionVO)transaction).getItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACT1")).getValue(),sWebLanguage,false,true) %>
+				                		</select>
+				                	</td>
+				                	<td>
+										<%=getTran(request,"web","planned",sWebLanguage) %>:
+			                            <input class="text" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED1")%> type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED1" property="itemId"/>]>.value" value="medwan.common.true"
+			                            <mxs:propertyAccessorI18N name="transaction.items" scope="page"
+			                                                      compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED1;value=medwan.common.true"
+			                                                      property="value" outputString="checked"/>><%=getTran(request,"web","yes",sWebLanguage) %>
+			                            <input class="text" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED1")%> type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED1" property="itemId"/>]>.value" value="medwan.common.false"
+			                            <mxs:propertyAccessorI18N name="transaction.items" scope="page"
+			                                                      compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED1;value=medwan.common.false"
+			                                                      property="value" outputString="checked"/>><%=getTran(request,"web","no",sWebLanguage) %>
+				                	</td>
+				                </tr>
+				                <tr>
+				                	<td>
+				                		<select id="act2" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACT2" property="itemId"/>]>.value">
+					            			<option/>
+					            			<%=ScreenHelper.writeSelect(request,"anesthesiaacts.ccbrt",(((TransactionVO)transaction).getItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACT2")).getValue(),sWebLanguage,false,true) %>
+				                		</select>
+				                	</td>
+				                	<td>
+										<%=getTran(request,"web","planned",sWebLanguage) %>:
+			                            <input class="text" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED2")%> type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED2" property="itemId"/>]>.value" value="medwan.common.true"
+			                            <mxs:propertyAccessorI18N name="transaction.items" scope="page"
+			                                                      compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED2;value=medwan.common.true"
+			                                                      property="value" outputString="checked"/>><%=getTran(request,"web","yes",sWebLanguage) %>
+			                            <input class="text" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED2")%> type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED2" property="itemId"/>]>.value" value="medwan.common.false"
+			                            <mxs:propertyAccessorI18N name="transaction.items" scope="page"
+			                                                      compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_ANESTHESIA_ACTPLANNED2;value=medwan.common.false"
+			                                                      property="value" outputString="checked"/>><%=getTran(request,"web","no",sWebLanguage) %>
+				                	</td>
+				                </tr>
+			                </table>
+			            </td>
+			        </tr>
+			        <tr>
+			            <td class="admin" colspan="2"><%=getTran(request,"openclinic.chuk","surgical.act",sWebLanguage)%></td>
+			            <td class="admin2">
+			            	<table  width='100%'>
+				                <tr>
+				                	<td>
+				                		<select id="act1" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACT1" property="itemId"/>]>.value">
+					            			<option/>
+					            			<%=ScreenHelper.writeSelect(request,"surgicalacts.ccbrt",(((TransactionVO)transaction).getItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACT1")).getValue(),sWebLanguage,false,true) %>
+				                		</select>
+				                	</td>
+				                	<td>
+										<%=getTran(request,"web","planned",sWebLanguage) %>:
+			                            <input class="text" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED1")%> type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED1" property="itemId"/>]>.value" value="medwan.common.true"
+			                            <mxs:propertyAccessorI18N name="transaction.items" scope="page"
+			                                                      compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED1;value=medwan.common.true"
+			                                                      property="value" outputString="checked"/>><%=getTran(request,"web","yes",sWebLanguage) %>
+			                            <input class="text" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED1")%> type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED1" property="itemId"/>]>.value" value="medwan.common.false"
+			                            <mxs:propertyAccessorI18N name="transaction.items" scope="page"
+			                                                      compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED1;value=medwan.common.false"
+			                                                      property="value" outputString="checked"/>><%=getTran(request,"web","no",sWebLanguage) %>
+				                	</td>
+				                </tr>
+				                <tr>
+				                	<td>
+				                		<select id="act2" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACT2" property="itemId"/>]>.value">
+					            			<option/>
+					            			<%=ScreenHelper.writeSelect(request,"surgicalacts.ccbrt",(((TransactionVO)transaction).getItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACT2")).getValue(),sWebLanguage,false,true) %>
+				                		</select>
+				                	</td>
+				                	<td>
+										<%=getTran(request,"web","planned",sWebLanguage) %>:
+			                            <input class="text" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED2")%> type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED2" property="itemId"/>]>.value" value="medwan.common.true"
+			                            <mxs:propertyAccessorI18N name="transaction.items" scope="page"
+			                                                      compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED2;value=medwan.common.true"
+			                                                      property="value" outputString="checked"/>><%=getTran(request,"web","yes",sWebLanguage) %>
+			                            <input class="text" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED2")%> type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED2" property="itemId"/>]>.value" value="medwan.common.false"
+			                            <mxs:propertyAccessorI18N name="transaction.items" scope="page"
+			                                                      compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED2;value=medwan.common.false"
+			                                                      property="value" outputString="checked"/>><%=getTran(request,"web","no",sWebLanguage) %>
+				                	</td>
+				                </tr>
+				                <tr>
+				                	<td>
+				                		<select id="act3" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACT3" property="itemId"/>]>.value">
+					            			<option/>
+					            			<%=ScreenHelper.writeSelect(request,"surgicalacts.ccbrt",(((TransactionVO)transaction).getItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACT3")).getValue(),sWebLanguage,false,true) %>
+				                		</select>
+				                	</td>
+				                	<td>
+										<%=getTran(request,"web","planned",sWebLanguage) %>:
+			                            <input class="text" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED3")%> type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED3" property="itemId"/>]>.value" value="medwan.common.true"
+			                            <mxs:propertyAccessorI18N name="transaction.items" scope="page"
+			                                                      compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED3;value=medwan.common.true"
+			                                                      property="value" outputString="checked"/>><%=getTran(request,"web","yes",sWebLanguage) %>
+			                            <input class="text" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED3")%> type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED3" property="itemId"/>]>.value" value="medwan.common.false"
+			                            <mxs:propertyAccessorI18N name="transaction.items" scope="page"
+			                                                      compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_SURGICAL_ACTPLANNED3;value=medwan.common.false"
+			                                                      property="value" outputString="checked"/>><%=getTran(request,"web","no",sWebLanguage) %>
+				                	</td>
+				                </tr>
+			                </table>
+			            </td>
+			        </tr>
+			        <%-- CLOSURE --%>
+			        <tr>
+			            <td class="admin" colspan="2"><%=getTran(request,"openclinic.chuk","closure",sWebLanguage)%></td>
+			            <td class="admin2">
+			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_CLOSURE")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_CLOSURE" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_CLOSURE" property="value"/></textarea>
+			            </td>
+			        </tr>
+			
+			        <%-- CARE --%>
+			        <tr>
+			            <td class="admin" colspan="2"><%=getTran(request,"openclinic.chuk","care.post.op",sWebLanguage)%></td>
+			            <td class="admin2">
+			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_CARE")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_CARE" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_CARE" property="value"/></textarea>
+			            </td>
+			        </tr>
+			
+			        <%-- REMARKS --%>
+			        <tr>
+			            <td class="admin" colspan="2"><%=getTran(request,"openclinic.chuk","remarks",sWebLanguage)%></td>
+			            <td class="admin2">
+			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_OPERATION_PROTOCOL_REMARKS")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_REMARKS" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPERATION_PROTOCOL_REMARKS" property="value"/></textarea>
+			            </td>
+			        </tr>
+			    </table>
+			</td>
+			
+			<%-- DIAGNOSES --%>
+			<td style="vertical-align:top;padding:0" class="admin2">
+                <%ScreenHelper.setIncludePage(customerInclude("healthrecord/diagnosesEncoding.jsp"),pageContext);%>
+	            <table width="100%" class="list" cellspacing="1">
+	                <tr class="admin">
+	                    <td align="center"><%=getTran(request,"Web.Occup","medwan.healthrecord.medication",sWebLanguage)%> (<a href="javascript:openPopup('medical/managePrescriptionsPopup.jsp&amp;Action=showDetailsNew&amp;Close=true&amp;findProduct=true',650,430,'medication');void(0);"><%=getTran(request,"web","medications",sWebLanguage)%></a>)</td>
+	                </tr>
+	                <tr>
+	                    <td>
+	                <%
+	                    //--- DISPLAY ACTIVE PRESCRIPTIONS (of activePatient) ---------------------------------
+	                    // compose query
+	                    Vector vActivePrescriptions = Prescription.findActive(activePatient.personid,activeUser.userid,"","","","","","");
+	
+	                    StringBuffer prescriptions = new StringBuffer();
+	                    Vector idsVector = getActivePrescriptionsFromRs(prescriptions, vActivePrescriptions , sWebLanguage);
+	                    int foundPrescrCount = idsVector.size();
+	
+	                    if(foundPrescrCount > 0){
+	                        %>
+	                            <table width="100%" cellspacing="0" cellpadding="0" class="list">
+	                                <%-- header --%>
+	                                <tr class="admin">
+	                                    <td width="22" nowrap>&nbsp;</td>
+	                                    <td width="30%"><%=getTran(request,"Web","product",sWebLanguage)%></td>
+	                                    <td width="15%"><%=getTran(request,"Web","begindate",sWebLanguage)%></td>
+	                                    <td width="15%"><%=getTran(request,"Web","enddate",sWebLanguage)%></td>
+	                                    <td width="40%"><%=getTran(request,"Web","prescriptionrule",sWebLanguage)%></td>
+	                                </tr>
+	
+	                                <tbody class="hand"><%=prescriptions%></tbody>
+	                            </table>
+	                        <%
+	                    }
+	                    else{
+	                        // no records found
+	                        %><%=getTran(request,"web","noactiveprescriptionsfound",sWebLanguage)%><br><%
+	                    }
+	                    %>
+	                    </td>
+	                </tr>
+	                <tr class="admin">
+	                    <td align="center"><%=getTran(request,"curative","medication.paperprescriptions",sWebLanguage)%> (<%=ScreenHelper.stdDateFormat.format(((TransactionVO)transaction).getUpdateTime())%>) (<a href="javascript:openPopup('medical/managePrescriptionForm.jsp&amp;skipEmpty=1',650,430,'medication');void(0);"><%=getTran(request,"web","medicationpaperprescription",sWebLanguage)%></a>)</td>
+	                </tr>
+	                <%
+	                    Vector paperprescriptions = PaperPrescription.find(activePatient.personid,"",ScreenHelper.stdDateFormat.format(((TransactionVO)transaction).getUpdateTime()),ScreenHelper.stdDateFormat.format(((TransactionVO)transaction).getUpdateTime()),"","DESC");
+	                    if(paperprescriptions.size()>0){
+	                        out.print("<tr><td><table width='100%'>");
+	                        String l="";
+	                        for(int n=0;n<paperprescriptions.size();n++){
+	                            if(l.length()==0){
+	                                l="1";
+	                            }
+	                            else{
+	                                l="";
+	                            }
+	                            PaperPrescription paperPrescription = (PaperPrescription)paperprescriptions.elementAt(n);
+	                            out.println("<tr class='list"+l+"' id='pp"+paperPrescription.getUid()+"'><td valign='top' width='90px'><img src='_img/icons/icon_delete.png' onclick='deletepaperprescription(\""+paperPrescription.getUid()+"\");'/> <b>"+ScreenHelper.stdDateFormat.format(paperPrescription.getBegin())+"</b></td><td><i>");
+	                            Vector products =paperPrescription.getProducts();
+	                            for(int i=0;i<products.size();i++){
+	                                out.print(products.elementAt(i)+"<br/>");
+	                            }
+	                            out.println("</i></td></tr>");
+	                        }
+	                        out.print("</table></td></tr>");
+	                    }
+	                    else{
+	                        out.print("<tr><td><table width='100%'>");
+	                        // no records found
+	                        %><%=getTran(request,"web","noactiveprescriptionsfound",sWebLanguage)%><br><%
+	                        out.print("</table></td></tr>");
+	                    }
+	                %>
+	            </table>
+			</td>
+		</tr>
+    </table>
+
+	<%-- BUTTONS --%>
+	<%=ScreenHelper.alignButtonsStart()%>
+	    <%=getButtonsHtml(request,activeUser,activePatient,"occup.operationprotocol",sWebLanguage)%>
+	<%=ScreenHelper.alignButtonsStop()%>
+
+    <%=ScreenHelper.contextFooter(request)%>
+</form>
+
+<script>
+	function calculateDuration(){
+		if(document.getElementById('beginHourSelect').value.length>0 && document.getElementById('endHourSelect').value.length>0 && ((document.getElementById('endHourSelect').value*60)+(document.getElementById('endMinutSelect').value*1))>=((document.getElementById('beginHourSelect').value*60)+(document.getElementById('beginMinutSelect').value*1))){
+			var minutes=(document.getElementById('endHourSelect').value*60)+(document.getElementById('endMinutSelect').value*1)-(document.getElementById('beginHourSelect').value*60)-(document.getElementById('beginMinutSelect').value*1);
+			document.getElementById('duration').innerHTML="<font style='font-size:12px;font-weight: bolder'>"+("0"+Math.floor(minutes/60)).substr(("0"+Math.floor(minutes/60)).length-2)+":"+("0"+(minutes%60)).substr(("0"+(minutes%60)).length-2)+"</font>";
+		}
+		else{
+			document.getElementById('duration').innerHTML="";
+		}
+	}	
+	
+<%-- SUBMIT FORM --%>
+  function submitForm(){
+      if($("beginHourSelect").value.length==0){
+          $("ITEM_TYPE_OPERATION_PROTOCOL_START").value = '';
+      }else{
+          $("ITEM_TYPE_OPERATION_PROTOCOL_START").value = $("beginHourSelect").value+":"+$("beginMinutSelect").value;
+      }
+      if($("endHourSelect").value.length==0){
+          $("ITEM_TYPE_OPERATION_PROTOCOL_END").value = '';
+      }else{
+          $("ITEM_TYPE_OPERATION_PROTOCOL_END").value = $("endHourSelect").value+":"+$("endMinutSelect").value;
+      }
+    if(<%=((TransactionVO)transaction).getServerId()%>==1 && document.getElementById('encounteruid').value=='' <%=request.getParameter("nobuttons")==null?"":" && 1==0"%>){
+	  alertDialogDirectText('<%=getTranNoLink("web","no.encounter.linked",sWebLanguage)%>');
+	  searchEncounter();
+	}	
+    else{
+	  var temp = Form.findFirstElement(transactionForm); //for ff compatibility
+	  document.transactionForm.submit();
+	  document.getElementById("buttonsDiv").style.visibility = "hidden";
+    }
+  }
+  
+  <%-- SEARCH ENCOUNTER --%>
+  function searchEncounter(){
+    openPopup("/_common/search/searchEncounter.jsp&ts=<%=getTs()%>&Varcode=encounteruid&VarText=&FindEncounterPatient=<%=activePatient.personid%>");
+  }
+  
+  if(<%=((TransactionVO)transaction).getServerId()%>==1 && document.getElementById('encounteruid').value=='' <%=request.getParameter("nobuttons")==null?"":" && 1==0"%>){
+	alertDialogDirectText('<%=getTranNoLink("web","no.encounter.linked",sWebLanguage)%>');
+	searchEncounter();
+  }	
+  
+  calculateDuration();
+</script>
+
+<%=writeJSButtons("transactionForm","saveButton")%>

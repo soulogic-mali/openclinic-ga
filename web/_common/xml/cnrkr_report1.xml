@@ -1,0 +1,114 @@
+<report id="kinereport" name="Rapport final de traitement kinésithérapeutique" orientation="portrait" size="A4">
+	<table columns="100">
+		<row><cell columns="100" type="title" fontsize="14"><![CDATA[BILAN RHUMATOLOGIE-RACHIALGIE]]></cell></row>
+		<row><cell columns="100" type="title"><![CDATA[Données administratives du patient]]></cell></row>
+		<row>
+			<cell columns="10" type="label"><![CDATA[Nom:]]></cell>
+			<cell columns="40" type="patientadmin">lastname</cell>
+			<cell columns="10" type="label"><![CDATA[Prénom:]]></cell>
+			<cell columns="40" type="patientadmin">firstname</cell>
+		</row>
+		<row>
+			<cell columns="10" type="label"><![CDATA[ID Patient:]]></cell>
+			<cell columns="10" type="patientadmin">personid</cell>
+			<cell columns="15" type="label"><![CDATA[Naissance:]]></cell>
+			<cell columns="15" type="patientadmin">dateofbirth</cell>
+			<cell columns="10" type="label"><![CDATA[Sexe:]]></cell>
+			<cell columns="40" type="patientadmin">gender</cell>
+		</row>
+		<row><cell columns="100" type="line"></cell></row>
+		<row><cell columns="100" type="title"><![CDATA[Données du contact]]></cell></row>
+		<row>
+			<cell columns="10" type="label"><![CDATA[ID Contact:]]></cell>
+			<cell columns="10" type="encounter">uid</cell>
+			<cell columns="10" type="label"><![CDATA[Période:]]></cell>
+			<cell columns="30" type="encounter">begindate;" - ";enddate</cell>
+			<cell columns="10" type="label"><![CDATA[Services:]]></cell>
+			<cell columns="30" type="encounter">services</cell>
+		</row>
+		<row><cell columns="100" type="line"></cell></row>
+		<row><cell columns="100" type="title"><![CDATA[Consultation de kinésithérapie CNRKR]]></cell></row>
+		<loop type="transactions" transactiontype="TRANSACTION_TYPE_CNRKR_KINE">
+			<row>
+				<cell columns="10" type="label"><![CDATA[Date:]]></cell>
+				<cell columns="20" type="transaction">updatetime</cell>
+				<cell columns="10" type="label"><![CDATA[Auteur:]]></cell>
+				<cell columns="20" type="transaction">username</cell>
+				<cell columns="10" type="label"><![CDATA[Examen:]]></cell>
+				<cell columns="30" type="transaction">transactiontype</cell>
+			</row>
+			<row><cell columns="100" type="title" fontsize="12"><![CDATA[RACHIALGIE]]></cell></row>
+			<row><cell columns="100" type="title" fontsize="10"><![CDATA[1. BILAN DE LA DOULEUR]]></cell></row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Douleur:]]></cell>
+				<cell columns="70" type="item" translate="translate;cnrkr.yesno">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAIN</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Siège:]]></cell>
+				<cell columns="70" type="item" translate="keywords">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINLOCATIONCODES</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Type:]]></cell>
+				<cell columns="70" type="item" translate="keywords">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINTYPECODES</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Timing:]]></cell>
+				<cell columns="70" type="item" translate="keywords">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINTIMINGCODES</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Horaire:]]></cell>
+				<cell columns="70" type="item" translate="translate;cnrkr.painscheme">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINSCHEME</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Facteurs déclenchants:]]></cell>
+				<cell columns="70" type="item" translate="keywords">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINCAUSINGFACTORSCODES</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Facteurs aggravants:]]></cell>
+				<cell columns="70" type="item" translate="keywords">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINWORSENINGFACTORSCODES</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Facteurs atténuants:]]></cell>
+				<cell columns="70" type="item" translate="keywords">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINMITIGATINGFACTORSCODES</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Irradiations:]]></cell>
+				<cell columns="70" type="item" translate="keywords">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINIRRADITATIONCODES</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Douleur à la mobilisation:]]></cell>
+				<cell columns="70" type="item" translate="keywords">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINMOBILISATIONCODES</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Douleur à la palpation:]]></cell>
+				<cell columns="20" type="item" translate="translate;pain.palpation">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINPALPATION</cell>
+				<cell columns="50" type="item">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINPALPATIONTEXT</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Evolution de la douleur:]]></cell>
+				<cell columns="20" type="item" translate="translate;cnrkr.pain.evolution">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINEVOLUTION</cell>
+				<cell columns="50" type="item">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAINEVOLUTIONTEXT</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label" fontsize='8'><![CDATA[Intensité]]></cell>
+				<cell columns="20" type="label" fontsize='8'><![CDATA[EVA au repos:]]></cell>
+				<cell columns="50" type="item" translate="translate;cnrkr.pain.intensity">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAININTENSITY_EVAREST</cell>
+			</row>
+			<row>
+				<cell columns="30" type="label"></cell>
+				<cell columns="20" type="label" fontsize='8'><![CDATA[EN au repos:]]></cell>
+				<cell columns="50" type="item" translate="translate;cnrkr.pain.intensity">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAININTENSITY_ENREST</cell>
+			</row>
+			<row>
+				<cell columns="30" type="label"></cell>
+				<cell columns="20" type="label" fontsize='8'><![CDATA[EVA en activités:]]></cell>
+				<cell columns="50" type="item" translate="translate;cnrkr.pain.intensity">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAININTENSITY_EVAACTIVITY</cell>
+			</row>
+			<row>
+				<cell columns="30" type="label"></cell>
+				<cell columns="20" type="label" fontsize='8'><![CDATA[EN en activités:]]></cell>
+				<cell columns="50" type="item" translate="translate;cnrkr.pain.intensity">ITEM_TYPE_CNRKR_KINE_ASSESSMENT_REUMATOLOGY_PAININTENSITY_ENACTIVITY</cell>
+			</row>
+		</loop>
+	</table>
+</report>

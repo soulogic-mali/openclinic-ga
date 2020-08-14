@@ -1,0 +1,1 @@
+<script>window.location.href='../html5/login.jsp';</script>

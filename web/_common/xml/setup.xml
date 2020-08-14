@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections>
+	<country code="be">
+		<config key="currency" value="EUR"/>
+		<config key="currencyPdf" value="EUR"/>
+		<config key="countrycode" value="BE"/>
+		<config key="DefaultCountry" value="BE"/>
+		<config key="defaultSearchCountry" value="BELGIUM"/>
+		<config key="zipcodetable" value="BelgiumZipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,nl,de,en,es,pt"/>
+		<config key="supportedLanguages" value="fr,en,es,pt,nl"/>
+		<config key="mxsref" value="BE"/>
+		<config key="priceFormat" value="#0.00"/>
+		<config key="priceFormatInsurar" value="#0.00"/>
+		<config key="currencyDecimals" value="2"/>
+		<labels type="professional.council.url">
+			<label id="rmdc" language="fr">http://www.mxs.be/omr/util/getPersonInfo.jsp</label>
+			<label id="rmdc" language="en">http://www.mxs.be/omr/util/getPersonInfo.jsp</label>
+		</labels>
+		<labels type="professional.councils">
+			<label id="rmdc" language="fr">Ordre de M&#233;decins et de Dentistes du Rwanda</label>
+			<label id="rmdc" language="en">Rwanda Medical and Dental Council</label>
+		</labels>
+		<project>be</project>
+	</country>
+	<country code="cd">
+		<config key="currency" value="CDF"/>
+		<config key="currencyPdf" value="CDF"/>
+		<config key="countrycode" value="CD"/>
+		<config key="DefaultCountry" value="CD"/>
+		<config key="defaultSearchCountry" value="RDC"/>
+		<config key="zipcodetable" value="drczipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="li,fr,en,de,nl,ki,sw,ts"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="CD"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>cd</project>
+	</country>
+	<country code="et">
+		<config key="currency" value="ETB"/>
+		<config key="currencyPdf" value="ETB"/>
+		<config key="countrycode" value="ET"/>
+		<config key="DefaultCountry" value="ET"/>
+		<config key="defaultSearchCountry" value="Ethiop"/>
+		<config key="zipcodetable" value="ethiopiazipcodes"/>
+		<config key="DefaultLanguage" value="en"/>
+		<config key="PatientLanguages" value="en"/>
+		<config key="supportedLanguages" value="en"/>
+		<config key="mxsref" value="ET"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>et</project>
+	</country>
+	<country code="pe">
+		<config key="currency" value="SOL"/>
+		<config key="currencyPdf" value="SOL"/>
+		<config key="countrycode" value="PE"/>
+		<config key="DefaultCountry" value="PE"/>
+		<config key="defaultSearchCountry" value="Peru"/>
+		<config key="zipcodetable" value="peruzipcodes"/>
+		<config key="DefaultLanguage" value="es"/>
+		<config key="PatientLanguages" value="es"/>
+		<config key="supportedLanguages" value="es"/>
+		<config key="mxsref" value="PE"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>pe</project>
+	</country>
+	<country code="rw">
+		<config key="currency" value="RWF"/>
+		<config key="currencyPdf" value="RWF"/>
+		<config key="countrycode" value="RW"/>
+		<config key="DefaultCountry" value="RW"/>
+		<config key="defaultSearchCountry" value="RWANDA"/>
+		<config key="zipcodetable" value="RwandaZipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,en,kr"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="RW"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<config key="enableRwanda" value="1"/>
+		<labels type="professional.council.url">
+			<label id="rmdc" language="fr">http://omr.hnrw.org/omr/util/getPersonInfo.jsp</label>
+			<label id="rmdc" language="en">http://omr.hnrw.org/omr/util/getPersonInfo.jsp</label>
+		</labels>
+		<labels type="professional.councils">
+			<label id="rmdc" language="fr">Ordre de M&#233;decins et de Dentistes du Rwanda</label>
+			<label id="rmdc" language="en">Rwanda Medical and Dental Council</label>
+		</labels>
+		<project>oc</project>
+	</country>
+	<country code="bi">
+		<config key="currency" value="BIF"/>
+		<config key="currencyPdf" value="BIF"/>
+		<config key="countrycode" value="BI"/>
+		<config key="DefaultCountry" value="BI"/>
+		<config key="defaultSearchCountry" value="BURUNDI"/>
+		<config key="zipcodetable" value="BurundiZipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,en"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="BI"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<config key="enableBurundi" value="1"/>
+		<config key="enableMFP" value="1"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>bi</project>
+	</country>
+	<country code="br">
+		<config key="currency" value="BRL"/>
+		<config key="currencyPdf" value="BRL"/>
+		<config key="countrycode" value="BR"/>
+		<config key="DefaultCountry" value="BR"/>
+		<config key="defaultSearchCountry" value="BRASIL"/>
+		<config key="zipcodetable" value="BrazilZipcodes"/>
+		<config key="DefaultLanguage" value="pt"/>
+		<config key="PatientLanguages" value="pt,es,en,fr"/>
+		<config key="supportedLanguages" value="pt,es,en,fr"/>
+		<config key="mxsref" value="BR"/>
+		<config key="priceFormat" value="#0.00"/>
+		<config key="priceFormatInsurar" value="#0.00"/>
+		<config key="currencyDecimals" value="2"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>br</project>
+	</country>
+	<country code="ml">
+		<config key="currency" value="XOF"/>
+		<config key="currencyPdf" value="XOF"/>
+		<config key="countrycode" value="ML"/>
+		<config key="DefaultCountry" value="ML"/>
+		<config key="defaultSearchCountry" value="MALI"/>
+		<config key="zipcodetable" value="MaliZipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,en"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="ML"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<config key="enableMaliVaccinations" value="1"/>
+		<config key="vaccinationForwardKey" value="/main.do?Page=healthrecord/maliVaccinationCard.jsp"/>
+		<labels type="professional.council.url">
+			<label id="cnom" language="fr">http://server.antim.hnrw.org/cnom/util/getPersonInfo.jsp</label>
+			<label id="cnom" language="en">http://server.antim.hnrw.org/cnom/util/getPersonInfo.jsp</label>
+			<label id="cnop" language="fr">http://server.antim.hnrw.org/cnop/util/getPersonInfo.jsp</label>
+			<label id="cnop" language="en">http://server.antim.hnrw.org/cnop/util/getPersonInfo.jsp</label>
+			<label id="cnosf" language="fr">http://server.antim.hnrw.org/cnosf/util/getPersonInfo.jsp</label>
+			<label id="cnosf" language="en">http://server.antim.hnrw.org/cnosf/util/getPersonInfo.jsp</label>
+		</labels>
+		<labels type="professional.councils">
+			<label id="cnom" language="fr">Conseil National de l'Ordre des Médecins du Mali</label>
+			<label id="cnom" language="en">National Medical Council of Mali</label>
+			<label id="cnop" language="fr">Conseil National de l'Ordre des Pharmaciens du Mali</label>
+			<label id="cnop" language="en">National Pharmaceutical Council of Mali</label>
+			<label id="cnosf" language="fr">Conseil National de l'Ordre des Sages Femmes du Mali</label>
+			<label id="cnosf" language="en">National Midwives Council of Mali</label>
+		</labels>
+		<project>ml</project>
+	</country>
+	<country code="ke">
+		<config key="currency" value="KES"/>
+		<config key="currencyPdf" value="KES"/>
+		<config key="countrycode" value="KE"/>
+		<config key="DefaultCountry" value="KE"/>
+		<config key="defaultSearchCountry" value="KENYA"/>
+		<config key="zipcodetable" value="KenyaZipcodes"/>
+		<config key="DefaultLanguage" value="en"/>
+		<config key="PatientLanguages" value="en,sw"/>
+		<config key="supportedLanguages" value="en"/>
+		<config key="mxsref" value="KE"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>ke</project>
+	</country>
+	<country code="lk">
+		<config key="currency" value="LKR"/>
+		<config key="currencyPdf" value="LKR"/>
+		<config key="countrycode" value="LK"/>
+		<config key="DefaultCountry" value="LK"/>
+		<config key="defaultSearchCountry" value="SRI"/>
+		<config key="zipcodetable" value="SriLankaZipcodes"/>
+		<config key="DefaultLanguage" value="en"/>
+		<config key="PatientLanguages" value="en"/>
+		<config key="supportedLanguages" value="en"/>
+		<config key="mxsref" value="LK"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>lk</project>
+	</country>
+	<country code="bd">
+		<config key="currency" value="BDT"/>
+		<config key="currencyPdf" value="BDT"/>
+		<config key="countrycode" value="BD"/>
+		<config key="DefaultCountry" value="BD"/>
+		<config key="defaultSearchCountry" value="BANGLADESH"/>
+		<config key="zipcodetable" value="BangladeshZipcodes"/>
+		<config key="DefaultLanguage" value="en"/>
+		<config key="PatientLanguages" value="en"/>
+		<config key="supportedLanguages" value="en"/>
+		<config key="mxsref" value="BD"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>bd</project>
+	</country>
+	<country code="ug">
+		<config key="currency" value="UGX"/>
+		<config key="currencyPdf" value="UGX"/>
+		<config key="countrycode" value="UG"/>
+		<config key="DefaultCountry" value="UG"/>
+		<config key="defaultSearchCountry" value="UGANDA"/>
+		<config key="zipcodetable" value="UgandaZipcodes"/>
+		<config key="DefaultLanguage" value="en"/>
+		<config key="PatientLanguages" value="en,sw"/>
+		<config key="supportedLanguages" value="en"/>
+		<config key="mxsref" value="UG"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>ug</project>
+	</country>
+	<country code="ci">
+		<config key="currency" value="XOF"/>
+		<config key="currencyPdf" value="XOF"/>
+		<config key="countrycode" value="CI"/>
+		<config key="DefaultCountry" value="CI"/>
+		<config key="defaultSearchCountry" value="CÔTE"/>
+		<config key="zipcodetable" value="ivorycoastzipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,en"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="CI"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>ci</project>
+	</country>
+	<country code="cm">
+		<config key="currency" value="XAF"/>
+		<config key="currencyPdf" value="XAF"/>
+		<config key="countrycode" value="CM"/>
+		<config key="DefaultCountry" value="CM"/>
+		<config key="defaultSearchCountry" value="CAMERO"/>
+		<config key="zipcodetable" value="cameroonzipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,en"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="CM"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>cm</project>
+	</country>
+	<country code="cg">
+		<config key="currency" value="XAF"/>
+		<config key="currencyPdf" value="XAF"/>
+		<config key="countrycode" value="CG"/>
+		<config key="DefaultCountry" value="CG"/>
+		<config key="defaultSearchCountry" value="CONGO"/>
+		<config key="zipcodetable" value="brazzazipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,en"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="CG"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+	</country>
+	<country code="al">
+		<config key="currency" value="L"/>
+		<config key="currencyPdf" value="L"/>
+		<config key="countrycode" value="AL"/>
+		<config key="DefaultCountry" value="AL"/>
+		<config key="defaultSearchCountry" value="ALBANI"/>
+		<config key="zipcodetable" value="albaniazipcodes"/>
+		<config key="DefaultLanguage" value="en"/>
+		<config key="PatientLanguages" value="fr,en,es,it"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="AL"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>al</project>
+	</country>
+	<country code="tz">
+		<config key="currency" value="TZS"/>
+		<config key="currencyPdf" value="TZS"/>
+		<config key="countrycode" value="TZ"/>
+		<config key="DefaultCountry" value="TZ"/>
+		<config key="defaultSearchCountry" value="TANZANI"/>
+		<config key="zipcodetable" value="tanzaniazipcodes"/>
+		<config key="DefaultLanguage" value="en"/>
+		<config key="PatientLanguages" value="fr,en,es,it,sw"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="TZ"/>
+		<config key="priceFormat" value="#"/>
+		<config key="priceFormatInsurar" value="#"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>tz</project>
+	</country>
+	<country code="zm">
+		<config key="currency" value="ZMW"/>
+		<config key="currencyPdf" value="ZMW"/>
+		<config key="countrycode" value="ZM"/>
+		<config key="DefaultCountry" value="ZM"/>
+		<config key="defaultSearchCountry" value="ZAMBIA"/>
+		<config key="zipcodetable" value="zambiazipcodes"/>
+		<config key="DefaultLanguage" value="en"/>
+		<config key="PatientLanguages" value="fr,en,es,it,sw"/>
+		<config key="supportedLanguages" value="en"/>
+		<config key="mxsref" value="ZM"/>
+		<config key="priceFormat" value="#0.00"/>
+		<config key="priceFormatInsurar" value="#0.00"/>
+		<config key="currencyDecimals" value="2"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>zm</project>
+	</country>
+	<country code="ng">
+		<config key="currency" value="NGN"/>
+		<config key="currencyPdf" value="NGN"/>
+		<config key="countrycode" value="NG"/>
+		<config key="DefaultCountry" value="NG"/>
+		<config key="defaultSearchCountry" value="NIGERIA"/>
+		<config key="zipcodetable" value="nigeriazipcodes"/>
+		<config key="DefaultLanguage" value="en"/>
+		<config key="PatientLanguages" value="fr,en,es,it,sw"/>
+		<config key="supportedLanguages" value="en"/>
+		<config key="mxsref" value="NG"/>
+		<config key="priceFormat" value="#0.00"/>
+		<config key="priceFormatInsurar" value="#0.00"/>
+		<config key="currencyDecimals" value="2"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>ng</project>
+	</country>
+	<country code="ga">
+		<config key="currency" value="XAF"/>
+		<config key="currencyPdf" value="XAF"/>
+		<config key="countrycode" value="GA"/>
+		<config key="DefaultCountry" value="GA"/>
+		<config key="defaultSearchCountry" value="GABON"/>
+		<config key="zipcodetable" value="gabonzipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,en,es,it,sw"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="GA"/>
+		<config key="priceFormat" value="#0.00"/>
+		<config key="priceFormatInsurar" value="#0.00"/>
+		<config key="currencyDecimals" value="2"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>ga</project>
+	</country>
+	<country code="sn">
+		<config key="currency" value="XOF"/>
+		<config key="currencyPdf" value="XOF"/>
+		<config key="countrycode" value="SN"/>
+		<config key="DefaultCountry" value="SN"/>
+		<config key="defaultSearchCountry" value="SENEGAL"/>
+		<config key="zipcodetable" value="senegalzipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,en,es,it,sw"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="SN"/>
+		<config key="priceFormat" value="#0.00"/>
+		<config key="priceFormatInsurar" value="#0.00"/>
+		<config key="currencyDecimals" value="2"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>sn</project>
+	</country>
+	<country code="gn">
+		<config key="currency" value="GNF"/>
+		<config key="currencyPdf" value="GNF"/>
+		<config key="countrycode" value="GN"/>
+		<config key="DefaultCountry" value="GN"/>
+		<config key="defaultSearchCountry" value="GUIN"/>
+		<config key="zipcodetable" value="guineazipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,en"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="mxsref" value="BE"/>
+		<config key="projectref" value="vub"/>
+		<config key="priceFormat" value="#0"/>
+		<config key="priceFormatInsurar" value="#0"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>gn</project>
+	</country>
+	<os code="windows">
+		<config key="DocumentsFolder" value="$setupdir$documents"/>
+		<config key="fingerprintBinDirectory" value="$setupdir$web-inf/lib"/>
+		<config key="imageDirectory" value="$setupdir$documents"/>
+		<config key="localProjectPath" value="$setupdir$"/>
+		<config key="templateDirectory" value="$setupdir$_common/xml"/>
+		<config key="projectLogo" value="$setupdir$_img/projectlogo.jpg"/>
+		<config key="scanDirectoryMonitor_basePath" value="$setupdir$scan"/>
+		<config key="tmpDir" value="/temp"/>
+		<config key="tmpDirectory" value="/temp" mkdir="true"/>
+		<config key="tempDirectory" value="/temp" mkdir="true"/>
+		<config key="DocumentsURL" value="$localcontext$/documents/"/>
+		<config key="datacenterTemplateSource" value="$localcontext$/_common/xml/"/>
+		<config key="imageSource" value="$localcontext$"/>
+		<config key="templateSource" value="$localcontext$/_common/xml/"/>
+		<config key="projectname" value="$minicontext$"/>
+		<config key="PDFIMG.logo_pdf.jpg.$project$" value="$localcontext$/projects/$project$/_img/logo_$project$.gif"/>
+	</os>
+	<os code="linux">
+		<config key="DocumentsFolder" value="$setupdir$documents"/>
+		<config key="fingerprintBinDirectory" value="$setupdir$web-inf/lib"/>
+		<config key="imageDirectory" value="$setupdir$documents"/>
+		<config key="localProjectPath" value="$setupdir$"/>
+		<config key="templateDirectory" value="$setupdir$_common/xml"/>
+		<config key="projectLogo" value="$setupdir$_img/projectlogo.jpg"/>
+		<config key="scanDirectoryMonitor_basePath" value="$setupdir$scan"/>
+		<config key="tmpDir" value="/tmp"/>
+		<config key="tmpDirectory" value="/tmp" mkdir="true"/>
+		<config key="tempDirectory" value="/tmp" mkdir="true"/>
+		<config key="DocumentsURL" value="$localcontext$/documents/"/>
+		<config key="datacenterTemplateSource" value="$localcontext$/_common/xml/"/>
+		<config key="imageSource" value="$localcontext$"/>
+		<config key="templateSource" value="$localcontext$/_common/xml/"/>
+		<config key="projectname" value="$minicontext$"/>
+		<config key="PDFIMG.logo_pdf.jpg.$project$" value="$localcontext$/projects/$project$/_img/logo_$project$.gif"/>
+	</os>
+	<database code="mysql">
+		<config key="charindexFunction" value="locate"/>
+		<config key="concatSign" value="||"/>
+		<config key="convertDataTypeFloat" value="decimal"/>
+		<config key="convertDataTypeVarchar" value="char"/>
+		<config key="convertDataTypeInt" value="signed"/>
+		<config key="convertDataTypeSmalldatetime" value="smalldatetime"/>
+		<config key="convertDateToStringFunction" value="date_format($date$,'%d/%m/%Y')"/>
+		<config key="convertFunction" value="convert($value$,$datatype$)"/>
+		<config key="convertStringToDateFunction" value="str_to_date($date$,'%d/%m/%Y')"/>
+		<config key="datediffFunction" value="datediff($enddate$,$begindate$)"/>
+		<config key="timeStamp" value="now()"/>
+		<config key="dateFunction" value="now()"/>
+		<config key="iifFunction" value="if($condition$,$iftrue$,$iffalse$)"/>
+		<config key="limitFunction" value="limit"/>
+		<config key="lowerCompare" value="lower(&lt;param&gt;)"/>
+		<config key="upperCompare" value="upper(&lt;param&gt;)"/>
+		<config key="stddevFunction" value="stddev"/>
+		<config key="topFunction" value="no"/>
+		<config key="lengthFunction" value="length"/>
+		<config key="closeAdmisionServicesQuery" value="update oc_encounter_services,servicesview set oc_encounter_serviceenddate=date_add(oc_encounter_servicebegindate,INTERVAL (select max(serviceadmissionlimit) from servicesview where oc_encounter_serviceuid=serviceid) day) where OC_ENCOUNTER_SERVICEENDDATE is null and serviceadmissionlimit>0 and datediff(now(),OC_ENCOUNTER_SERVICEBEGINDATE)>serviceadmissionlimit and oc_encounter_serviceuid=serviceid and oc_encounter_serviceenddate is null"/>
+	</database>
+	<database code="sqlserver">
+		<config key="charindexFunction" value="charindex"/>
+		<config key="concatSign" value="+"/>
+		<config key="convertDataTypeFloat" value="float"/>
+		<config key="convertDataTypeVarchar" value="varchar"/>
+		<config key="convertDataTypeInt" value="int"/>
+		<config key="convertDataTypeSmalldatetime" value="smalldatetime"/>
+		<config key="convertDateToStringFunction" value="convert(char(10),$date$,103)"/>
+		<config key="convertFunction" value="convert($datatype$,$value$)"/>
+		<config key="convertStringToDateFunction" value="convert(datetime,$date$,103)"/>
+		<config key="datediffFunction" value="datediff($interval$,$begindate$,$enddate$)"/>
+		<config key="timeStamp" value="getdate()"/>
+		<config key="dateFunction" value="getdate()"/>
+		<config key="iifFunction" value="case when $condition$ then $iftrue$ else $iffalse$ end"/>
+		<config key="limitFunction" value=""/>
+		<config key="lowerCompare" value="lower(&lt;param&gt;)"/>
+		<config key="upperCompare" value="upper(&lt;param&gt;)"/>
+		<config key="stddevFunction" value="stdev"/>
+		<config key="topFunction" value="top"/>
+		<config key="lengthFunction" value="len"/>
+		<config key="closeAdmisionServicesQuery" value="update oc_encounter_services set oc_encounter_serviceenddate=dateadd(d,serviceadmissionlimit,oc_encounter_servicebegindate) from oc_encounter_services,servicesview where OC_ENCOUNTER_SERVICEENDDATE is null and serviceadmissionlimit>0 and datediff(d,OC_ENCOUNTER_SERVICEBEGINDATE,getdate())>serviceadmissionlimit and oc_encounter_serviceuid=serviceid and  oc_encounter_serviceenddate is null"/>
+	</database>
+</sections>

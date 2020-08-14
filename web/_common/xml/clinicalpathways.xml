@@ -1,0 +1,15 @@
+<pathways version="1.0">
+	<pathway id="BI.1">
+		<name>Fever with children</name>
+		<name language="fr">Fi&egrave;vre chez l'enfant</name>
+		<description>Clinical pathway for children with fever</description>
+		<description language="fr">Strat&eacute;gie de traitement de l'enfant avec de la fi&egrave;vre</description>
+		<triggerarray id="BI.1.1">
+			<evaluator type="hasmorethan">1</evaluator>
+			<trigger healthitem="temperature_1" evaluator="lessthan" not="true" reference="38"/>
+			<trigger healthitem="age" evaluator="lessthan" reference="5"/>
+			<message>The child has fever</message>
+			<message language="fr">L'enfant a de la fi&egrave;vre</message>
+		</triggerarray>
+	</pathway>
+</pathways>

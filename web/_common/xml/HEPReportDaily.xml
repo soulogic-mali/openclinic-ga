@@ -1,0 +1,52 @@
+<report type='timefilters' version='1.0'>
+	<schedule type="daily"/>
+	<result type="maintitle">
+		<label>HOSPITAL DE EMERGENCIAS PEDIATRICAS</label>
+	</result>
+	<result type="subtitle">
+		<label>CONSULTAS EXTERNAS</label>
+	</result>
+	<result type='counter'>
+		<label style='bold'>NUMERO TOTAL DE PACIENTES</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='inlike'>
+						<element>CL.EM</element>
+						<element>CL.EM.EM-UR</element>
+						<element>CL.ENF</element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>CONSULTACION EMERGENCIA</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>CL.EM</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>CONSULTACION ENFERMERIA</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>visit</value>
+				</field>
+				<field name='serviceuid'>
+					<value type='constant' compare='like'>CL.ENF</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+</report>

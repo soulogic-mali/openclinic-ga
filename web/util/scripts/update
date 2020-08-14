@@ -1,0 +1,8 @@
+cd /root
+rm -rf web
+tar zxf web.tar.gz
+/bin/cp -rf web/* /var/tomcat/webapps/openclinic
+cd /var/tomcat/webapps/openclinic/util
+sh update.sh
+cd /root
+./restarttmct

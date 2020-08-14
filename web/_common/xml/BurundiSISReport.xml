@@ -1,0 +1,85 @@
+<report type='timefilters' version='1.0'>
+	<schedule type="monthly"/>
+	<result type="maintitle">
+		<label>CANKUZO RAPPORT SIS MENSUEL</label>
+	</result>
+	<result type="subtitle">
+		<label>HOSPITALISATIONS</label>
+	</result>
+	<result type='counter'>
+		<label style='bold'>NOMBRE TOTAL D'HOSPITALISATIONS</label>
+		<filter type='encounter' periodfilter='true' unique="encounteruid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='bold'>NOMBRE TOTAL DE PATIENTS</label>
+		<filter type='encounter' periodfilter='true' unique="patientuid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>HOSPITALISATIONS NON-REFEREES</label>
+		<filter type='encounter' periodfilter='true' unique="encounteruid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='in'>
+						<element>residence</element>
+						<element>other</element>
+						<element></element>
+					</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>HOSPITALISATIONS REFEREES PAR CDS</label>
+		<filter type='encounter' periodfilter='true' unique="encounteruid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>healthcenter</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>HOSPITALISATIONS REFEREES PAR AUTRE HOPITAL</label>
+		<filter type='encounter' periodfilter='true' unique="encounteruid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>otherhospital</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+	<result type='counter'>
+		<label style='italic'>TRANSFERTS INTRA-HOSPITALIERS</label>
+		<filter type='encounter' periodfilter='true' unique="encounteruid">
+			<select>
+				<field name='encountertype'>
+					<value type='constant' compare='equals'>admission</value>
+				</field>
+				<field name='origin'>
+					<value type='constant' compare='equals'>hospital</value>
+				</field>
+			</select>
+		</filter>
+	</result>
+</report>

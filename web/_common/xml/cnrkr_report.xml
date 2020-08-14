@@ -1,0 +1,51 @@
+<report id="kinereport" name="Rapport final de traitement kinésithérapeutique" orientation="portrait" size="A4">
+	<table columns="100">
+		<row><cell columns="100" type="title"><![CDATA[Données administratives du patient]]></cell></row>
+		<row>
+			<cell columns="10" type="label"><![CDATA[Nom:]]></cell>
+			<cell columns="40" type="patientadmin">lastname</cell>
+			<cell columns="10" type="label"><![CDATA[Prénom:]]></cell>
+			<cell columns="40" type="patientadmin">firstname</cell>
+		</row>
+		<row>
+			<cell columns="10" type="label"><![CDATA[ID Patient:]]></cell>
+			<cell columns="10" type="patientadmin">personid</cell>
+			<cell columns="15" type="label"><![CDATA[Naissance:]]></cell>
+			<cell columns="15" type="patientadmin">dateofbirth</cell>
+			<cell columns="10" type="label"><![CDATA[Sexe:]]></cell>
+			<cell columns="40" type="patientadmin">gender</cell>
+		</row>
+		<row><cell columns="100" type="line"></cell></row>
+		<row><cell columns="100" type="title"><![CDATA[Données du contact]]></cell></row>
+		<row>
+			<cell columns="10" type="label"><![CDATA[ID Contact:]]></cell>
+			<cell columns="10" type="encounter">uid</cell>
+			<cell columns="10" type="label"><![CDATA[Période:]]></cell>
+			<cell columns="30" type="encounter">begindate;" - ";enddate</cell>
+			<cell columns="10" type="label"><![CDATA[Services:]]></cell>
+			<cell columns="30" type="encounter">services</cell>
+		</row>
+		<row><cell columns="100" type="line"></cell></row>
+		<row><cell columns="100" type="title"><![CDATA[Rapport de kinésithérapie]]></cell></row>
+		<loop type="transactions" transactiontype="TRANSACTION_TYPE_CNRKR_KINE">
+			<row>
+				<cell columns="10" type="label"><![CDATA[Date:]]></cell>
+				<cell columns="20" type="transaction">updatetime</cell>
+				<cell columns="10" type="label"><![CDATA[Auteur:]]></cell>
+				<cell columns="20" type="transaction">username</cell>
+				<cell columns="10" type="label"><![CDATA[Examen:]]></cell>
+				<cell columns="30" type="transaction">transactiontype</cell>
+			</row>
+			<row>
+				<cell columns="10" type="label"></cell><cell columns="20" type="label"><![CDATA[Test:]]></cell>
+				<cell columns="70" type="item" translate="translate;cnrkr.tests">ITEM_TYPE_CNRKR_KINE_TEST1</cell>
+			</row>
+			<loop type="itemexists" itemtype="ITEM_TYPE_CNRKR_KINE_TEST2">
+				<row>
+					<cell columns="10" type="label"></cell><cell columns="20" type="label"><![CDATA[Test:]]></cell>
+					<cell columns="70" type="item" translate="translate;cnrkr.tests">ITEM_TYPE_CNRKR_KINE_TEST2</cell>
+				</row>
+			</loop>
+		</loop>
+	</table>
+</report>

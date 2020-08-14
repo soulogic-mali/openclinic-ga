@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Queries>
+	<Query id="QUERY.AgeGenderControl.1" db="openclinic" date="07/02/2010">
+    	alter table agegendercontrol modify frequency numeric(15,5), modify tolerance numeric(15,5), modify minAge numeric(15,5), modify maxAge numeric(15,5);
+  	</Query>
+	<Query id="QUERY.OcPrestations.1" db="openclinic" date="04/05/2010">
+    	alter table OC_PRESTATIONS add OC_PRESTATION_INVOICEGROUP varchar(50) null;
+  	</Query>
+	<Query id="QUERY.OcPrestations.2" db="openclinic" date="04/05/2010">
+    	update OC_PRESTATIONS set OC_PRESTATION_INVOICEGROUP=OC_PRESTATION_REFTYPE where OC_PRESTATION_INVOICEGROUP is null and OC_PRESTATION_REFTYPE is not null;
+  	</Query>
+	<Query id="QUERY.OcInsurarCredits.1" db="openclinic" date="24/06/2010">
+		alter table oc_insurarcredits modify column oc_insurarcredit_invoiceuid varchar(20); 	
+  	</Query>
+	<Query id="QUERY.diagnosisServices.0" db="openclinic" date="23/09/2010">
+		alter table OC_DIAGNOSES add OC_DIAGNOSIS_SERVICEUID varchar(50) null; 	
+  	</Query>
+	<Query id="QUERY.diagnosisServices.1" db="openclinic" date="23/09/2010" dbserver="Microsoft SQL Server">
+		update oc_diagnoses set oc_diagnosis_serviceuid=d.oc_encounter_serviceuid
+		from oc_diagnoses a,@admin@..users b,@admin@..userparameters c,oc_encounters_view d
+		where
+		a.oc_diagnosis_updateuid=b.userid and
+		b.userid=c.userid and
+		b.userid&lt;&gt;4 and
+		c.parameter='defaultserviceid' and
+		(c.value is not null or c.value='') and
+		d.oc_encounter_objectid=convert(int,replace(a.oc_diagnosis_encounteruid,'1.','')) and
+		d.oc_encounter_serviceuid like c.value+'%' and
+		(a.oc_diagnosis_serviceuid is null or a.oc_diagnosis_serviceuid='')
+  	</Query>
+	<Query id="QUERY.diagnosisServices.1" db="openclinic" date="23/09/2010" dbserver="MySQL">
+		update oc_diagnoses a,@admin@.users b,@admin@.userparameters c,oc_encounters_view d
+		set a.oc_diagnosis_serviceuid=d.oc_encounter_serviceuid
+		where
+		a.oc_diagnosis_updateuid=b.userid and
+		b.userid=c.userid and
+		b.userid&lt;&gt;4 and
+		c.parameter='defaultserviceid' and
+		(c.value is not null or c.value='') and
+		d.oc_encounter_objectid=cast(replace(a.oc_diagnosis_encounteruid,'1.','') as signed) and
+		locate(c.value,d.oc_encounter_serviceuid)=1 and
+		(a.oc_diagnosis_serviceuid is null or a.oc_diagnosis_serviceuid='')
+  	</Query>
+	<Query id="QUERY.diagnosisServices.2" db="openclinic" date="23/09/2010" dbserver="Microsoft SQL Server">
+		update oc_diagnoses set oc_diagnosis_serviceuid=c.value
+		from oc_diagnoses a,@admin@..users b,@admin@..userparameters c
+		where
+		a.oc_diagnosis_updateuid=b.userid and
+		b.userid=c.userid and
+		b.userid&lt;&gt;4 and
+		c.value like 'CLI.%' and
+		c.parameter='defaultserviceid' and
+		(c.value is not null or c.value='') and
+		(a.oc_diagnosis_serviceuid is null or a.oc_diagnosis_serviceuid='')
+  	</Query>
+	<Query id="QUERY.diagnosisServices.2" db="openclinic" date="23/09/2010" dbserver="MySQL">
+		update oc_diagnoses a,@admin@.users b,@admin@.userparameters c
+		set a.oc_diagnosis_serviceuid=c.value
+		where
+		a.oc_diagnosis_updateuid=b.userid and
+		b.userid=c.userid and
+		b.userid&lt;&gt;4 and
+		c.value like 'CLI.%' and
+		c.parameter='defaultserviceid' and
+		(c.value is not null or c.value='') and
+		(a.oc_diagnosis_serviceuid is null or a.oc_diagnosis_serviceuid='')
+  	</Query>
+	<Query id="QUERY.diagnosisServices.3" db="openclinic" date="23/09/2010" dbserver="Microsoft SQL Server">
+		update oc_diagnoses set oc_diagnosis_serviceuid=d.oc_encounter_serviceuid
+		from oc_diagnoses a,oc_encounters_view d
+		where
+		d.oc_encounter_objectid=convert(int,replace(a.oc_diagnosis_encounteruid,'1.','')) and
+		(a.oc_diagnosis_serviceuid is null or a.oc_diagnosis_serviceuid='')
+  	</Query>
+	<Query id="QUERY.diagnosisServices.3" db="openclinic" date="23/09/2010" dbserver="MySQL">
+		update oc_diagnoses a,oc_encounters_view d
+		set a.oc_diagnosis_serviceuid=d.oc_encounter_serviceuid
+		where
+		d.oc_encounter_objectid=cast(replace(a.oc_diagnosis_encounteruid,'1.','') as signed) and
+		(a.oc_diagnosis_serviceuid is null or a.oc_diagnosis_serviceuid='')
+  	</Query>
+	<Query id="QUERY.updateAccessLogs.1" db="ocadmin" date="16/11/2010" dbserver="Microsoft SQL Server">
+	  	insert into AccessLogs(userid,accesstime,accessid,accesscode)
+		select updateuserid,updatetime,-personid,'M.'+convert(varchar(50),personid)
+		from admin a
+		where
+		updateuserid is not null and updatetime is not null and
+		not exists (select * from accesslogs where a.updateuserid=userid and accesscode='M.'+convert(varchar(50),personid))
+  	</Query>
+	<Query id="QUERY.updateAccessLogs.1" db="ocadmin" date="16/11/2010" dbserver="MySQL">
+	  	insert into AccessLogs(userid,accesstime,accessid,accesscode)
+		select updateuserid,updatetime,-personid,'M.'||convert(personid,char)
+		from admin a
+		where
+		updateuserid is not null and updatetime is not null and
+		not exists (select * from accesslogs where a.updateuserid=userid and accesscode='M.'||convert(personid,char))
+  	</Query>
+	<Query id="QUERY.updateRwandaZipcodes.1" db="ocadmin" date="13/08/2011" dbserver="MySQL">
+	  	update rwandazipcodes set district='RULINDO'  where district='rurindo'
+  	</Query>
+	<Query id="QUERY.updateDatacenterDomain.1" db="openclinic" date="9/11/2011" dbserver="Microsoft SQL Server">
+	  	update OC_CONFIG set OC_VALUE=replace(convert(varchar(255),OC_VALUE),'globalhealthbarometer.org','globalhealthbarometer.net') where OC_VALUE like '%globalhealthbarometer.org%'
+  	</Query>
+	<Query id="QUERY.updateDatacenterDomain.1" db="openclinic" date="9/11/2011" dbserver="MySQL">
+	  	update OC_CONFIG set OC_VALUE=replace(OC_VALUE,'globalhealthbarometer.org','globalhealthbarometer.net') where OC_VALUE like '%globalhealthbarometer.org%'
+  	</Query>
+	<Query id="QUERY.addOpenClinicDbNameKey" db="openclinic" date="31/01/2012" dbserver="MySQL">
+	  	insert into oc_config(oc_key,oc_value,updateuserid,updatetime) values('openclinicdbName','openclinic_dbo',4,now())
+  	</Query>
+  	<Query id='QUERY.updaterwandazipcodes.districtandcity' db="ocadmin" date="31/03/2012" dbserver="MySQL">
+		alter table rwandazipcodes modify column district varchar(255),modify column city varchar(255)
+  	</Query>
+  	<Query id='QUERY.updaterwandazipcodes.district' db="ocadmin" date="31/03/2012" dbserver="Microsoft SQL Server">
+  		alter table rwandazipcodes alter column district varchar(255)
+  	</Query>
+  	<Query id='QUERY.updaterwandazipcodes.city' db="ocadmin" date="31/03/2012" dbserver="Microsoft SQL Server">
+  		alter table rwandazipcodes alter column city varchar(255)
+  	</Query>
+  	<Query id='QUERY.updatedrczipcodes.districtandcity' db="ocadmin" date="31/03/2012" dbserver="MySQL">
+		alter table drczipcodes modify column district varchar(255),modify column city varchar(255)
+  	</Query>
+  	<Query id='QUERY.updatedrczipcodes.district' db="ocadmin" date="31/03/2012" dbserver="Microsoft SQL Server">
+  		alter table drczipcodes alter column district varchar(255)
+  	</Query>
+  	<Query id='QUERY.updatedrczipcodes.city' db="ocadmin" date="31/03/2012" dbserver="Microsoft SQL Server">
+  		alter table drczipcodes alter column city varchar(255)
+  	</Query>
+  	<Query id='QUERY.updatemalizipcodes.districtandcity' db="ocadmin" date="31/03/2012" dbserver="MySQL">
+		alter table malizipcodes modify column district varchar(255),modify column city varchar(255)
+  	</Query>
+  	<Query id='QUERY.updatemalizipcodes.district' db="ocadmin" date="31/03/2012" dbserver="Microsoft SQL Server">
+  		alter table malizipcodes alter column district varchar(255)
+  	</Query>
+  	<Query id='QUERY.updatemalizipcodes.city' db="ocadmin" date="31/03/2012" dbserver="Microsoft SQL Server">
+  		alter table malizipcodes alter column city varchar(255)
+  	</Query>
+  	<Query id='QUERY.updateburundizipcodes.districtandcity' db="ocadmin" date="31/03/2012" dbserver="MySQL">
+		alter table burundizipcodes modify column district varchar(255),modify column city varchar(255)
+  	</Query>
+  	<Query id='QUERY.updateburundizipcodes.district' db="ocadmin" date="31/03/2012" dbserver="Microsoft SQL Server">
+  		alter table burundizipcodes alter column district varchar(255)
+  	</Query>
+  	<Query id='QUERY.updateburundizipcodes.city' db="ocadmin" date="31/03/2012" dbserver="Microsoft SQL Server">
+  		alter table burundizipcodes alter column city varchar(255)
+  	</Query>
+  	<Query id="QUERY.Zipcode.1" db="ocadmin" date="23/03/2012">
+		alter table AdminPrivate modify column zipcode varchar(25) 	
+  	</Query>
+  	<Query id="QUERY.Examinations.1" db="openclinic" date="20/09/2012">
+		delete from Examinations where transactionType in ('be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DOSIMETRY','be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MEDICAL_DECONTAMINATION','be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_INTERNAL_EXPOSITION','be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DRIVING_LICENCE_DECLARATION','be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MIR','be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MIR_MOBILE_UNIT','be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_PRESCRIPTION') 	
+  	</Query>
+  	
+  	<Query id="QUERY.hr.contract.enableLegalReferenceCode.1" db="openclinic" date="13/05/2013" dbserver="MySQL">  	    
+	  	insert into oc_config(oc_key,oc_value,updateuserid,updatetime) values('enableLegalReferenceCode1','1',4,now())	  	 	
+  	</Query>
+  	<Query id="QUERY.hr.contract.enableLegalReferenceCode.2" db="openclinic" date="13/05/2013" dbserver="MySQL">  	    
+	  	insert into oc_config(oc_key,oc_value,updateuserid,updatetime) values('enableLegalReferenceCode2','1',4,now())	  	 	
+  	</Query>
+  	<Query id="QUERY.hr.contract.enableLegalReferenceCode.3" db="openclinic" date="13/05/2013" dbserver="MySQL">  	    
+	  	insert into oc_config(oc_key,oc_value,updateuserid,updatetime) values('enableLegalReferenceCode3','1',4,now())	  	 	
+  	</Query>
+  	<Query id="QUERY.hr.contract.enableLegalReferenceCode.4" db="openclinic" date="13/05/2013" dbserver="MySQL">  	    
+	  	insert into oc_config(oc_key,oc_value,updateuserid,updatetime) values('enableLegalReferenceCode4','1',4,now())	  	 	
+  	</Query>
+  	<Query id="QUERY.hr.contract.enableLegalReferenceCode.5" db="openclinic" date="13/05/2013" dbserver="MySQL">  	    
+	  	insert into oc_config(oc_key,oc_value,updateuserid,updatetime) values('enableLegalReferenceCode5','1',4,now())	  	 	
+  	</Query>
+  	
+  	<Query id="QUERY.hr.training.enableDiplomaCode.1" db="openclinic" date="14/05/2013" dbserver="MySQL">  	    
+	  	insert into oc_config(oc_key,oc_value,updateuserid,updatetime) values('enableDiplomaCode1','1',4,now())	  	 	
+  	</Query>  	
+  	<Query id="QUERY.hr.training.enableDiplomaCode.2" db="openclinic" date="14/05/2013" dbserver="MySQL">  	    
+	  	insert into oc_config(oc_key,oc_value,updateuserid,updatetime) values('enableDiplomaCode2','1',4,now())	  	 	
+  	</Query>  	
+  	<Query id="QUERY.hr.training.enableDiplomaCode.3" db="openclinic" date="14/05/2013" dbserver="MySQL">  	    
+	  	insert into oc_config(oc_key,oc_value,updateuserid,updatetime) values('enableDiplomaCode3','1',4,now())	  	 	
+  	</Query>  	
+  	<Query id="QUERY.kigarama" db="ocadmin" date="17/06/2013" dbserver="MySQL">  	    
+	  	delete from rwandazipcodes where zipcode='050513';
+	  	insert into rwandazipcodes(zipcode,district,city) values('050513','KIREHE','KIGARAMA')	  	 	
+  	</Query>  	
+  	<Query id="QUERY.kigarama" db="ocadmin" date="17/06/2013" dbserver="Microsoft SQL Server">  	    
+	  	delete from rwandazipcodes where zipcode='050513';
+	  	insert into rwandazipcodes(zipcode,district,city) values('050513','KIREHE','KIGARAMA')	  	 	
+  	</Query>  	
+  	<Query id="QUERY.prestationversions" db="openclinic" date="01/08/2013" dbserver="MySQL">  	    
+	  	update OC_TARIFFS,OC_PRESTATIONS set OC_TARIFF_VERSION=OC_PRESTATION_VERSION where replace(OC_TARIFF_PRESTATIONUID,'1.','')=OC_PRESTATION_OBJECTID and OC_TARIFF_VERSION IS NULL	  	 	
+  	</Query>  	
+  	<Query id="QUERY.prestationversions" db="openclinic" date="01/08/2013" dbserver="Microsoft SQL Server">  	    
+		update OC_TARIFFS set OC_TARIFF_VERSION=OC_PRESTATION_VERSION from OC_TARIFFS,OC_PRESTATIONS where 
+		replace(OC_TARIFF_PRESTATIONUID,'1.','')=OC_PRESTATION_OBJECTID and OC_TARIFF_VERSION IS NULL
+  	</Query>  
+  	<Query id='QUERY.en-icd10-quotes-en' db='openclinic' date='03/12/2013' dbserver='MySQL'>
+  		update icd10 set labelen=replace(labelen,'\\''','`') where labelen like '%\\''%'
+  	</Query>	
+  	<Query id='QUERY.en-icd10-quotes-en' db='openclinic' date='03/12/2013' dbserver='Microsoft SQL Server'>
+	  	update ICD10 set labelen=replace(labelen,'\'+CHAR(39),'`') where labelen like '%\'+CHAR(39)+'%'
+  	</Query>	
+  	<Query id='QUERY.en-icd10-quotes-nl' db='openclinic' date='03/12/2013' dbserver='MySQL'>
+  		update icd10 set labelnl=replace(labelnl,'''','`') where labelnl like '%''%'
+  	</Query>	
+  	<Query id='QUERY.en-icd10-quotes-nl' db='openclinic' date='03/12/2013' dbserver='Microsoft SQL Server'>
+	  	update ICD10 set labelnl=replace(labelnl,'\'+CHAR(39),'`') where labelnl like '%\'+CHAR(39)+'%'
+  	</Query>		
+  	<Query id='QUERY.insert.record.ItemViewList.1' db='openclinic' date='18/02/2014' dbserver='Microsoft SQL Server'>
+  	    insert into ItemViewList (itemType,label,context1,context2,context3,priority,showValue)
+         values ('ITEM_TYPE_BRONCHOSCOPY_PROTOCOL_MOTIVE','be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_BRONCHOSCOPY_PROTOCOL_MOTIVE',null,null,null,100,1)
+    </Query>	
+  	<Query id='QUERY.insert.record.ItemViewList.2' db='openclinic' date='18/02/2014' dbserver='Microsoft SQL Server'>
+  	    insert into ItemViewList (itemType,label,context1,context2,context3,priority,showValue)
+         values ('ITEM_TYPE_BRONCHOSCOPY_PROTOCOL_ENDOSCOPY_TYPE','be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_BRONCHOSCOPY_PROTOCOL_ENDOSCOPY_TYPE',null,null,null,101,1)
+    </Query>	
+  	<Query id='QUERY.fr-icd10-labels-fr' db='openclinic' date='09/01/2014' dbserver='Microsoft SQL Server'>
+	  	update icd10 set labelfr=upper('MALADIES DES NERFS, RACINES ET PLEXUS NERVEUX') where code='06g';
+  	</Query>	
+  	<Query id='QUERY.fr-icd10-labels-fr' db='openclinic' date='09/01/2014' dbserver='Microsoft SQL Server'>
+		update icd10 set labelfr=upper('Polyneuropathies ET AUTRES TROUBLES du systeme nerveux peripherique') where code='06h';
+  	</Query>	
+  	<Query id='QUERY.fr-icd10-labels-fr' db='openclinic' date='09/01/2014' dbserver='Microsoft SQL Server'>
+		update icd10 set labelfr=upper('MALADIES DE JONCTION NEUROMUSCULAIRE ET MUSCLES') where code='06i';
+  	</Query>	
+  	<Query id='QUERY.fr-icd10-labels-fr' db='openclinic' date='09/01/2014' dbserver='MySQL'>
+	  	update icd10 set labelfr=upper('MALADIES DES NERFS, RACINES ET PLEXUS NERVEUX') where code='06g';
+  	</Query>	
+  	<Query id='QUERY.fr-icd10-labels-fr' db='openclinic' date='09/01/2014' dbserver='MySQL'>
+		update icd10 set labelfr=upper('Polyneuropathies ET AUTRES TROUBLES du systeme nerveux peripherique') where code='06h';
+  	</Query>	
+  	<Query id='QUERY.fr-icd10-labels-fr' db='openclinic' date='09/01/2014' dbserver='MySQL'>
+		update icd10 set labelfr=upper('MALADIES DE JONCTION NEUROMUSCULAIRE ET MUSCLES') where code='06i';
+  	</Query>	
+  	<Query id='QUERY.correct.itemtypeid.1' db='openclinic' date='09/01/2014' dbserver='MySQL'>
+  	    update transactionitems set itemtypeid = 'be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'
+         where itemtypeid = 'xs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'
+  	</Query>	
+  	<Query id='QUERY.update_productstocks_history' db='openclinic' date='18/04/2015' dbserver='MySQL'>
+		ALTER TABLE oc_productstocks_history MODIFY COLUMN OC_STOCK_MINIMUMLEVEL INT(10) DEFAULT NULL,
+		MODIFY COLUMN OC_STOCK_MAXIMUMLEVEL INT(10) DEFAULT NULL,
+		MODIFY COLUMN OC_STOCK_ORDERLEVEL INT(10) DEFAULT NULL,
+		MODIFY COLUMN OC_STOCK_BEGIN DATETIME DEFAULT NULL,
+		MODIFY COLUMN OC_STOCK_END DATETIME DEFAULT NULL,
+		MODIFY COLUMN OC_STOCK_DEFAULTIMPORTANCE VARCHAR(255) DEFAULT NULL;
+  	</Query>	
+  	<Query id='QUERY.dropranksview' db='ocadmin' date='18/04/2015' dbserver='MySQL'>
+		drop view ranksview;
+  	</Query>	
+  	<Query id='QUERY.dropranksview2' db='ocadmin' date='18/04/2015' dbserver='MySQL'>
+		drop view ranksview2;
+  	</Query>	
+  	<Query id='QUERY.dropfunctionsview' db='openclinic' date='18/04/2015' dbserver='MySQL'>
+		drop view functionsview;
+  	</Query>	
+  	<Query id='QUERY.removelabelerror' db='openclinic' date='22/11/2015' dbserver='MySQL'>
+		update OC_LABELS set OC_LABEL_VALUE=replace(OC_LABEL_VALUE,'&lt;:b&gt;','&lt;/b&gt;');
+  	</Query>	
+  	<Query id='QUERY.removelabelerror' db='openclinic' date='22/11/2015' dbserver='Microsoft SQL Server'>
+		update OC_LABELS set OC_LABEL_VALUE=replace(OC_LABEL_VALUE,'&lt;:b&gt;','&lt;/b&gt;');
+  	</Query>	
+  	<Query id='QUERY.updatescreenstable' db='openclinic' date='17/01/2016' dbserver='Microsoft SQL Server'>
+		alter table oc_screens drop column oc_screen_xmldata;
+		alter table oc_screens add oc_screen_xmldata text null;
+		alter table oc_screens_history drop column oc_screen_xmldata;
+		alter table oc_screens_history add oc_screen_xmldata text null;
+  	</Query>	
+  	<Query id='QUERY.updatescreenstable' db='openclinic' date='17/01/2016' dbserver='MySQL'>
+		alter table oc_screens modify column oc_screen_xmldata text;
+		alter table oc_screens_history modify column oc_screen_xmldata text;
+  	</Query>	
+  	<Query id='QUERY.updatebatchesobjectid' db='openclinic' date='30/03/2016' dbserver='MySQL'>
+  		drop index oc_batch_objectid on oc_batches;
+		alter table oc_batches modify column oc_batch_objectid int;
+		create index oc_batch_objectid on oc_batches(oc_batch_objectid);
+  	</Query>	
+  	<Query id='QUERY.updatebatchesobjectid' db='openclinic' date='30/03/2016' dbserver='Microsoft SQL Server'>
+  		drop index oc_batch_objectid on oc_batches;
+		alter table oc_batches alter column oc_batch_objectid int;
+		create index oc_batch_objectid on oc_batches(oc_batch_objectid);
+  	</Query>	
+  	<Query id='QUERY.updatepacsuid' db='openclinic' date='30/05/2016' dbserver='MySQL'>
+		alter table oc_pacs modify column oc_pacs_studyuid varchar(255);
+  	</Query>	
+  	<Query id='QUERY.updatepacsuid' db='openclinic' date='30/05/2016' dbserver='Microsoft SQL Server'>
+		alter table oc_pacs alter column oc_pacs_studyuid varchar(255);
+  	</Query>	
+  	<Query id='QUERY.admin.comment4.ext3000' db='ocadmin' date='20/08/2016' dbserver='Microsoft SQL Server'>
+		alter table admin alter column comment4 varchar(3000);
+  	</Query>	
+  	<Query id='QUERY.admin.comment4.ext3000' db='ocadmin' date='20/08/2016' dbserver='MySQL'>
+		alter table admin modify column comment4 varchar(3000);
+  	</Query>	
+  	<Query id='QUERY.openclinic.insurarcredits.invoiceuid' db='openclinic' date='21/01/2017' dbserver='Microsoft SQL Server'>
+		alter table oc_insurarcredits alter column oc_insurarcredit_invoiceuid varchar(50);
+  	</Query>	
+  	<Query id='QUERY.openclinic.insurarcredits.invoiceuid' db='openclinic' date='21/01/2017' dbserver='MySQL'>
+		alter table oc_insurarcredits modify column oc_insurarcredit_invoiceuid varchar(50);
+  	</Query>	
+  	<Query id='QUERY.ocadmin.burundizipcodes.cibitoke' db='ocadmin' date='05/06/2017' dbserver='MySQL'>
+		update burundizipcodes set zipcode='BI.CI.CI',district='CIBITOKE' where zipcode='BI.BM.10';
+  	</Query>	
+  	<Query id='QUERY.ocadmin.burundizipcodes.cibitoke' db='ocadmin' date='05/06/2017' dbserver='Microsoft SQL Server'>
+		update burundizipcodes set zipcode='BI.CI.CI',district='CIBITOKE' where zipcode='BI.BM.10';
+  	</Query>
+  	<Query id='QUERY.openclinic.oclabelsexpand' db='openclinic' date='25/09/2017' dbserver='Microsoft SQL Server'>
+		alter table oc_labels alter column oc_label_value varchar(5000);
+  	</Query>
+  	<Query id='QUERY.openclinic.oclabelsexpand' db='openclinic' date='25/09/2017' dbserver='MySQL'>
+		alter table oc_labels modify oc_label_value varchar(5000);
+  	</Query>
+  	<Query id='QUERY.openclinic.ocpointersexpand' db='openclinic' date='09/03/2018' dbserver='Microsoft SQL Server'>
+		alter table oc_pointers alter column oc_pointer_value varchar(5000);
+  	</Query>
+  	<Query id='QUERY.openclinic.ocpointersexpand' db='openclinic' date='09/03/2018' dbserver='MySQL'>
+		alter table oc_pointers modify oc_pointer_value varchar(5000);
+  	</Query>
+  	<Query id='QUERY.openclinic.adminexpand' db='ocadmin' date='09/09/2018' dbserver='MySQL'>
+		alter table admin modify comment varchar(5000);
+		alter table adminhistory modify comment varchar(5000);
+  	</Query>
+  	<Query id='QUERY.openclinic.adminexpand' db='ocadmin' date='09/09/2018' dbserver='Microsoft SQL Server'>
+		alter table admin modify alter column varchar(5000);
+		alter table adminhistory alter column comment varchar(5000);
+  	</Query>
+  	<Query id='QUERY.openclinic.labelquotes' db='openclinic' date='08/05/2019' dbserver='MySQL'>
+		update oc_labels set oc_label_value=replace(oc_label_value,'''red''','"red"');
+  	</Query>
+  	<Query id='QUERY.openclinic.labelquotes' db='openclinic' date='08/05/2019' dbserver='Microsoft SQL Server'>
+		update oc_labels set oc_label_value=replace(oc_label_value,'''red''','"red"');  	
+	</Query>
+  	<Query id='QUERY.openclinic.nursingfractions2' db='openclinic' date='05/07/2019' dbserver='MySQL'>
+		alter table oc_prescription_administration modify oc_schema_quantity double;
+  	</Query>
+  	<Query id='QUERY.openclinic.nursingfractions2' db='openclinic' date='05/07/2019' dbserver='Microsoft SQL Server'>
+		alter table oc_prescription_administration alter column oc_schema_quantity double;
+  	</Query>
+  	<Query id='QUERY.openclinic.uniquedebets' db='openclinic' date='14/07/2019' dbserver='MySQL'>
+		create table doubledebets like oc_debets;
+		insert into doubledebets(oc_debet_objectid) select oc_debet_objectid from (select count(*) total,oc_debet_objectid from oc_debets group by oc_debet_objectid having count(*)>1) b;
+		update doubledebets a,oc_debets b
+		set a.OC_DEBET_SERVERID=b.OC_DEBET_SERVERID,
+		a.OC_DEBET_AMOUNT=b.OC_DEBET_AMOUNT,
+		a.OC_DEBET_BALANCEUID=b.OC_DEBET_BALANCEUID,
+		a.OC_DEBET_DATE=b.OC_DEBET_DATE,
+		a.OC_DEBET_DESCRIPTION=b.OC_DEBET_DESCRIPTION,
+		a.OC_DEBET_ENCOUNTERUID=b.OC_DEBET_ENCOUNTERUID,
+		a.OC_DEBET_PRESTATIONUID=b.OC_DEBET_PRESTATIONUID,
+		a.OC_DEBET_SUPPLIERTYPE=b.OC_DEBET_SUPPLIERTYPE,
+		a.OC_DEBET_SUPPLIERUID=b.OC_DEBET_SUPPLIERUID,
+		a.OC_DEBET_REFTYPE=b.OC_DEBET_REFTYPE,
+		a.OC_DEBET_REFUID=b.OC_DEBET_REFUID,
+		a.OC_DEBET_CREATETIME=b.OC_DEBET_CREATETIME,
+		a.OC_DEBET_UPDATETIME=b.OC_DEBET_UPDATETIME,
+		a.OC_DEBET_UPDATEUID=b.OC_DEBET_UPDATEUID,
+		a.OC_DEBET_VERSION=b.OC_DEBET_VERSION,
+		a.oc_debet_quantity=b.oc_debet_quantity,
+		a.OC_DEBET_CREDITED=b.OC_DEBET_CREDITED,
+		a.OC_DEBET_INSURANCEUID=b.OC_DEBET_INSURANCEUID,
+		a.OC_DEBET_PATIENTINVOICEUID=b.OC_DEBET_PATIENTINVOICEUID,
+		a.OC_DEBET_INSURARINVOICEUID=b.OC_DEBET_INSURARINVOICEUID,
+		a.OC_DEBET_COMMENT=b.OC_DEBET_COMMENT,
+		a.oc_debet_insuraramount=b.oc_debet_insuraramount,
+		a.OC_DEBET_EXTRAINSURARUID=b.OC_DEBET_EXTRAINSURARUID,
+		a.OC_DEBET_EXTRAINSURARINVOICEUID=b.OC_DEBET_EXTRAINSURARINVOICEUID,
+		a.OC_DEBET_EXTRAINSURARAMOUNT=b.OC_DEBET_EXTRAINSURARAMOUNT,
+		a.OC_DEBET_RENEWALINTERVAL=b.OC_DEBET_RENEWALINTERVAL,
+		a.OC_DEBET_RENEWALDATE=b.OC_DEBET_RENEWALDATE,
+		a.OC_DEBET_PERFORMERUID=b.OC_DEBET_PERFORMERUID,
+		a.OC_DEBET_EXTRAINSURARUID2=b.OC_DEBET_EXTRAINSURARUID2,
+		a.OC_DEBET_EXTRAINSURARINVOICEUID2=b.OC_DEBET_EXTRAINSURARINVOICEUID2,
+		a.OC_DEBET_EXTRAINSURARAMOUNT2=b.OC_DEBET_EXTRAINSURARAMOUNT2,
+		a.OC_DEBET_SERVICEUID=b.OC_DEBET_SERVICEUID
+		where a.oc_debet_objectid=b.oc_debet_objectid;
+		delete from oc_debets where oc_debet_objectid in (select oc_debet_objectid from doubledebets);
+		insert into oc_debets select * from doubledebets;
+		drop table doubledebets;
+		drop index oc_debet_objectid on oc_debets;
+		create unique index oc_debet_objectid on oc_debets(oc_debet_objectid);
+  	</Query>
+  	<Query id='QUERY.openclinic.uniquedebets' db='openclinic' date='14/07/2019' dbserver='Microsoft SQL Server'>
+		select * into doubledebets from oc_debets where 1=0;
+		insert into doubledebets(oc_debet_objectid) select oc_debet_objectid from (select count(*) total,oc_debet_objectid from oc_debets group by oc_debet_objectid having count(*)>1) b;
+		update doubledebets
+		set OC_DEBET_SERVERID=b.OC_DEBET_SERVERID,
+		OC_DEBET_AMOUNT=b.OC_DEBET_AMOUNT,
+		OC_DEBET_BALANCEUID=b.OC_DEBET_BALANCEUID,
+		OC_DEBET_DATE=b.OC_DEBET_DATE,
+		OC_DEBET_DESCRIPTION=b.OC_DEBET_DESCRIPTION,
+		OC_DEBET_ENCOUNTERUID=b.OC_DEBET_ENCOUNTERUID,
+		OC_DEBET_PRESTATIONUID=b.OC_DEBET_PRESTATIONUID,
+		OC_DEBET_SUPPLIERTYPE=b.OC_DEBET_SUPPLIERTYPE,
+		OC_DEBET_SUPPLIERUID=b.OC_DEBET_SUPPLIERUID,
+		OC_DEBET_REFTYPE=b.OC_DEBET_REFTYPE,
+		OC_DEBET_REFUID=b.OC_DEBET_REFUID,
+		OC_DEBET_CREATETIME=b.OC_DEBET_CREATETIME,
+		OC_DEBET_UPDATETIME=b.OC_DEBET_UPDATETIME,
+		OC_DEBET_UPDATEUID=b.OC_DEBET_UPDATEUID,
+		OC_DEBET_VERSION=b.OC_DEBET_VERSION,
+		oc_debet_quantity=b.oc_debet_quantity,
+		OC_DEBET_CREDITED=b.OC_DEBET_CREDITED,
+		OC_DEBET_INSURANCEUID=b.OC_DEBET_INSURANCEUID,
+		OC_DEBET_PATIENTINVOICEUID=b.OC_DEBET_PATIENTINVOICEUID,
+		OC_DEBET_INSURARINVOICEUID=b.OC_DEBET_INSURARINVOICEUID,
+		OC_DEBET_COMMENT=b.OC_DEBET_COMMENT,
+		oc_debet_insuraramount=b.oc_debet_insuraramount,
+		OC_DEBET_EXTRAINSURARUID=b.OC_DEBET_EXTRAINSURARUID,
+		OC_DEBET_EXTRAINSURARINVOICEUID=b.OC_DEBET_EXTRAINSURARINVOICEUID,
+		OC_DEBET_EXTRAINSURARAMOUNT=b.OC_DEBET_EXTRAINSURARAMOUNT,
+		OC_DEBET_RENEWALINTERVAL=b.OC_DEBET_RENEWALINTERVAL,
+		OC_DEBET_RENEWALDATE=b.OC_DEBET_RENEWALDATE,
+		OC_DEBET_PERFORMERUID=b.OC_DEBET_PERFORMERUID,
+		OC_DEBET_EXTRAINSURARUID2=b.OC_DEBET_EXTRAINSURARUID2,
+		OC_DEBET_EXTRAINSURARINVOICEUID2=b.OC_DEBET_EXTRAINSURARINVOICEUID2,
+		OC_DEBET_EXTRAINSURARAMOUNT2=b.OC_DEBET_EXTRAINSURARAMOUNT2,
+		OC_DEBET_SERVICEUID=b.OC_DEBET_SERVICEUID
+		from doubledebets a, oc_debets b
+		where a.oc_debet_objectid=b.oc_debet_objectid;
+		delete from oc_debets where oc_debet_objectid in (select oc_debet_objectid from doubledebets);
+		insert into oc_debets select * from doubledebets;
+		drop table doubledebets;
+		drop index oc_debet_objectid on oc_debets;
+		create unique index oc_debet_objectid on oc_debets(oc_debet_objectid);
+  	</Query>
+  	<Query id='QUERY.openclinic.uniqueadmins' db='ocadmin' date='14/07/2019' dbserver='MySQL'>
+		create table doubleadmins like admin;
+		insert into doubleadmins(personid) select personid from (select count(*),personid from admin group by personid having count(*)>1) b;
+		update doubleadmins a,admin b
+		set a.immatold=b.immatold,
+		a.immatnew=b.immatnew,
+		a.candidate=b.candidate,
+		a.lastname=b.lastname,
+		a.firstname=b.firstname,
+		a.gender=b.gender,
+		a.dateofbirth=b.dateofbirth,
+		a.comment=b.comment,
+		a.sourceid=b.sourceid,
+		a.language=b.language,
+		a.engagement=b.engagement,
+		a.pension=b.pension,
+		a.statute=b.statute,
+		a.claimant=b.claimant,
+		a.searchname=b.searchname,
+		a.claimant_expiration=b.claimant_expiration,
+		a.updatetime=b.updatetime,
+		a.native_country=b.native_country,
+		a.native_town=b.native_town,
+		a.motive_end_of_service=b.motive_end_of_service,
+		a.startdate_inactivity=b.startdate_inactivity,
+		a.enddate_inactivity=b.enddate_inactivity,
+		a.code_inactivity=b.code_inactivity,
+		a.update_status=b.update_status,
+		a.person_type=b.person_type,
+		a.situation_end_of_service=b.situation_end_of_service,
+		a.updateuserid=b.updateuserid,
+		a.comment1=b.comment1,
+		a.comment2=b.comment2,
+		a.comment3=b.comment3,
+		a.comment4=b.comment4,
+		a.comment5=b.comment5,
+		a.natreg=b.natreg,
+		a.middlename=b.middlename,
+		a.begindate=b.begindate,
+		a.enddate=b.enddate,
+		a.updateserverid=b.updateserverid,
+		a.archiveFileCode=b.archiveFileCode
+		where a.personid=b.personid;
+		delete from admin where personid in (select personid from doubleadmins);
+		insert into admin select * from doubleadmins;
+		drop table doubleadmins;
+		drop index admin_personid on admin;
+		create unique index admin_personid on admin(personid);
+  	</Query>
+  	<Query id='QUERY.openclinic.uniqueadmins' db='ocadmin' date='14/07/2019' dbserver='Microsoft SQL Server'>
+		select * into doubleadmins from admin where 1=0;
+		insert into doubleadmins(personid) select personid from (select count(*) total,personid from admin group by personid having count(*)>1) b;
+		update doubleadmins
+		set immatold=b.immatold,
+		immatnew=b.immatnew,
+		candidate=b.candidate,
+		lastname=b.lastname,
+		firstname=b.firstname,
+		gender=b.gender,
+		dateofbirth=b.dateofbirth,
+		comment=b.comment,
+		sourceid=b.sourceid,
+		language=b.language,
+		engagement=b.engagement,
+		pension=b.pension,
+		statute=b.statute,
+		claimant=b.claimant,
+		searchname=b.searchname,
+		claimant_expiration=b.claimant_expiration,
+		updatetime=b.updatetime,
+		native_country=b.native_country,
+		native_town=b.native_town,
+		motive_end_of_service=b.motive_end_of_service,
+		startdate_inactivity=b.startdate_inactivity,
+		enddate_inactivity=b.enddate_inactivity,
+		code_inactivity=b.code_inactivity,
+		update_status=b.update_status,
+		person_type=b.person_type,
+		situation_end_of_service=b.situation_end_of_service,
+		updateuserid=b.updateuserid,
+		comment1=b.comment1,
+		comment2=b.comment2,
+		comment3=b.comment3,
+		comment4=b.comment4,
+		comment5=b.comment5,
+		natreg=b.natreg,
+		middlename=b.middlename,
+		begindate=b.begindate,
+		enddate=b.enddate,
+		updateserverid=b.updateserverid,
+		archiveFileCode=b.archiveFileCode
+		from doubleadmins a,admin b
+		where a.personid=b.personid;
+		delete from admin where personid in (select personid from doubleadmins);
+		insert into admin select * from doubleadmins;
+		drop table doubleadmins;
+		drop index admin_personid on admin;
+		create unique index admin_personid on admin(personid);
+  	</Query>
+</Queries>
