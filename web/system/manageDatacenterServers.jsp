@@ -5,6 +5,7 @@
 
 <%
 	String sGroupId = SH.c(request.getParameter("groupid"));
+	String sServerGroupId = SH.c(request.getParameter("servergroupid"));
 
 	if(request.getParameter("saveButton")!=null){
 		String sId = request.getParameter("server_id");
@@ -39,7 +40,20 @@
 		ps.setString(4,SH.c(request.getParameter("server_key")));
 		ps.execute();
 		ps.close();
-		conn.close();
+		System.out.println("////////////////////////// GroupID =*"+sGroupId+"* ["+sId+"]");
+		if(sServerGroupId.length()>0){
+			ps = conn.prepareStatement("delete from dc_servergroups where dc_servergroup_id=? and dc_servergroup_serverid=?");
+			ps.setString(1,sServerGroupId);
+			ps.setString(2,sId);
+			ps.execute();
+			ps.close();
+			ps = conn.prepareStatement("insert into dc_servergroups(dc_servergroup_id,dc_servergroup_serverid) values(?,?)");
+			ps.setString(1,sServerGroupId);
+			ps.setString(2,sId);
+			ps.execute();
+			ps.close();
+		}
+		conn.close();	
 	}
 	else if(request.getParameter("deleteButton")!=null){
 		String sId = request.getParameter("server_id");

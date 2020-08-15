@@ -81,7 +81,20 @@
 				</table>
 			</td>
 		</tr>
-	<% } %>
+	<% 
+		}
+	else{
+	%>
+		<tr>
+			<td class='admin' width='1%' nowrap><%=getTran(request,"web","grouplinked",sWebLanguage) %>&nbsp;</td>
+			<td class='admin2'>
+				<select class='text' name='servergroupid' id='servergroupid'>
+					<option/>
+					<%=SH.writeSelect(request, "datacenterservergroup", "", sWebLanguage) %>
+				</select>
+			</td>
+		</tr>
+	<%} %>
 	<tr>
 		<td/>
 		<td>
