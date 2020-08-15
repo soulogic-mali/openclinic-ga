@@ -271,7 +271,7 @@ public class MedicalDossierPDFCreator extends PDFDossierCreator {
                     String sSourceFullName      = ScreenHelper.getFullPersonName(relation.sourceId),
                            sDestinationFullName = ScreenHelper.getFullPersonName(relation.destinationId);
                              
-                    if(activePatient.personid.equals(relation)){
+                    if(activePatient.personid.equals(relation.sourceId)){
                         // source - destination           
                     	table.addCell(createValueCell(sSourceFullName,1));
                     	table.addCell(createValueCell(sDestinationFullName,1));
