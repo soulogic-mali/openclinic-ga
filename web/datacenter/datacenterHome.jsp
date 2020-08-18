@@ -67,7 +67,7 @@
                         <%
                             if(session.getAttribute("datacenteruser")!=null){
 		                        %>
-		                            <img height="40px;" src="<%=MedwanQuery.getInstance().getConfigString("datacenterUserLogo."+session.getAttribute("datacenteruser"))%>"/>
+		                            <img style='max-height: 40px;max-width: 200px' src="<%=MedwanQuery.getInstance().getConfigString("datacenterUserLogo."+session.getAttribute("datacenteruser"),MedwanQuery.getInstance().getConfigString("datacenterUserLogo",sCONTEXTPATH+"/_img/world.png"))%>"/>
 		                        <%
                             }
                         %>

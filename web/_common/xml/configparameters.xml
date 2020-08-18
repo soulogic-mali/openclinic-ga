@@ -548,6 +548,9 @@
 		<parameter name="datacenterTemplateSource" default="http://localhost:8080/datacenter/">
 		    <description language="en">The base url for the datacenter project</description>
 		</parameter>
+		<parameter name="datacenterUserLogo" default="/openclinic/_img/world.png">
+		    <description language="en">The default logo for the datacenter page footer</description>
+		</parameter>
 		<parameter name="datacenterVisitTypes" default="'visit'">
 		    <description language="en">Type of encounter to search for when exporting medical data (medical.1.2)</description>
 		</parameter>

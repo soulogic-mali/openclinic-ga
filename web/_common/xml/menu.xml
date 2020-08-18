@@ -180,6 +180,7 @@
 		<Menu labelid="wiki" url="javascript:showwiki();"/>
 		<Menu labelid="versionhistory" url="javascript:showversionhistory();"/>
 		<Menu labelid="teleconsultation" url="javascript:showteleconsultation();"/>
+		<Menu labelid="smartglasses" url="javascript:showsmartglasses();"/>
 		<Menu labelid="clinicalassistant" patientselected="true" accessrights="clinicalassistant.select" url="/main.do?Page=curative/clinicalAssistant.jsp" activeencounter="true"/>
 	</Menu>
 	<!-- ######################### these are 'links' which are not to be displayed as a menu-item,      ########################## -->

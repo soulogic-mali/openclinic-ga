@@ -971,6 +971,13 @@
 	  window.open("https://appr.tc"+key,"OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
   }
   
+  function showsmartglasses(){
+	  var key=window.prompt('<%=getTranNoLink("web","teleconsultationkey",sWebLanguage)%>');
+	  if(key && key!='null'){
+		  window.open("https://wizzeye.app/"+key,"OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
+	  }
+  }
+  
   function downloadPharmacyExport(){
     var w = window.open("<c:url value='/pharmacy/exportFile.jsp'/>");
   }

@@ -51,7 +51,6 @@
         sJsArray+="["+dDate.getTime()+","+iValue+"],";
     }
     sJsArray+="]";
-    System.out.println(sJsArray);
 %>
 
 <div style="float:left;padding-left:20px;">

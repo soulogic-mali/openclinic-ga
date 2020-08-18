@@ -22,6 +22,8 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.jnp.interfaces.java.javaURLContextFactory;
 
+import com.sun.org.apache.xml.internal.security.utils.Base64;
+
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.Debug;
 import be.mxs.common.util.system.ScreenHelper;
@@ -978,7 +980,7 @@ public class Importer {
 						ps.setString(5, patient.element("gender").getText());
 						ps.setString(6, patient.element("dateofbirth").getText());
 						ps.setString(7, patient.element("archivefile").getText());
-						ps.setBytes(8, patient.elementText("picture")!=null?javax.mail.internet.MimeUtility.decodeText(patient.elementText("picture")).getBytes("UTF-8"):null);
+						ps.setBytes(8, patient.elementText("picture")!=null?org.apache.commons.codec.binary.Base64.decodeBase64(patient.elementText("picture")):null);
 						ps.setTimestamp(9, new java.sql.Timestamp(importMessage.getCreateDateTime().getTime()));
 						ps.execute();
 						ps.close();

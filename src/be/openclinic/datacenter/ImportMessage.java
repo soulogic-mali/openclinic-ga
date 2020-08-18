@@ -336,6 +336,12 @@ public class ImportMessage extends DatacenterMessage {
 			else if(to.split("\\:").length==2 && to.split("\\:")[0].equalsIgnoreCase("HTTP")){
 				String content="<?xml version='1.0' encoding='UTF-8'?><message type='datacenter.importack' id='"+msgid+"'>"+destinations.get(to)+"</message>";
 				HTTPSender.sendImportAckMessage(content, to.split("\\:")[1],msgid);
+				//We only set the importAckDateTime if transmission of Ack messages was successfull
+				Vector ackmsgs = (Vector)acks.get(to);
+				for(int n=0;n<ackmsgs.size();n++){
+					ImportMessage importMessage = (ImportMessage)ackmsgs.elementAt(n);
+					importMessage.updateImportAckDateTime(importMessage.getImportAckDateTime());
+				}
 			}
 		}
 	}

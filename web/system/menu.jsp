@@ -165,6 +165,7 @@
                     hMenu.put(getTran(request,"web.manage","configure.core",sWebLanguage),"main.do?Page=system/resetDefaults.jsp");
                     hMenu.put(getTran(request,"web.manage","load.file",sWebLanguage),"main.do?Page=system/loadTable.jsp");
                     hMenu.put(getTran(request,"web.manage","export.labels",sWebLanguage),"main.do?Page=system/exportLabels.jsp");
+                    hMenu.put(getTran(request,"web.manage","update.code",sWebLanguage),"main.do?Page=system/updateCode.jsp");
 
                     out.print(ScreenHelper.writeTblHeader(getTran(request,"web.manage","Synchronization",sWebLanguage),sCONTEXTPATH)+
                     		  sortMenu(hMenu)+

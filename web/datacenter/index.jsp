@@ -3,10 +3,10 @@
 
 <%
 	if(session.getAttribute("activeUser")==null){
-		autoLogin("4","overmeire",request);
+		datacenterLogin(request);
 		reloadSingleton(session);
 		User activeUser = (User)session.getAttribute("activeUser");
-		activeUser.person.language=MedwanQuery.getInstance().getConfigString("datacenterUserLanguage."+request.getParameter("username"),"fr");
+		activeUser.person.language=MedwanQuery.getInstance().getConfigString("datacenterUserLanguage."+request.getParameter("username"),MedwanQuery.getInstance().getConfigString("datacenterUserLanguage","fr"));
         session.setAttribute(sAPPTITLE + "WebLanguage", activeUser.person.language);
 	}
     Hashtable langHashtable = MedwanQuery.getInstance().getLabels();

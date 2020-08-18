@@ -131,5 +131,8 @@
     if(activeUser==null){
         %><script>window.location.href="<c:url value='/relogin.do'/>?ts=<%=getTs()%>";</script><%
     }
+    else if(activeUser.userid.equalsIgnoreCase("-1") && request.getRequestURI().indexOf("datacenter")<0){
+        %><script>window.location.href="<c:url value='/datacenter'/>?ts=<%=getTs()%>";</script><%
+    }
     
 %>

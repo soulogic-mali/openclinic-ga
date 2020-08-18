@@ -75,39 +75,11 @@ public class HTTPSender extends Sender {
 	
 
 	public static boolean sendImportAckMessage(String messageContent, String to, String msgid) {
- 		String url = MedwanQuery.getInstance().getConfigString("datacenterHTTPURL","http://www.globalhealthbarometer.net/globalhealthbarometer/datacenter/postMessage.jsp");
-        String key = MedwanQuery.getInstance().getConfigString("datacenterHTTPKey","");
-        //Create message content
-		HttpClient client = new HttpClient();
-		PostMethod method = new PostMethod(url);
-		method.addParameter("key",key);
-		method.addParameter("type","importack");
-		method.addParameter("message",messageContent);
-		try {
-			client.executeMethod(method);
-			return method.getResponseBodyAsString().contains("<OK>");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
+		return true;
 	}
 
 	public static boolean sendImportAckMessage(ImportMessage importMessage) {
- 		String url = MedwanQuery.getInstance().getConfigString("datacenterHTTPURL","http://www.globalhealthbarometer.net/globalhealthbarometer/datacenter/postMessage.jsp");
-        String key = MedwanQuery.getInstance().getConfigString("datacenterHTTPKey","");
-        //Create message content
-		HttpClient client = new HttpClient();
-		PostMethod method = new PostMethod(url);
-		method.addParameter("key",key);
-		method.addParameter("type","importack");
-		method.addParameter("message",importMessage.asImportAckXML());
-		try {
-			client.executeMethod(method);
-			return method.getResponseBodyAsString().contains("<OK>");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
+		return true;
 	}
 
 	public static boolean sendSysadminMessage(String s, DatacenterMessage msg) {

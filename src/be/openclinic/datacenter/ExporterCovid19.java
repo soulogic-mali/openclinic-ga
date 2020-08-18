@@ -38,7 +38,7 @@ public class ExporterCovid19 extends Exporter {
 			Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection(), oc_conn2;
 			Date date = new Date();
 			try {
-				PreparedStatement ps = oc_conn.prepareStatement("select * from OC_EXPORTS where OC_EXPORT_ID='encounter.1' and OC_EXPORT_CREATEDATETIME>=?");
+				PreparedStatement ps = oc_conn.prepareStatement("select * from OC_EXPORTS where OC_EXPORT_ID='covid19.1' and OC_EXPORT_CREATEDATETIME>=?");
 				ps.setTimestamp(1, new java.sql.Timestamp(getDeadline().getTime()));
 				ResultSet rs = ps.executeQuery();
 				if(!rs.next()){
