@@ -25,6 +25,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import be.mxs.common.util.system.Pointer;
+import be.openclinic.system.SH;
 
 public class SPT {
 	static class Sheet {
@@ -57,6 +58,94 @@ public class SPT {
 			return "";
 		}
 		return s;
+	}
+	
+	public static void logSigns(int personid,String signs,java.util.Date updatetime,int updateuid) {
+		Connection conn = SH.getOpenclinicConnection();
+		String patientuid = Pointer.getPointer("sptidentifier."+personid);
+		if(patientuid.length()==0) {
+			patientuid=new java.util.Date().getTime()+"";
+			Pointer.storePointer("sptidentifier."+personid, patientuid);
+		}
+		if(Pointer.getPointer("sptreverseidentifier."+patientuid).length()==0) {
+			Pointer.storePointer("sptreverseidentifier."+patientuid, personid+"");
+		}
+		SortedSet ss = new TreeSet();
+		String s = "";
+		String[] sptsigns = signs.split(";");
+		for(int n=0;n<sptsigns.length;n++) {
+			if(sptsigns[n].split("=").length>1) {
+				ss.add(sptsigns[n]);
+			}
+		}
+		Iterator<String> iss = ss.iterator();
+		while(iss.hasNext()) {
+			s+=iss.next()+";";
+		}
+		try{
+			boolean bIsNew=false;
+			PreparedStatement ps = conn.prepareStatement("select * from SPT_SIGNS where SPT_SIGN_PATIENTUID=? ORDER BY SPT_SIGN_UPDATETIME DESC");
+			ps.setLong(1, Long.parseLong(patientuid));
+			ResultSet rs = ps.executeQuery();
+			if(!rs.next()) {
+				bIsNew=true;
+			}
+			else {
+				bIsNew=!s.equalsIgnoreCase(rs.getString("SPT_SIGN_SIGNS"));
+			}
+			rs.close();
+			ps.close();
+			if(bIsNew) {
+				ps = conn.prepareStatement("insert into SPT_SIGNS(SPT_SIGN_PATIENTUID, SPT_SIGN_SIGNS,SPT_SIGN_UPDATETIME,SPT_SIGN_UPDATEUID) value(?,?,?,?)");
+				ps.setLong(1, Long.parseLong(patientuid));
+				ps.setString(2, s);
+				ps.setTimestamp(3, new java.sql.Timestamp(updatetime.getTime()));
+				ps.setInt(4,updateuid);
+				ps.execute();
+				ps.close();
+			}
+			conn.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void logTreatment(int personid,String treatment) {
+		Connection conn = SH.getOpenclinicConnection();
+		String patientuid = Pointer.getPointer("sptidentifier."+personid);
+		if(patientuid.length()==0) {
+			patientuid=new java.util.Date().getTime()+"";
+			Pointer.storePointer("sptidentifier."+personid, patientuid);
+		}
+		if(Pointer.getPointer("sptreverseidentifier."+patientuid).length()==0) {
+			Pointer.storePointer("sptreverseidentifier."+patientuid, personid+"");
+		}
+		try{
+			boolean bIsNew=false;
+			PreparedStatement ps = conn.prepareStatement("select * from SPT_SIGNS where SPT_SIGN_PATIENTUID=? ORDER BY SPT_SIGN_UPDATETIME DESC");
+			ps.setLong(1, Long.parseLong(patientuid));
+			ResultSet rs = ps.executeQuery();
+			if(rs.next() && !treatment.equalsIgnoreCase(SH.c(rs.getString("SPT_SIGN_TREATMENT")))) {
+				java.sql.Timestamp updatetime = rs.getTimestamp("SPT_SIGN_UPDATETIME");
+				rs.close();
+				ps.close();
+				ps = conn.prepareStatement("update SPT_SIGNS set SPT_SIGN_TREATMENT=? where SPT_SIGN_PATIENTUID=? and SPT_SIGN_UPDATETIME=?");
+				ps.setString(1, treatment);
+				ps.setLong(2, Long.parseLong(patientuid));
+				ps.setTimestamp(3, updatetime);
+				ps.execute();
+				ps.close();
+			}
+			else {
+				rs.close();
+				ps.close();
+			}
+			conn.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) throws Exception {

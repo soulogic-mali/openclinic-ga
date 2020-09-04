@@ -60,7 +60,7 @@
 				<tr>
 					<td width='30%'></td>
 					<td width='70%'>
-						<input style='font-size: 5vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='submit' name='submitButton' value='<%=getTranNoLink("web","save",sWebLanguage) %>'/>
+						<input style='font-size: 5vw;height: 8vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='submit' name='submitButton' value='<%=getTranNoLink("web","save",sWebLanguage) %>'/>
 					</td>
 				</tr>
 			</table>

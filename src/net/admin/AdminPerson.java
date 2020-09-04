@@ -165,6 +165,15 @@ public class AdminPerson extends OC_Object{
         checkArchiveFileCode = false;
     }
     
+    public int getPersonId() {
+    	try {
+    		return Integer.parseInt(personid);
+    	}
+    	catch(Exception e) {
+    		return -1;
+    	}
+    }
+    
     public SortedMap<String,AdminPerson> searchMPI(){
     	Vector<Patient> patients = new Vector();
     	try {

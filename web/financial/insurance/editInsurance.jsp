@@ -17,26 +17,6 @@
   function doSearchBack(){
     window.location.href="<c:url value='/main.do'/>?Page=curative/index.jsp&ts=<%=getTs()%>";
   }
-
-  <%-- DO SAVE --%>
-  function doSave(){
-	if(validateInsuranceNumber()){
-	    if("<%=MedwanQuery.getInstance().getConfigString("InsuranceAgentAuthorizationNeededFor","$$").replaceAll("\\*","")%>"==document.getElementById('EditInsurarUID').value && document.getElementById('EditInsuranceNr').value==''){
-	      alertDialog("web","insurancenr.mandatory");
-	    }
-	    else if("<%=MedwanQuery.getInstance().getConfigString("InsuranceAgentAuthorizationNeededFor","$$").replaceAll("\\*","")%>"==document.getElementById('EditInsurarUID').value && document.getElementById('EditInsuranceStatus').value==''){
-	      alertDialog("web","insurancestatus.mandatory");
-	    }
-	   	else if(EditInsuranceForm.EditInsuranceStart && EditInsuranceForm.EditInsuranceStart.value.length<8){
-	   	  alertDialog("web","insurancedatestart.mandatory");
-	   	}
-	  	else{
-	      EditInsuranceForm.EditSaveButton.disabled = true;
-	      EditInsuranceForm.Action.value = "SAVE";
-	      EditInsuranceForm.submit();
-	    }
-	}
-  }
 </script>
 
 <%=checkPermission(out,"financial.insurance","select",activeUser)%>
@@ -81,6 +61,19 @@
         		out.print("<script>alertDialog('web','requireaffiliateid');</script>");
         		bCanSave = false;
         	}
+        	else if(insurar!=null && insurar.getInsuranceStatusMandatory()==1 && sEditInsuranceStatus.length()==0){
+        		out.print("<script>alertDialog('web','requireinsurancestatus');</script>");
+        		bCanSave = false;
+        	}
+        	else if(insurar!=null && insurar.getInsuranceMemberImmatMandatory()==1 && sEditInsuranceMemberImmat.length()==0){
+        		out.print("<script>alertDialog('web','requirememberimmat');</script>");
+        		bCanSave = false;
+        	}
+        	else if(insurar!=null && insurar.getInsuranceMemberEmployerMandatory()==1 && sEditInsuranceMemberEmployer.length()==0){
+        		out.print("<script>alertDialog('web','requirememberemployer');</script>");
+        		bCanSave = false;
+        	}
+        	
         }
         
         if(bCanSave){
@@ -260,7 +253,7 @@
             	</select>
             </td>
         </tr>
-        <%-- employer --%>
+        <%-- familycode --%>
         <tr>
             <td class="admin"><%=getTran(request,"insurance","familycode",sWebLanguage)%></td>
             <td class="admin2">
@@ -490,6 +483,24 @@
       }
     });
   }
+  
+  <%-- DO SAVE --%>
+  function doSave(){
+	if(validateInsuranceNumber()){
+	    if("<%=MedwanQuery.getInstance().getConfigString("InsuranceNumberMandatoryFor","$$").replaceAll("\\*","")%>"==document.getElementById('EditInsurarUID').value && document.getElementById('EditInsuranceNr').value==''){
+	      alertDialog("web","insurancenr.mandatory");
+	    }
+	   	else if(EditInsuranceForm.EditInsuranceStart && EditInsuranceForm.EditInsuranceStart.value.length<8){
+	   	  alertDialog("web","insurancedatestart.mandatory");
+	   	}
+	  	else{
+	      EditInsuranceForm.EditSaveButton.disabled = true;
+	      EditInsuranceForm.Action.value = "SAVE";
+	      EditInsuranceForm.submit();
+	    }
+	}
+  }
+
   
   function validateInsuranceNumber(){
 	  <%if(MedwanQuery.getInstance().getConfigInt("enablePAODES",0)==1){%>

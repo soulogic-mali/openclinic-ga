@@ -243,8 +243,8 @@
 			</tr>
 			<tr>
 				<td colspan='2' style='font-size:5vw;text-align: center'>
-					<input style='font-size: 5vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='button' name='yesButton' value='<%=getTran(request,"web","yes",sWebLanguage) %>' onclick='window.location.href="sptcomplaints.jsp?sptaction=loadspt";'/>	
-					<input style='font-size: 5vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='button' name='noButton' value='<%=getTran(request,"web","no",sWebLanguage) %>' onclick='window.location.href="sptcomplaints.jsp?doreset=reset&doc=<%=MedwanQuery.getInstance().getConfigString("templateSource")+MedwanQuery.getInstance().getConfigString("clinicalPathwayFiles","pathways.bi.xml")%>";'/>	
+					<input style='font-size: 5vw;height: 8vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='button' name='yesButton' value='<%=getTran(request,"web","yes",sWebLanguage) %>' onclick='window.location.href="sptcomplaints.jsp?sptaction=loadspt";'/>	
+					<input style='font-size: 5vw;height: 8vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='button' name='noButton' value='<%=getTran(request,"web","no",sWebLanguage) %>' onclick='window.location.href="sptcomplaints.jsp?doreset=reset&doc=<%=MedwanQuery.getInstance().getConfigString("templateSource")+MedwanQuery.getInstance().getConfigString("clinicalPathwayFiles","pathways.bi.xml")%>";'/>	
 				</td>
 			</tr>
 		</table>

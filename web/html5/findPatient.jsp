@@ -112,8 +112,8 @@
 				<tr>
 					<td width='30%'></td>
 					<td width='70%'>
-						<input style='font-size: 5vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='submit' name='find' value='<%=getTranNoLink("web","find",sWebLanguage) %>'/>
-						<input style='font-size: 5vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='button' name='new' value='<%=getTranNoLink("web","new",sWebLanguage) %>' onclick='window.location.href="newPatient.jsp";'/>
+						<input style='font-size: 5vw;height: 8vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='submit' name='find' value='<%=getTranNoLink("web","find",sWebLanguage) %>'/>
+						<input style='font-size: 5vw;height: 8vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='button' name='new' value='<%=getTranNoLink("web","new",sWebLanguage) %>' onclick='window.location.href="newPatient.jsp";'/>
 					</td>
 				</tr>
 			</table>

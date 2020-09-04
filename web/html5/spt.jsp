@@ -600,6 +600,7 @@
 			if(activePatient!=null && cleanedSptSigns!=null){
 				Pointer.deletePointers("activespt."+activePatient.personid);
 				Pointer.storePointer("activespt."+activePatient.personid,serializeSptSigns(sptSigns));
+				SPT.logSigns(Integer.parseInt(activePatient.personid), serializeSptSigns(sptSigns), new java.util.Date(), Integer.parseInt(activeUser.userid));
 			}
 			
 			//Run through all clinical pathways in order to check which ones are applicable
@@ -735,7 +736,7 @@
 						if(bSignsToExclude){
 							out.println("<tr><td  class='mobileadmin' style='font-size:5vw;' colspan='2'><b><font style='font-size:5vw;color: grey'>"+getTran(request,"spt","signstoexclude",sWebLanguage)+"</font></b></td></tr>");
 							out.println(sExcludes.toString());
-							out.println("<tr><td/><td><input style='font-size:5vw;' type='button' value='"+getTranNoLink("web","save",sWebLanguage)+"' onclick='transactionForm.submit()'/></td></tr>");
+							out.println("<tr><td/><td><input style='font-size:5vw;height: 8vw;' type='button' value='"+getTranNoLink("web","save",sWebLanguage)+"' onclick='transactionForm.submit()'/></td></tr>");
 						}
 						else{
 							if(cave!=null && !checkString((String)session.getAttribute("activecomplaint")).equals(pathway.attributeValue("complaint"))){
@@ -813,6 +814,7 @@
 													sTreatment=treatment.text;
 													if(!treatment.id.contains(".")){
 														sTreatment+="<br/><span style='font-size:4vw;color: red;font-weight: bolder'>"+getTranNoLink("web","spt.result",sWebLanguage)+": ["+treatment.id.toUpperCase()+"]</span> ";
+														SPT.logTreatment(activePatient.getPersonId(), treatment.id);
 													}
 												}
 												out.println("<font style='font-size:4vw;color: red'>"+sTreatment+"</font></td></tr>");

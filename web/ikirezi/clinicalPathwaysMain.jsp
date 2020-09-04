@@ -773,6 +773,7 @@
 												sTreatment=treatment.text;
 												if(!treatment.id.contains(".")){
 													sTreatment+=" ("+treatment.id.toUpperCase()+") ";
+													SPT.logTreatment(activePatient.getPersonId(), treatment.id);
 												}
 											}
 											out.println("<font style='color: red'>"+sTreatment+"</font></b></td></tr>");

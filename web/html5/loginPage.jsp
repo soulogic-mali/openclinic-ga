@@ -88,7 +88,7 @@
 							</tr>
 							<tr>
 								<td width='30%'></td>
-								<td width='70%'><input style='font-size: 5vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='submit' name='login' value='Login'/></td>
+								<td width='70%'><input style='font-size: 5vw;height: 8vw;padding=10px;font-family: Raleway, Geneva, sans-serif;' type='submit' name='login' value='Login'/></td>
 							</tr>
 							<tr>
 								<td colspan='2'><br/></td>

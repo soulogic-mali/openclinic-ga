@@ -537,6 +537,7 @@
 	if(request.getParameter("getLastSpt")==null && sptSigns.size()>0){
 		Pointer.deletePointers("activespt."+activePatient.personid);
 		Pointer.storePointer("activespt."+activePatient.personid,serializeSptSigns(sptSigns));
+		SPT.logSigns(Integer.parseInt(activePatient.personid), serializeSptSigns(sptSigns), new java.util.Date(), Integer.parseInt(activeUser.userid));
 	}
 	//Store spt concepts in session
 	session.setAttribute("sptconcepts", sptSigns);
@@ -763,6 +764,7 @@
 											sTreatment=treatment.text;
 											if(!treatment.id.contains(".")){
 												sTreatment+=" ("+treatment.id.toUpperCase()+") ";
+												SPT.logTreatment(activePatient.getPersonId(), treatment.id);
 											}
 										}
 										out.println("<font style='color: red'>"+sTreatment+"</font></b></td></tr>");

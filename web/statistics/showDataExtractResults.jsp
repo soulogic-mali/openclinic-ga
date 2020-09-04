@@ -8,8 +8,8 @@
 		<td colspan='2'><%=getTran(request,"web","results",sWebLanguage) %></td>
 	</tr>
 <%
-	String sResult=SH.c((String)session.getAttribute("dataExtractResult")).split(";");
-	if(sResult.length()>0){
+	String[] sResult=SH.c((String)session.getAttribute("dataExtractResult")).split(";");
+	if(sResult.length>0){
 		String[] lines = sResult;
 		for(int n =0;n<lines.length;n++){
 			if(sMandatoryNames.indexOf(lines[n].split("=")[0])>-1){

@@ -63,8 +63,8 @@
 		}
 		catch(Exception e){}
 	}
+	session.removeAttribute("sptconcepts");
 	if(MedwanQuery.getInstance().getConfigString("mobile.edition","").equalsIgnoreCase("spt")){
-		session.removeAttribute("sptconcepts");
 		out.println("<script>window.location.href='"+sCONTEXTPATH+"/html5/sptcomplaints.jsp?doc="+MedwanQuery.getInstance().getConfigString("templateSource")+MedwanQuery.getInstance().getConfigString("clinicalPathwayFiles","pathways.bi.xml")+"';</script>");
 		out.flush();
 	}
@@ -238,6 +238,14 @@
 				</td>
 				<td style='font-size:6vw;text-align:left;padding:10px'>
 					<%=getTran(request,"web","examinations",sWebLanguage) %>
+				</td>
+			</tr>
+			<tr onclick="window.location.href='<%=sCONTEXTPATH%>/html5/sptcomplaints.jsp?doc=<%=MedwanQuery.getInstance().getConfigString("templateSource")+MedwanQuery.getInstance().getConfigString("clinicalPathwayFiles","pathways.bi.xml")%>';">
+				<td style='font-size:6vw;text-align:right;padding:10px'>
+					<img src='<%=sCONTEXTPATH%>/_img/icons/mobile/knowledge.png'/>
+				</td>
+				<td style='font-size:6vw;text-align:left;padding:10px'>
+					<%=getTran(request,"web","spt",sWebLanguage) %>
 				</td>
 			</tr>
 			<%	

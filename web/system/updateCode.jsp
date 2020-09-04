@@ -47,7 +47,10 @@
 	<table width='100%'>
 		<tr class='admin'>
 			<td class='admin'><%=getTran(request,"web","targetfolder",sWebLanguage) %></td>
-			<td class='admin2'><input class='text' type='text' size='60' name='targetfolder'/></td>
+			<td class='admin2'>
+				<b><%=request.getSession().getServletContext().getRealPath("/").replaceAll("\\\\","/") %></b>
+				<input class='text' type='text' size='60' name='targetfolder'/>
+			</td>
 		</tr>
 		<tr class='admin'>
 			<td class='admin'><%=getTran(request,"web","filename",sWebLanguage) %></td>

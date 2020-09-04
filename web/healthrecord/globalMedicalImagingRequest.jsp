@@ -60,8 +60,31 @@
 
         <%-- BUTTONS on top --%>
         <tr>
+        <td class="admin"><%=getTran(request,"Web","internalprescriber",sWebLanguage)%>*</td>
+	        <td class="admin2">
+	           	<select class='text' name='currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_INTERNALPRESCRIBER" property="itemId"/>]>.value' id='internalprescriber'>
+	           		<option value=''></option>
+		            <%
+		            	Vector users = UserParameter.getUserIdsExtended("invoicingcareprovider", "on");
+		            	SortedSet usernames = new TreeSet();
+		            	for(int n=0;n<users.size();n++){
+		            		usernames.add(users.elementAt(n));
+		            	}
+		            	//Determine selected value
+		            	String sSelectedValue=((TransactionVO)transaction).getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_INTERNALPRESCRIBER");
+		            	if(sSelectedValue.length()==0 && ((TransactionVO)transaction).isNew()){
+		            		sSelectedValue=activeUser.userid;
+		            	}
+		            	Iterator i = usernames.iterator();
+		            	while(i.hasNext()){
+		            		String u=(String)i.next();
+		            		out.println("<option value='"+u.split(";")[2]+"'"+(sSelectedValue.equals(u.split(";")[2])?" selected":"")+">"+u.split(";")[0].toUpperCase()+", "+u.split(";")[1]+" ("+u.split(";")[2]+")</option>");
+		            	}
+		            %>
+	           	</select>
+	        </td>
             <td class="admin"/>
-            <td class="admin2" colspan="3">
+            <td class="admin2">
                 <input class="button" type="button" name="printLabelsButton" value="<%=getTranNoLink("Web","printlabels",sWebLanguage)%>" onclick="printLabels();"/>&nbsp;
                 <button accesskey="<%=ScreenHelper.getAccessKey(getTranNoLink("accesskey","save",sWebLanguage))%>" class="buttoninvisible" onclick="doSave();"></button>
 				<%if(MedwanQuery.getInstance().getConfigInt("allowMultipleImagingRequestsPerOrder",0)==1){ %>
@@ -139,7 +162,7 @@
             <%-- SPECIFICATION --%>
             <td class="admin"><%=getTran(request,"web.occup","specification",sWebLanguage)%></td>
             <td class="admin2">
-                <textarea id="SPECIFICATION" onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_MIR2_SPECIFICATION")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION" property="value"/></textarea>
+                <textarea id="SPECIFICATION" onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_MIR2_SPECIFICATION")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION" property="value"/></textarea>
             </td>
         </tr>
 
@@ -153,7 +176,7 @@
             <%-- REASON --%>
             <td class="admin"><%=getTran(request,"Web.Occup","examinationreason",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
-                <textarea id="reason" onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_MIR2_EXAMINATIONREASON")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON" property="value"/></textarea>
+                <textarea id="reason" onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_MIR2_EXAMINATIONREASON")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON" property="value"/></textarea>
             </td>
         </tr>
 
@@ -167,7 +190,7 @@
             <%-- REASON --%>
             <td class="admin"><%=getTran(request,"Web.Occup","medwan.common.reason",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
-                <textarea id="modifiedreason" onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON" property="value"/></textarea>
+                <textarea id="modifiedreason" onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON" property="value"/></textarea>
             </td>
         </tr>
 
@@ -185,7 +208,7 @@
                         <%-- REASON --%>
                         <td class="admin"><%=getTran(request,"Web.Occup","medwan.common.reason",sWebLanguage)%></td>
                         <td class="admin2">
-                            <textarea id="executionreason" onKeyup="resizeTextarea(this,10);limitChars(this,5000);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON" property="itemId"/>]>.value" class="text" rows="2" cols="80"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON" property="value"/></textarea>
+                            <textarea id="executionreason" onKeyup="resizeTextarea(this,10);limitChars(this,5000);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON" property="itemId"/>]>.value" class="text" rows="2" cols="40"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON" property="value"/></textarea>
                         </td>
                     </tr>
 
@@ -199,7 +222,7 @@
                         <%-- PROTOCOL --%>
                         <td class="admin"><%=getTran(request,"Web.Occup",sPREFIX+"item_type_mir_protocol",sWebLanguage)%></td>
                         <td class="admin2">
-                            <textarea id="protocol" onKeyup="resizeTextarea(this,10);limitChars(this,5000);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL" property="itemId"/>]>.value" class="text" rows="2" cols="80"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL" property="value"/></textarea>
+                            <textarea id="protocol" onKeyup="resizeTextarea(this,10);limitChars(this,5000);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL" property="itemId"/>]>.value" class="text" rows="2" cols="40"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL" property="value"/></textarea>
                         </td>
                     </tr>
 
@@ -312,7 +335,7 @@
 
             <td class="admin"><%=getTran(request,"web.occup","SPECIFICATION",sWebLanguage)%></td>
             <td class="admin2">
-                <textarea id="SPECIFICATION2" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_SPECIFICATION2")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION2" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION2" property="value"/></textarea>
+                <textarea id="SPECIFICATION2" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_SPECIFICATION2")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION2" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION2" property="value"/></textarea>
             </td>
         </tr>
 
@@ -326,7 +349,7 @@
             <%-- EXAMINATION REASON --%>
             <td class="admin"><%=getTran(request,"Web.Occup","examinationreason",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
-                <textarea id="reason2" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_EXAMINATIONREASON2")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON2" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON2" property="value"/></textarea>
+                <textarea id="reason2" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_EXAMINATIONREASON2")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON2" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON2" property="value"/></textarea>
             </td>
         </tr>
 
@@ -340,7 +363,7 @@
             <%-- EXAMINATION REASON --%>
             <td class="admin"><%=getTran(request,"Web.Occup","medwan.common.reason",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
-                <textarea id="modifiedreason2" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON2")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON2" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON2" property="value"/></textarea>
+                <textarea id="modifiedreason2" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON2")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON2" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON2" property="value"/></textarea>
             </td>
         </tr>
 
@@ -358,7 +381,7 @@
                         <%-- REASON --%>
                         <td class="admin"><%=getTran(request,"Web.Occup","medwan.common.reason",sWebLanguage)%></td>
                         <td class="admin2">
-                            <textarea id="executionreason2" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON2" property="itemId"/>]>.value" class="text" rows="2" cols="80"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON2" property="value"/></textarea>
+                            <textarea id="executionreason2" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON2" property="itemId"/>]>.value" class="text" rows="2" cols="40"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON2" property="value"/></textarea>
                         </td>
                     </tr>
 
@@ -372,7 +395,7 @@
                         <%-- PROTOCOL --%>
                         <td class="admin"><%=getTran(request,"Web.Occup",sPREFIX+"item_type_mir_protocol",sWebLanguage)%></td>
                         <td class="admin2">
-                            <textarea id="protocol2" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL2" property="itemId"/>]>.value" class="text" rows="2" cols="80"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL2" property="value"/></textarea>
+                            <textarea id="protocol2" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL2" property="itemId"/>]>.value" class="text" rows="2" cols="40"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL2" property="value"/></textarea>
                         </td>
                     </tr>
 
@@ -457,7 +480,7 @@
 
             <td class="admin"><%=getTran(request,"web.occup","SPECIFICATION",sWebLanguage)%></td>
             <td class="admin2">
-                <textarea id="SPECIFICATION3" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_SPECIFICATION3")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION3" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION3" property="value"/></textarea>
+                <textarea id="SPECIFICATION3" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_SPECIFICATION3")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION3" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION3" property="value"/></textarea>
             </td>
         </tr>
 
@@ -470,7 +493,7 @@
             <%-- EXAMINATION REASON --%>
             <td class="admin"><%=getTran(request,"Web.Occup","examinationreason",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
-                <textarea id="reason3" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_EXAMINATIONREASON3")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON3" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON3" property="value"/></textarea>
+                <textarea id="reason3" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_EXAMINATIONREASON3")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON3" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON3" property="value"/></textarea>
             </td>
         </tr>
 
@@ -483,7 +506,7 @@
             <%-- EXAMINATION REASON --%>
             <td class="admin"><%=getTran(request,"Web.Occup","medwan.common.reason",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
-                <textarea id="modifiedreason3" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON3")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON3" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON3" property="value"/></textarea>
+                <textarea id="modifiedreason3" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON3")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON3" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON3" property="value"/></textarea>
             </td>
         </tr>
 
@@ -499,7 +522,7 @@
 
                         <td class="admin"><%=getTran(request,"Web.Occup","medwan.common.reason",sWebLanguage)%></td>
                         <td class="admin2">
-                            <textarea id="executionreason3" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON3" property="itemId"/>]>.value" class="text" rows="2" cols="80"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON3" property="value"/></textarea>
+                            <textarea id="executionreason3" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON3" property="itemId"/>]>.value" class="text" rows="2" cols="40"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON3" property="value"/></textarea>
                         </td>
                     </tr>
 
@@ -512,7 +535,7 @@
                         <%-- PROTOCOL --%>
                         <td class="admin"><%=getTran(request,"Web.Occup",sPREFIX+"item_type_mir_protocol",sWebLanguage)%></td>
                         <td class="admin2">
-                            <textarea id="protocol3" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL3" property="itemId"/>]>.value" class="text" rows="2" cols="80"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL3" property="value"/></textarea>
+                            <textarea id="protocol3" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL3" property="itemId"/>]>.value" class="text" rows="2" cols="40"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL3" property="value"/></textarea>
                         </td>
                     </tr>
 
@@ -598,7 +621,7 @@
             <%-- SPECIFICATION --%>
             <td class="admin"><%=getTran(request,"web.occup","specification",sWebLanguage)%></td>
             <td class="admin2">
-                <textarea id="SPECIFICATION4" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_SPECIFICATION4")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION4" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION4" property="value"/></textarea>
+                <textarea id="SPECIFICATION4" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_SPECIFICATION4")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION4" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION4" property="value"/></textarea>
             </td>
         </tr>
 
@@ -612,7 +635,7 @@
             <%-- EXAMINATION REASON --%>
             <td class="admin"><%=getTran(request,"Web.Occup","examinationreason",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
-                <textarea id="reason4" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_EXAMINATIONREASON4")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON4" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON4" property="value"/></textarea>
+                <textarea id="reason4" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_EXAMINATIONREASON4")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON4" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON4" property="value"/></textarea>
             </td>
         </tr>
 
@@ -626,7 +649,7 @@
             <%-- EXAMINATION REASON --%>
             <td class="admin"><%=getTran(request,"Web.Occup","medwan.common.reason",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
-                <textarea id="modifiedreason4" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON4")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON4" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON4" property="value"/></textarea>
+                <textarea id="modifiedreason4" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON4")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON4" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON4" property="value"/></textarea>
             </td>
         </tr>
 
@@ -644,7 +667,7 @@
                         <%-- REASON --%>
                         <td class="admin"><%=getTran(request,"Web.Occup","medwan.common.reason",sWebLanguage)%></td>
                         <td class="admin2">
-                            <textarea id="executionreason4" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON4" property="itemId"/>]>.value" class="text" rows="2" cols="80"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON4" property="value"/></textarea>
+                            <textarea id="executionreason4" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON4" property="itemId"/>]>.value" class="text" rows="2" cols="40"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON4" property="value"/></textarea>
                         </td>
                     </tr>
 
@@ -658,7 +681,7 @@
                         <%-- PROTOCOL --%>
                         <td class="admin"><%=getTran(request,"Web.Occup",sPREFIX+"item_type_mir_protocol",sWebLanguage)%></td>
                         <td class="admin2">
-                            <textarea id="protocol4" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL4" property="itemId"/>]>.value" class="text" rows="2" cols="80"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL4" property="value"/></textarea>
+                            <textarea id="protocol4" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL4" property="itemId"/>]>.value" class="text" rows="2" cols="40"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL4" property="value"/></textarea>
                         </td>
                     </tr>
 
@@ -744,7 +767,7 @@
             <%-- SPECIFICATION --%>
             <td class="admin"><%=getTran(request,"web.occup","specification",sWebLanguage)%></td>
             <td class="admin2">
-                <textarea id="SPECIFICATION5" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_SPECIFICATION5")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION5" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION5" property="value"/></textarea>
+                <textarea id="SPECIFICATION5" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_SPECIFICATION5")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION5" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_SPECIFICATION5" property="value"/></textarea>
             </td>
         </tr>
 
@@ -758,7 +781,7 @@
             <%-- EXAMINATION REASON --%>
             <td class="admin"><%=getTran(request,"Web.Occup","examinationreason",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
-                <textarea id="reason5" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_EXAMINATIONREASON5")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON5" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON5" property="value"/></textarea>
+                <textarea id="reason5" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_EXAMINATIONREASON5")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON5" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_EXAMINATIONREASON5" property="value"/></textarea>
             </td>
         </tr>
 
@@ -772,7 +795,7 @@
             <%-- EXAMINATION REASON --%>
             <td class="admin"><%=getTran(request,"Web.Occup","medwan.common.reason",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
-                <textarea id="modifiedreason5" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON5")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON5" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON5" property="value"/></textarea>
+                <textarea id="modifiedreason5" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON5")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON5" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_ORIGINAL_MODIFIED_REASON5" property="value"/></textarea>
             </td>
         </tr>
 
@@ -790,7 +813,7 @@
                         <%-- REASON --%>
                         <td class="admin"><%=getTran(request,"Web.Occup","medwan.common.reason",sWebLanguage)%></td>
                         <td class="admin2">
-                            <textarea id="executionreason5" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON5" property="itemId"/>]>.value" class="text" rows="2" cols="80"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON5" property="value"/></textarea>
+                            <textarea id="executionreason5" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON5" property="itemId"/>]>.value" class="text" rows="2" cols="40"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION_REASON5" property="value"/></textarea>
                         </td>
                     </tr>
 
@@ -804,7 +827,7 @@
                         <%-- PROTOCOL --%>
                         <td class="admin"><%=getTran(request,"Web.Occup",sPREFIX+"item_type_mir_protocol",sWebLanguage)%></td>
                         <td class="admin2">
-                            <textarea id="protocol5" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL5" property="itemId"/>]>.value" class="text" rows="2" cols="80"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL5" property="value"/></textarea>
+                            <textarea id="protocol5" onKeyup="resizeTextarea(this,10);limitChars(this,255);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL5" property="itemId"/>]>.value" class="text" rows="2" cols="40"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_PROTOCOL5" property="value"/></textarea>
                         </td>
                     </tr>
 
@@ -852,10 +875,15 @@
 
   <%-- SUBMIT FORM --%>
   function submitForm(){
-
-    var temp = Form.findFirstElement(transactionForm);//compatibility firefox
-    document.getElementById("buttonsDiv").style.visibility = "hidden";
-    document.transactionForm.submit();  
+	if(1==<%=SH.ci("imagingRequestPrescriberIsMandatory",0)%> && document.getElementById('internalprescriber').value.length==0){
+		alert('<%=getTranNoLink("web","prescriberismandatory",sWebLanguage)%>');
+		document.getElementById('internalprescriber').focus();
+	}
+	else{
+	    var temp = Form.findFirstElement(transactionForm);//compatibility firefox
+	    document.getElementById("buttonsDiv").style.visibility = "hidden";
+	    document.transactionForm.submit();  
+	}
   }
 
   <%-- DO PRINT PDF --%>

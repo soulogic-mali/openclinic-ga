@@ -345,6 +345,57 @@ public class Insurar extends OC_Object {
 		setModifier(13,s);
 	}
 	
+	public int getInsuranceStatusMandatory(){
+		int n=0;
+		if(getModifiers()!=null){
+			try{
+				n=Integer.parseInt(getModifiers().split(";")[14]);
+			}
+			catch(Exception e){
+				//e.printStackTrace();
+			}
+		}
+		return n;
+	}
+
+	public void setInsuranceStatusMandatory(int n){
+		setModifier(14,n+"");
+	}
+	
+	public int getInsuranceMemberImmatMandatory(){
+		int n=0;
+		if(getModifiers()!=null){
+			try{
+				n=Integer.parseInt(getModifiers().split(";")[15]);
+			}
+			catch(Exception e){
+				//e.printStackTrace();
+			}
+		}
+		return n;
+	}
+
+	public void setInsuranceMemberImmatMandatory(int n){
+		setModifier(15,n+"");
+	}
+	
+	public int getInsuranceMemberEmployerMandatory(){
+		int n=0;
+		if(getModifiers()!=null){
+			try{
+				n=Integer.parseInt(getModifiers().split(";")[16]);
+			}
+			catch(Exception e){
+				//e.printStackTrace();
+			}
+		}
+		return n;
+	}
+
+	public void setInsuranceMemberEmployerMandatory(int n){
+		setModifier(16,n+"");
+	}
+	
 	public void setModifier(int index,String value){
 		if(getModifiers()==null){
 			setModifiers("");

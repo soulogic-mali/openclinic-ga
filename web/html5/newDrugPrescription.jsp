@@ -116,7 +116,7 @@
 		                	<%=getTran(request,"web","product",sWebLanguage) %>
 		                </td>
 		                <td class='mobileadmin2' style='font-size: 4vw;'>
-		                	<input type='text' style='width: 95% !important;font-size: 4vw;' name='drugname' id='drugname' value=''%>
+		                	<input type='text' style='width: 95% !important;font-size: 4vw;height: 6vw;' name='drugname' id='drugname' value=''%>
 		                	<input type='hidden' name='drugid' id='drugid' value=''/>
 							<div id="autocomplete_prescription" class="autocomple"></div>
 		                </td>

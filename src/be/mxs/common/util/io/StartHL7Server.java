@@ -11,7 +11,14 @@ public class StartHL7Server {
 	    Class.forName("com.mysql.jdbc.Driver");	
 	    HL7Server.setConnection(args[0]);
 		HL7Server hl7server = new HL7Server();
-		hl7server.start(HL7Server.getConfigInt("hl7serverPort",4001));
+		int port = 4001;
+		try{
+			port=HL7Server.getConfigInt("hl7serverPort",4001);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		hl7server.start(port);
 	}
 
 }

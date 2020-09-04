@@ -1,4 +1,4 @@
-<pathways domain="bi.spt" version="11">
+<pathways domain="bi.spt" version="14">
 	<label language="fr"><![CDATA[Stratégies plainte-traitement du MSPLS - Burundi]]></label>
 	<pathway complaint="drh.1" value="yes">
 		<cave><![CDATA[Infections intestinales, dysenterie, amibiase intestinale aiguë, choléra, diarrhée banale, toxiinfection alimentaire]]></cave>
@@ -3277,7 +3277,7 @@
 								</node>
 							</node>
 						</node>
-					</node>	
+					</node>
 				</node>
 			</node>
 		</node>
@@ -6018,7 +6018,7 @@
 				<arguments select="1">
 					<argument type="spt" id="adi.2" value="yes"/>
 					<argument type="spt" id="adi.3" value="yes"/>
-				</arguments>				
+				</arguments>
 				<treatment id="adi1.0"/>
 				<node>
 					<label language="fr"><![CDATA[Amélioration après 3 jours]]></label>
@@ -6036,13 +6036,13 @@
 				<arguments select="all">
 					<argument type="spt" id="adi.2" value="no"/>
 					<argument type="spt" id="adi.3" value="no"/>
-				</arguments>			
+				</arguments>
 				<node>
 					<label language="fr"><![CDATA[Arthrite migrante et fièvre]]></label>
 					<arguments select="all">
 						<argument type="spt" id="adi.4b" value="yes"/>
 						<argument type="spt" id="drh.6" value="yes"/>
-					</arguments>			
+					</arguments>
 					<treatment id="adi2b"/>
 				</node>
 				<node>
@@ -6050,7 +6050,7 @@
 					<arguments select="1">
 						<argument type="spt" id="adi.4b" value="no"/>
 						<argument type="spt" id="drh.6" value="no"/>
-					</arguments>			
+					</arguments>
 					<node>
 						<label language="fr"><![CDATA[Douleur lombaire aigue]]></label>
 						<argument type="spt" id="adi.5" value="yes"/>
@@ -8477,7 +8477,7 @@
 			<document id="2"/>
 			<label language="fr"><![CDATA[Référer en urgence<br/>Voir Fiche Technique Choc Hypovolémique]]></label>
 		</treatment>
-    	<treatment id="vom2"/>
+		<treatment id="vom2"/>
 		<treatment id="vom2.01">
 			<document id="17"/>
 			<label language="fr"><![CDATA[Observation 2 heures<br/>Voir Fiche Technique Réhydratation<br>Métoclopramide 10mg 1 amp IM]]></label>
@@ -8684,6 +8684,11 @@
 		</treatment>
 	</treatments>
 	<concepts>
+		<concept id="mai.1" value="yes">
+			<label language="fr"><![CDATA[
+				Amaigrissement
+			]]></label>
+		</concept>
 		<concept id="mai.2" values="positive,negative,refused">
 			<label language="fr"><![CDATA[
 				Test VIH
@@ -8939,6 +8944,11 @@
 				Cause de l'hypoglycémie trouvée (infection, exercice...)
 			]]></label>
 		</concept>
+		<concept id="ccr.1" value="yes">
+			<label language="fr"><![CDATA[
+				Crises convulsives répétitives
+			]]></label>
+		</concept>
 		<concept id="ccr.2" values="yes,no">
 			<label language="fr"><![CDATA[
 				Enfant de 0-5 ans
@@ -8967,6 +8977,11 @@
 		<concept id="ccr.5" values="yes,no">
 			<label language="fr"><![CDATA[
 				Répétition de la crise dans les 2 mois
+			]]></label>
+		</concept>
+		<concept id="adi.1" value="yes">
+			<label language="fr"><![CDATA[
+				Autre douleur isolée
 			]]></label>
 		</concept>
 		<concept id="adi.2" values="yes,no">
@@ -9239,6 +9254,11 @@
 				Amélioration après traitement
 			]]></label>
 		</concept>
+		<concept id="oed.1" value="yes">
+			<label language="fr"><![CDATA[
+				Oedèmes
+			]]></label>
+		</concept>
 		<concept id="oed.2" values="yes,no">
 			<label language="fr"><![CDATA[
 				Oedème bilatéral
@@ -9319,6 +9339,11 @@
 				Oedème du mollet douloureux
 			]]></label>
 		</concept>
+		<concept id="tum.1" value="yes">
+			<label language="fr"><![CDATA[
+				Tuméfactions
+			]]></label>
+		</concept>
 		<concept id="tum.2" values="yes,no">
 			<label language="fr"><![CDATA[
 				Rougeur aigue (souvent au niveau des membres)
@@ -9374,6 +9399,11 @@
 				Abcès en voie de guérison
 			]]></label>
 		</concept>
+		<concept id="oem.1" value="yes">
+			<label language="fr"><![CDATA[
+				Maladies des yeux
+			]]></label>
+		</concept>
 		<concept id="oem.2" values="yes,no">
 			<label language="fr"><![CDATA[
 				Amélioration après 10 jours
@@ -9424,6 +9454,11 @@
 				Perte brutrale de la vision
 			]]></label>
 		</concept>
+		<concept id="oet.1" value="yes">
+			<label language="fr"><![CDATA[
+				Traumatisme des yeux
+			]]></label>
+		</concept>
 		<concept id="oet.2" values="yes,no">
 			<label language="fr"><![CDATA[
 				Brûlure chimique (chaux vive)
@@ -9462,6 +9497,11 @@
 		<concept id="oet.9" values="yes,no">
 			<label language="fr"><![CDATA[
 				Amélioration après 3 jours
+			]]></label>
+		</concept>
+		<concept id="sto.1" value="yes">
+			<label language="fr"><![CDATA[
+				Maladie de la bouche
 			]]></label>
 		</concept>
 		<concept id="sto.2" values="yes,no">
@@ -9649,6 +9689,12 @@
 				Ecoulement nasal
 			]]></label>
 		</concept>
+		<concept id="tem.1" value="yes">
+			<argument type="ageinmonths" compare="greaterthan" value="143"/>
+			<label language="fr"><![CDATA[
+				Fièvre (adulte)
+			]]></label>
+		</concept>
 		<concept id="tem.2" values="yes,no">
 			<label language="fr"><![CDATA[
 				GE ou test rapide pour paludisme positif
@@ -9682,6 +9728,12 @@
 		<concept id="tem.8" values="yes,no">
 			<label language="fr"><![CDATA[
 				Amélioration après 2 jours
+			]]></label>
+		</concept>
+		<concept id="gene.1" value="yes">
+			<argument type="ageinmonths" compare="lessthan" value="144"/>
+			<label language="fr"><![CDATA[
+				Mauvais état général
 			]]></label>
 		</concept>
 		<concept id="gene.2" values="yes,no">
@@ -9747,6 +9799,12 @@
 		<concept id="gene.14" values="yes,no">
 			<label language="fr"><![CDATA[
 				Autre symptôme dominant
+			]]></label>
+		</concept>
+		<concept id="gen.1" value="yes">
+			<argument type="ageinmonths" compare="greaterthan" value="143"/>
+			<label language="fr"><![CDATA[
+				Malaise général
 			]]></label>
 		</concept>
 		<concept id="gen.2" values="yes,no">
@@ -9849,6 +9907,11 @@
 				Amélioration après 3 jours
 			]]></label>
 		</concept>
+		<concept id="cef.1" value="yes">
+			<label language="fr"><![CDATA[
+				Céphalées et/ou vertiges
+			]]></label>
+		</concept>
 		<concept id="cef.2" values="yes,no">
 			<label language="fr"><![CDATA[
 				Température >= 38°C
@@ -9944,6 +10007,11 @@
 				Amélioration après 3 jours
 			]]></label>
 		</concept>
+		<concept id="con.1" value="yes">
+			<label language="fr"><![CDATA[
+				Convulsions
+			]]></label>
+		</concept>
 		<concept id="con.2" values="yes,no">
 			<label language="fr"><![CDATA[
 				Femme enceinte 3ème trimestre ou après accouchement
@@ -10009,6 +10077,11 @@
 				Transpiration abondante
 			]]></label>
 		</concept>
+		<concept id="tac.1" value="yes">
+			<label language="fr"><![CDATA[
+				Taches sur la peau / éruption cutanée
+			]]></label>
+		</concept>
 		<concept id="tac.2" values="yes,no">
 			<label language="fr"><![CDATA[
 				Température >= 38°C
@@ -10064,6 +10137,12 @@
 				Amélioration après 7 jours
 			]]></label>
 		</concept>
+		<concept id="adv.1" value="yes">
+			<argument type="ageinmonths" compare="greaterthan" value="143"/>
+			<label language="fr"><![CDATA[
+				Affection dermato-vénérienne
+			]]></label>
+		</concept>
 		<concept id="adv.2" values="yes,no">
 			<label language="fr"><![CDATA[
 				Vésicules superficielles (souvent douloureuses)
@@ -10097,6 +10176,11 @@
 		<concept id="adv.8" values="yes,no">
 			<label language="fr"><![CDATA[
 				Amélioration après 7 jours
+			]]></label>
+		</concept>
+		<concept id="cro.1" value="yes">
+			<label language="fr"><![CDATA[
+				Petites ulcérations
 			]]></label>
 		</concept>
 		<concept id="cro.2" values="yes,no">

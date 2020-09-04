@@ -131,7 +131,9 @@
                     getTran(request,"web","from",sWebLanguage)+"&nbsp;"+writeDateField("begin3b","stats",today,sWebLanguage)+"&nbsp;&nbsp;"+
                     getTran(request,"web","to",sWebLanguage)+"&nbsp;"+writeDateField("end3b","stats",today,sWebLanguage)+
                    "</td>"+
-                  "</tr>");
+                  "</tr>"+
+			      writeTblChildWithCode("javascript:extractspt()",getTran(request,"Web","statistics.extractspt",sWebLanguage)));
+
         
         out.print("<tr>"+
                    "<td class='admin2' colspan='2'>"+getTran(request,"Web","service",sWebLanguage)+" "+
@@ -397,9 +399,13 @@ function downloadTechnicalStats(query,db){
 	openPopup(URL,800,600,"OpenClinic");
   }
   function paymentrate(){
-	var URL = "statistics/insurarIncome.jsp&start="+document.getElementById('begin3').value+"&end="+document.getElementById('end3').value+"&ts=<%=getTs()%>";
-	openPopup(URL,500,600,"OpenClinic");
-  }
+		var URL = "statistics/insurarIncome.jsp&start="+document.getElementById('begin3').value+"&end="+document.getElementById('end3').value+"&ts=<%=getTs()%>";
+		openPopup(URL,500,600,"OpenClinic");
+	  }
+  function extractspt(){
+		var URL = "statistics/extractSPT.jsp&start="+document.getElementById('begin3b').value+"&end="+document.getElementById('end3b').value+"&ts=<%=getTs()%>";
+		openPopup(URL,500,400,"OpenClinic");
+	  }
   function getOpenInvoices(){
 		var URL = "statistics/openInvoiceLists.jsp&start="+document.getElementById('beginfin').value+"&end="+document.getElementById('endfin').value+"&ts=<%=getTs()%>";
 		openPopup(URL,800,600,"OpenClinic");

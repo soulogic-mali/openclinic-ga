@@ -733,6 +733,24 @@
 	    	</index>
 		</indexes>
 	</table>
+	
+	<table name="SPT_SIGNS" db="openclinic" sync="none">
+		<columns>
+			<column name="SPT_SIGN_PATIENTUID" dbtype="bigint" javatype="integer"/>
+			<column name="SPT_SIGN_SIGNS" dbtype="varchar" javatype="string" size="1000"/>
+			<column name="SPT_SIGN_TREATMENT" dbtype="varchar" javatype="string" size="1000"/>
+			<column name="SPT_SIGN_UPDATETIME" dbtype="datetime" javatype="date"/>
+			<column name="SPT_SIGN_UPDATEUID" dbtype="int" javatype="integer"/>
+		</columns>
+		<indexes>
+	    	<index name="SPT_SIGN_PATIENTUID">
+	    		<indexcolumn order="ASC" name="SPT_SIGN_PATIENTUID"/>
+	    	</index>
+	    	<index name="SPT_SIGN_UPDATETIME">
+	    		<indexcolumn order="ASC" name="SPT_SIGN_UPDATETIME"/>
+	    	</index>
+		</indexes>
+	</table>
 
 	<table name='OC_MPIDOCUMENTS' db='openclinic'>
 		<columns>

@@ -3478,6 +3478,9 @@ public class Debet extends OC_Object implements Comparable,Cloneable {
     public static void createAutomaticDebetByAlias(String uid, String personid,String alias,String userid,long notExistingSince){
         createAutomaticDebetByAlias(uid, personid,alias,userid,notExistingSince,1);
     }
+    public static void createAutomaticDebetByAlias(String uid, String personid,String alias,String userid,long notExistingSince, String performerUid){
+        createAutomaticDebetByAlias(uid, personid,alias,userid,notExistingSince,1, performerUid);
+    }
     public static void createAutomaticDebetByAlias(String uid, String personid,String alias,String userid,long notExistingSince,int quantity){
     	Connection conn=MedwanQuery.getInstance().getOpenclinicConnection();
     	try{
@@ -3490,6 +3493,36 @@ public class Debet extends OC_Object implements Comparable,Cloneable {
     	    	if(!Debet.existsRecent(prestationUid,personid,notExistingSince)){
             		Debug.println("AUTOINVOICING step 3");
         			createAutomaticDebet(uid, personid, prestationUid, new java.util.Date(), quantity,userid);
+    	    	}
+    		}
+    		rs.close();
+    		ps.close();
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	finally {
+    		try{
+    			conn.close();
+    		}
+    		catch(Exception e2){
+    			e2.printStackTrace();
+    		}
+    	}
+    }
+    
+    public static void createAutomaticDebetByAlias(String uid, String personid,String alias,String userid,long notExistingSince,int quantity, String performerUid){
+    	Connection conn=MedwanQuery.getInstance().getOpenclinicConnection();
+    	try{
+    		String sQuery="select * from OC_PRESTATIONS where ';'"+MedwanQuery.getInstance().concatSign()+"OC_PRESTATION_REFUID"+MedwanQuery.getInstance().concatSign()+"';' LIKE '%;"+alias+";%'";
+    		PreparedStatement ps = conn.prepareStatement(sQuery);
+    		ResultSet rs = ps.executeQuery();
+    		while(rs.next()){
+        		Debug.println("AUTOINVOICING step 2");
+    			String prestationUid=rs.getString("OC_PRESTATION_SERVERID")+"."+rs.getString("OC_PRESTATION_OBJECTID");
+    	    	if(!Debet.existsRecent(prestationUid,personid,notExistingSince)){
+            		Debug.println("AUTOINVOICING step 3");
+        			createAutomaticDebet(uid, personid, prestationUid, new java.util.Date(), quantity,userid, performerUid);
     	    	}
     		}
     		rs.close();

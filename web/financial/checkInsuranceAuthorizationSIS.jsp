@@ -91,7 +91,7 @@
 					}
 				}
 				else{
-					accreditationwarning="sis."+insurance.getIdError();
+					accreditationwarning=getTranNoLink("accreditationerrors","sis."+insurance.getIdError(),sWebLanguage);
 				}
 			}
 		}

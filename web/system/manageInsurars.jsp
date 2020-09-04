@@ -58,6 +58,9 @@
       	   sEditInsurarAllowedReductions   = checkString(request.getParameter("EditInsurarAllowedReductions")),
     	   sEditInsurarRequiresAffiliateID = checkString(request.getParameter("EditInsurarRequiresAffiliateID")),
     	   sEditInsurarRequiresValidation  = checkString(request.getParameter("EditInsurarRequiresValidation")),
+    	   sEditInsurarStatusMandatory  = checkString(request.getParameter("EditInsurarStatusMandatory")),
+    	   sEditInsurarMemberImmatMandatory  = checkString(request.getParameter("EditInsurarMemberImmatMandatory")),
+    	   sEditInsurarMemberEmployerMandatory  = checkString(request.getParameter("EditInsurarMemberEmployerMandatory")),
     	   sEditInsurarIncludeAllPatientInvoiceDebets  = checkString(request.getParameter("EditInsurarIncludeAllPatientInvoiceDebets")),
     	   sEditInsurarAllowTariffNegociations  = checkString(request.getParameter("EditInsurarAllowTariffNegociations")),
     	   sEditInsurarCanPrintProforma  = checkString(request.getParameter("EditInsurarCanPrintProforma")),
@@ -120,13 +123,6 @@
     	else if(sEditAuthorizationNeeded.length()==0){
     		MedwanQuery.getInstance().setConfigString("InsuranceAgentAuthorizationNeededFor",MedwanQuery.getInstance().getConfigString("InsuranceAgentAuthorizationNeededFor","").replaceAll("\\*"+sEditInsurarId.replaceAll("\\.","\\\\.")+"\\*", ""));
     	}
-    	if(sEditInsurarRequiresAffiliateID.length()>0 && !insurar.getUid().equalsIgnoreCase("-1")){
-    		MedwanQuery.getInstance().setConfigString("InsuranceAuthorizationNumberNeededFor",MedwanQuery.getInstance().getConfigString("InsuranceAgentAuthorizationNeededFor","").replaceAll("\\*"+sEditInsurarId.replaceAll("\\.","\\\\.")+"\\*", "")+"*"+sEditInsurarId+"*");
-    	}
-    	else if(sEditInsurarRequiresAffiliateID.length()==0){
-    		MedwanQuery.getInstance().setConfigString("InsuranceAuthorizationNumberNeededFor",MedwanQuery.getInstance().getConfigString("InsuranceAgentAuthorizationNeededFor","").replaceAll("\\*"+sEditInsurarId.replaceAll("\\.","\\\\.")+"\\*", ""));
-    	}
-
     	if(sEditAcceptationNeeded.length()>0 && !insurar.getUid().equalsIgnoreCase("-1")){
     		MedwanQuery.getInstance().setConfigString("InsuranceAgentAcceptationNeededFor",MedwanQuery.getInstance().getConfigString("InsuranceAgentAcceptationNeededFor","").replaceAll("\\*"+sEditInsurarId.replaceAll("\\.","\\\\.")+"\\*", "")+"*"+sEditInsurarId+"*");
     	}
@@ -170,6 +166,27 @@
         }
         else {
         	insurar.setInsuranceReferenceNumberMandatory(0);
+        }
+        
+        if(sEditInsurarMemberImmatMandatory.equalsIgnoreCase("1")){
+        	insurar.setInsuranceMemberImmatMandatory(1);
+        }
+        else {
+        	insurar.setInsuranceMemberImmatMandatory(0);
+        }
+        
+        if(sEditInsurarMemberEmployerMandatory.equalsIgnoreCase("1")){
+        	insurar.setInsuranceMemberEmployerMandatory(1);
+        }
+        else {
+        	insurar.setInsuranceMemberEmployerMandatory(0);
+        }
+        
+        if(sEditInsurarStatusMandatory.equalsIgnoreCase("1")){
+        	insurar.setInsuranceStatusMandatory(1);
+        }
+        else {
+        	insurar.setInsuranceStatusMandatory(0);
         }
         
         if(sEditInsurarInvoiceCommentMandatory.equalsIgnoreCase("1")){
@@ -596,106 +613,65 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="admin"><%=getTran(request,"web","complementarycoverage",sWebLanguage)%></td>
-                        <%
-                        	String sExtraInsurar = "";
-                        	if(!sEditInsurarId.equalsIgnoreCase(getTranNoLink("patientsharecoverageinsurance",sEditInsurarId,sWebLanguage))){
-                        		sExtraInsurar="checked";
-                        	}
-                        %>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditInsurarExtra" <%=sExtraInsurar %>/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","complementarycoverage2",sWebLanguage)%></td>
-                        <%
-                        	String sExtraInsurar2 = "";
-                        	if(!sEditInsurarId.equalsIgnoreCase(getTranNoLink("patientsharecoverageinsurance2",sEditInsurarId,sWebLanguage))){
-                        		sExtraInsurar2 = "checked";
-                        	}
-                        %>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditInsurarExtra2" <%=sExtraInsurar2 %>/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","nosupplements",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditNoSupplements" <%=insurar.getNoSupplements()==1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","coversupplements",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditCoverSupplements" <%=insurar.getCoverSupplements()==1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","requireaffiliateid",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditInsurarRequiresAffiliateID" <%=insurar.getRequireAffiliateID()==1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","authorizationneeded",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditAuthorizationNeeded" <%=MedwanQuery.getInstance().getConfigString("InsuranceAgentAuthorizationNeededFor","").indexOf("*"+insurar.getUid()+"*")>-1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","acceptationneeded",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditAcceptationNeeded" <%=MedwanQuery.getInstance().getConfigString("InsuranceAgentAcceptationNeededFor","").indexOf("*"+insurar.getUid()+"*")>-1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","requirevalidation",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditInsurarRequiresValidation" <%=insurar.getRequireValidation()==1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","includeallpatientinvoicedebets",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditInsurarIncludeAllPatientInvoiceDebets" <%=insurar.getIncludeAllPatientInvoiceDebets()==1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","allowtariffnegociations",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditInsurarAllowTariffNegociations" <%=insurar.getAllowTariffNegociations()==1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","referencenumbermandatory",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditInsurarReferenceNumberMandatory" <%=insurar.getInsuranceReferenceNumberMandatory()==1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","invoicecommentmandatory",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditInsurarInvoiceCommentMandatory" <%=insurar.getInvoiceCommentMandatory()==1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","canprintproforma",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditInsurarCanPrintProforma" <%=insurar.getCanPrintProforma()==1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","needsapprovalrights",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditInsurarNeedsApproval" <%=insurar.getNeedsApproval()==1?"checked":""%> value="1"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="admin"><%=getTran(request,"web","uselimitedprestationslist",sWebLanguage)%></td>
-                        <td class="admin2">
-                            <input type="checkbox" name="EditInsurarUseLimitedPrestationsList" <%=insurar.getUseLimitedPrestationsList()==1?"checked":""%> value="1"/>
-                        </td>
+                    	<td colspan='2'>
+	                    	<table width='100%'>
+	                    		<tr>
+	                    			<td class='admin' width='25%'><%=getTran(request,"web","mandatorydata",sWebLanguage) %></td>
+	                    			<td class='admin' width='25%'><%=getTran(request,"web","authorizations",sWebLanguage) %></td>
+	                    			<td class='admin' width='25%'><%=getTran(request,"web","invoicing",sWebLanguage) %></td>
+	                    			<td class='admin' width='25%'><%=getTran(request,"web","other",sWebLanguage) %></td>
+	                    		</tr>
+	                    		<tr>
+	                    			<td class='admin2' style='vertical-align: top'>
+	                    				<table width='100%' cellspacing='0' cellpadding='0'>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarRequiresAffiliateID" <%=insurar.getRequireAffiliateID()==1?"checked":""%> value="1"/> <%=getTran(request,"web","requireaffiliateid",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarStatusMandatory" <%=insurar.getInsuranceStatusMandatory()==1?"checked":""%> value="1"/> <%=getTran(request,"web","insurancestatusmandatory",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarMemberImmatMandatory" <%=insurar.getInsuranceMemberImmatMandatory()==1?"checked":""%> value="1"/> <%=getTran(request,"web","memberimmatmandatory",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarMemberEmployerMandatory" <%=insurar.getInsuranceMemberEmployerMandatory()==1?"checked":""%> value="1"/> <%=getTran(request,"web","memberemployermandatory",sWebLanguage)%></td></tr>
+	                    					<tr><td><hr/></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarReferenceNumberMandatory" <%=insurar.getInsuranceReferenceNumberMandatory()==1?"checked":""%> value="1"/> <%=getTran(request,"web","referencenumbermandatory",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarInvoiceCommentMandatory" <%=insurar.getInvoiceCommentMandatory()==1?"checked":""%> value="1"/> <%=getTran(request,"web","invoicecommentmandatory",sWebLanguage)%></td></tr>
+	                    				</table>
+	                    			</td>
+	                    			<td class='admin2' style='vertical-align: top'>
+	                    				<table width='100%' cellspacing='0' cellpadding='0'>
+	                    					<tr><td><input class='text' type="checkbox" name="EditAuthorizationNeeded" <%=MedwanQuery.getInstance().getConfigString("InsuranceAgentAuthorizationNeededFor","").indexOf("*"+insurar.getUid()+"*")>-1?"checked":""%> value="1"/> <%=getTran(request,"web","authorizationneeded",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditAcceptationNeeded" <%=MedwanQuery.getInstance().getConfigString("InsuranceAgentAcceptationNeededFor","").indexOf("*"+insurar.getUid()+"*")>-1?"checked":""%> value="1"/> <%=getTran(request,"web","acceptationneeded",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarRequiresValidation" <%=insurar.getRequireValidation()==1?"checked":""%> value="1"/> <%=getTran(request,"web","requirevalidation",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarNeedsApproval" <%=insurar.getNeedsApproval()==1?"checked":""%> value="1"/> <%=getTran(request,"web","needsapprovalrights",sWebLanguage)%></td></tr>
+	                    				</table>
+	                    			</td>
+	                    			<td class='admin2' style='vertical-align: top'>
+	                    				<table width='100%' cellspacing='0' cellpadding='0'>
+	                    					<tr><td><input class='text' type="checkbox" name="EditNoSupplements" <%=insurar.getNoSupplements()==1?"checked":""%> value="1"/> <%=getTran(request,"web","nosupplements",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditCoverSupplements" <%=insurar.getCoverSupplements()==1?"checked":""%> value="1"/> <%=getTran(request,"web","coversupplements",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarIncludeAllPatientInvoiceDebets" <%=insurar.getIncludeAllPatientInvoiceDebets()==1?"checked":""%> value="1"/> <%=getTran(request,"web","includeallpatientinvoicedebets",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarAllowTariffNegociations" <%=insurar.getAllowTariffNegociations()==1?"checked":""%> value="1"/> <%=getTran(request,"web","allowtariffnegociations",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarUseLimitedPrestationsList" <%=insurar.getUseLimitedPrestationsList()==1?"checked":""%> value="1"/> <%=getTran(request,"web","uselimitedprestationslist",sWebLanguage)%></td></tr>
+	                    				</table>
+	                    			</td>
+	                    			<td class='admin2' style='vertical-align: top'>
+	                    				<table width='100%' cellspacing='0' cellpadding='0'>
+					                        <%
+					                        	String sExtraInsurar = "";
+					                        	if(!sEditInsurarId.equalsIgnoreCase(getTranNoLink("patientsharecoverageinsurance",sEditInsurarId,sWebLanguage))){
+					                        		sExtraInsurar="checked";
+					                        	}
+					                        %>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarExtra" <%=sExtraInsurar %>/> <%=getTran(request,"web","complementarycoverage",sWebLanguage)%></td></tr>
+					                        <%
+					                        	String sExtraInsurar2 = "";
+					                        	if(!sEditInsurarId.equalsIgnoreCase(getTranNoLink("patientsharecoverageinsurance2",sEditInsurarId,sWebLanguage))){
+					                        		sExtraInsurar2 = "checked";
+					                        	}
+					                        %>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarExtra2" <%=sExtraInsurar2 %>/> <%=getTran(request,"web","complementarycoverage2",sWebLanguage)%></td></tr>
+	                    					<tr><td><input class='text' type="checkbox" name="EditInsurarCanPrintProforma" <%=insurar.getCanPrintProforma()==1?"checked":""%> value="1"/> <%=getTran(request,"web","canprintproforma",sWebLanguage)%></td></tr>
+	                    				</table>
+	                    			</td>
+	                    		</tr>
+	                    	</table>
+	                    </td>
                     </tr>
                     <tr>
                         <td class="admin" width="<%=sTDAdminWidth%>"><%=getTran(request,"web","accountingcode",sWebLanguage)%></td>

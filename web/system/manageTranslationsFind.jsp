@@ -8,6 +8,8 @@
     String findLabelID    = checkString(request.getParameter("FindLabelID")),
            findLabelType  = checkString(request.getParameter("FindLabelType")),
            findLabelLang  = checkString(request.getParameter("FindLabelLang")),
+           findExactID  = checkString(request.getParameter("FindExactID")),
+           findExactValue  = checkString(request.getParameter("FindExactValue")),
            findLabelValue = checkString(request.getParameter("FindLabelValue"));
 
     // exclusions on labeltype
@@ -21,6 +23,8 @@
     	Debug.println("findLabelType    : "+findLabelType);
     	Debug.println("findLabelLang    : "+findLabelLang);
     	Debug.println("findLabelValue   : "+findLabelValue);
+    	Debug.println("findExactValue   : "+findExactValue);
+    	Debug.println("findExactID      : "+findExactID);
     	Debug.println("excludeServices  : "+excludeServices);
     	Debug.println("excludeFunctions : "+excludeFunctions+"\n");
     }
@@ -45,6 +49,12 @@
         sLabelID = checkString(label.id);
         sLabelLang = checkString(label.language);
         sLabelValue = checkString(label.value);
+        if(findExactID.equalsIgnoreCase("1") && !sLabelID.equalsIgnoreCase(findLabelID)){
+        	continue;
+        }
+        if(findExactValue.equalsIgnoreCase("1") && !sLabelValue.equalsIgnoreCase(findLabelValue)){
+        	continue;
+        }
 
         // alternate row-style
         if(sClass.equals("")) sClass = "1";

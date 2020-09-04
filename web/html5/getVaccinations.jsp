@@ -151,7 +151,7 @@
 						<%=getTranNoLink("web","date",sWebLanguage) %>
 					</td>
 					<td class='mobileadmin2' style='font-size:6vw'>
-						<input class='mobileadmin2' style='font-size:6vw;width:190px' type='date' name='vaccindate' id='vaccindate' value='<%=new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>'/>
+						<input class='mobileadmin2' style='font-size:5vw;height: 8vw;width:200px' type='date' name='vaccindate' id='vaccindate' value='<%=new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>'/>
 					</td>
 				</tr>
 			</table>

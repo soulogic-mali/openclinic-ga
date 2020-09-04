@@ -80,6 +80,7 @@
       <td class="admin"><%=getTran(null,"Web.Translations","labelid",sWebLanguage)%></td>
       <td class="admin2">
           <input type="text" class="text" id="FindLabelID" value="<%=findLabelID%>" size="50">
+          <input type='checkbox' class='text' id='FindExactID'/> <%=getTran(request,"web","exactmatch",sWebLanguage) %>
       </td>
   </tr>
   
@@ -106,6 +107,7 @@
       <td class="admin"><%=getTran(null,"Web.Translations","label",sWebLanguage)%></td>
       <td class="admin2">
           <input type="text" class="text" id="FindLabelValue" value="<%=findLabelValue%>" size="50">
+          <input type='checkbox' class='text' id='FindExactValue'/> <%=getTran(request,"web","exactmatch",sWebLanguage) %>
       </td>
   </tr>
   
@@ -139,7 +141,9 @@
     if($('FindLabelType').value.length>0 || $('FindLabelID').value.length>0 || $('FindLabelValue').value.length>0){
       var params = "FindLabelType="+document.getElementById('FindLabelType').value+
                    "&FindLabelID="+document.getElementById('FindLabelID').value+
+                   "&FindExactID="+(document.getElementById('FindExactID').checked?"1":"0")+
                    "&FindLabelLang="+document.getElementById('FindLabelLang').value+
+                   "&FindExactValue="+(document.getElementById('FindExactValue').checked?"1":"0")+
                    "&FindLabelValue="+document.getElementById('FindLabelValue').value;
 	  var url = "<%=sCONTEXTPATH%>/system/manageTranslationsFind.jsp?ts="+new Date();
 	  new Ajax.Request(url,{

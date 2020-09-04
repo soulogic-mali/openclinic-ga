@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,6 +31,7 @@ import be.openclinic.adt.Planning;
 import be.openclinic.adt.Queue;
 import be.openclinic.knowledge.Ikirezi;
 import be.openclinic.sync.GHBNetwork;
+import be.openclinic.system.SH;
 import be.openclinic.system.SystemInfo;
 
 public class Monitor implements Runnable{
@@ -206,6 +210,52 @@ public class Monitor implements Runnable{
     		} catch (Exception e) {
     			e.printStackTrace();
     		}
+            //Update spt knowledge base
+            String sptUpdateSource=SH.cs("sptUpdateSource", "");
+            if(sptUpdateSource.length()>0) {
+    			Date dLastSPTUpdateCheck = new SimpleDateFormat("yyyyMMddHHmmss").parse(MedwanQuery.getInstance().getConfigString("lastSPTUpdateCheck","19000101010000"));
+    			long interval = MedwanQuery.getInstance().getConfigInt("sptUpdateInterval",24*3600*1000); //default = once a day
+    			if(new java.util.Date().getTime()-dLastSPTUpdateCheck.getTime()>interval){
+    				try {
+	    				sDoc = MedwanQuery.getInstance().getConfigString("templateSource") + "/"+MedwanQuery.getInstance().getConfigString("clinicalPathwayFiles","pathways.bi.xml");
+	    				reader = new SAXReader(false);
+	    				document = reader.read(new URL(sDoc));
+	    				root = document.getRootElement();
+	    				int localversion = Integer.parseInt(root.attributeValue("version"));
+	    				
+	    				int remoteversion = 0;
+	    				//First try to fetch the datacenter source file version
+		    			HttpClient client = new HttpClient();
+		    			Debug.println("## SPT update version fetching "+sptUpdateSource+".version");
+		    			String url = sptUpdateSource+".version";
+		    			GetMethod method = new GetMethod(url);
+		    			int statusCode = client.executeMethod(method);
+		    			Debug.println("## SPT update version retrieval statuscode = "+statusCode);
+		    			if(statusCode!=200) {
+		    				//Version file does not exist. Download full knowledge file to get remote version
+		    				reader = new SAXReader(false);
+		    				document = reader.read(new URL(sptUpdateSource));
+		    				root = document.getRootElement();
+		    				remoteversion = Integer.parseInt(root.attributeValue("version"));
+		    			}
+		    			else {
+			    			String response = method.getResponseBodyAsString();
+			    			Debug.println("## SPT update version retrieval response = "+response);
+			    			remoteversion = Integer.parseInt(response);
+		    			}
+		    			//Compare remote version with local version
+		    			if(remoteversion>localversion) {
+			    			Debug.println("## SPT replacing local version ["+localversion+"] with remote version ["+remoteversion+"]");
+		    				InputStream in = new URL(sptUpdateSource).openStream();
+		    				Files.copy(in, Paths.get(SH.cs("templateDirectory", "/var/tomcat/webapps/openclinic/_common/xml")+"/"+SH.cs("clinicalPathwayFiles","pathways.bi.xml")), StandardCopyOption.REPLACE_EXISTING);
+		    			}
+    				}
+    				catch(Exception q) {
+    					q.printStackTrace();
+    				}
+    				MedwanQuery.getInstance().setConfigString("lastSPTUpdateCheck",new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date()));
+    			}
+            }
         }
         catch (Exception e) {
         	if(Debug.enabled){
