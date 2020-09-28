@@ -20,15 +20,21 @@
             if(files!=null && !files.isEmpty()){
                 UploadFile file = (UploadFile)files.get("filename");
                 sFileName = file.getFileName();
-                if(!new File(sFolderStore+"/"+mrequest.getParameter("folder")+"/"+sFileName).exists()){
+                if(SH.isAcceptableUploadFileExtension(sFileName)){
+                	out.println("<ERROR-FORBIDDEN-FILETYPE>");
+                }
+                else if(!new File(sFolderStore+"/"+mrequest.getParameter("folder")+"/"+sFileName).exists()){
                 	if(!new File(sFolderStore+"/"+mrequest.getParameter("folder")).exists()){
                 		new File(sFolderStore+"/"+mrequest.getParameter("folder")).mkdirs();
                 	}
 	                upBean.setFolderstore(sFolderStore+"/"+mrequest.getParameter("folder"));
 	                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
 	                upBean.store(mrequest, "filename");
+	                out.println("<OK>");
                 }
-                out.println("<OK>");
+                else{
+                	out.println("<ERROR>");
+                }
             }
         }
         catch(Exception e){

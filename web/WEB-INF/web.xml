@@ -114,15 +114,15 @@ id="servlet-2_5" version="2.5">
         <filter-class>be.dpms.medwan.webapp.wl.servlets.filters.IntrusionFilter</filter-class>
     </filter>
 
-    <!--filter-mapping>
+    <filter-mapping>
         <filter-name>Authentication Filter</filter-name>
         <url-pattern>*.jsp</url-pattern>
-    </filter-mapping-->
+    </filter-mapping>
 
-    <!--filter-mapping>
+    <filter-mapping>
         <filter-name>Authentication Filter</filter-name>
         <url-pattern>*.do</url-pattern>
-    </filter-mapping-->
+    </filter-mapping>
 
     <filter-mapping>
         <filter-name>requestControlFilter</filter-name>

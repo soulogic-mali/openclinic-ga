@@ -2428,6 +2428,7 @@
 	        <column name="ARCH_DOCUMENT_DELETEDATE" dbtype="datetime" javatype="date"/>
 	        <column name="ARCH_DOCUMENT_UPDATETIME" dbtype="datetime" javatype="date"/>
 			<column name="ARCH_DOCUMENT_UPDATEID" dbtype="int" javatype="integer"/>
+	        <column name="ARCH_DOCUMENT_SOURCEID" dbtype="varchar" javatype="string" size="255"/>
     	</columns>
     	<indexes>
 	        <index name="ARCH_DOCUMENT_OBJECTID">
@@ -2441,6 +2442,9 @@
 	        </index>
 	        <index name="ARCH_DOCUMENT_REFERENCE">
 	            <indexcolumn order="ASC" name="ARCH_DOCUMENT_REFERENCE"/>
+	        </index>
+	        <index name="ARCH_DOCUMENT_SOURCEID">
+	            <indexcolumn order="ASC" name="ARCH_DOCUMENT_SOURCEID"/>
 	        </index>
     	</indexes>
     </table>

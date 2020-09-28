@@ -59,7 +59,7 @@
 	//No reload for certain pages
 	if(sPage.indexOf("statistics/")<0){
 	%>
-		<body id="body" onresize="if(window.confirm('<%=getTranNoLink("web","datamodified.doreload",sWebLanguage) %>')){window.setTimeout('window.location.reload();',200);}">
+		<body id="body" onresize="checkResize();">
 	<%
 	}
 	else{
@@ -75,6 +75,16 @@
     }
 %>
 
+<script>
+	function checkResize(){
+		if(<%=request.getQueryString().indexOf("Page=/healthrecord")%>>-1 || <%=request.getQueryString().indexOf("Page=/system")%>>-1 || <%=request.getQueryString().indexOf("Page=/statistics")%>>-1){
+			if(window.confirm('<%=getTranNoLink("web","datamodified.doreload",sWebLanguage) %>')){window.setTimeout('window.location.reload();',200);}
+		}
+		else{
+			window.location.reload();
+		}
+	}
+</script>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" id="holder">
     <tr>

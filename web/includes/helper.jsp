@@ -895,7 +895,7 @@
     	}
     	
     	User user = new User();
-    	if(user.initialize(username,user.encrypt(password))){
+    	if(user.initialize(username,password)){
 	        request.getSession().setAttribute("activeUser",user);
 	        MedwanQuery.setSession(request.getSession(),user);
 	        

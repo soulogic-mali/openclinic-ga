@@ -12,7 +12,7 @@
     <tr>
         <td align="center">
             <br>
-            <%=labelValue%>
+            <%=org.owasp.encoder.Encode.forHtml(labelValue)%>
             <br><br><br>
 
             <input type="button" name="buttonYes" class="button" value="&nbsp;&nbsp;<%=getTranNoLink("web.occup","medwan.common.yes","en")%>&nbsp;&nbsp;" onclick="doClose(1);"/>&nbsp;

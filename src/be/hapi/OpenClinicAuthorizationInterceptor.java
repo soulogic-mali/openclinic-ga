@@ -41,8 +41,7 @@ public class OpenClinicAuthorizationInterceptor extends AuthorizationInterceptor
 		    		}
 		    	}
 		    	String password = headervalue.split(":")[1];
-				byte[] aUserPassword = User.encrypt(password);
-				if(User.validate(userid+"", aUserPassword)){
+				if(User.validate(userid+"", password)){
 			    	User user = User.get(userid);
 					if(user!=null && user.userid.length()>0 && User.hasPermission(user.userid,ScreenHelper.getSQLDate(new java.util.Date()))){
 						if(user.getAccessRight("mpi.api.select")) {

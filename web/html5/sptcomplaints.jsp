@@ -405,5 +405,5 @@
 </html>
 
 <script>
-document.getElementById("toptable").scrollIntoView();
+	window.parent.parent.scrollTo(0,0);
 </script>

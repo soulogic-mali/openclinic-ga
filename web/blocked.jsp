@@ -19,9 +19,6 @@
         window.close();
       }
 
-      function unBlockAccount(){
-        window.location.href = "<%=sCONTEXTPATH%>/unBlockAccount.jsp";
-      }
     </script>
 
     <%
@@ -101,7 +98,6 @@
                         }
                     %>.<br>Please contact your system administrator.
                         <br><br>
-                        <a href="javascript:unBlockAccount();" onMouseOver="window.status='';return true;">unblock account</a><br>
                         <a href="javascript:closeWindow();" onMouseOver="window.status='';return true;">close window</a>
                    </td>
                </tr>

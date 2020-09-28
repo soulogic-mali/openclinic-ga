@@ -718,8 +718,8 @@
 										}
 										else{
 											sExcludes.append("<tr><td class='mobileadmin' style='font-size:5vw;'>"+excludeSign+"</td><td nowrap class='mobileadmin' style='font-size:5vw;'><input style='height: 20px;width: 20px' type='radio' id='rbspte"+pathway.attributeValue("complaint")+"_"+excludeSpt+"' name='excludeSpt."+pathway.attributeValue("complaint")+"_"+excludeSpt+"' onclick='document.getElementById(\"rbspti"+pathway.attributeValue("complaint")+"_"+excludeSpt+"\").checked=false;'> "+getTran(request,"web","excludedmini",sWebLanguage)+" <input style='height: 20px;width: 20px' type='radio' id='rbspti"+pathway.attributeValue("complaint")+"_"+excludeSpt+"'  onclick='document.getElementById(\"rbspte"+pathway.attributeValue("complaint")+"_"+excludeSpt+"\").checked=false;' name='includeSpt-"+pathway.attributeValue("complaint")+"_"+excludeSpt+"_"+pathway.attributeValue("complaint")+"'> "+getTran(request,"web","presentmini",sWebLanguage)+"</td></tr>");
+											bSignsToExclude=true;
 										}
-										bSignsToExclude=true;
 									}
 								}
 								else if(((String)sptSigns.get(excludeSpt)).equalsIgnoreCase("yes")){
@@ -814,7 +814,9 @@
 													sTreatment=treatment.text;
 													if(!treatment.id.contains(".")){
 														sTreatment+="<br/><span style='font-size:4vw;color: red;font-weight: bolder'>"+getTranNoLink("web","spt.result",sWebLanguage)+": ["+treatment.id.toUpperCase()+"]</span> ";
-														SPT.logTreatment(activePatient.getPersonId(), treatment.id);
+														if(activePatient!=null){
+															SPT.logTreatment(activePatient.getPersonId(), treatment.id);
+														}
 													}
 												}
 												out.println("<font style='font-size:4vw;color: red'>"+sTreatment+"</font></td></tr>");
@@ -889,5 +891,5 @@
 	</body>
 </html>
 <script>
-document.getElementById("toptable").scrollIntoView();
+	window.parent.parent.scrollTo(0,0);
 </script>

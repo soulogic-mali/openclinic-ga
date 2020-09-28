@@ -21,58 +21,61 @@
         if(request.getParameter("AutoUserName")!=null){
             // active user
             activeUser = new User();
-            byte[] aUserPassword = activeUser.encrypt(request.getParameter("AutoUserPassword"));
-            activeUser.initialize(request.getParameter("AutoUserName"),aUserPassword);
-            session.setAttribute("activeUser",activeUser);
-
-            // reset lastPatient
-            session.removeAttribute("lastPatient");
-            
-            // weblanguage
-            session.setAttribute(sAPPTITLE+"WebLanguage",activeUser.person.language);
-            sWebLanguage = activeUser.person.language;
-
-            // active project title
-            String sTmpProjectName = checkString((String)session.getAttribute("activeProjectTitle"));
-            if(sTmpProjectName.length()==0){
-                sTmpProjectName = "OpenClinic";
-                session.setAttribute("activeProjectTitle",sTmpProjectName);
+            if(activeUser.initialize(request.getParameter("AutoUserName"),request.getParameter("AutoUserPassword"))){
+	            session.setAttribute("activeUser",activeUser);
+	
+	            // reset lastPatient
+	            session.removeAttribute("lastPatient");
+	            
+	            // weblanguage
+	            session.setAttribute(sAPPTITLE+"WebLanguage",activeUser.person.language);
+	            sWebLanguage = activeUser.person.language;
+	
+	            // active project title
+	            String sTmpProjectName = checkString((String)session.getAttribute("activeProjectTitle"));
+	            if(sTmpProjectName.length()==0){
+	                sTmpProjectName = "OpenClinic";
+	                session.setAttribute("activeProjectTitle",sTmpProjectName);
+	            }
+	
+	            if((!activeUser.project.toLowerCase().equals("mxs") && (!sTmpProjectName.toLowerCase().equals(activeUser.project.toLowerCase())))) {
+	                sTmpProjectName = activeUser.project;
+	                session.setAttribute("activeProjectTitle",sTmpProjectName);
+	
+	                // active project dir
+	                if(!sTmpProjectName.toLowerCase().equals("openclinic") && !sTmpProjectName.toLowerCase().equals("gmao")){
+	                    session.setAttribute("activeProjectDir","projects/"+sTmpProjectName.toLowerCase()+"/");
+	                } 
+	                else{
+	                    session.setAttribute("activeProjectDir",sCONTEXTPATH+"/");
+	                }
+	            }
+	
+	            // timeout
+	            String sTimeOutInSeconds = checkString(activeUser.getParameter("Timeout"));
+	
+	            if(sTimeOutInSeconds.length()==0){
+	                String sDefaultTimeOutInSeconds = MedwanQuery.getInstance().getConfigString("DefaultTimeOutInSeconds");
+	                if(sDefaultTimeOutInSeconds.length()==0){
+	                    sDefaultTimeOutInSeconds = "3600";
+	                }
+	                sTimeOutInSeconds = sDefaultTimeOutInSeconds;
+	            }
+	
+	            int iTimeOutInSeconds = 0;
+	            try{
+	                iTimeOutInSeconds = Integer.parseInt(sTimeOutInSeconds);
+	            }
+	            catch(Exception e){
+	                // nothing
+	            }
+	
+	            session.setMaxInactiveInterval(iTimeOutInSeconds);
+	            reloadSingleton(session);
             }
-
-            if((!activeUser.project.toLowerCase().equals("mxs") && (!sTmpProjectName.toLowerCase().equals(activeUser.project.toLowerCase())))) {
-                sTmpProjectName = activeUser.project;
-                session.setAttribute("activeProjectTitle",sTmpProjectName);
-
-                // active project dir
-                if(!sTmpProjectName.toLowerCase().equals("openclinic") && !sTmpProjectName.toLowerCase().equals("gmao")){
-                    session.setAttribute("activeProjectDir","projects/"+sTmpProjectName.toLowerCase()+"/");
-                } 
-                else{
-                    session.setAttribute("activeProjectDir",sCONTEXTPATH+"/");
-                }
+            else{
+                response.sendRedirect("../relogin.do");
             }
-
-            // timeout
-            String sTimeOutInSeconds = checkString(activeUser.getParameter("Timeout"));
-
-            if(sTimeOutInSeconds.length()==0){
-                String sDefaultTimeOutInSeconds = MedwanQuery.getInstance().getConfigString("DefaultTimeOutInSeconds");
-                if(sDefaultTimeOutInSeconds.length()==0){
-                    sDefaultTimeOutInSeconds = "3600";
-                }
-                sTimeOutInSeconds = sDefaultTimeOutInSeconds;
-            }
-
-            int iTimeOutInSeconds = 0;
-            try{
-                iTimeOutInSeconds = Integer.parseInt(sTimeOutInSeconds);
-            }
-            catch(Exception e){
-                // nothing
-            }
-
-            session.setMaxInactiveInterval(iTimeOutInSeconds);
-            reloadSingleton(session);
         }
         //*** no AutoUserName ***
         else{

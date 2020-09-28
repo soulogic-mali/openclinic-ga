@@ -14,8 +14,7 @@
 	String sMessage="";
 	
 	if(sUserName.length()>0 && sPassword.length()>0){
-		byte[] aUserPassword = User.encrypt(sPassword);
-		if(User.validate(sUserName, aUserPassword)){
+		if(User.validate(sUserName, sPassword)){
 			User user = null;
 			int nUserId = User.getUseridByAlias(sUserName);
 			if(nUserId>-1){

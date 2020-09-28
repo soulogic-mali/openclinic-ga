@@ -10,7 +10,7 @@
 		//First check if this is a valid login
 		String login =root.attributeValue("login");
 		byte[] encryptedpassword = Base64Coder.decode(root.attributeValue("password"));
-		if(!User.validate(login, encryptedpassword)){
+		if(!User.validate(login, new String(encryptedpassword))){
 			message=DocumentHelper.createDocument();
 			message.setRootElement(DocumentHelper.createElement("export"));
 			message.getRootElement().addAttribute("error", "remote.login.error");

@@ -21,7 +21,7 @@
             <img src="<c:url value='/_img/men_at_work.gif'/>">
         </td>
         <td align="center">
-            <%=questionTran%>
+            <%=org.owasp.encoder.Encode.forHtml(questionTran)%>
         </td>
     </tr>
 

@@ -5,7 +5,10 @@ import be.dpms.medwan.webapp.wo.authentication.AuthenticationTokenWO;
 import be.dpms.medwan.webapp.wo.common.system.SessionContainerWO;
 import be.dpms.medwan.services.authentication.exceptions.AuthenticationRequiredException;
 import be.mxs.webapp.wl.session.SessionKeyFactory;
+import be.openclinic.system.SH;
+import net.admin.User;
 import be.mxs.webapp.wl.session.SessionContainerFactory;
+import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.webapp.wl.exceptions.InvalidSessionKeyException;
 import be.mxs.webapp.wl.exceptions.SessionContainerFactoryException;
 
@@ -60,23 +63,34 @@ public class AuthenticationFilter implements Filter {
 
     private void verifyAuthentication(ServletRequest request) throws AuthenticationRequiredException, SessionContainerFactoryException {
         SessionContainerWO sessionContainerWO  = (be.dpms.medwan.webapp.wo.common.system.SessionContainerWO) SessionContainerFactory.getInstance().getSessionContainerWO((HttpServletRequest)request, SessionContainerWO.class.getName());
+        HttpServletRequest httpRequest = ((HttpServletRequest)request);
+        String URI=httpRequest.getRequestURI();
 
+        String[] excludes = {"/index.","/login.","checkLogin.","heartBeat.jsp","setSApwd.jsp","checkDB.jsp","blocked.jsp","loggedOut.jsp","sessionExpired.jsp","mpilogin.jsp","loginRemote.jsp"};
         if ( sessionContainerWO == null ) { // This will never happen
 
             throw new AuthenticationRequiredException();
 
         } else {
-
-            try {
-
-                String sessionKey = sessionContainerWO.getSessionKey();
-
-                SessionKeyFactory.getInstance().isValid( sessionKey );
-
-            }catch (InvalidSessionKeyException e) {
-
-                throw new AuthenticationRequiredException(e.getMessage());
+        	//Exclude authentication pages
+        	for(int n=0;n<excludes.length;n++) {
+            	if(URI.indexOf(excludes[n])>-1) {
+            		return;
+            	}
+        	}
+            if(httpRequest.getParameter("AutoUserName")!=null){
+                // active user
+                User activeUser = new User();
+                if(activeUser.initialize(request.getParameter("AutoUserName"),request.getParameter("AutoUserPassword"))){
+                	sessionContainerWO.getSession().setAttribute("activeUser",activeUser);
+                }
             }
+
+        	//Validate if this is an authenticated session
+        	if((new java.util.Date().getTime() - sessionContainerWO.getSession().getLastAccessedTime() >= sessionContainerWO.getSession().getMaxInactiveInterval()*1000) || sessionContainerWO.getSession().getAttribute("activeUser")==null) {
+                System.out.println("Redirecting "+URI);
+        		throw new AuthenticationRequiredException("Unauthenticated");
+        	}
         }
     }
 }

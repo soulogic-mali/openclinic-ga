@@ -93,7 +93,6 @@
             <td>
                 <% 
                     hMenu = new Hashtable();
-                    hMenu.put(getTran(request,"Web.Occup","medwan.common.execute-sql",sWebLanguage),"main.do?Page=system/executeSQL.jsp");
                     hMenu.put(getTran(request,"web.manage","MonitorConnections",sWebLanguage),"main.do?Page=system/monitorConnections.jsp");
                     hMenu.put(getTran(request,"web.manage","MonitorAccess",sWebLanguage),"main.do?Page=system/monitorAccess.jsp");
                     hMenu.put(getTran(request,"web.manage","ViewErrors",sWebLanguage),"main.do?Page=system/monitorErrors.jsp");
@@ -165,7 +164,6 @@
                     hMenu.put(getTran(request,"web.manage","configure.core",sWebLanguage),"main.do?Page=system/resetDefaults.jsp");
                     hMenu.put(getTran(request,"web.manage","load.file",sWebLanguage),"main.do?Page=system/loadTable.jsp");
                     hMenu.put(getTran(request,"web.manage","export.labels",sWebLanguage),"main.do?Page=system/exportLabels.jsp");
-                    hMenu.put(getTran(request,"web.manage","update.code",sWebLanguage),"main.do?Page=system/updateCode.jsp");
 
                     out.print(ScreenHelper.writeTblHeader(getTran(request,"web.manage","Synchronization",sWebLanguage),sCONTEXTPATH)+
                     		  sortMenu(hMenu)+

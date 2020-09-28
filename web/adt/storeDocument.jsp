@@ -22,10 +22,19 @@
                 UploadFile file = (UploadFile)files.get("filename");
                 sFileName = file.getFileName();
                 file.setFileName(sFileName);
-                
-                upBean.setFolderstore(sFolderStore);
-                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/adt/tmp"));
-                upBean.store(mrequest,"filename");
+                if(SH.isAcceptableUploadFileExtension(sFileName)){
+	                upBean.setFolderstore(sFolderStore);
+	                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/adt/tmp"));
+	                upBean.store(mrequest,"filename");
+                }
+                else{
+                	%>
+                	<script>
+                		alert("<%=getTranNoLink("web","forbiddenfiletype",sWebLanguage)%>");
+                		window.close();
+                	</script>
+                	<%
+                }
             }
         }
         catch(Exception e){

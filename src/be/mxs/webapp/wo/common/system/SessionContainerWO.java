@@ -11,11 +11,15 @@ import be.mxs.common.model.vo.IdentifierFactory;
 import be.mxs.common.util.system.ScreenHelper;
 
 import java.util.*;
+
+import javax.servlet.http.HttpSession;
+
 import java.text.SimpleDateFormat;
 
 public class SessionContainerWO {
     public  static final String SESSION_KEY_CONTAINER_WO = "SESSION_KEY_CONTAINER_WO";
 
+    private HttpSession session = null;
     private String    sessionKey = null;
     private Hashtable container = null;
     private String    currentFoldername = null;
@@ -56,7 +60,15 @@ public class SessionContainerWO {
         return errorMessages;
     }
 
-    public void resetErrorMessage() {
+    public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
+	public void resetErrorMessage() {
         errorMessages.clear();
     }
 

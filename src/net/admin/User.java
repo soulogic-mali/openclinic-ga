@@ -2,6 +2,7 @@ package net.admin;
 
 import be.dpms.medwan.common.model.vo.occupationalmedicine.ExaminationVO;
 import be.mxs.common.util.db.MedwanQuery;
+import be.mxs.common.util.system.BCrypt;
 import be.mxs.common.util.system.Debug;
 import be.mxs.common.util.system.ScreenHelper;
 import be.openclinic.common.OC_Object;
@@ -218,16 +219,16 @@ public class User extends OC_Object {
     }
     
     //--- INITIALIZE ------------------------------------------------------------------------------
-    public boolean initialize(String sLogin, byte[] aPassword){
+    public boolean initialize(String sLogin, String aPassword){
     	Connection conn=MedwanQuery.getInstance().getAdminConnection();
     	boolean bReturn = initialize(conn, sLogin, aPassword);
     	ScreenHelper.closeQuietly(conn,null,null);
     	return bReturn;
     }
 
-    public boolean initialize (Connection connection, String sLogin, byte[] aPassword){
+    public boolean initialize (Connection connection, String sLogin, String aPassword){
     	boolean bReturn = false;
-        if((sLogin!=null)&&(sLogin.trim().length()>0)&&(aPassword!=null)&&(aPassword.length>0)){
+        if((sLogin!=null)&&(sLogin.trim().length()>0)&&(aPassword!=null)&&(aPassword.length()>0)){
             try{
                 String sSelect = "SELECT a.userid,a.personid, a.encryptedpassword, a.start, a.stop, a.project FROM Users a, Userparameters b WHERE a.userid=b.userid and b.parameter='alias' and value = ? ";
                 PreparedStatement ps = connection.prepareStatement(sSelect);
@@ -241,8 +242,22 @@ public class User extends OC_Object {
                     this.start = ScreenHelper.getSQLDate(rs.getDate("start"));
                     this.stop = ScreenHelper.getSQLDate(rs.getDate("stop"));
                     this.project = ScreenHelper.checkString(rs.getString("project"));
-
-                    if(checkPassword(aPassword)){
+                    byte[] passwordHash = encrypt(aPassword);
+                    if(!checkPassword(passwordHash)){
+                    	byte[] passwordHashOld = encryptOld(aPassword);
+                    	if(checkPassword(passwordHashOld)){
+                    		//Stored password still uses SHA-1 mechanism
+                    		//Update this user record with the new BCrypt hashed password
+                    		PreparedStatement ps2 = connection.prepareStatement("update users set encryptedpassword=? where userid=?");
+                    		ps2.setBytes(1, passwordHash);
+                    		ps2.setString(2, sLogin);
+                    		ps2.execute();
+                    		ps2.close();
+                    		this.password=passwordHash;
+                    	}
+                    }
+                    
+                    if(checkPassword(passwordHash)){
                         sSelect = "SELECT * FROM UserParameters WHERE userid = ? AND active = 1 ";
                         rs.close();
                         ps.close();
@@ -290,7 +305,7 @@ public class User extends OC_Object {
                 e.printStackTrace();
             }
             
-            //initialize(Integer.parseInt(sLogin));
+            //User not found by alias, search by userid
             if(!bReturn){
                 try{
                     String sSelect = "SELECT userid,personid, encryptedpassword, start, stop, project FROM Users WHERE userid = ? ";
@@ -307,7 +322,22 @@ public class User extends OC_Object {
                         this.start = ScreenHelper.getSQLDate(rs.getDate("start"));
                         this.stop = ScreenHelper.getSQLDate(rs.getDate("stop"));
                         this.project = ScreenHelper.checkString(rs.getString("project"));
-                        if(checkPassword(aPassword)){
+                        byte[] passwordHash = encrypt(aPassword);
+                        if(!checkPassword(passwordHash)){
+                        	byte[] passwordHashOld = encryptOld(aPassword);
+                        	if(checkPassword(passwordHashOld)){
+                        		//Stored password still uses SHA-1 mechanism
+                        		//Update this user record with the new BCrypt hashed password
+                        		PreparedStatement ps2 = connection.prepareStatement("update users set encryptedpassword=? where userid=?");
+                        		ps2.setBytes(1, passwordHash);
+                        		ps2.setString(2, sLogin);
+                        		ps2.execute();
+                        		ps2.close();
+                        		this.password=passwordHash;
+                        	}
+                        }
+                        
+                        if(checkPassword(passwordHash)){
                         	rs.close();
                         	ps.close();
                         	
@@ -360,79 +390,6 @@ public class User extends OC_Object {
         return bReturn;
     }
 
-    //--- INITIALIZE AUTO -------------------------------------------------------------------------
-    public boolean initializeAuto (String sLogin, String aPassword){
-    	Connection conn=MedwanQuery.getInstance().getAdminConnection();
-    	boolean bReturn = initializeAuto(conn,sLogin,aPassword);
-    	ScreenHelper.closeQuietly(conn,null,null);
-    	return bReturn;
-    }
-    
-    public boolean initializeAuto(Connection connection, String sLogin, String aPassword){
-        boolean bReturn = false;
-
-        if((sLogin!=null)&&(sLogin.trim().length()>0)&&(aPassword!=null)&&(aPassword.length()>0)){
-            try{
-                String sSelect = "SELECT userid,personid, encryptedpassword, start, stop, project"+
-                                 " FROM Users WHERE userid = ?";
-                PreparedStatement ps = connection.prepareStatement(sSelect);
-                ps.setInt(1,Integer.parseInt(sLogin));
-                ResultSet rs = ps.executeQuery();
-                if(rs.next()){
-                    this.userid = rs.getString("userid");
-                    this.personid = rs.getString("personid");
-                    this.password = rs.getBytes("encryptedpassword");
-                    this.start = ScreenHelper.getSQLDate(rs.getDate("start"));
-                    this.stop = ScreenHelper.getSQLDate(rs.getDate("stop"));
-                    this.project = ScreenHelper.checkString(rs.getString("project"));
-                     
-                    if(hashPassword(this.password)==Integer.parseInt(aPassword))  {
-                        sSelect = "SELECT * FROM UserParameters WHERE userid = ? AND active = 1 ";
-                        rs.close();
-                        ps.close();
-                        
-                        ps = connection.prepareStatement(sSelect);
-                        ps.setInt(1,Integer.parseInt(this.userid));
-                        rs = ps.executeQuery();
-                        String sParameter, sValue;
-                        String sUserProfileID = "";
-                        while(rs.next()){
-                            sParameter = rs.getString("parameter");
-                            sValue = ScreenHelper.checkString(rs.getString("value"));
-
-                            parameters.add(new Parameter(sParameter,sValue));
-
-                            if(sParameter.equalsIgnoreCase("userprofileid")){
-                                sUserProfileID = sValue;
-                            }
-                            else if(sParameter.equalsIgnoreCase("sa")){
-                                accessRights.put("sa","true");
-                            }
-                        }
-                        rs.close();
-                        ps.close();
-
-                        if(this.person.initialize(connection,personid)){
-                            bReturn = true;
-                        }
-
-                        loadAccessRights(sUserProfileID,connection);
-                        initializeService();
-                    }
-                }
-                else{
-                    rs.close();
-                    ps.close();
-                }
-            }
-            catch(SQLException e){
-                Debug.println("User initialize error: "+e.getMessage());
-            }
-        }
-
-        return bReturn;
-    }
-    
     //--- GET -------------------------------------------------------------------------------------
     public static User get(int userid){
     	User user = new User();
@@ -448,7 +405,7 @@ public class User extends OC_Object {
     	return user;
     }
     
-    public static boolean validate(String login,byte[] password){
+    public static boolean validate(String login,String password){
     	return new User().initialize(login, password);
     }
 
@@ -728,10 +685,20 @@ public class User extends OC_Object {
     }
 
     //--- ENCRYPT ---------------------------------------------------------------------------------
-    public static byte[] encrypt(String sValue){
+    public static byte[] encryptOld(String sValue){
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             return md.digest(sValue.getBytes());
+        }
+        catch (Exception e){
+            Debug.println("User encryption error: "+e.getMessage());
+        }
+        return null;
+    }
+
+    public byte[] encrypt(String sValue){
+        try {
+            return BCrypt.hashpw(sValue, BCrypt.gensalt((this.userid+this.personid+this.start).hashCode()+"")).getBytes();
         }
         catch (Exception e){
             Debug.println("User encryption error: "+e.getMessage());

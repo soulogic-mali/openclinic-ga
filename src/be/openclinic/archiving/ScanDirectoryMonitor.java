@@ -847,7 +847,7 @@ public class ScanDirectoryMonitor implements Runnable{
     }
 	
     //--- GET FILE PATH AND NAME ------------------------------------------------------------------
-    private static String getFilePathAndName(String sUDI, String sOrigExt){
+    public static String getFilePathAndName(String sUDI, String sOrigExt){
 
     	int numberOfFile = MedwanQuery.getInstance().getOpenclinicCounter("archiveDocumentStoreCount");
     	Debug.println("numberOfFiles : "+numberOfFile); 

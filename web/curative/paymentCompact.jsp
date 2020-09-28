@@ -45,7 +45,7 @@
         }
     %>
     <%
-    	String encounteruid="",encounterservice="",encounterservicename="",encountertype="",encounterorigin=SH.cs("defaultOrigin","1");
+    	String encounteruid="",encounterservice="",encounterservicename="",encountertype="",encountermanager="",encountermanagername="",encounterorigin=SH.cs("defaultOrigin","1");
     	Encounter encounter = Encounter.getActiveEncounter(activePatient.personid);
     	if(encounter!=null && encounter.getEnd()==null){
     		encounterservice=encounter.getServiceUID();
@@ -53,6 +53,10 @@
     		encountertype=encounter.getType();
     		encounterorigin=encounter.getOrigin();
     		encounteruid=encounter.getUid();
+    		encountermanager=encounter.getManagerUID();
+    		if(encounter.getManager()!=null&& encounter.getManager().person!=null){
+    			encountermanagername=encounter.getManager().person.getFullName();
+    		}
     	}
     	else{
     %>
@@ -70,6 +74,16 @@
             <input class="text" type="text" name="EditEncounterServiceName" id="EditEncounterServiceName" value="<%=encounterservicename%>" readonly size="50"/>
             <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTran(null,"web","select",sWebLanguage)%>" onclick="searchService('EditEncounterService','EditEncounterServiceName');">
             <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTran(null,"web","clear",sWebLanguage)%>" onclick="EditEncounterService.value='';EditEncounterServiceName.value='';">
+        </td>
+    </tr>
+    <tr>
+        <td class="admin"><%=getTran(request,"web","manager",sWebLanguage)%> *</td>
+        <td class="admin2" nowrap>
+            <input type="hidden" name="EditEncounterManager" id="EditEncounterManager" value="<%=encountermanager%>">
+            <input class="text" type="text" name="EditEncounterManagerName" id="EditEncounterManagerName" readonly size="50" value="<%=encountermanagername%>">
+           
+            <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTran(null,"web","select",sWebLanguage)%>" onclick="searchManager('EditEncounterManager','EditEncounterManagerName');">
+            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTran(null,"web","clear",sWebLanguage)%>" onclick="document.getElementById('EditEncounterManager').value='';document.getElementById('EditEncounterManagerName').value='';">
         </td>
     </tr>
     <tr>
@@ -122,6 +136,7 @@
 		if(	document.getElementById("wicketuid").value.length==0||
 			document.getElementById("EditEncounterService").value.length==0||
 			document.getElementById("EditEncounterType").value.length==0||
+			document.getElementById("EditEncounterManager").value.length==0||
 			document.getElementById("EditEncounterOrigin").value.length==0){
 			alert('<%=getTranNoLink("web","datamissing",sWebLanguage)%>');
 		}
@@ -131,6 +146,7 @@
 		    				"&amount="+document.getElementById('amount').value+
 		    				"&encounteruid="+document.getElementById('encounteruid').value+
 		    				"&encounterserviceuid="+document.getElementById('EditEncounterService').value+
+		    				"&encountermanager="+document.getElementById('EditEncounterManager').value+
 		    				"&encountertype="+document.getElementById('EditEncounterType').value+
 		    				"&encounterorigin="+document.getElementById('EditEncounterOrigin').value
 		    				;
@@ -164,4 +180,9 @@
         window.open(url,"PatientInvoicePdf<%=new java.util.Date().getTime()%>","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
     }
 
+    <%-- SEARCH MANAGER --%>
+    function searchManager(managerUidField,managerNameField){
+      openPopup("/_common/search/searchUser.jsp&ts=<%=getTs()%>&ReturnUserID="+managerUidField+"&ReturnName="+managerNameField+"&displayImmatNew=no&FindServiceID="+document.getElementById("EditEncounterService").value+"&FindServiceName="+document.getElementById("EditEncounterServiceName").value);
+      EditEncounterForm.EditEncounterManagerName.focus();
+    }
 </script>

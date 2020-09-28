@@ -6,6 +6,7 @@
 	String encounteruid = SH.p(request,"encounteruid");
 	String encounterserviceuid = SH.p(request,"encounterserviceuid");
 	String encountertype = SH.p(request,"encountertype");
+	String encountermanager = SH.p(request,"encountermanager");
 	String encounterorigin = SH.p(request,"encounterorigin");
 	String amount = SH.p(request,"amount");
 	String invoiceuid = "";
@@ -22,6 +23,7 @@
 		encounter.setServiceUID(encounterserviceuid);
 		encounter.setSituation(SH.cs("defaultEncounterSituation","1"));
 		encounter.setType(encountertype);
+		encounter.setManagerUID(encountermanager);
 		encounter.setUpdateUser(activeUser.userid);
 		encounter.setVersion(1);
 		encounter.store();

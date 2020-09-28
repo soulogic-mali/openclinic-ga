@@ -11,7 +11,7 @@
 <table width="100%" height="100%">
     <tr>
         <td align="center" style="padding:1px">
-            <br><img src="<c:url value='/_img/icons/icon_warning.gif'/>"/> <%=labelValue%>
+            <br><img src="<c:url value='/_img/icons/icon_warning.gif'/>"/> <%=org.owasp.encoder.Encode.forHtml(labelValue)%>
             <br><br><br>
 
             <input type="button" name="buttonOk" id="buttonOk" class="button" value="&nbsp;&nbsp;<%=getTranNoLink("web.occup","medwan.common.ok","e")%>&nbsp;&nbsp;" onclick="doClose(1);"/>

@@ -29,7 +29,15 @@
             if(files!=null && !files.isEmpty()){
                 UploadFile file = (UploadFile) files.get("filename");
                 sFileName = file.getFileName();
-            	if(checkString(mrequest.getParameter("assetuid")).length()>0){
+                if(!SH.isAcceptableUploadFileExtension(sFileName)){
+                	%>
+                	<script>
+                		alert("<%=getTranNoLink("web","forbiddenfiletype",sWebLanguage)%>");
+                		window.close();
+                	</script>
+                	<%
+                }
+                else if(checkString(mrequest.getParameter("assetuid")).length()>0){
 	                if(sFileName.trim().length()>0){
 		                //We creëren een nieuw archiving document
 		             	String sSql = "INSERT INTO arch_documents (arch_document_serverid, arch_document_objectid, arch_document_udi,"+

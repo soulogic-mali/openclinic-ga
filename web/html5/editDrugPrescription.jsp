@@ -411,3 +411,6 @@
 
 	
 </script>
+<script>
+	window.parent.parent.scrollTo(0,0);
+</script>

@@ -26,18 +26,27 @@
                 UploadFile file = (UploadFile) files.get("filename");
                 
                 sFileName = file.getFileName();
-                Debug.println("sFileName : "+sFileName);
-                String sUid=mrequest.getParameter("fileuploadid")+sFileName.substring(sFileName.lastIndexOf("."));
-                file.setFileName(sUid);
-                Debug.println("sFileID : "+sUid);
-                Debug.println("--> fileSize : "+file.getFileSize()+" bytes"); 
-                
-                upBean.setFolderstore(sFolderStore);
-                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
-                upBean.store(mrequest, "filename");
-                Debug.println("Removing transaction from cache: "+mrequest.getParameter("uploadtransactionid"));
-                MedwanQuery.getInstance().getObjectCache().removeObject("transaction",mrequest.getParameter("uploadtransactionid"));
-
+                if(SH.isAcceptableUploadFileExtension(sFileName)){
+	                Debug.println("sFileName : "+sFileName);
+	                String sUid=mrequest.getParameter("fileuploadid")+sFileName.substring(sFileName.lastIndexOf("."));
+	                file.setFileName(sUid);
+	                Debug.println("sFileID : "+sUid);
+	                Debug.println("--> fileSize : "+file.getFileSize()+" bytes"); 
+	                
+	                upBean.setFolderstore(sFolderStore);
+	                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
+	                upBean.store(mrequest, "filename");
+	                Debug.println("Removing transaction from cache: "+mrequest.getParameter("uploadtransactionid"));
+	                MedwanQuery.getInstance().getObjectCache().removeObject("transaction",mrequest.getParameter("uploadtransactionid"));
+                }
+                else{
+                	%>
+                	<script>
+                		alert("<%=getTranNoLink("web","forbiddenfiletype",sWebLanguage)%>");
+                		window.close();
+                	</script>
+                	<%
+                }
             }
         }
         catch(Exception e){

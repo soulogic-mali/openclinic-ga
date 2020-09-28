@@ -32,42 +32,52 @@
                 System.out.println(3);
                 UploadFile file = (UploadFile) files.get("docFile");
                 String sFileName = file.getFileName();
-           		sFolderCode=checkString(mrequest.getParameter("folderCode"));
-           		sFolderName=checkString(mrequest.getParameter("folderName"));
-                if(sFileName.trim().length()>0){
-	                //We creëren een nieuw archiving document
-	             	String sSql = "INSERT INTO arch_documents (arch_document_serverid, arch_document_objectid, arch_document_udi,"+
-	              	"  arch_document_title, arch_document_description, arch_document_author, arch_document_destination, arch_document_category,arch_document_date, arch_document_reference,"+
-		  	        "  arch_document_updatetime, arch_document_updateid,arch_document_tran_serverid)"+
-	                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,-1)";		
-	                Connection conn=MedwanQuery.getInstance().getOpenclinicConnection();
-	                PreparedStatement ps = conn.prepareStatement(sSql);
-	                ps.setInt(1,MedwanQuery.getInstance().getConfigInt("serverId",1));
-	                int objectId=MedwanQuery.getInstance().getOpenclinicCounter("ARCH_DOCUMENTS");
-	                String sUDI=ArchiveDocument.generateUDI(objectId);
-	                ps.setInt(2,objectId);
-	                ps.setString(3,sUDI);
-	                ps.setString(4,mrequest.getParameter("docTitle"));
-	                ps.setString(5,mrequest.getParameter("docDescription"));
-	                ps.setString(6,mrequest.getParameter("docAuthor"));
-	                ps.setString(7,mrequest.getParameter("docVersion"));
-	                ps.setString(8,"library");
-	                ps.setTimestamp(9, new Timestamp(new java.util.Date().getTime()));
-	                ps.setString(10,"library."+mrequest.getParameter("folderCode"));
-	                ps.setTimestamp(11, new Timestamp(new java.util.Date().getTime()));
-					ps.setString(12,activeUser.userid);
-					ps.execute();
-					ps.close();
-					conn.close();
-					String sUid=sUDI+sFileName.substring(sFileName.lastIndexOf("."));
-	                file.setFileName(sUid);
-	                Debug.println("sFileID : "+sUid);
-	                Debug.println("--> fileSize : "+file.getFileSize()+" bytes"); 
-	                
-	                upBean.setFolderstore(sFolderStore);
-	                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
-	                upBean.store(mrequest, "docFile");
-            	}
+                if(SH.isAcceptableUploadFileExtension(sFileName)){
+	           		sFolderCode=checkString(mrequest.getParameter("folderCode"));
+	           		sFolderName=checkString(mrequest.getParameter("folderName"));
+	                if(sFileName.trim().length()>0){
+		                //We creëren een nieuw archiving document
+		             	String sSql = "INSERT INTO arch_documents (arch_document_serverid, arch_document_objectid, arch_document_udi,"+
+		              	"  arch_document_title, arch_document_description, arch_document_author, arch_document_destination, arch_document_category,arch_document_date, arch_document_reference,"+
+			  	        "  arch_document_updatetime, arch_document_updateid,arch_document_tran_serverid)"+
+		                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,-1)";		
+		                Connection conn=MedwanQuery.getInstance().getOpenclinicConnection();
+		                PreparedStatement ps = conn.prepareStatement(sSql);
+		                ps.setInt(1,MedwanQuery.getInstance().getConfigInt("serverId",1));
+		                int objectId=MedwanQuery.getInstance().getOpenclinicCounter("ARCH_DOCUMENTS");
+		                String sUDI=ArchiveDocument.generateUDI(objectId);
+		                ps.setInt(2,objectId);
+		                ps.setString(3,sUDI);
+		                ps.setString(4,mrequest.getParameter("docTitle"));
+		                ps.setString(5,mrequest.getParameter("docDescription"));
+		                ps.setString(6,mrequest.getParameter("docAuthor"));
+		                ps.setString(7,mrequest.getParameter("docVersion"));
+		                ps.setString(8,"library");
+		                ps.setTimestamp(9, new Timestamp(new java.util.Date().getTime()));
+		                ps.setString(10,"library."+mrequest.getParameter("folderCode"));
+		                ps.setTimestamp(11, new Timestamp(new java.util.Date().getTime()));
+						ps.setString(12,activeUser.userid);
+						ps.execute();
+						ps.close();
+						conn.close();
+						String sUid=sUDI+sFileName.substring(sFileName.lastIndexOf("."));
+		                file.setFileName(sUid);
+		                Debug.println("sFileID : "+sUid);
+		                Debug.println("--> fileSize : "+file.getFileSize()+" bytes"); 
+		                
+		                upBean.setFolderstore(sFolderStore);
+		                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
+		                upBean.store(mrequest, "docFile");
+	            	}
+                }
+                else{
+                	%>
+                	<script>
+                		alert("<%=getTranNoLink("web","forbiddenfiletype",sWebLanguage)%>");
+                		window.close();
+                	</script>
+                	<%
+                }
             }
         }
         catch(Exception e){

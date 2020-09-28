@@ -17,18 +17,23 @@
 	        Hashtable files = mrequest.getFiles();
 	        if(files!=null && !files.isEmpty()){
 	        	String sFileName = MedwanQuery.getInstance().getConfigString("tempdir","/tmp")+"/"+((UploadFile)files.get("filename")).getFileName();
-	        	Debug.println("working with file "+sFileName);
-	        	if(new File(sFileName).exists()){
-		        	Debug.println("deleting file "+sFileName);
-	        		new File(sFileName).delete();
-	        	}
-	            upBean.setFolderstore(MedwanQuery.getInstance().getConfigString("tempdir","/tmp"));
-	            upBean.setParsertmpdir(MedwanQuery.getInstance().getConfigString("tempdir","/tmp"));
-	            upBean.store(mrequest, "filename");
-	            StringBuffer xml=new StringBuffer();
-	    		xml.append(FileUtils.readFileToString(new File(sFileName)));
-	    		Asset.storeXml(xml);
-	    		out.println("<OK>");
+                if(!SH.isAcceptableUploadFileExtension(sFileName)){
+		    		out.println("<ERROR-FORBIDDEN-FILETYPE>");
+                }
+                else {
+		        	Debug.println("working with file "+sFileName);
+		        	if(new File(sFileName).exists()){
+			        	Debug.println("deleting file "+sFileName);
+		        		new File(sFileName).delete();
+		        	}
+		            upBean.setFolderstore(MedwanQuery.getInstance().getConfigString("tempdir","/tmp"));
+		            upBean.setParsertmpdir(MedwanQuery.getInstance().getConfigString("tempdir","/tmp"));
+		            upBean.store(mrequest, "filename");
+		            StringBuffer xml=new StringBuffer();
+		    		xml.append(FileUtils.readFileToString(new File(sFileName)));
+		    		Asset.storeXml(xml);
+		    		out.println("<OK>");
+                }
 	        }
 	    }
 	    catch(Exception e){

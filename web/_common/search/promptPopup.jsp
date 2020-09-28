@@ -23,7 +23,7 @@
         <tr>
             <td align="center">
                 <br>
-                <%=questionTran%>
+                <%=org.owasp.encoder.Encode.forHtml(questionTran)%>
                 <br><br><br>
 
                 <input type="text" class="text" size="20" name="promptField" id="promptField">

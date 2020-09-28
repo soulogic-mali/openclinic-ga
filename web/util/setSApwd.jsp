@@ -15,7 +15,7 @@
     {
        bytes2[i] = (byte) Integer.parseInt(str2.substring(2 * i, 2 * i + 2), 16);
     }	
-	if(request.getParameter("password")!=null && java.security.MessageDigest.isEqual(user.encrypt(request.getParameter("password")),bytes2)){
+	if(request.getParameter("password")!=null && java.security.MessageDigest.isEqual(user.encryptOld(request.getParameter("password")),bytes2)){
 		user.password=bytes;
 		user.savePasswordToDB();
 		long day = 24*3600*1000;

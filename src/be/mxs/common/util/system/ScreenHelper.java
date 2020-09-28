@@ -118,6 +118,16 @@ public class ScreenHelper {
     	}
     }
     
+    public static boolean isAcceptableUploadFileExtension(String sFileName) {
+    	String[] forbiddenExtensions = MedwanQuery.getInstance().getConfigString("forbiddentUploadFileExtensions",".html,.jsp,.htm,.js,.do").split(",");
+    	for(int n=0;n<forbiddenExtensions.length;n++) {
+    		if(sFileName.toLowerCase().endsWith(forbiddenExtensions[n].toLowerCase())) {
+    			return false;
+    		}
+    	}
+    	return true;
+    }
+    
     public static Connection getOpenclinicConnection() {
     	return MedwanQuery.getInstance().getOpenclinicConnection();
     }
@@ -1319,6 +1329,7 @@ public static String removeAccents(String sTest){
         sTest = sTest.replaceAll("á","a");
         sTest = sTest.replaceAll("à","a");
         sTest = sTest.replaceAll("â","a");
+        sTest = sTest.replaceAll("ñ","n");
 
         sTest = sTest.replaceAll("É","E");
         sTest = sTest.replaceAll("È","E");
@@ -1332,7 +1343,7 @@ public static String removeAccents(String sTest){
         sTest = sTest.replaceAll("Ä","A");
         sTest = sTest.replaceAll("Á","A");
         sTest = sTest.replaceAll("À","A");
-        sTest = sTest.replaceAll("Â","A");
+        sTest = sTest.replaceAll("Ñ","N");
 
         return sTest;
     }
@@ -3943,7 +3954,10 @@ public static String removeAccents(String sTest){
         }
         
         try{
-            pageContext.include(sPage);
+        	if(!SH.isAcceptableUploadFileExtension(sPage.substring(0,sPage.indexOf("?")))) {
+        		System.out.println("sPage="+sPage);
+        		pageContext.include(sPage);
+        	}
         }
         catch(Exception e){
             e.printStackTrace();

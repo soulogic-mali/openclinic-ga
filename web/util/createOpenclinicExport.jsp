@@ -7,8 +7,7 @@
 	if(request.getParameter("submit")!=null && checkString(request.getParameter("remotelogin")).length()>0 && checkString(request.getParameter("remotepassword")).length()>0){
 		session.setAttribute("messages", new SessionMessage());
 		String remotepassword=checkString(request.getParameter("remotepassword"));
-		byte[] encryptedpassword = new User().encrypt(remotepassword);
-		OpenclinicSlaveExporter exporter = new OpenclinicSlaveExporter(checkString(request.getParameter("remotelogin")),new String(Base64Coder.encode(encryptedpassword)),(SessionMessage)session.getAttribute("messages"),sWebLanguage);
+		OpenclinicSlaveExporter exporter = new OpenclinicSlaveExporter(checkString(request.getParameter("remotelogin")),new String(Base64Coder.encode(remotepassword.getBytes())),(SessionMessage)session.getAttribute("messages"),sWebLanguage);
 		exporter.start();
 	}
 %>

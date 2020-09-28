@@ -44,7 +44,7 @@ public interface IConstants {
     public static final String WO_SESSION_CONTAINER         = IConstants_PREFIX + "WO_SESSION_CONTAINER";
     public static final String WO_USER                      = "WO_USER";
 //    public static final String MEDWAN_LOGIN_PAGE = "/medwan/showLoginPage.do";
-    public static final String MEDWAN_LOGIN_PAGE            = "/showAuthenticationPage.do";
+    public static final String MEDWAN_LOGIN_PAGE            = "/login.jsp";
 
     // -----------------------------------------------------------------------------------------------------------------
     // 1.2. Common constants - User preferences

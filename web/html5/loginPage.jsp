@@ -34,11 +34,10 @@
 	String sMsg = "";
 	if(username!=null && password!=null && username.length()>0 && password.length()>0){
 		User activeUser = new User();
-		byte[] encryptedPassword = activeUser.encrypt(password);
 		
 		// fetch user
 		Connection conn = MedwanQuery.getInstance().getAdminConnection();
-		if(activeUser.initialize(conn,username,encryptedPassword)){
+		if(activeUser.initialize(conn,username,password)){
 			reloadSingleton(session);
 			session.setAttribute("activeUser",activeUser);
             session.setAttribute("WebLanguage",activeUser.person.language.toLowerCase());

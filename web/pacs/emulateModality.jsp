@@ -34,22 +34,32 @@
 				catch(Exception e){}
 		       	if(file!=null && file.getFileName()!=null){
 					String fullFileName = MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")+"/"+file.getFileName();
-					File dcmFile = new File(fullFileName);
-					if(dcmFile.exists()){
+	                if(SH.isAcceptableUploadFileExtension(fullFileName)){
+						File dcmFile = new File(fullFileName);
+						if(dcmFile.exists()){
+							dcmFile.delete();
+							dcmFile = new File(fullFileName);
+						}
+						new File(MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")).mkdirs();
+		                upBean.setFolderstore(MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp"));
+		                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
+		                upBean.store(mrequest, "filename");
+		                //Now we have the DICOM file in a local directory and should change the PatientID
+						DicomObject obj = Dicom.getDicomObject(fullFileName);
+						obj.putString(Tag.PatientID, VR.LO, patientid);
+						obj.putString(Tag.StudyInstanceUID, VR.LO, new java.util.Date().getTime()+"");
+				    	Dicom.writeDicomObject(obj, new File(fullFileName+".dcm"));
 						dcmFile.delete();
-						dcmFile = new File(fullFileName);
-					}
-					new File(MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")).mkdirs();
-	                upBean.setFolderstore(MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp"));
-	                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
-	                upBean.store(mrequest, "filename");
-	                //Now we have the DICOM file in a local directory and should change the PatientID
-					DicomObject obj = Dicom.getDicomObject(fullFileName);
-					obj.putString(Tag.PatientID, VR.LO, patientid);
-					obj.putString(Tag.StudyInstanceUID, VR.LO, new java.util.Date().getTime()+"");
-			    	Dicom.writeDicomObject(obj, new File(fullFileName+".dcm"));
-					dcmFile.delete();
-					DcmSnd.sendTest(aetitle, host, port, fullFileName+".dcm");
+						DcmSnd.sendTest(aetitle, host, port, fullFileName+".dcm");
+	                }
+	                else{
+	                	%>
+	                	<script>
+	                		alert("<%=getTranNoLink("web","forbiddenfiletype",sWebLanguage)%>");
+	                		window.close();
+	                	</script>
+	                	<%
+	                }
 		       	}
 	        }
 	    }

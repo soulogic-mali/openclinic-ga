@@ -25,16 +25,27 @@
                 UploadFile file = (UploadFile) files.get("filename");
                 
                 sFileName = file.getFileName();
-                file.setFileName(sFileName);
-                Debug.println("sFileName : "+sFileName);
-                Debug.println("--> fileSize : "+file.getFileSize()+" bytes"); 
                 
-                upBean.setFolderstore(sFolderStore);
-                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
-                upBean.store(mrequest, "filename");
-
-                sDocumentId = be.openclinic.healthrecord.Document.store(sFileName,activeUser.userid,file.getData());
-                Debug.println("--> sDocumentId : "+sDocumentId); 
+                if(SH.isAcceptableUploadFileExtension(sFileName)){
+	                file.setFileName(sFileName);
+	                Debug.println("sFileName : "+sFileName);
+	                Debug.println("--> fileSize : "+file.getFileSize()+" bytes"); 
+	                
+	                upBean.setFolderstore(sFolderStore);
+	                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
+	                upBean.store(mrequest, "filename");
+	
+	                sDocumentId = be.openclinic.healthrecord.Document.store(sFileName,activeUser.userid,file.getData());
+	                Debug.println("--> sDocumentId : "+sDocumentId); 
+                }
+                else{
+                	%>
+                	<script>
+                		alert("<%=getTranNoLink("web","forbiddenfiletype",sWebLanguage)%>");
+                		window.close();
+                	</script>
+                	<%
+                }
             }
         }
         catch(Exception e){

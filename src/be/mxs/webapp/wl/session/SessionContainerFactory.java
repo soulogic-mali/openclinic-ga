@@ -58,6 +58,7 @@ public class SessionContainerFactory {
                 throw new SessionContainerFactoryException(e.getMessage());
             }
 
+            sessionContainerWO.setSession(session);
             session.setAttribute(this.WO_SESSION_CONTAINER, sessionContainerWO);
         }
 

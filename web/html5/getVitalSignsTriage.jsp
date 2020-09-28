@@ -356,3 +356,6 @@
 		</script>
 	</body>
 </html>
+<script>
+	window.parent.parent.scrollTo(0,0);
+</script>

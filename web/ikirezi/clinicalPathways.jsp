@@ -672,8 +672,8 @@
 								}
 								else{
 									sExcludes.append("<tr><td class='admin2'>"+excludeSign+"</td><td class='admin2'><input type='radio' id='rbspte"+pathway.attributeValue("complaint")+"_"+excludeSpt+"' name='excludeSpt."+pathway.attributeValue("complaint")+"_"+excludeSpt+"' onclick='document.getElementById(\"rbspti"+pathway.attributeValue("complaint")+"_"+excludeSpt+"\").checked=false;'> "+getTran(request,"web","excluded",sWebLanguage)+" <input type='radio' id='rbspti"+pathway.attributeValue("complaint")+"_"+excludeSpt+"'  onclick='document.getElementById(\"rbspte"+pathway.attributeValue("complaint")+"_"+excludeSpt+"\").checked=false;' name='includeSpt-"+pathway.attributeValue("complaint")+"_"+excludeSpt+"_"+pathway.attributeValue("complaint")+"'> "+getTran(request,"web","present",sWebLanguage)+"</td></tr>");
+									bSignsToExclude=true;
 								}
-								bSignsToExclude=true;
 							}
 						}
 						else if(((String)sptSigns.get(excludeSpt)).equalsIgnoreCase("yes")){

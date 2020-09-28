@@ -77,8 +77,8 @@ public class ArchiveDocument extends OC_Object implements Comparable {
 			              "  arch_document_title, arch_document_description, arch_document_category, arch_document_author,"+
 					      "  arch_document_date, arch_document_destination, arch_document_reference, arch_document_personid,"+
 			              "  arch_document_tran_serverid, arch_document_tran_transactionid, arch_document_storagename,"+
-					      "  arch_document_updatetime, arch_document_updateid)"+
-			              " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";			
+					      "  arch_document_updatetime, arch_document_updateid, arch_document_sourceid)"+
+			              " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";			
 			try{
 				ps = conn.prepareStatement(sSql);
 				int psIdx = 1;
@@ -129,6 +129,7 @@ public class ArchiveDocument extends OC_Object implements Comparable {
 				
 				ps.setTimestamp(psIdx++,new java.sql.Timestamp(new java.util.Date().getTime())); // now
 				ps.setInt(psIdx++,activeUser.userId.intValue());
+				ps.setString(psIdx++,tran.getItemValue(ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_DOC_SOURCEID"));
 				
 				ps.executeUpdate();
 			}

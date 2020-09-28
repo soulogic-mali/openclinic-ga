@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="be.mxs.common.util.system.HTMLEntities"%>
 <%@page import="java.io.StringReader,
                 org.dom4j.DocumentException,
@@ -971,11 +972,45 @@
 	  window.open("https://appr.tc"+key,"OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
   }
   
+  function makeid(length) {
+	   var result           = '';
+	   var characters       = 'ABCEFGHJKLMNPQRSTUVWXYZ0123456789';
+	   var charactersLength = characters.length;
+	   for ( var i = 0; i < length; i++ ) {
+	      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	   }
+	   return result;
+  }
+ 
   function showsmartglasses(){
 	  var key=window.prompt('<%=getTranNoLink("web","teleconsultationkey",sWebLanguage)%>');
-	  if(key && key!='null'){
-		  window.open("https://wizzeye.app/"+key,"OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
+	  if(!key || key=='null'){
+		  key=makeid(3)+"-"+makeid(3)+"-"+makeid(3);
 	  }
+	  linkWizzeyeKey(key);
+  }
+
+  function linkWizzeyeKey(key){
+	  <%if(activePatient!=null && activePatient.isNotEmpty()){%>
+		    var url = '<c:url value="/util/linkWizzeyeKey.jsp"/>?ts='+new Date().getTime();
+		    new Ajax.Request(url,{
+		      method:"POST",
+		      parameters:"key="+key,
+		      onSuccess:function(resp){
+		    	  startWizzeyeSession(key);
+		      }
+		    });
+    <%} else {%>
+		  startWizzeyeSession(key);
+    <%}%>
+  }
+
+  function startWizzeyeSession(key){
+	  <%if(activePatient!=null && activePatient.isNotEmpty()){%>
+	  	  window.open("<%=SH.cs("wizzeyeserver","https://wizzeye.hnrw.org/room.jsp")%>?roomid="+key+"&user=<%=activeUser.userid%>&patient=<%=SH.removeAccents(activePatient.getFullName())%>&observerStorageURL=<%=(request.getProtocol().toLowerCase().startsWith("https")?"https":"http")+"://"+ request.getServerName()+":"+request.getServerPort()+sCONTEXTPATH+"/util/saveWizzeyeSnapshot.jsp"%>","OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
+	  <%} else {%>
+	  	  window.open("<%=SH.cs("wizzeyeserver","https://wizzeye.hnrw.org/room.jsp")%>?roomid="+key,"OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
+	  <%}%>
   }
   
   function downloadPharmacyExport(){

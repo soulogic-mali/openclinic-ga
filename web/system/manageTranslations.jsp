@@ -1,7 +1,6 @@
 <%@page import="be.mxs.common.util.system.HTMLEntities"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
-
 <script src='<%=sCONTEXTPATH%>/_common/_script/prototype.js'></script>
 <script src='<%=sCONTEXTPATH%>/_common/_script/stringFunctions.js'></script>
 <%=checkPermission(out,"system.managetranslations","all",activeUser)%>

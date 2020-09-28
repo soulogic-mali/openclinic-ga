@@ -55,7 +55,6 @@
                 <td>
                     <%
                         hMenu = new Hashtable();
-                        hMenu.put(getTran(request,"Web.Occup", "medwan.common.execute-sql", sWebLanguage), "main.do?Page=system/executeSQL.jsp");
                         hMenu.put(getTran(request,"Web.Manage", "MonitorConnections", sWebLanguage), "main.do?Page=system/monitorConnections.jsp");
                         hMenu.put(getTran(request,"Web.Manage", "MonitorAccess", sWebLanguage), "main.do?Page=system/monitorAccess.jsp");
                         hMenu.put(getTran(request,"Web.Manage", "ViewErrors", sWebLanguage), "main.do?Page=system/monitorErrors.jsp");

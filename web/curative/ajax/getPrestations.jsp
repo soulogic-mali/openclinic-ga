@@ -25,7 +25,7 @@
 	                	servicename=service.getLabel(sWebLanguage);
 	                }
                 }
-               	out.write("<span style='display:none'>"+prestation.getUid()+";"+SH.getPriceFormat(prestation.getPatientPrice(insurance,insurance.getInsuranceCategoryLetter()))+"-idcache</span>");
+               	out.write("<span style='display:none'>"+prestation.getUid()+";"+(insurance.getExtraInsurarUid().length()>0?"0":SH.getPriceFormat(prestation.getPatientPrice(insurance,insurance.getInsuranceCategoryLetter())))+"-idcache</span>");
                 out.write("</li>");
             }
         }

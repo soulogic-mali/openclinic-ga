@@ -21,7 +21,7 @@
 		bUpdateUser=true;
 	}
 	if(sPassword.length()>0){
-		activeUser.password = User.encrypt(sPassword);
+		activeUser.password = activeUser.encrypt(sPassword);
 		bUpdateUser = true;
 	}
 	if(sEmail.length()>0 && !sEmail.equalsIgnoreCase(activeUser.person.getActivePrivate().email)){

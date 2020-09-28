@@ -106,7 +106,7 @@
         byte[] aPassword = activeUser.password;
         String sLogin = activeUser.userid;
         activeUser = new User();
-        activeUser.initialize(ad_conn, sLogin, aPassword);
+        activeUser.initialize(sLogin);
         session.setAttribute("activeUser", activeUser);
     }
     //--- DELETE ----------------------------------------------------------------------------------
@@ -127,7 +127,7 @@
         byte[] aPassword = activeUser.password;
         String sLogin = activeUser.userid;
         activeUser = new User();
-        activeUser.initialize(ad_conn, sLogin, aPassword);
+        activeUser.initialize(sLogin);
         session.setAttribute("activeUser", activeUser);
     }
 	ad_conn.close();
