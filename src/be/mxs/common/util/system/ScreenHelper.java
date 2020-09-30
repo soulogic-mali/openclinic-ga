@@ -3955,7 +3955,6 @@ public static String removeAccents(String sTest){
         
         try{
         	if(!SH.isAcceptableUploadFileExtension(sPage.substring(0,sPage.indexOf("?")))) {
-        		System.out.println("sPage="+sPage);
         		pageContext.include(sPage);
         	}
         }

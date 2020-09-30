@@ -65,8 +65,8 @@ public class AuthenticationFilter implements Filter {
         SessionContainerWO sessionContainerWO  = (be.dpms.medwan.webapp.wo.common.system.SessionContainerWO) SessionContainerFactory.getInstance().getSessionContainerWO((HttpServletRequest)request, SessionContainerWO.class.getName());
         HttpServletRequest httpRequest = ((HttpServletRequest)request);
         String URI=httpRequest.getRequestURI();
-
-        String[] excludes = {"/index.","/login.","checkLogin.","heartBeat.jsp","setSApwd.jsp","checkDB.jsp","blocked.jsp","loggedOut.jsp","sessionExpired.jsp","mpilogin.jsp","loginRemote.jsp"};
+        
+        String[] excludes = (SH.cs("authenticationExcludes","")+",/index.,/login.,checkLogin.,heartBeat.jsp,setSApwd.jsp,checkDB.jsp,blocked.jsp,loggedOut.jsp,sessionExpired.jsp,mpilogin.jsp,loginRemote.jsp,checkForMessage.jsp,setSnoozeInSession.jsp,wadoQuery.jsp").split(",");
         if ( sessionContainerWO == null ) { // This will never happen
 
             throw new AuthenticationRequiredException();
@@ -88,7 +88,6 @@ public class AuthenticationFilter implements Filter {
 
         	//Validate if this is an authenticated session
         	if((new java.util.Date().getTime() - sessionContainerWO.getSession().getLastAccessedTime() >= sessionContainerWO.getSession().getMaxInactiveInterval()*1000) || sessionContainerWO.getSession().getAttribute("activeUser")==null) {
-                System.out.println("Redirecting "+URI);
         		throw new AuthenticationRequiredException("Unauthenticated");
         	}
         }
