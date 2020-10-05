@@ -46,6 +46,7 @@
 		systemInfo.setUpTime(notNull(request.getParameter("upTime"),"-1"));
 		systemInfo.setDiskSpace(notNull(request.getParameter("diskSpace"),""));
 		systemInfo.setUsersConnected(notNull(request.getParameter("usersConnected"),""));
+		systemInfo.setOpenclinicVersion(notNull(request.getParameter("usersConnected"),"0"));
 		Debug.println("Opening db connection");
 		Connection conn = MedwanQuery.getInstance().getStatsConnection();
 		String sSql = "select * from dc_monitorparameters where dc_monitorparameter_serveruid=? and dc_monitorparameter_parameter='systeminfo' and DC_MONITORPARAMETER_VALUE not like '%"+request.getParameter("vpnName")+"%'";
@@ -74,6 +75,7 @@
 		conn.close();
 	}
 	else if(centerUid.length()>0){
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>> SoftwareVersion="+softwareVersion);
 		try{
 			//First update/create server data
 			int serverid=0;

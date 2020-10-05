@@ -25,6 +25,33 @@ public class UpdateDatacenterIPAddresses {
 	 * @param args
 	 */
 	
+	public static boolean validIP (String ip) {
+	    try {
+	        if ( ip == null || ip.isEmpty() ) {
+	            return false;
+	        }
+
+	        String[] parts = ip.split( "\\." );
+	        if ( parts.length != 4 ) {
+	            return false;
+	        }
+
+	        for ( String s : parts ) {
+	            int i = Integer.parseInt( s );
+	            if ( (i < 0) || (i > 255) ) {
+	                return false;
+	            }
+	        }
+	        if ( ip.endsWith(".") ) {
+	            return false;
+	        }
+
+	        return true;
+	    } catch (NumberFormatException nfe) {
+	        return false;
+	    }
+	}
+	
     public static String checkString(String sString){
         // om geen 'null' weer te geven
         if((sString==null)||(sString.toLowerCase().equals("null"))){
@@ -53,43 +80,52 @@ public class UpdateDatacenterIPAddresses {
 
 		    	String[] ips = ip.split(",");
 		    	for(int n=0;n<ips.length;n++){
-		    		if(!ips[n].startsWith("10.") && !ips[n].startsWith("192.168.")){
+		    		if(validIP(ips[n]) && !ips[n].startsWith("10.") && !ips[n].startsWith("192.168.")){
 		    			HttpClient client = new HttpClient();
-		    			String url = "http://api.ipinfodb.com/v3/ip-city";
+		    			String url = "http://api.ipstack.com/"+ips[n];
 		    			GetMethod method = new GetMethod(url);
 		    			method.setRequestHeader("Content-type","text/xml; charset=windows-1252");
 		    			Vector<NameValuePair> vNvp = new Vector<NameValuePair>();
-		            	vNvp.add(new NameValuePair("key","70ea4340aef713dcc480e4a769f65baac5f487363baa8fac715058301df596c1"));
-		            	vNvp.add(new NameValuePair("ip",ips[n]));
-		            	vNvp.add(new NameValuePair("format","xml"));
+		            	vNvp.add(new NameValuePair("access_key","88c7c66cdcdb938a81a5618fee505748"));
+		            	vNvp.add(new NameValuePair("output","xml"));
 		    			NameValuePair[] nvp = new NameValuePair[vNvp.size()];
 		    			vNvp.copyInto(nvp);
 		    			method.setQueryString(nvp);
 		    			int statusCode = client.executeMethod(method);
 		    			System.out.println("checking ip "+ips[n]);
-		    			if(method.getResponseBodyAsString().contains("<Response>")){
+		    			if(method.getResponseBodyAsString().contains("<result>")){
 		    				BufferedReader br = new BufferedReader(new StringReader(method.getResponseBodyAsString()));
 		    				SAXReader reader=new SAXReader(false);
 		    				Document document=reader.read(br);
 		    				Element root = document.getRootElement();
-		    				if(!root.element("countryCode").getText().equalsIgnoreCase("-")){
+		    				if(root.element("country_code")!=null && !root.element("country_code").getText().equalsIgnoreCase("-")){
 		    					PreparedStatement ps2 = conn.prepareStatement("update dc_monitorservers set dc_monitorserver_country=? where dc_monitorserver_serverid=?");
-		    					ps2.setString(1, root.element("countryCode").getText().toUpperCase());
+		    					ps2.setString(1, root.element("country_code").getText().toUpperCase());
 		    					ps2.setInt(2,id);
 		    					ps2.execute();
 		    					ps2.close();
-		    					location+="-> "+root.element("countryCode").getText().toUpperCase();
+		    					location+="-> "+root.element("country_code").getText().toUpperCase();
+	        					System.out.println("Server country "+root.element("country_code").getText());
 		    				}
-		    				if(!root.element("cityName").getText().equalsIgnoreCase("-")){
+		    				if(root.element("city")!=null && !root.element("city").getText().equalsIgnoreCase("-")){
 		    					PreparedStatement ps2 = conn.prepareStatement("update dc_monitorservers set dc_monitorserver_city=? where dc_monitorserver_serverid=?");
-		    					ps2.setString(1, root.element("cityName").getText().toUpperCase());
+		    					ps2.setString(1, root.element("city").getText().toUpperCase());
 		    					ps2.setInt(2,id);
 		    					ps2.execute();
 		    					ps2.close();
-		    					location+=", "+root.element("cityName").getText().toUpperCase();
+		    					location+=", "+root.element("city").getText().toUpperCase();
+	        					System.out.println("Server city "+root.element("city").getText());
 		    				}
+	        				if(root.element("latitude")!=null && !root.element("latitude").getText().equalsIgnoreCase("-") && root.element("longitude")!=null && !root.element("longitude").getText().equalsIgnoreCase("-")){
+	        					PreparedStatement ps2 = conn.prepareStatement("update dc_monitorservers set dc_monitorserver_latitude=?,dc_monitorserver_longitude=? where dc_monitorserver_serverid=?");
+	        					ps2.setString(1, root.element("latitude").getText());
+	        					ps2.setString(2, root.element("longitude").getText());
+	        					ps2.setInt(3,id);
+	        					ps2.execute();
+	        					ps2.close();
+	        					System.out.println("Server geolocation "+id+" -> Lat: "+root.element("latitude").getText()+"     Long: "+root.element("longitude").getText());
+	        				}
 		    			}
-				    	System.out.println("IP address to evaluate="+ips[n]+" "+location);
 		    		}
 		    	}
 		    }
@@ -175,7 +211,6 @@ public class UpdateDatacenterIPAddresses {
     	    			}
     				}
     			}
-
 			}
 			conn.close();
 

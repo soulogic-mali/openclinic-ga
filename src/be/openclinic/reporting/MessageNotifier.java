@@ -29,6 +29,7 @@ import be.mxs.common.util.tools.ProcessFiles;
 import be.mxs.common.util.tools.SendSMS;
 import be.openclinic.adt.Planning;
 import be.openclinic.medical.*;
+import be.openclinic.system.SH;
 import be.openclinic.system.SystemInfo;
 import be.mxs.common.model.vo.healthrecord.*;
 import be.dpms.medwan.common.model.vo.administration.PersonVO;
@@ -116,6 +117,7 @@ public class MessageNotifier {
                 	vNvp.add(new NameValuePair("upTime",HTMLEntities.htmlentities(SystemInfo.getSystemUptime()+"")));
                 	vNvp.add(new NameValuePair("diskSpace",HTMLEntities.htmlentities(SystemInfo.getSystemDiskSpace()+"")));
                 	vNvp.add(new NameValuePair("usersConnected",HTMLEntities.htmlentities(SystemInfo.getActiveUserCount()+"")));
+                	vNvp.add(new NameValuePair("openclinicVersion",HTMLEntities.htmlentities(SH.ci("updateVersion", 0)+"")));
         			NameValuePair[] nvp = new NameValuePair[vNvp.size()];
         			vNvp.copyInto(nvp);
         			method.setQueryString(nvp);

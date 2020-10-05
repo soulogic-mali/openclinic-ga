@@ -14,9 +14,18 @@ public class SystemInfo {
 	private long upTime=-1;
 	private long diskSpace=-1;
 	private int usersConnected=-1;
+	private int openclinicVersion=0;
 	
+	public int getOpenclinicVersion() {
+		return openclinicVersion;
+	}
+
+	public void setOpenclinicVersion(int openclinicVersion) {
+		this.openclinicVersion = openclinicVersion;
+	}
+
 	public String serialize() {
-		return vpnDomain+";"+vpnName+";"+vpnAddress+";"+upTime+";"+diskSpace+";"+usersConnected+";"+vpnPort;
+		return vpnDomain+";"+vpnName+";"+vpnAddress+";"+upTime+";"+diskSpace+";"+usersConnected+";"+vpnPort+";"+openclinicVersion;
 	}
 	
 	public String getVpnPort() {
@@ -48,6 +57,12 @@ public class SystemInfo {
 		}
 		if(s.split(";").length>=7) {
 			systemInfo.setVpnPort(s.split(";")[6]);
+		}
+		if(s.split(";").length>=8) {
+			try {
+				systemInfo.setOpenclinicVersion(Integer.parseInt(s.split(";")[7]));
+			}
+			catch(Exception e) {e.printStackTrace();}
 		}
 		return systemInfo;
 	}
@@ -136,6 +151,13 @@ public class SystemInfo {
 	public void setUsersConnected(String usersConnected) {
 		try {
 			this.usersConnected = Integer.parseInt(usersConnected);
+		}
+		catch(Exception e) {e.printStackTrace();}
+	}
+
+	public void setOpenclinicVersion(String openclinicVersion) {
+		try {
+			this.openclinicVersion = Integer.parseInt(openclinicVersion);
 		}
 		catch(Exception e) {e.printStackTrace();}
 	}

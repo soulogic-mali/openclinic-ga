@@ -21,7 +21,7 @@
 	<input type='hidden' name='vpnDomain' id='vpnDomain' value='<%=vpnDomain %>'/>
 	<table width="100%">
 		<tr class='admin'>
-			<td colspan='8'>
+			<td colspan='9'>
 				<a href='javascript:document.getElementById("vpnDomain").value="";window.location.href="<%=sCONTEXTPATH %>/datacenterstatistics/getConnectedHosts.jsp?vpnDomain=";'>root</a>
 				<%
 					String domain="";
@@ -79,6 +79,7 @@
 						<td class='admin'>VPN Address</td>
 						<td class='admin'>Uptime</td>
 						<td class='admin'>Diskspace</td>
+						<td class='admin'>Version</td>
 						<td class='admin' title='Range = <%=MedwanQuery.getInstance().getConfigInt("minusers."+vpnDomain,0)%> - <%=MedwanQuery.getInstance().getConfigInt("maxusers."+vpnDomain,0)%>'><font color='red'><%=totalusers %></font> Users</td>
 						<td class='admin'>Last seen</td>
 					</tr>
@@ -94,6 +95,25 @@
 				else if(delay>1800){
 					cls="adminyellow";
 				}
+				String version="",version2="",diskspace="";
+				PreparedStatement ps2 = conn.prepareStatement("select * from dc_monitorservers where dc_monitorserver_serveruid=?");
+				ps2.setString(1,rs.getString("dc_monitorparameter_serveruid"));
+				ResultSet rs2 = ps2.executeQuery();
+				if(rs2.next()){
+					version=rs2.getString("dc_monitorserver_softwareversion");
+					version2=Integer.parseInt(version)/1000000+"."+Integer.parseInt(version.substring(version.length()-6,version.length()-3))+"."+Integer.parseInt(version.substring(version.length()-3));
+					if(Integer.parseInt(version)<5170005){
+						version2+=" <img height='14px' title='This version has security vulnerabilities. Please upgrade to at least version 5.170.5.' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>";
+					}
+				}
+				long ndiskspace=systemInfo.getDiskSpace()/(1024*1024);
+				diskspace=new DecimalFormat("#,###.###").format(ndiskspace)+" Mb";
+				if(ndiskspace<1000){
+					diskspace+=" <img height='14px' title='Low diskspace' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>";
+				}
+				
+				rs2.close();
+				ps2.close();
 				counter++;
 				%>
 				<tr>
@@ -102,7 +122,8 @@
 					<td class='<%=cls%>'><%=systemInfo.getVpnName() %></td>
 					<td class='<%=cls%>'><a href='javascript:window.open("http://<%=systemInfo.getVpnAddress()+":"+systemInfo.getVpnPort() %>/openclinic");'><%=systemInfo.getVpnAddress()+":"+systemInfo.getVpnPort() %></a></td>
 					<td class='<%=cls%>'><%=systemInfo.getUpTimeFormatted() %></td>
-					<td class='<%=cls%>'><%=new DecimalFormat("#,###.###").format(systemInfo.getDiskSpace()/(1024*1024)) %> Mb</td>
+					<td class='<%=cls%>'><%=diskspace %></td>
+					<td class='<%=cls%>'><%=version2 %></td>
 					<td class='<%=cls%>'><%=systemInfo.getUsersConnected() %></td>
 					<td class='<%=cls%>'><%=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(rs.getTimestamp("dc_monitorparameter_updatetime"))+" ("+SystemInfo.getUpTimeFormatted(delay)+")" %></td>
 				</tr>
@@ -123,12 +144,12 @@
 				if(!bInit){
 					%>
 					<tr>
-						<td colspan='8'>
+						<td colspan='9'>
 							<hr/>
 						</td>
 					</tr>
 					<tr>
-						<td class='admin' colspan='8'>Sub domains</td>
+						<td class='admin' colspan='9'>Sub domains</td>
 					</tr>
 					<%
 					bInit=true;
@@ -136,7 +157,7 @@
 				//Domain
 				%>
 				<tr>
-					<td class='admin' colspan='8'>
+					<td class='admin' colspan='9'>
 						<a href='javascript:document.getElementById("vpnDomain").value="<%=domain+systemInfo.getVpnDomain().replace(domain, "").split("\\.")[0] %>";window.location.href="<%=sCONTEXTPATH %>/datacenterstatistics/getConnectedHosts.jsp?vpnDomain=<%=domain+systemInfo.getVpnDomain().replace(domain, "").split("\\.")[0]%>";'><%=systemInfo.getVpnDomain().replace(domain, "").split("\\.")[0] %></a>
 					</td>
 				</tr>

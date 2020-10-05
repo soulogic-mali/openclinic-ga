@@ -1,5 +1,4 @@
 <%@ page import="be.mxs.common.util.system.HTMLEntities" %>
-<%@page import="sun.misc.*"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
 <%=checkPermission(out,"system.management","select",activeUser)%>

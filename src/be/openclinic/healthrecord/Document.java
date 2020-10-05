@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 public class Document {
 
-	//--- LOAD ------------------------------------------------------------------------------------
+	//--- LOAD -------------------------------------------------------------------------------------
     public static String load(String sDocumentId){
         String sFilename = "";
         

@@ -1,5 +1,4 @@
 <%@page errorPage="/includes/error.jsp"%>
-<%@page import="sun.misc.*"%>
 <%@ page import="be.mxs.common.util.system.Debug" %>
 <%@ page import="net.admin.User" %>
 <%@ page import="java.sql.PreparedStatement" %>

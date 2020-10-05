@@ -213,7 +213,7 @@
                   
                   //Add some session attributes for user connectivity monitoring
                   session.setAttribute("mon_ipaddress",request.getRemoteAddr());
-                  session.setAttribute("mon_browser",browser+" "+version);
+                  session.setAttribute("mon_browser",getBrowserString(request));
                   session.setAttribute("mon_start",new java.util.Date());
                   
                   //*** set project name and dir **************************************************

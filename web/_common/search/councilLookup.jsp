@@ -1,5 +1,4 @@
 <%@page import="java.io.*,
-                sun.misc.*,
                 be.mxs.common.util.io.*,
                 org.apache.commons.httpclient.*,
                 org.apache.commons.httpclient.methods.*,

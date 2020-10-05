@@ -748,7 +748,7 @@ public class ScreenHelper {
     }
 
     public static String getTran(HttpServletRequest request,String sType, String sID, String sLanguage, boolean displaySimplePopup){
-        String labelValue = "";
+    	String labelValue = "";
 
         try{
             if(sLanguage==null || sLanguage.length()!=2){
