@@ -72,7 +72,6 @@
 <script>
   window.document.title="<%=sWEBTITLE+" "+getWindowTitle(request,sWebLanguage)%>";
 </script>
-
 <%-- 1 : ADMINISTRATIVE DATA --%>
 <table width="100%" class="list" cellpadding="1" cellspacing="0">
     <tr>
@@ -84,9 +83,8 @@
 	
 	<%
 	    boolean pictureExists = Picture.exists(Integer.parseInt(activePatient.personid));
-	    if(pictureExists){
+		if(pictureExists){
 	        Picture picture = new Picture(Integer.parseInt(activePatient.personid));
-	        System.out.println("Picture = "+picture.getPicture().length);
 	        try{
 	        	String sDocumentsFolder = MedwanQuery.getInstance().getConfigString("DocumentsFolder","c:/projects/openclinic/documents");
 	            File file = new File(sDocumentsFolder+"/"+activeUser.userid+".jpg");
@@ -157,6 +155,7 @@
         <tr>
     </table>
 <%}%>
+
 <div id="responseByAjax">&nbsp;</div>
 <div id="weekSchedulerFormByAjax" style="display:none;position:absolute;background:white">&nbsp;</div>
 

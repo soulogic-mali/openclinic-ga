@@ -49,7 +49,7 @@ public class PatientInvoice extends Invoice {
 		for(int n=0;n<debets.size();n++){
 			Debet debet = (Debet)debets.elementAt(n);
 			Prestation prestation = debet.getPrestation();
-			if(prestation.getProductionOrder().trim().length()>0){
+			if(prestation!=null && prestation.getProductionOrder()!=null && prestation.getProductionOrder().trim().length()>0){
 				//Check if the value of the paid sum >= minimum payment
 				if(getAmountPaid()>=getPatientAmount()*prestation.getProductionOrderPaymentLevel()/100){
 					if(ProductionOrder.getProductionOrders(null,null,debet.getUid(),null,null).size()==0){
