@@ -1460,6 +1460,35 @@ public static String removeAccents(String sTest){
         );
     }
 
+    public static String setBurkinaAdminPrivateContact(HttpServletRequest request,AdminPrivateContact apc, String sLanguage){
+        String sCountry = "&nbsp;";
+        if(checkString(apc.country).trim().length()>0){
+            sCountry = getTran(null,"Country",apc.country,sLanguage);
+        }
+
+        String sProvince = "&nbsp;";
+        if(checkString(apc.province).trim().length()>0){
+            sProvince = getTran(null,"province",apc.province,sLanguage);
+        }
+        
+        return(
+            setRow(request,"Web.admin","addresschangesince",apc.begin,sLanguage)+
+            setRow(request,"Web","region",apc.sanitarydistrict,sLanguage)+
+            setRow(request,"Web","province",apc.district,sLanguage)+
+            setRow(request,"Web","country.department",apc.sector,sLanguage)+
+            setRow(request,"Web","sector",apc.quarter,sLanguage)+
+            setRow(request,"Web","address",apc.address,sLanguage)+
+            setRow(request,"Web","postcode",apc.zipcode,sLanguage)+
+            setRow(request,"Web","country",sCountry,sLanguage)+
+            setRow(request,"Web","email",apc.email,sLanguage)+
+            setRow(request,"Web","telephone",apc.telephone,sLanguage)+
+            setRow(request,"Web","mobile",apc.mobile,sLanguage)+
+            setRow(request,"Web","function",apc.businessfunction,sLanguage)+
+            setRow(request,"Web","business",apc.business,sLanguage)+
+            setRow(request,"Web","comment",apc.comment,sLanguage)
+        );
+    }
+
     public static String setPeruAdminPrivateContact(HttpServletRequest request,AdminPrivateContact apc, String sLanguage){
         String sCountry = "&nbsp;";
         if(checkString(apc.country).trim().length()>0){

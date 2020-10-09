@@ -94,6 +94,7 @@
 				<select name='country' id='country' class='text'>
 					<option value=''></option>
 					<option value='be' <%="be".equals(country)?"selected":""%>><%=getTran(request,"country","be",sWebLanguage).toUpperCase() %></option>
+					<option value='bf' <%="bf".equals(country)?"selected":""%>><%=getTran(request,"country","bf",sWebLanguage).toUpperCase() %></option>
 					<option value='rw' <%="rw".equals(country)?"selected":""%>><%=getTran(request,"country","rw",sWebLanguage).toUpperCase() %></option>
 					<option value='bi' <%="bi".equals(country)?"selected":""%>><%=getTran(request,"country","bi",sWebLanguage).toUpperCase() %></option>
 					<option value='ml' <%="ml".equals(country)?"selected":""%>><%=getTran(request,"country","ml",sWebLanguage).toUpperCase() %></option>
