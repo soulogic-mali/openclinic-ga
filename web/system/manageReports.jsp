@@ -1,4 +1,8 @@
-<%@page import="org.dom4j.tree.*, be.openclinic.reporting.*,java.io.*,org.apache.commons.fileupload.servlet.*,org.apache.commons.fileupload.disk.*,org.apache.commons.fileupload.*"%>
+<%@page import="org.dom4j.tree.*, 
+	be.openclinic.reporting.*,java.io.*,
+	org.apache.commons.fileupload.servlet.*,
+	org.apache.commons.fileupload.disk.*,
+	org.apache.commons.fileupload.*"%>
 <%@include file="/includes/validateUser.jsp"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%=checkPermission(out,"system.management","select",activeUser)%>
@@ -18,7 +22,6 @@ Element getElement(Element element, String elementname, String attributename,Str
 <%=sJSPROTOTYPE %>
 
 <%
-	
 	String sAction = checkString(request.getParameter("action"));
 	String sReportName = checkString(request.getParameter("reportname"));
 	String sReportInputXml = checkString(request.getParameter("reportinputxml"));

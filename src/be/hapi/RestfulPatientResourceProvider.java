@@ -192,7 +192,6 @@ public class RestfulPatientResourceProvider implements IResourceProvider {
 						break;
 					}
 					AdminPerson person = AdminPerson.get(""+persons.elementAt(n).get("personid"));
-					System.out.println(">>>>>>>>> personid = "+persons.elementAt(n).get("personid"));
 					Patient patient = person.getFHIRPatient();
 					if(patient!=null) {
 						patients.add(patient);
