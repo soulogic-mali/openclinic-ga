@@ -77,7 +77,7 @@
 
 <script>
 	function checkResize(){
-		if(<%=request.getQueryString().indexOf("Page=/healthrecord")%>>-1 || <%=request.getQueryString().indexOf("Page=/system")%>>-1 || <%=request.getQueryString().indexOf("Page=/statistics")%>>-1){
+		if(<%=SH.c(request.getQueryString()).indexOf("Page=/healthrecord")%>>-1 || <%=SH.c(request.getQueryString()).indexOf("Page=/system")%>>-1 || <%=SH.c(request.getQueryString()).indexOf("Page=/statistics")%>>-1){
 			if(window.confirm('<%=getTranNoLink("web","datamodified.doreload",sWebLanguage) %>')){window.setTimeout('window.location.reload();',200);}
 		}
 		else{
@@ -85,7 +85,6 @@
 		}
 	}
 </script>
-
 <table width="100%" border="0" cellspacing="0" cellpadding="0" id="holder">
     <tr>
 		<img style='display: none' id='copytocb' height='20px' src='<%=sCONTEXTPATH%>/_img/icons/mobile/copy.png' onclick='copyTextToClipboard(document.getElementById("clipboard").innerHTML)'/>

@@ -200,7 +200,7 @@
                 thisUser.stop = "";
             }
             else{
-                thisUser.password = thisUser.encrypt(sDefaultPassword);
+                thisUser.password = thisUser.encryptOld(sDefaultPassword);
                 thisUser.start = getDate();
                 thisUser.stop = "";
                 sPasswordString = " Password = "+sDefaultPassword;
