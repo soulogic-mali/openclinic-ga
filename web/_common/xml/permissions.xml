@@ -268,6 +268,7 @@
         <permission type="web" id="medicationschema">medication.medicationschema</permission>
     </application>
     <application type="Web" id="financial">
+        <permission type="web" id="financial.mobilemoneyoverview">financial.mobilemoneyoverview</permission>
         <permission type="web" id="financial.invoicenursingactivities">financial.invoicenursingactivities</permission>
         <permission type="web" id="financial.forceaccreditation">financial.forceaccreditation</permission>
         <permission type="web" id="financial.patientpaymentdate">financial.patientpaymentdate</permission>

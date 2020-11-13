@@ -1,3 +1,4 @@
+<%@page import="be.openclinic.mobilemoney.MobileMoney"%>
 <%@page import="be.openclinic.adt.Encounter,
                 be.openclinic.finance.*,
                 be.openclinic.pharmacy.*,
@@ -57,6 +58,7 @@
            sEditCreditDescr      = checkString(request.getParameter("EditCreditDescription")),
        	   sEditBalance          = checkString(request.getParameter("EditBalance")),
       	   sEditCreditCurrency   = checkString(request.getParameter("EditCreditCurrency")),
+     	   sMomoCashDesk     	 = checkString(request.getParameter("momocashdesk")),
            sEditCreditWicketUid  = checkString(request.getParameter("EditCreditWicketUid"));
 
     /// DEBUG /////////////////////////////////////////////////////////////////////////////////////
@@ -72,6 +74,7 @@
         Debug.println("sEditCreditEncUid     : "+sEditCreditEncUid);
         Debug.println("sEditCreditDescr      : "+sEditCreditDescr);
         Debug.println("sEditCreditCurrency   : "+sEditCreditCurrency);
+        Debug.println("sMomoCashDesk   		 : "+sMomoCashDesk);
         Debug.println("sEditCreditWicketUid  : "+sEditCreditWicketUid+"\n");
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -86,6 +89,10 @@
     }
     String sEditCreditEncName = "", msg = "";
 
+	// use mobile money cash desk if specified
+	if(sMomoCashDesk.length()>0){
+		sEditCreditWicketUid=sMomoCashDesk;
+	}
     // set default wicket if no wicket specified
     if(sEditCreditWicketUid.length()==0){
         sEditCreditWicketUid = activeUser.getParameter("defaultwicket");
@@ -104,7 +111,7 @@
             credit = new PatientCredit();
             credit.setCreateDateTime(ScreenHelper.getSQLDate(getDate()));
         }
-
+        
         // set and store credit
         credit.setDate(ScreenHelper.getSQLDate(sEditCreditDate));
         credit.setInvoiceUid(sEditCreditInvoiceUid);
@@ -119,7 +126,7 @@
         credit.setCurrency(sEditCreditCurrency);
         credit.setPatientUid(MedwanQuery.getInstance().getConfigString("serverId")+"."+adminPerson.personid);
         credit.store();
-
+		String wicketCreditUid="";
         msg = getTran(request,"web","dataIsSaved",sWebLanguage);
 
         //*** update wicket credit ********************************************
@@ -163,7 +170,7 @@
             wicketCredit.setCurrency(sEditCreditCurrency);
 
             wicketCredit.store();
-
+			wicketCreditUid=wicketCredit.getUid();
             // recalculate wicket balance
             Wicket wicket = Wicket.get(sEditCreditWicketUid);
             wicket.recalculateBalance();
@@ -201,6 +208,9 @@
     				}
     			}
            	}
+        }
+        if(SH.c(request.getParameter("momo_financialtransactionid")).length()>0){
+        	MobileMoney.updateCreditOperationIds(request.getParameter("momo_financialtransactionid"), credit.getUid(), wicketCreditUid);
         }
 
         if(sScreenType.length() > 0){
@@ -338,6 +348,7 @@
 %>
     <%-- hidden fields --%>
     <input type="hidden" name="Action">
+    <input type="hidden" name="momocashdesk" id="momocashdesk">
     <input type="hidden" name="EditCreditUid" id="EditCreditUid" value="<%=sEditCreditUid%>"/>
     <input type="hidden" name="ScreenType" value="<%=sScreenType%>">
     
@@ -363,7 +374,7 @@
         <tr>
             <td class="admin"><%=getTran(request,"web","invoice",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
-                <input type="hidden" name="EditCreditInvoiceUid" value="<%=sEditCreditInvoiceUid%>">
+                <input type="hidden" name="EditCreditInvoiceUid" id="EditCreditInvoiceUid" value="<%=sEditCreditInvoiceUid%>">
                 <input class="text" type="text" name="EditCreditInvoiceNr" readonly size="10" value="<%=sEditCreditInvoiceNr%>">
                 
                 <%-- icons --%>
@@ -475,58 +486,74 @@
         %>
         
         <%-- BUTTONS & PRINT --%>
-        <tr>
+        <tr style='vertical-align: top'>
             <td class="admin"/>
             <td class="admin2">
-            	<%
-	            	if(userWickets.size() > 0){
-	            	    %><input accesskey="S" class="button" type="button" name="buttonSave" id="buttonSave" value="<%=getTranNoLink("Web","save",sWebLanguage)%>" onclick="doSave();">&nbsp;&nbsp;<%
-	            	}
-	            	else{
-	            	    %><font color="red"><%=getTran(request,"web","nowicketassignedtouser",sWebLanguage)%></font><%
-            		}
-                %>
-                
-                <span id="printsection" name="printsection" style="visibility:hidden">
-                    <%=getTran(request,"Web.Occup","PrintLanguage",sWebLanguage)%>&nbsp;
-
-                    <%
-                        String sPrintLanguage = activeUser.person.language;
-                        if(sPrintLanguage.length()==0){
-                            sPrintLanguage = sWebLanguage;
-                        }
-
-                        String sSupportedLanguages = MedwanQuery.getInstance().getConfigString("supportedLanguages","en,fr");
-                    %>
-
-                    <select class="text" name="PrintLanguage" id="PrintLanguage">
-                        <%
-                            String tmpLang;
-                            StringTokenizer tokenizer = new StringTokenizer(sSupportedLanguages,",");
-                            while(tokenizer.hasMoreTokens()){
-                                tmpLang = tokenizer.nextToken();
-
-                                %><option value="<%=tmpLang%>" <%=(tmpLang.equalsIgnoreCase(sPrintLanguage)?" selected":"")%>><%=getTranNoLink("Web.language",tmpLang,sWebLanguage)%></option><%
-                            }
-                        %>
-                    </select>
-
-                    <%-- BUTTONS --%>
-                    <input class="button" type="button" name="buttonPrint" value="<%=getTranNoLink("Web","print",sWebLanguage)%>" onclick="doPrintPdf(document.getElementById('EditCreditUid').value);">
-                    <%
-                    	if(MedwanQuery.getInstance().getConfigInt("javaPOSenabled",0)==1){
-                            %><input class="button" type="button" name="buttonPrint" value='<%=getTranNoLink("Web","print.receipt",sWebLanguage)%>' onclick="doPrintPatientPaymentReceipt();"><%
-                    	}
-	                	if(MedwanQuery.getInstance().getConfigInt("printPDFreceiptenabled",0)==1){
-	                        %><input class="button" type="button" name="buttonPrintPdf" value='<%=getTranNoLink("Web","print.receipt.pdf",sWebLanguage)%>' onclick="doPrintPatientReceiptPdf();"><%
-	                	}
-                    %>                    
-                </span>
+            	<table width='100%' cellpadding='0' cellspacing='0'>
+            		<tr>
+            			<td style='vertical-align: top'>
+		            	<%
+			            	if(userWickets.size() > 0){
+			            	    %><input accesskey="S" class="button" type="button" name="buttonSave" id="buttonSave" value="<%=getTranNoLink("Web","save",sWebLanguage)%>" onclick="doSave();">&nbsp;&nbsp;<%
+			            	}
+			            	else{
+			            	    %><font color="red"><%=getTran(request,"web","nowicketassignedtouser",sWebLanguage)%></font><%
+		            		}
+		                %>
+		                </td>
+		                <td style='vertical-align: top'>
+		                <span id="printsection" name="printsection" style="vertical-align: top;visibility:hidden">
+		                    <%=getTran(request,"Web.Occup","PrintLanguage",sWebLanguage)%>&nbsp;
+		
+		                    <%
+		                        String sPrintLanguage = activeUser.person.language;
+		                        if(sPrintLanguage.length()==0){
+		                            sPrintLanguage = sWebLanguage;
+		                        }
+		
+		                        String sSupportedLanguages = MedwanQuery.getInstance().getConfigString("supportedLanguages","en,fr");
+		                    %>
+		
+		                    <select class="text" name="PrintLanguage" id="PrintLanguage">
+		                        <%
+		                            String tmpLang;
+		                            StringTokenizer tokenizer = new StringTokenizer(sSupportedLanguages,",");
+		                            while(tokenizer.hasMoreTokens()){
+		                                tmpLang = tokenizer.nextToken();
+		
+		                                %><option value="<%=tmpLang%>" <%=(tmpLang.equalsIgnoreCase(sPrintLanguage)?" selected":"")%>><%=getTranNoLink("Web.language",tmpLang,sWebLanguage)%></option><%
+		                            }
+		                        %>
+		                    </select>
+		
+		                    <%-- BUTTONS --%>
+		                    <input class="button" type="button" name="buttonPrint" value="<%=getTranNoLink("Web","print",sWebLanguage)%>" onclick="doPrintPdf(document.getElementById('EditCreditUid').value);">
+		                    <%
+		                    	if(MedwanQuery.getInstance().getConfigInt("javaPOSenabled",0)==1){
+		                            %><input class="button" type="button" name="buttonPrint" value='<%=getTranNoLink("Web","print.receipt",sWebLanguage)%>' onclick="doPrintPatientPaymentReceipt();"><%
+		                    	}
+			                	if(MedwanQuery.getInstance().getConfigInt("printPDFreceiptenabled",0)==1){
+			                        %><input class="button" type="button" name="buttonPrintPdf" value='<%=getTranNoLink("Web","print.receipt.pdf",sWebLanguage)%>' onclick="doPrintPatientReceiptPdf();"><%
+			                	}
+		                    %>                    
+		                </span>
+		                </td>
+		                <td style='vertical-align: top'>
+		                <%
+		                	if(SH.ci("enableMobilePayment",0)==1 && activeUser.getAccessRight("financial.mobilepayment.select")){
+		                %>
+		                		&nbsp;<img id='momoimage' style='vertical-align: top' height='30px' src='<%=sCONTEXTPATH%>/_img/themes/default/mtnmomopayblue.png' onclick='doMobilePaymentMTN()'/>
+		                <%	
+		                	}
+		                %>
+		                </td>
+                	</tr>
+                </table>
             </td>
         </tr>
     </table>
     <%=getTran(request,"web","asterisk_fields_are_obligate",sWebLanguage)%>
-    
+    <input type='hidden' name='momo_financialtransactionid' id='momo_financialtransactionid' value=''/>
     <%-- display message --%>
     <br><br><span id="msgArea">&nbsp;<%=msg%></span>
 </form>
@@ -534,6 +561,18 @@
 <script>
   var dateFormat = "<%=ScreenHelper.stdDateFormat.toPattern()%>";
    
+  function doMobilePaymentMTN(){
+	  var url = "financial/mobilemoney/mobileMoneyPayment.jsp&invoiceid="+document.getElementById("EditCreditInvoiceUid").value+"&operator=MTN&amount="+document.getElementById("EditCreditAmount").value+"&currency=<%=SH.cs("currency","RWF")%>&ts=<%=getTs()%>";
+	  openPopup(url);
+  }
+  
+  function registerMomoPayment(cashdesk,comment,financialTransactionId){
+	  document.getElementById("momocashdesk").value=cashdesk;
+	  document.getElementById("EditCreditDescription").value=comment;
+	  document.getElementById("momo_financialtransactionid").value=financialTransactionId;
+	  doSave();
+  }
+  
   function checkAlternate(){
 	  document.getElementById("EditAlternateCreditAmount").value=parseFloat(document.getElementById("EditCreditAmount").value/<%=ExportSAP_AR_INV.getExchangeRate(MedwanQuery.getInstance().getConfigString("AlternateCurrency"), new java.util.Date())%>).toFixed(<%=MedwanQuery.getInstance().getConfigInt("AlternateCurrencyDecimals",2)%>);
   }
@@ -592,8 +631,8 @@
       <%
           if(userWickets.size() > 0){
               %>
-                if(document.getElementById("EditCreditWicketUid").selectedIndex==0){
-                            window.showModalDialog?alertDialog("web.manage","dataMissing"):alertDialogDirectText('<%=getTran(null,"web.manage","dataMissing",sWebLanguage)%>');
+                if(document.getElementById("momocashdesk").value.length==0 && document.getElementById("EditCreditWicketUid").selectedIndex==0){
+                  window.showModalDialog?alertDialog("web.manage","dataMissing"):alertDialogDirectText('<%=getTran(null,"web.manage","dataMissing",sWebLanguage)%>');
                   EditForm.EditCreditWicketUid.focus();
                   document.getElementById("buttonSave").disabled = false;
                 }
@@ -727,6 +766,8 @@
     document.getElementById('creditid').innerHTML=document.getElementById('EditCreditUid').value.split(".")[1];
     document.getElementById('printsection').style.visibility='visible';
     document.getElementById('PrintLanguage').style.visibility='visible';
+    document.getElementById('momoimage').style.display='none';
+
     checkAlternate();
   }
 
@@ -758,6 +799,7 @@
     document.getElementById('printsection').style.visibility='hidden';
     document.getElementById('PrintLanguage').style.visibility='hidden';
     document.getElementById('creditid').innerHTML="";
+    document.getElementById('momoimage').style.display='';
 
     <%
         if(userWickets.size() > 0){

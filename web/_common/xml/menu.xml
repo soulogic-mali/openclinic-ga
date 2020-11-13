@@ -101,6 +101,7 @@
 			<Menu labelid="manageWicketCredit" accessrights="financial.wicketoperation.select" url="/main.do?Page=financial/wicket/manageWicketOperationCredit.jsp"/>
 			<Menu labelid="manageWicketDebet" accessrights="financial.wicketoperation.select" url="/main.do?Page=financial/wicket/manageWicketOperationDebet.jsp"/>
 			<Menu labelid="manageWicketOverview" accessrights="financial.wicketoverview.select" url="/main.do?Page=financial/wicket/wicketOverview.jsp"/>
+			<Menu labelid="mobileMoneyOverview" accessrights="financial.mobilemoneyoverview.select" enableparameter="enableMobilePayment" url="/main.do?Page=financial/mobilemoney/mobileMoneyOverview.jsp"/>
 		</Menu>
 		<Menu labelid="examenstechniques" accessrights="technicalexaminations.select">
 			<Menu labelid="labos" accessrights="labos.select" url="/main.do?Page=labos/index.jsp"/>

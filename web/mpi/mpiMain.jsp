@@ -28,15 +28,15 @@
     </a>
     <ul class="nav-list" role="navigation">
       <div class="list -left">
-      	<%if(activeUser.getParameter("patientid").length()==0){ %>
+      	<%if(checkString(activeUser.getParameter("patientid")).length()==0){ %>
         <li class="item">
           <a style='text-decoration: none;font-family: Raleway, Geneva, sans-serif;' class="link" href="mpiMain.jsp?Page=mpi/patients.jsp"><img height='24px' style='vertical-align: middle' src='<%=sCONTEXTPATH%>/_img/icons/mobile/patient.png'/> <%=getTranNoLink("web","patients",sWebLanguage) %></a>
         </li>
         <%} %>
-        <li class="item" id='menu_pacs' style='display: <%=activeUser.getParameter("patientid").length()==0?"none":""%>'>
+        <li class="item" id='menu_pacs' style='display: <%=checkString(activeUser.getParameter("patientid")).length()==0?"none":""%>'>
           <a style='text-decoration: none;font-family: Raleway, Geneva, sans-serif;' class="link" href="mpiMain.jsp?Page=mpi/pacs.jsp"><img height='32px' style='vertical-align: middle' src='<%=sCONTEXTPATH%>/_img/icons/mobile/xray.png'/> <%=getTranNoLink("web","PACS",sWebLanguage) %></a>
         </li>
-        <li class="item"  style='display: <%=activeUser.getParameter("onetime").length()>0?"none":""%>'>
+        <li class="item"  style='display: <%=checkString(activeUser.getParameter("onetime")).length()>0?"none":""%>'>
           <a style='text-decoration: none;font-family: Raleway, Geneva, sans-serif;' class="link" href="mpiMain.jsp?Page=mpi/<%=activeUser.getParameter("patientid").length()==0?"myprofile":"patientprofile"%>.jsp"><img height='24px' style='vertical-align: middle' src='<%=sCONTEXTPATH%>/_img/icons/mobile/badge.png'/> <%=getTranNoLink("web","myprofile",sWebLanguage) %></a>
         </li>
         <li class="item">

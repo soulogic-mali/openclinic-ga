@@ -1629,7 +1629,8 @@ public class AdminPerson extends OC_Object{
     	String sMessage = SH.getTranNoLink("mpi","registrationmessage",SH.c(language).length()>0 && SH.cs("supportedLanguages", "en").toLowerCase().contains(language.toLowerCase())?language.toLowerCase():"en").replaceAll("\\$mpiid\\$", SH.convertToUUID(personid)).replaceAll("\\$password\\$",getID("candidate")).replaceAll("\\$firstname\\$",SH.capitalizeAllWords(firstname));
     	//Todo: maybe attach a user manual to the mail
     	try {
-			return TimeFilterReportGenerator.sendEmailWithImages(smtpServer, sFrom, sTo, sSubject, sMessage,SH.cs("mpiLogo","/var/tomcat/webapps/openclinic/_img/icons/khinfavicon-32x32.png"));
+    		return be.openclinic.system.Gmail.sendMessage("frank@ict4d.be", "Bigo4ever", sFrom, "KHIN Network", sTo, sFrom, sSubject, sMessage, SH.cs("mpiLogo","/var/tomcat/webapps/openclinic/_img/icons/khinfavicon-32x32.png"));
+			//return TimeFilterReportGenerator.sendEmailWithImages(smtpServer, sFrom, sTo, sSubject, sMessage,SH.cs("mpiLogo","/var/tomcat/webapps/openclinic/_img/icons/khinfavicon-32x32.png"));
     	} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,7 +1,7 @@
 <%@page import="java.sql.*,java.io.*,java.util.*"%>
 <%@page import="be.mxs.common.util.db.MedwanQuery"%>
 <%@page import="be.openclinic.archiving.*"%><%
-String sFile=new java.util.Date().getTime()+"";
+	String sFile=new java.util.Date().getTime()+"";
 String sFilename=MedwanQuery.getInstance().getConfigString("mpiTempDirectory","/users/frank/google drive/projects/openclinicnew/web/mpi/temp")+"/"+sFile+".jpg";
 String sFilename2=MedwanQuery.getInstance().getConfigString("mpiTempURL","http://localhost/openclinic/mpi/temp")+"/"+sFile+".jpg";
 try{
@@ -14,13 +14,13 @@ try{
 	ResultSet rs = ps.executeQuery();
 	if(request.getParameter("skipImages")!=null){
 		for(int n=0;n<Integer.parseInt(request.getParameter("skipImages"));n++){
-			rs.next();
+	rs.next();
 		}
 	}
 	if(rs.next()){
 		File parent = new File(MedwanQuery.getInstance().getConfigString("mpiTempDirectory","/users/frank/google drive/projects/openclinicnew/web/mpi/temp"));
 		if(!parent.exists()){
-			parent.mkdirs();
+	parent.mkdirs();
 		}
 		String dicomfile=MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_basePath","/var/tomcat/webapps/openclinic/scan")+"/"+MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_dirTo","to")+"/"+rs.getString("OC_PACS_FILENAME");
 		Thread.sleep(new Double(Math.random()*100).longValue());
@@ -43,6 +43,7 @@ try{
 }
 catch(Exception e){
 	e.printStackTrace();
+}
 }
 %>
 { "filename" : "<%=sFilename2 %>"}

@@ -1,3 +1,5 @@
+<%@page import="java.io.StringBufferInputStream"%>
+<%@page import="java.io.FileInputStream"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="be.mxs.common.util.system.HTMLEntities"%>
 <%@page import="java.io.StringReader,
@@ -68,6 +70,40 @@
                 eChildMenu = (Element)eMenus.next();
                 childMenu = new Menu();
                 childMenu.parse(eChildMenu);
+                this.menus.add(childMenu);
+            }
+        }
+        
+        //--- PARSE -------------------------------------------------------------------------------
+        public void parse2(Element eMenu){
+            this.accessrights = checkString(eMenu.attributeValue("accessrights")).toLowerCase();
+            this.labelid = checkString(eMenu.attributeValue("labelid"));
+            this.patientselected = checkString(eMenu.attributeValue("patientselected"));
+            this.employeeselected = checkString(eMenu.attributeValue("employeeselected"));
+            this.dossierselected = checkString(eMenu.attributeValue("dossierselected"));
+            this.activeencounter = checkString(eMenu.attributeValue("activeencounter"));
+            this.enableParameter = checkString(eMenu.attributeValue("enableparameter"));
+            this.accesskey = checkString(eMenu.attributeValue("accesskey"));
+            this.isEnabled=false;
+            if(this.enableParameter.length()==0 || MedwanQuery.getInstance().getConfigInt(this.enableParameter,0)==1){
+            	this.isEnabled=true;
+            }
+
+            // replace ; by & if url is no javascript
+            if(checkString(eMenu.attributeValue("url")).indexOf("javascript:") > -1){
+                this.url = checkString(eMenu.attributeValue("url"));
+            }
+            else{
+                this.url = checkString(eMenu.attributeValue("url")).replaceAll(";","&");
+            }
+            
+            Menu childMenu;
+            Element eChildMenu;
+            Iterator eMenus = eMenu.elementIterator("Menu");
+            while(eMenus.hasNext()){
+                eChildMenu = (Element)eMenus.next();
+                childMenu = new Menu();
+                childMenu.parse2(eChildMenu);
                 this.menus.add(childMenu);
             }
         }
@@ -181,7 +217,106 @@
             
             return sReturn;
         }
+        
+        public String makeMenu2(boolean bMenu, String sWebLanguage, String sParentMenu, User user, boolean last, 
+                AdminPerson activePatient, boolean isEmployee){
+			String sReturn = "";
+			if(!isEnabled){
+				return "";
+			}
+			try{
+			 if(this.accessrights.length() > 0){
+			     // permission 'sa' can see everything
+			     //if(user.getParameter("sa").length()==0){
+			         // screen and permission specified
+			         if(this.accessrights.toLowerCase().endsWith(".edit") ||
+			            this.accessrights.toLowerCase().endsWith(".add") ||
+			            this.accessrights.toLowerCase().endsWith(".select") ||
+			            this.accessrights.toLowerCase().endsWith(".delete")){
+			             if(!user.getAccessRight(this.accessrights)){
+			                 return "";
+			             }
+			         }
+			         // only screen specified -> interprete as all permissions required
+			         // Manageing a page, means you can add, edit and delete.
+			         else{
+			             if(!user.getAccessRight((this.accessrights+".edit")) ||
+			                !user.getAccessRight((this.accessrights+".add")) ||
+			                //!user.getAccessRight((this.accessrights+".select")) ||
+			               !user.getAccessRight((this.accessrights+".delete"))){
+			                 return "";
+			             }
+			         }
+			     //}
+			 }
+			 
+			 if(this.activeencounter.equalsIgnoreCase("true")){
+			     if(activePatient==null || Encounter.getActiveEncounter(activePatient.personid)==null){
+			         return "";
+			     }
+			 }
+			
+			 if(patientselected.equalsIgnoreCase("true") && !bMenu){
+			     return "";
+			 }
+			 if(employeeselected.equalsIgnoreCase("true") && !bMenu){
+			     return "";
+			 }
+			 if(dossierselected.equalsIgnoreCase("true") && !bMenu){
+			     return "";
+			 }
+			 
+			 if(this.url.length() > 0){
+			     // leave url as-is if it contains a javascript call
+			     if(!this.url.startsWith("javascript:")){
+			         if(this.url.startsWith("/")){
+			             this.url = sCONTEXTPATH+this.url;
+			         }
+			         
+			         if(this.url.indexOf("?") > 0) this.url+= "&ts="+getTs();
+			         else                          this.url+= "?ts="+getTs();
+			     }
+			     
+			     sReturn+= "";
+			 }
+			
+			 // menu has submenus
+			 String sTranslation = getTranNoLink("Web",this.labelid,sWebLanguage);
+			 String subsubMenu = "";
+			 if(this.menus.size() > 0){
+			     Menu subMenu=null;
+			     for(int y=0; y<this.menus.size(); y++){
+			         subMenu = (Menu)this.menus.elementAt(y);
+			
+			         
+			         if((subMenu.dossierselected.equalsIgnoreCase("true") && (activePatient==null || activePatient.personid.length()==0))){
+			             continue;
+			         }
+			         else if((subMenu.patientselected.equalsIgnoreCase("true")&!bMenu) || (subMenu.employeeselected.equalsIgnoreCase("true")&!isEmployee)){
+			             continue;
+			         }
+			         else{
+			             subsubMenu+= subMenu.makeMenu(bMenu,sWebLanguage,this.labelid,user,(y==this.menus.size()-1),activePatient,isEmployee);
+			         }
+			     }
+			     
+			     sReturn+= "<li><a href='javascript:void(0);' class='subparent'>"+sTranslation+"</a>";
+			     sReturn+= "<ul class='level3'>";
+			     sReturn+= (subsubMenu.length()>0)?subsubMenu:"<li><a href='javascript:void(0);'>empty</a></li>";
+			     sReturn+= "</ul></li>";
+			 } 
+			 else{
+		 		sReturn+= "<li><a target='_new' href='"+this.url+"'\">"+sTranslation+"</a></li>";
+			 }
+			}
+			catch(Exception e){
+			 e.printStackTrace();
+			}
+			
+			return sReturn;
+		}
     }
+
 %>
 
 <% 
@@ -361,7 +496,89 @@
                                 }
                             }
                         }
-                        
+                        //Add local shortcuts
+                        if(SH.cs("extraMenus","").length()>0){
+	                        document = xmlReader.read(new StringBufferInputStream(SH.cs("extraMenus","")));
+	                        vMenus=new Vector();
+	                        if(document!=null){
+	                            Element root = document.getRootElement();
+	                            if(root!=null){
+	                                Iterator elements = root.elementIterator("Menu");
+	                                while(elements.hasNext()){
+	                                    menu = new Menu();
+	                                    menu.parse2((Element)elements.next());
+	                                    vMenus.add(menu);
+	                                }
+	                            }
+	                        }
+	                        for(int i=0; i<vMenus.size(); i++){
+	                            menu = (Menu) vMenus.elementAt(i);
+	                            String subs = "";
+	
+	                            if((menu.dossierselected.equalsIgnoreCase("true") && (activePatient==null || activePatient.personid.length()==0))){
+	                                continue;
+	                            }
+	                            else if((menu.patientselected.equalsIgnoreCase("true")&!bMenu) || (menu.employeeselected.equalsIgnoreCase("true")&!isEmployee)){
+	                                continue;
+	                            }
+	                            else if(!menu.isEnabled){
+	                            	continue;
+	                            }
+	                            else if(menu.menus.size() > 0){
+	                                if(!menu.labelid.equalsIgnoreCase("hidden")){
+	                                    for(int y=0; y<menu.menus.size(); y++){
+	                                        subMenu = (Menu)menu.menus.elementAt(y);
+	                                         
+	                                        if((subMenu.dossierselected.equalsIgnoreCase("true") && (activePatient==null || activePatient.personid.length()==0))){
+	                                            continue;
+	                                        }
+	                                        else if((subMenu.patientselected.equalsIgnoreCase("true")&!bMenu) || (subMenu.employeeselected.equalsIgnoreCase("true")&!isEmployee)){
+	                                            continue;
+	                                        }
+	                                        else{
+	                                            subs+= subMenu.makeMenu2(bMenu,sWebLanguage,menu.labelid,activeUser,(y==menu.menus.size() - 1),activePatient,isEmployee);
+	                                        }
+	                                    }
+	                                    
+	                                    out.print("<li class='menu_"+menu.labelid+"'>");
+	                                    out.print("<a "+(menu.accesskey.length()>0?"accesskey=\""+menu.accesskey+"\"":"")+" href='javascript:void(0)' class='parent'>"+menu.labelid+"</a>");
+	                                    out.print("<ul class='level2'>");
+	                                    out.print(subs);
+	                                    out.print("</ul></li>");
+	                                }
+	                            }
+	                            // no submenus
+	                            else{
+	                                if(!menu.patientselected.equalsIgnoreCase("true") || bMenu){
+	                                    // only add menu to menubar if the user has the required accessright
+	                                    // or when no accessright is specified or when the user has 'sa' as a userparameter
+	                                    if((menu.accessrights.length() > 0 && activeUser.getAccessRight(menu.accessrights)) ||
+	                                        menu.accessrights.length()==0) /*|| activeUser.getParameter("sa").length()>0)*/ {
+	                                        if(menu.url.length() > 0){
+	                                            if(menu.url.startsWith("/")){
+	                                                menu.url = sCONTEXTPATH+menu.url;
+	                                            }
+	                                            
+	                                            if(menu.url.indexOf("javascript:") < 0){
+	                                                if(menu.url.indexOf("?") > 0) menu.url+= "&ts="+getTs();
+	                                                else                          menu.url+= "?ts="+getTs();
+	                                            }
+	                                        }
+	                                        
+	                                        if(menu.url.endsWith(";")){
+	                                        	menu.url = menu.url.substring(0,menu.url.indexOf(";")-1);
+	                                        }
+	
+	                                        out.print("<li class='menu_"+menu.labelid+"'>");
+	
+                                    		out.print("<a "+(menu.accesskey.length()>0?"accesskey=\""+menu.accesskey+"\"":"")+" target='_new' href=\""+menu.url+"\">"+menu.labelid+"</a>");                                            
+	                                    	
+	                                        out.print("</li>");                                       
+	                                    }
+	                                }
+	                            }
+	                        }
+                        }                        
                         String sHelp = MedwanQuery.getInstance().getConfigString("HelpFile");%>
                 </ul>
             </div>

@@ -1,11 +1,9 @@
-<%@page import="java.sql.*,java.io.*,java.util.*,javax.imageio.*,org.dcm4che2.imageio.plugins.dcm.*"%><%@page import="be.mxs.common.util.db.MedwanQuery"%><%@page import="be.openclinic.archiving.*"%><%
-try{
+<%@page import="java.sql.*,java.io.*,java.util.*,javax.imageio.*,org.dcm4che3.imageio.plugins.dcm.*"%><%@page import="be.mxs.common.util.db.MedwanQuery"%><%@page import="be.openclinic.archiving.*"%><%try{
 	if(!ImageIO.getImageReadersByFormatName("DICOM").hasNext()){
     	ImageIO.scanForPlugins();
 	}
 	else{
-    	Iterator<ImageReader>iterator = ImageIO.getImageReadersByFormatName("DICOM");
-    	ImageReader reader = iterator.next();
+    	ImageReader reader = DicomUtils.getDCM4CHE2DicomImageReader();
         DicomImageReadParam param = (DicomImageReadParam) reader.getDefaultReadParam();
 	}
 }
@@ -28,6 +26,7 @@ catch(Exception e){
 	}
 	if(rs.next()){
 		String dicomfile=MedwanQuery.getInstance(true).getConfigString("scanDirectoryMonitor_basePath","/var/tomcat/webapps/openclinic/scan")+"/"+MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_dirTo","to")+"/"+rs.getString("OC_PACS_FILENAME");
+		System.out.println("dicomfile="+dicomfile);
 		try{
 			Dcm2Jpg dcm2Jpg = new Dcm2Jpg();
 			dcm2Jpg.convert(new File(dicomfile), os, session);
@@ -40,5 +39,4 @@ catch(Exception e){
 	ps.close();
 	conn.close();
     os.flush();
-    os.close();
-%>
+    os.close();%>

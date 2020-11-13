@@ -28,7 +28,7 @@ public class DicomUtils {
 		Dcm2Jpg dcm2jpg = new Dcm2Jpg();
 		try {
 			dcm2jpg.convert(new File(sourcefile), sos);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;

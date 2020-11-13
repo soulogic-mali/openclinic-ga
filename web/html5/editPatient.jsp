@@ -15,6 +15,8 @@
 	if(request.getParameter("submitButton")!=null){
 		try{
 			//Todo: create new AdminPerson
+			String personid = checkString(request.getParameter("personid"));
+			activePatient = AdminPerson.getAdminPerson(personid);
 			activePatient.begin=ScreenHelper.getSQLDate(new java.util.Date());
 			activePatient.dateOfBirth=request.getParameter("dateofbirth").split("-")[2]+"/"+request.getParameter("dateofbirth").split("-")[1]+"/"+request.getParameter("dateofbirth").split("-")[0];
 			activePatient.firstname=request.getParameter("firstname").toUpperCase();
@@ -27,6 +29,7 @@
 			activePatient.privateContacts=new Vector();
 			activePatient.privateContacts.add(pc);
 			activePatient.store();
+			session.setAttribute("activePatient", activePatient);
 		    PersonVO person = MedwanQuery.getInstance().getPerson(activePatient.personid);
 	        SessionContainerWO sessionContainerWO= (SessionContainerWO)SessionContainerFactory.getInstance().getSessionContainerWO( request , SessionContainerWO.class.getName() );
 		    sessionContainerWO.setPersonVO(person);

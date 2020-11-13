@@ -39,7 +39,17 @@ public class ScanDirectoryMonitor implements Runnable{
 	private boolean stopped = false;
 	private int runCounter;
 	private Thread thread;
+	private java.util.Date created;
 	
+	
+	public java.util.Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(java.util.Date created) {
+		this.created = created;
+	}
+
 	// config-values
 	public static String SCANDIR_URL, SCANDIR_BASE, SCANDIR_FROM, SCANDIR_TO, SCANDIR_ERR, SCANDIR_DEL,SCAN_PREFIX;		
 	public static int FILES_PER_DIRECTORY;
@@ -54,6 +64,7 @@ public class ScanDirectoryMonitor implements Runnable{
 	
 	//--- CONSTRUCTOR -----------------------------------------------------------------------------
 	public ScanDirectoryMonitor(){
+		setCreated(new java.util.Date());
 	}
 	
 	//--- ACTIVATE --------------------------------------------------------------------------------
@@ -185,8 +196,10 @@ public class ScanDirectoryMonitor implements Runnable{
 		return stopped;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setStopped(boolean stopped){
 		this.stopped = stopped;
+		thread.stop();
 	}
 	
 	public static int getFilesInQueue() {

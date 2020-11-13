@@ -346,8 +346,8 @@ function setPopup(itemType,itemValue){
     }
   }
 
-  sHistoryURL = "<c:url value='/healthrecord/itemHistory.jsp'/>?itemType="+itemType+"&ts=<%=getTs()%>";
-  sGraphURL = "<c:url value='/healthrecord/itemGraph.jsp'/>?itemType="+itemType+"&ts=<%=getTs()%>";
+  sHistoryURL = "<c:url value='/healthrecord/itemHistory.jsp'/>?itemType="+encodeURI(itemType)+"&ts=<%=getTs()%>";
+  sGraphURL = "<c:url value='/healthrecord/itemGraph.jsp'/>?itemType="+encodeURI(itemType)+"&ts=<%=getTs()%>";
 
   document.oncontextmenu = showmenuie5;
 }

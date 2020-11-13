@@ -13,6 +13,10 @@ public class SH extends ScreenHelper {
 		return checkString(s);
 	}
 	
+	public static String c(String s, String defaultValue) {
+		return checkString(s,defaultValue);
+	}
+	
 	public static String p(HttpServletRequest request,String parameter) {
 		return c(request.getParameter(parameter));
 	}

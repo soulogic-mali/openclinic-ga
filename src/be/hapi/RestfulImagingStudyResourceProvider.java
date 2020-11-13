@@ -27,6 +27,7 @@ import be.mxs.common.util.db.ObjectCache;
 import be.mxs.common.util.system.ScreenHelper;
 import ca.uhn.fhir.rest.annotation.Destroy;
 import ca.uhn.fhir.rest.annotation.IdParam;
+import ca.uhn.fhir.rest.annotation.OptionalParam;
 import ca.uhn.fhir.rest.annotation.Read;
 import ca.uhn.fhir.rest.annotation.RequiredParam;
 import ca.uhn.fhir.rest.annotation.Search;
@@ -98,49 +99,59 @@ public class RestfulImagingStudyResourceProvider implements IResourceProvider {
 	
 	@Search()
 	public List<ImagingStudy> getStudy(	@RequiredParam (name = "studyuid") StringParam studyuid,
-									@RequiredParam (name = "seriesuid") StringParam seriesuid,
+									@OptionalParam (name = "seriesuid") StringParam seriesuid,
 									HttpServletRequest theRequest, 
 									HttpServletResponse theResponse
 									) {
 		Vector<ImagingStudy> studies = new Vector<ImagingStudy>();
 		ImagingStudy study = null;
 		//First find the transactions this study belongs to
-		System.out.println("studyuid="+studyuid);
-		System.out.println("seriesuid="+seriesuid);
 		TransactionVO tran = MedwanQuery.getInstance().getTransactionForItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PACS_STUDYUID", studyuid.getValue());
 		if(tran!=null) {
-			System.out.println("found!");
-			study = new ImagingStudy();
-			study.setId(studyuid.getValue());
-			ImagingStudySeriesComponent seriesComponent = new ImagingStudySeriesComponent();
-			study.addSeries(seriesComponent);
-			seriesComponent.setId(seriesuid.getValue());
-			seriesComponent.setModality(new Coding("DICOM",tran.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PACS_MODALITY"),tran.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PACS_MODALITY")));
-			seriesComponent.setStarted(ScreenHelper.parseDate(tran.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PACS_STUDYDATE")));
-			seriesComponent.setDescription(tran.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PACS_STUDYDESCRIPTION"));
-			Reference reference = new Reference();
-			reference.setType("mpi.dicom.wado");
-			reference.setId((theRequest.isSecure()?"https":"http")+"://"+theRequest.getServerName()+":"+theRequest.getServerPort()+theRequest.getContextPath()+"/pacs/wadoQuery.jsp?studyuid="+studyuid.getValue()+"&seriesuid="+seriesuid.getValue());
-			seriesComponent.addEndpoint(reference);
+			String seriesvalue=seriesuid==null?ScreenHelper.checkString(tran.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PACS_SERIESID")):seriesuid.getValue();
 			Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
 			try {
 				PreparedStatement ps = conn.prepareStatement("select * from oc_pacs where oc_pacs_studyuid=? and oc_pacs_series=?");
 				ps.setString(1,studyuid.getValue());
-				ps.setString(2, seriesuid.getValue());
+				ps.setString(2, seriesvalue);
 				ResultSet rs = ps.executeQuery();
-				while(rs.next()) {
-					String filename = rs.getString("oc_pacs_filename");
-					String dicomfile=MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_basePath","/var/tomcat/webapps/openclinic/scan")+"/"+MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_dirTo","to")+"/"+filename;
-					if(new File(dicomfile).exists()) {
-						reference = new Reference();
-						reference.setType("mpi.dicom.sequence");
-						reference.setId(rs.getString("oc_pacs_sequence"));
-						seriesComponent.addEndpoint(reference);
+				if(rs.next()) {
+					rs.close();
+					ps.close();
+					study = new ImagingStudy();
+					study.setId(studyuid.getValue());
+					ImagingStudySeriesComponent seriesComponent = new ImagingStudySeriesComponent();
+					study.addSeries(seriesComponent);
+					seriesComponent.setId(seriesvalue);
+					seriesComponent.setModality(new Coding("DICOM",tran.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PACS_MODALITY"),tran.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PACS_MODALITY")));
+					seriesComponent.setStarted(ScreenHelper.parseDate(tran.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PACS_STUDYDATE")));
+					seriesComponent.setDescription(tran.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PACS_STUDYDESCRIPTION"));
+					Reference reference = new Reference();
+					reference.setType("mpi.dicom.wado");
+					reference.setId((theRequest.isSecure()?"https":"http")+"://"+theRequest.getServerName()+":"+theRequest.getServerPort()+theRequest.getContextPath()+"/pacs/wadoQuery.jsp?studyuid="+studyuid.getValue()+"&seriesuid="+seriesvalue);
+					seriesComponent.addEndpoint(reference);
+					ps = conn.prepareStatement("select * from oc_pacs where oc_pacs_studyuid=? and oc_pacs_series=?");
+					ps.setString(1,studyuid.getValue());
+					ps.setString(2, seriesvalue);
+					rs = ps.executeQuery();
+					while(rs.next()) {
+						String filename = rs.getString("oc_pacs_filename");
+						String dicomfile=MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_basePath","/var/tomcat/webapps/openclinic/scan")+"/"+MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_dirTo","to")+"/"+filename;
+						if(new File(dicomfile).exists()) {
+							reference = new Reference();
+							reference.setType("mpi.dicom.sequence");
+							reference.setId(rs.getString("oc_pacs_sequence"));
+							seriesComponent.addEndpoint(reference);
+						}
 					}
+					rs.close();
+					ps.close();
+					studies.add(study);
 				}
-				rs.close();
-				ps.close();
-				studies.add(study);
+				else {
+					rs.close();
+					ps.close();
+				}
 			}
 			catch(Exception e) {
 				e.printStackTrace();				

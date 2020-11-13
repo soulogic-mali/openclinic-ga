@@ -120,8 +120,8 @@
 								</tr>
 								<tr>
 									<td/>
-									<td nowrap style='font-size: 1.5vw;text-align:left;padding=10px;font-family: Raleway, Geneva, sans-serif;'>
-										<input style='padding:5px; font-size: 1.5vw;border: 1px solid #cccccc' type='submit' name='<%=getTranNoLink("web","login",sWebLanguage) %>' value="Login"/>
+									<td nowrap style='font-size: 1.5vw;ertical-align: middle; text-align:left;padding=10px;font-family: Raleway, Geneva, sans-serif;'>
+										<input style='padding:2px; height: 30px;vertical-align: middle; font-size: 1.5vw;border: 1px solid #cccccc' type='submit' name='<%=getTranNoLink("web","login",sWebLanguage) %>' value="Login"/>
 									</td>
 								</tr>
 								<% if(sMessage.length()>0){ %>

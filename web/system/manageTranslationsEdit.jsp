@@ -1,3 +1,5 @@
+<%@page import="sun.misc.BASE64Decoder"%>
+<%@page import="sun.misc.BASE64Encoder"%>
 <%@ page import="be.mxs.common.util.system.HTMLEntities" %>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>

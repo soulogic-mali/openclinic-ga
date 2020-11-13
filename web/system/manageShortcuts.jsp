@@ -1,6 +1,5 @@
 <%@page import="be.openclinic.system.Examination"%>
 <%@include file="/includes/validateUser.jsp"%>
-<%=checkPermission(out,"system.management","select",activeUser)%>
 <%
     String sMsg = "";
 

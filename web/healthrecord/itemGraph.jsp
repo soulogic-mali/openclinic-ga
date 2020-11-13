@@ -22,7 +22,7 @@
 <%=sCSSNORMAL%>
 
 <HEAD><TITLE><%=getTranNoLink("Web.Occup","medwan.occupational-medicine.getgraph",sWebLanguage)%></TITLE></HEAD>
-<body title="<%=getTranNoLink("Web.Occup","medwan.common.click-for-history",sWebLanguage)%>" onclick="window.location.href='<c:url value="/healthrecord/itemHistory.jsp"/>?itemType=<%=request.getParameter("itemType")%>';">
+<body title="<%=getTranNoLink("Web.Occup","medwan.common.click-for-history",sWebLanguage)%>" onclick="window.location.href='<c:url value="/healthrecord/itemHistory.jsp"/>?itemType='+encodeURI('<%=request.getParameter("itemType")%>');">
 
 <table class="list" width="100%" cellspacing="1" cellpadding="0">
     <tr class="admin"><td colspan="2"><%=getTran(request,"Web.Occup","medwan.occupational-medicine.getgraph",sWebLanguage)%></td></tr>

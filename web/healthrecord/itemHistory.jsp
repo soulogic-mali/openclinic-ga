@@ -32,7 +32,7 @@
 %>
 
 <HEAD><TITLE><%=getTranNoLink("web","history",sWebLanguage)%></TITLE></HEAD>
-<body title="<%=getTranNoLink("Web.Occup","medwan.common.click-for-graph",sWebLanguage)%>" onclick="window.location.href='<c:url value="/healthrecord/itemGraph.jsp"/>?itemType=<%=request.getParameter("itemType")%>';">
+<body title="<%=getTranNoLink("Web.Occup","medwan.common.click-for-graph",sWebLanguage)%>" onclick="window.location.href='<c:url value="/healthrecord/itemGraph.jsp"/>?itemType='+encodeURI('<%=request.getParameter("itemType")%>');">
 <%
     String format = "";
     if (request.getParameter("itemType").indexOf("MEDIDOC")>-1){

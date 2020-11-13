@@ -4,5 +4,6 @@
 		activePatient.setID("candidate", SH.getRandomPassword());
 		activePatient.store();
 	}
+	System.out.println("Calling Gmail function");
 	activePatient.sendMPIRegistrationMessage();
 %>

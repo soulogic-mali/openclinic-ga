@@ -28,6 +28,7 @@ The following image was received in OpenClinic:<br/>
 	};
 	
 	function storeData(roomid,imagedata,type){
+		alert(1);
 	  	var url = '<c:url value="/util/storeWizzeyeData.jsp"/>?ts='+<%=getTs()%>;
 	  	new Ajax.Request(url,{
 	    	method: "POST",
@@ -37,6 +38,7 @@ The following image was received in OpenClinic:<br/>
 			    	  '&id=<%=id%>'+
 		          	  '&imagedata='+imagedata,
 	    	onSuccess: function(resp){
+	    		alert(2);
 	    		//Image was successfully stored, send message back to IFRAME
 	    		console.log("Successfully stored "+type+" for room "+roomid+" into OpenClinic database");
 	    	}

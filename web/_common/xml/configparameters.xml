@@ -1295,4 +1295,42 @@
 		    <description language="en">Reference language to be used for manually translating labels. If empty, then the active language of the user interface is used</description>
 		</parameter>
 	</parametergroup>
+	<parametergroup id="mobilemoney" name="Mobile Money">
+		<parameter name="enableMobilePayment" default="0" type="radio" options="0;1">
+		    <description language="en">Enables the use of mobile payment platforms in OpenClinic</description>
+		</parameter>
+		<parameter name="momo.collectionsubscriptionkey" default="">
+		    <description language="en">Subscription key for the Collection functionality on the MTN Mobile Money platform</description>
+		</parameter>
+		<parameter name="momo.disbursementsubscriptionkey" default="">
+		    <description language="en">Subscription key for the Disbursement functionality on the MTN Mobile Money platform</description>
+		</parameter>
+		<parameter name="momo.apiuser" default="">
+		    <description language="en">User identification on the MTN Mobile Money platform</description>
+		</parameter>
+		<parameter name="momo.apikey" default="">
+		    <description language="en">User password on the MTN Mobile Money platform</description>
+		</parameter>
+		<parameter name="momo.cashdesk.mtn" default="">
+		    <description language="en">Default cash desk UID in which mobile payments will be deposited.</description>
+		</parameter>
+		<parameter name="momo.payermessageprefix" default="Hospital invoice ">
+		    <description language="en">Fixed messsage that will prefixed to the payer message.</description>
+		</parameter>
+		<parameter name="momo.callbackURL" default="http://cloud.hnrw.org/openclinic/registerPayment.jsp">
+		    <description language="en">URL that is called by the MTN Mobile Money platform when a client accepts or refuses a payment.</description>
+		</parameter>
+		<parameter name="momo.targetsystem" default="sandbox" type="radio" options="sandbox;production">
+		    <description language="en">Select "sandbox" to use the Mobile Money test environment. Select "production" to use the Mobile Money production environment.</description>
+		</parameter>
+		<parameter name="momo.production.requesttopay.baseurl" default="https://momo.mtn.com/collection/v1_0">
+		    <description language="en">Base URL used to call requesttopay command in production environment.</description>
+		</parameter>
+		<parameter name="momo.production.token.baseurl" default="https://momo.mtn.com/collection">
+		    <description language="en">Base URL used to call token command in production environment.</description>
+		</parameter>
+		<parameter name="momo.merchantphonenumber" default="">
+		    <description language="en">Phone number linked to the merchant account.</description>
+		</parameter>
+	</parametergroup>
 </parameters>

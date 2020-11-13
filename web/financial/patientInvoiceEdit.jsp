@@ -36,8 +36,8 @@
                         sReturn.append( "<tr class='list"+sClass+"'>"
                             +"<td><input type='checkbox' name='cbPatientInvoice"+patientcredit.getUid()+"="+patientcredit.getAmount()+"' id='"+patientcredit.getType()+"."+patientcredit.getUid()+"' onclick='doBalance(this, false)'"+sChecked+"></td>"
                             +"<td>"+ScreenHelper.getSQLDate(patientcredit.getDate())+"</td>"
-                            +"<td>"+getTran(null,"credit.type",checkString(patientcredit.getType()),sWebLanguage)+"</td>"
-                            +"<td align='right'>"+new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormat")).format(patientcredit.getAmount())+" "+MedwanQuery.getInstance().getConfigParam("currency","€")+"</td>"
+                            +"<td>"+getTran(null,"credit.type",checkString(patientcredit.getType()),sWebLanguage)+" "+(checkString(patientcredit.getComment()).length()>0?"[<i>"+checkString(patientcredit.getComment())+"</i>]":"")+"</td>"
+                            +"<td align='right'>"+new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormat")).format(patientcredit.getAmount())+" "+MedwanQuery.getInstance().getConfigParam("currency","EUR")+"</td>"
                         +"</tr>");
                     }
                 }
@@ -183,7 +183,7 @@
             	}
             	activePatient.initialize(sPatientId);
             	%>
-            	<script>window.location.href='<c:url value='/main.do'/>?Page=financial/patientInvoiceEdit.jsp&ts=<%=ScreenHelper.getTs()%>&FindPatientInvoiceUID=<%=sFindPatientInvoiceUID%>';</script>
+            	<script>window.location.href='<c:url value='/main.do'/>?Page=financial/patientInvoiceEdit.jsp&ts=<%=ScreenHelper.getTs()%>&FindPatientInvoiceUID=<%=sFindPatientInvoiceUID%>&PersonID=<%=sPatientId%>';</script>
             	<%
             	out.flush();
             }
