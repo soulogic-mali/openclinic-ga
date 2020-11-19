@@ -506,8 +506,11 @@
 	                                Iterator elements = root.elementIterator("Menu");
 	                                while(elements.hasNext()){
 	                                    menu = new Menu();
-	                                    menu.parse2((Element)elements.next());
-	                                    vMenus.add(menu);
+	                                    Element menuElement = (Element)elements.next();
+	                                    if(SH.c(menuElement.attributeValue("accessrights")).length()==0 || activeUser.getAccessRight(menuElement.attributeValue("accessrights"))){
+		                                    menu.parse2(menuElement);
+		                                    vMenus.add(menu);
+	                                    }
 	                                }
 	                            }
 	                        }
@@ -1100,7 +1103,7 @@
   }
   <%-- show drugs out barcode --%>
   function showdrugsoutbarcode(){
-    openPopup("pharmacy/drugsOutBarcode.jsp&ts=<%=getTs()%>",700,500);
+    openPopup("pharmacy/drugsOutBarcode.jsp&ts=<%=getTs()%>",800,500);
   }
   <%-- show global health barometer --%>
   function showglobalhealthbarometer(){

@@ -30,8 +30,10 @@
                     <td width="300">
                         <%=getTran(request,"curative","encounter.status.title",sWebLanguage)%>&nbsp;
                         <a href="<c:url value='/main.do'/>?Page=adt/historyEncounter.jsp&ts=<%=getTs()%>"><img height='16px' style='vertical-align: middle' src="<c:url value='/_img/icons/icon_history.png'/>" class="link" alt="<%=getTranNoLink("web","historyencounters",sWebLanguage)%>" style="vertical-align: middle"></a>
+                        <%if(activePatient.isDead()==null || activeUser.getAccessRightNoSA("deceasedpatient.add")){ %>
                         <a href="javascript:newEncounter();"><img height='16px' style='vertical-align: middle' src="<c:url value='/_img/icons/icon_newpage.png'/>" class="link" alt="<%=getTranNoLink("web","newencounter",sWebLanguage)%>" style="vertical-align:-4px;"></a>
-						<%if(MedwanQuery.getInstance().getConfigString("quickConsult1."+activeUser.userid,"").split(";").length>MedwanQuery.getInstance().getConfigInt("minimumQuickConsultFields",3)-1){ %>
+						<%}
+                          if(MedwanQuery.getInstance().getConfigString("quickConsult1."+activeUser.userid,"").split(";").length>MedwanQuery.getInstance().getConfigInt("minimumQuickConsultFields",3)-1){ %>
 	                        <a href="javascript:newFastEncounter('<%=MedwanQuery.getInstance().getConfigString("quickConsult1."+activeUser.userid)%>');"><img height='20px' style='vertical-align: middle'  src="<c:url value='/_img/icons/icon_new1.png'/>" class="link" title="<%=getTranNoLink("web",MedwanQuery.getInstance().getConfigString("quickConsult1."+activeUser.userid).split(";")[0],sWebLanguage)+" "+getTranNoLink("service",MedwanQuery.getInstance().getConfigString("quickConsult1."+activeUser.userid).split(";")[2],sWebLanguage)+" "+(MedwanQuery.getInstance().getConfigString("quickConsult1."+activeUser.userid,"").split(";").length<5?"":getTranNoLink("encounter.situation",MedwanQuery.getInstance().getConfigString("quickConsult1."+activeUser.userid).split(";")[4],sWebLanguage))%>" style="vertical-align:-4px;"></a>
 	                    <%} %>
 						<%if(MedwanQuery.getInstance().getConfigString("quickConsult2."+activeUser.userid,"").split(";").length>MedwanQuery.getInstance().getConfigInt("minimumQuickConsultFields",3)-1){ %>

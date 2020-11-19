@@ -20,12 +20,13 @@
 %>
 <table cellspacing="0" width="100%">
 <tr class="admin">
-    <td width="25">&nbsp;</td>
-    <td width="100"><%=HTMLEntities.htmlentities(getTran(request,"web","code",sWebLanguage))%></td>
-    <td width="300"><%=HTMLEntities.htmlentities(getTran(request,"web","description",sWebLanguage))%></td>
-    <td width="70"><%=HTMLEntities.htmlentities(getTran(request,"web","type",sWebLanguage))%></td>
-    <td width="80" align="left"><%=HTMLEntities.htmlentities(getTran(request,"web","price",sWebLanguage))%>&nbsp;<%=sCurrency%></td>
+    <td >&nbsp;</td>
+    <td ><%=HTMLEntities.htmlentities(getTran(request,"web","code",sWebLanguage))%></td>
+    <td ><%=HTMLEntities.htmlentities(getTran(request,"web","description",sWebLanguage))%></td>
+    <td ><%=HTMLEntities.htmlentities(getTran(request,"web","type",sWebLanguage))%></td>
+    <td align="left"><%=HTMLEntities.htmlentities(getTran(request,"web","price",sWebLanguage))%>&nbsp;<%=sCurrency%></td>
     <td><%=HTMLEntities.htmlentities(getTran(request,"web","categories",sWebLanguage))%></td>
+    <td><%=HTMLEntities.htmlentities(getTran(request,"web","service",sWebLanguage))%></td>
     <td/>
 </tr>
 <tbody>
@@ -55,6 +56,11 @@
             // alternate row-style
             if (sClass.equals("")) sClass = "1";
             else sClass = "";
+            String servicename="";
+            Service service=Service.getService(prestation.getServiceUid());
+            if(service!=null){
+            	servicename=service.getLabel(sWebLanguage);
+            }
 
 
     %>
@@ -67,6 +73,7 @@
                     <td class="hand" onClick="editPrestation('<%=prestation.getUid()%>');"><%=HTMLEntities.htmlentities(sType)%></td>
                     <td class="hand" onClick="editPrestation('<%=prestation.getUid()%>');" align="left" nowrap><%=prestation.getPriceFormatted(category)%>&nbsp;</td>
                     <td class="hand" onClick="editPrestation('<%=prestation.getUid()%>');"><%=prestation.getCategoriesFormatted(category)%></td>
+                    <td class="hand" onClick="editPrestation('<%=prestation.getUid()%>');"><%=servicename%></td>
                     <td>&nbsp;</td>
                 </tr>
             <%

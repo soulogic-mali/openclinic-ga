@@ -4,6 +4,7 @@
 <%@page import="java.util.*"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
+<%=checkPermission(out,"curative","select",activeUser)%>
 <%=sJSPROTOTYPE %>
 <%!
     //--- CONDITIONAL INCLUDE ---------------------------------------------------------------------

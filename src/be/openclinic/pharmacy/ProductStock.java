@@ -46,7 +46,156 @@ public class ProductStock extends OC_Object implements Comparable {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	
+	public int getMaxNumberOfKits() {
+		int nKits=-1;
+		Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+    	ResultSet rs=null;
+    	PreparedStatement ps=null;
+		try {
+			ps = conn.prepareStatement("select sum(OC_PRODUCTKIT_SOURCEPRODUCTSTOCKQUANTITY) OC_PRODUCTKIT_SOURCEPRODUCTSTOCKQUANTITY,OC_PRODUCTKIT_SOURCEPRODUCTSTOCKUID from oc_productkits where OC_PRODUCTKIT_TARGETPRODUCTSTOCKUID=? group by OC_PRODUCTKIT_SOURCEPRODUCTSTOCKUID order by oc_productkit_sourceproductstockuid");
+			ps.setString(1, getUid());
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				ProductStock stock = ProductStock.get(rs.getString("OC_PRODUCTKIT_SOURCEPRODUCTSTOCKUID"));
+				int quantity = rs.getInt("OC_PRODUCTKIT_SOURCEPRODUCTSTOCKQUANTITY");
+				int maxkits = stock.getLevel()/quantity;
+				if(nKits==-1 || nKits>maxkits) {
+					nKits=maxkits;
+				}
+			}
+    	}
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                if(rs!=null) rs.close();
+                if(ps!=null) ps.close();
+                conn.close();
+            }
+            catch(SQLException se){
+                se.printStackTrace();
+            }
+        }
+		return Math.max(0, nKits);
+	}
+	
+	public int createKits(int numberOfKits, String userid) {
+		int nCreated=0;
+		if(numberOfKits<=getMaxNumberOfKits()) {
+			for(int n=0;n<numberOfKits;n++) {
+				Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+		    	ResultSet rs=null;
+		    	PreparedStatement ps=null;
+				try {
+					ps = conn.prepareStatement("select sum(OC_PRODUCTKIT_SOURCEPRODUCTSTOCKQUANTITY) OC_PRODUCTKIT_SOURCEPRODUCTSTOCKQUANTITY,OC_PRODUCTKIT_SOURCEPRODUCTSTOCKUID from oc_productkits where OC_PRODUCTKIT_TARGETPRODUCTSTOCKUID=? group by OC_PRODUCTKIT_SOURCEPRODUCTSTOCKUID order by oc_productkit_sourceproductstockuid");
+					ps.setString(1, getUid());
+					rs = ps.executeQuery();
+					while(rs.next()) {
+						ProductStock stock = ProductStock.get(rs.getString("OC_PRODUCTKIT_SOURCEPRODUCTSTOCKUID"));
+						int quantity = rs.getInt("OC_PRODUCTKIT_SOURCEPRODUCTSTOCKQUANTITY");
+						int deliveredquantity=0;
+						while(deliveredquantity<quantity) {
+							//Get the right batch from the productStock() if batches have been defined;
+							int operationQuantity=0;
+							String sBatchUid="";
+							Vector vBatches = stock.getActiveBatches();
+							if(vBatches.size()>0) {
+								Batch batch = (Batch)vBatches.elementAt(0);
+								sBatchUid=batch.getUid();
+								if(quantity-deliveredquantity<=batch.getLevel()) {
+									operationQuantity=quantity-deliveredquantity;
+								}
+								else {
+									operationQuantity=batch.getLevel();
+								}
+							}
+							else {
+								operationQuantity=quantity-deliveredquantity;
+							}
+								
+							ProductStockOperation operation = new ProductStockOperation();
+							operation.setUid("-1");
+							operation.setBatchUid(sBatchUid);
+							operation.setDate(new java.util.Date()); // now
+							operation.setDescription(MedwanQuery.getInstance().getConfigString("medicationDeliveryToKit","medicationdelivery.kit"));
+							operation.setProductStockUid(stock.getUid());
+							operation.setSourceDestination(new ObjectReference("kit",getUid()));
+							operation.setUnitsChanged(operationQuantity);
+							operation.setComment("Kit creation");
+							operation.setUpdateDateTime(new java.util.Date());
+							operation.setUpdateUser(userid);
+							operation.setVersion(1);
+							operation.setPrescriptionUid("");
+							operation.setEncounterUID("");
+							operation.store();
+							deliveredquantity+=operationQuantity;
+						}
+					}
+		    	}
+		        catch(Exception e){
+		            e.printStackTrace();
+		        }
+		        finally{
+		            try{
+		                if(rs!=null) rs.close();
+		                if(ps!=null) ps.close();
+		                conn.close();
+		            }
+		            catch(SQLException se){
+		                se.printStackTrace();
+		            }
+		        }
+				nCreated++;
+			}
+		}
+		//All source products were removed from stock. Now create incoming operation
+		ProductStockOperation operation = new ProductStockOperation();
+		operation.setUid("-1");
+		operation.setDate(new java.util.Date()); // now
+		operation.setDescription(MedwanQuery.getInstance().getConfigString("medicationReceiptForKit","medicationreceipt.kit"));
+		operation.setProductStockUid(this.getUid());
+		operation.setSourceDestination(new ObjectReference("kit",""));
+		operation.setUnitsChanged(nCreated);
+		operation.setComment("Kit creation");
+		operation.setUpdateDateTime(new java.util.Date());
+		operation.setUpdateUser(userid);
+		operation.setVersion(1);
+		operation.setPrescriptionUid("");
+		operation.setEncounterUID("");
+		operation.store();
 
+		return nCreated;
+	}
+
+    public boolean isKit() {
+    	boolean bKit=false;
+    	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+    	ResultSet rs=null;
+    	PreparedStatement ps=null;
+    	try {
+    		ps=conn.prepareStatement("select * from oc_productkits where oc_productkit_targetproductstockuid=?");
+    		ps.setString(1, getUid());
+    		rs=ps.executeQuery();
+    		bKit=rs.next();
+    	}
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                if(rs!=null) rs.close();
+                if(ps!=null) ps.close();
+                conn.close();
+            }
+            catch(SQLException se){
+                se.printStackTrace();
+            }
+        }
+    	return bKit;
+    }
+    
 	// non-db data
     private String serviceStockUid;
     private String productUid;
@@ -74,6 +223,9 @@ public class ProductStock extends OC_Object implements Comparable {
     }
     public Vector getBatches(){
     	return Batch.getBatches(this.getUid());
+    }
+    public Vector getActiveBatches(){
+    	return Batch.getActiveBatches(this.getUid());
     }
     public Vector getAllProductStockOperations(){
     	return ProductStockOperation.getAll(this.getUid());

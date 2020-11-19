@@ -4,7 +4,7 @@
                 be.openclinic.medical.LabAnalysis,be.openclinic.archiving.*,
                 java.text.DecimalFormat"%>
 <%@include file="/includes/validateUser.jsp"%>
-<%=checkPermission(out,"system.management","select",activeUser)%>
+<%=checkPermission(out,"labos.patientlaboresults","select",activeUser)%>
 
 <%!
     public class LabRow {

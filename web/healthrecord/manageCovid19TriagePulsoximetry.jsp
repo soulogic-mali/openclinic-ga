@@ -13,7 +13,7 @@
 <%@include file="/includes/validateUser.jsp"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%
-	String accessright="surveillance.covid19.triage";
+	String accessright="surveillance.covid19.triage.pulseoximetry";
 %>
 <%=checkPermission(accessright,"select",activeUser)%>
 <%!

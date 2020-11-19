@@ -163,23 +163,23 @@
                 if(sTmpServiceID.trim().length() > 0){
                 	String img="";
                 	if(MedwanQuery.getInstance().getConfigInt("checkPatientListInvoices",0)==1 && enc.hasInvoices()){
-                		img+="<img src='"+sCONTEXTPATH+"/_img/icons/icon_money.gif'/>";
+                		img+="<img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_money.gif'/>";
                 	}
                 	if(MedwanQuery.getInstance().getConfigInt("checkPatientListTransactions",0)==1 && enc.hasTransactions()){
-                		img+="<img src='"+sCONTEXTPATH+"/_img/icons/icon_admin.gif'/>";
+                		img+="<img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_admin.gif'/>";
                 	}
                 	
-                    String sHospDate = "<td>"+ScreenHelper.stdDateFormat.format(enc.getBegin())+" "+img+"</td>";
+                    String sHospDate = "<td>"+ScreenHelper.fullDateFormat.format(enc.getBegin())+" "+img+"</td>";
                     long duration = (new Date().getTime() - enc.getBegin().getTime());
                     long days = 24 * 3600 * 1000;
                     days = days * 90;
                     if(enc.getEnd()!=null){
 	                    String manager= (!(enc==null) && enc.getManagerUID()!=null && enc.getManagerUID().length()>0? User.getFullUserName(enc.getManagerUID()):"");
-	                    sTmpServiceID = "<td style='text-decoration: line-through'>"+sTmpServiceID+" "+getTran(request,"Service",sTmpServiceID,sWebLanguage)+"</td><td style='text-decoration: line-through'>"+manager+"</td><td style='text-decoration: line-through'>"+sBed+"</td><td style='text-decoration: line-through'>"+ScreenHelper.stdDateFormat.format(enc.getBegin())+" "+img+"</td>";
+	                    sTmpServiceID = "<td style='text-decoration: line-through'>"+sTmpServiceID+" "+getTran(request,"Service",sTmpServiceID,sWebLanguage)+"</td><td style='text-decoration: line-through'>"+manager+"</td><td style='text-decoration: line-through'>"+sBed+"</td><td style='text-decoration: line-through'>"+ScreenHelper.fullDateFormat.format(enc.getBegin())+" "+img+"</td>";
                     }
                     else{
 	                    if(duration > days || duration < 0){
-	                        sHospDate = "<td style='color: red'>"+ScreenHelper.formatDate(enc.getBegin())+" "+img+ "</td>";
+	                        sHospDate = "<td style='color: red'>"+ScreenHelper.fullDateFormat.format(enc.getBegin())+" "+img+ "</td>";
 	                    }
                     
 	                    String manager= (!(enc==null) && enc.getManagerUID()!=null && enc.getManagerUID().length()>0? User.getFullUserName(enc.getManagerUID()):"");

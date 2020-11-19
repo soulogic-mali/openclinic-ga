@@ -571,7 +571,7 @@
     
   <%-- show admin popup --%>
   function showdrugsoutbarcode(){
-   	openPopup("pharmacy/drugsOutBarcode.jsp&ts=<%=getTs()%>",700,500);
+   	openPopup("pharmacy/drugsOutBarcode.jsp&ts=<%=getTs()%>",800,500);
   }
   function showglobalhealthbarometer(){
   	window.open("http://www.globalhealthbarometer.net/globalhealthbarometer/datacenter/datacenterHomePublic.jsp?me=<%=MedwanQuery.getInstance().getConfigString("globalHealthBarometerUID","")%>&ts=<%=getTs()%>");

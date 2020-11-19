@@ -732,7 +732,7 @@
   }
   <%-- show drugs out barcode --%>
   function showdrugsoutbarcode(){
-    openPopup("pharmacy/drugsOutBarcode.jsp&ts=<%=getTs()%>",700,500);
+    openPopup("pharmacy/drugsOutBarcode.jsp&ts=<%=getTs()%>",800,500);
   }
   <%-- show global health barometer --%>
   function showglobalhealthbarometer(){

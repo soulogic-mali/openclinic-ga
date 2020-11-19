@@ -1,5 +1,6 @@
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
+<%=checkPermission(out,"statistics","select",activeUser)%>
 
 <%!
 	//--- GET FIRST DAY PREVIOUS MONTH ------------------------------------------------------------
@@ -56,51 +57,51 @@
 	                getTran(request,"web","to",sWebLanguage)+"&nbsp;"+writeDateField("endcnar","stats",lastdayPreviousMonth,sWebLanguage)+
 	               "</td>"+
 	              "</tr>"+
-	              writeTblChildWithCode("javascript:oldandnewcases()",getTran(request,"Web","statistics.oldandnewcases",sWebLanguage))+
-	              writeTblChildWithCode("javascript:newpatients()",getTran(request,"Web","statistics.newpatients",sWebLanguage))+
-	              writeTblChildWithCode("javascript:agedistribution()",getTran(request,"Web","statistics.agedistribution",sWebLanguage)));
+	              writeTblChildWithCode(activeUser.getAccessRight("statistics.oldandnewcases.select"),"javascript:oldandnewcases()",getTran(request,"Web","statistics.oldandnewcases",sWebLanguage))+
+	              writeTblChildWithCode(activeUser.getAccessRight("statistics.newpatients.select"),"javascript:newpatients()",getTran(request,"Web","statistics.newpatients",sWebLanguage))+
+	              writeTblChildWithCode(activeUser.getAccessRight("statistics.agedistribution.select"),"javascript:agedistribution()",getTran(request,"Web","statistics.agedistribution",sWebLanguage)));
         out.print(ScreenHelper.writeTblFooter()+"<br>");
 	}
 
     //*** 2 - QUICK DIAGNOSIS ENTRY ***************************************************************
     if(activeUser.getAccessRight("patient.administration.add") || activeUser.getAccessRight("statistics.quickdiagnosisentry")){
          out.print(ScreenHelper.writeTblHeader(getTran(request,"Web","statistics.quickdiagnosisentry",sWebLanguage),sCONTEXTPATH));
-         out.print(writeTblChildWithCode("javascript:openPopup(\"statistics/quickFile.jsp\",1000,600,\"quickFile\");void(0);",getTran(request,"Web","statistics.quickdiagnosisentry",sWebLanguage)));
+         out.print(writeTblChildWithCode(activeUser.getAccessRight("statistics.quickdiagnosisentry.select"),"javascript:openPopup(\"statistics/quickFile.jsp\",1000,600,\"quickFile\");void(0);",getTran(request,"Web","statistics.quickdiagnosisentry",sWebLanguage)));
          out.print(ScreenHelper.writeTblFooter()+"<br>");
     }
 
     //*** 3 - PATHOLOGY ***************************************************************************
     if(activeUser.getAccessRight("statistics.globalpathologydistribution.select")){
         out.print(ScreenHelper.writeTblHeader(getTran(request,"Web","statistics.pathologystats",sWebLanguage),sCONTEXTPATH));
-        out.print(writeTblChildNoButton("main.do?Page=statistics/diagnosisStats.jsp",getTran(request,"Web","statistics.globalpathology",sWebLanguage))+
-        		  writeTblChildNoButton("main.do?Page=statistics/mortality.jsp",getTran(request,"Web","statistics.mortality",sWebLanguage))+
-                  writeTblChildNoButton("main.do?Page=statistics/diagnosesList.jsp",getTran(request,"Web","statistics.diagnosisList",sWebLanguage)));
+        out.print(writeTblChildNoButton(activeUser.getAccessRight("statistics.globalpathology.select"),"main.do?Page=statistics/diagnosisStats.jsp",getTran(request,"Web","statistics.globalpathology",sWebLanguage))+
+        		  writeTblChildNoButton(activeUser.getAccessRight("statistics.mortality.select"),"main.do?Page=statistics/mortality.jsp",getTran(request,"Web","statistics.mortality",sWebLanguage))+
+                  writeTblChildNoButton(activeUser.getAccessRight("statistics.diagnosislist.select"),"main.do?Page=statistics/diagnosesList.jsp",getTran(request,"Web","statistics.diagnosisList",sWebLanguage)));
         out.print(ScreenHelper.writeTblFooter()+"<br>");
     }
 
     //*** 4 - TECHNICAL STATS *********************************************************************
     if(activeUser.getAccessRight("statistics.select")){        
         out.print(ScreenHelper.writeTblHeader(getTran(request,"Web","statistics.technicalstats",sWebLanguage),sCONTEXTPATH));
-        out.println(writeTblChildWithCode("javascript:downloadTechnicalStats(\"undelivered.rwamaterial.orders\",\"openclinic\");",getTran(request,"Web","statistics.download.undelivered.rwamaterial.orders",sWebLanguage)));
+        out.println(writeTblChildWithCode(activeUser.getAccessRight("statistics.download.undelivered.rwamaterial.orders.select"),"javascript:downloadTechnicalStats(\"undelivered.rwamaterial.orders\",\"openclinic\");",getTran(request,"Web","statistics.download.undelivered.rwamaterial.orders",sWebLanguage)));
         out.print("<tr>"+
                    "<td class='admin2' colspan='2'>"+
                     getTran(request,"web","from",sWebLanguage)+"&nbsp;"+writeDateField("begintech","stats",firstdayPreviousMonth,sWebLanguage)+"&nbsp;&nbsp;"+
                     getTran(request,"web","to",sWebLanguage)+"&nbsp;"+writeDateField("endtech","stats",lastdayPreviousMonth,sWebLanguage)+
                    "</td>"+
                   "</tr>"+
-                  writeTblChildWithCode("javascript:labStatistics()",getTran(request,"Web","statistics.lab",sWebLanguage))+
-			      writeTblChildWithCode("javascript:labExtraction()",getTran(request,"Web","statistics.lab.extraction",sWebLanguage)));
+                  writeTblChildWithCode(activeUser.getAccessRight("statistics.lab.select"),"javascript:labStatistics()",getTran(request,"Web","statistics.lab",sWebLanguage))+
+			      writeTblChildWithCode(activeUser.getAccessRight("statistics.lab.extraction.select"),"javascript:labExtraction()",getTran(request,"Web","statistics.lab.extraction",sWebLanguage)));
         out.print(ScreenHelper.writeTblFooter()+"<br>");
     }
 
     //*** 5 - ACTIVITY STATS **********************************************************************
     if(activeUser.getAccessRight("statistics.select")){
         out.print(ScreenHelper.writeTblHeader(getTran(request,"Web","statistics.activitystats",sWebLanguage),sCONTEXTPATH));
-        out.print(writeTblChildNoButton("main.do?Page=statistics/databaseStatistics.jsp",getTran(request,"Web","statistics.activitystats.database",sWebLanguage))+
-                  writeTblChildNoButton("main.do?Page=statistics/diagnosticCodingStats.jsp",getTran(request,"Web","statistics.activitystats.diagnosticcoding",sWebLanguage))+
-                  writeTblChildNoButton("main.do?Page=statistics/encounterCodingStats.jsp",getTran(request,"Web","statistics.activitystats.encountercoding",sWebLanguage))+
-                  writeTblChildNoButton("main.do?Page=statistics/recordViewingStats.jsp",getTran(request,"Web","statistics.activitystats.recordviewing",sWebLanguage))+
-                  writeTblChildNoButton("main.do?Page=statistics/transactionViewingStats.jsp",getTran(request,"Web","statistics.activitystats.transactionviewing",sWebLanguage)));
+        out.print(writeTblChildNoButton(activeUser.getAccessRight("statistics.activitystats.database.select"),"main.do?Page=statistics/databaseStatistics.jsp",getTran(request,"Web","statistics.activitystats.database",sWebLanguage))+
+                  writeTblChildNoButton(activeUser.getAccessRight("statistics.activitystats.diagnosticcoding.select"),"main.do?Page=statistics/diagnosticCodingStats.jsp",getTran(request,"Web","statistics.activitystats.diagnosticcoding",sWebLanguage))+
+                  writeTblChildNoButton(activeUser.getAccessRight("statistics.activitystats.encountercoding.select"),"main.do?Page=statistics/encounterCodingStats.jsp",getTran(request,"Web","statistics.activitystats.encountercoding",sWebLanguage))+
+                  writeTblChildNoButton(activeUser.getAccessRight("statistics.activitystats.recordviewing.select"),"main.do?Page=statistics/recordViewingStats.jsp",getTran(request,"Web","statistics.activitystats.recordviewing",sWebLanguage))+
+                  writeTblChildNoButton(activeUser.getAccessRight("statistics.activitystats.transactionviewing.select"),"main.do?Page=statistics/transactionViewingStats.jsp",getTran(request,"Web","statistics.activitystats.transactionviewing",sWebLanguage)));
                   //writeTblChildNoButton("main.do?Page=statistics/prestationCodingStats.jsp",getTran(request,"Web","statistics.activitystats.prestationcoding",sWebLanguage))
         out.print(ScreenHelper.writeTblFooter()+"<br>");
 
@@ -112,11 +113,11 @@
                     getTran(request,"web","to",sWebLanguage)+"&nbsp;"+writeDateField("end3","stats",lastdayPreviousMonth,sWebLanguage)+
                    "</td>"+
                   "</tr>");
-        out.print(writeTblChildWithCode("javascript:insuranceReport()",getTran(request,"Web","statistics.insurancestats.distribution",sWebLanguage))+
-	              writeTblChildWithCode("javascript:incomeVentilation()",getTran(request,"Web","statistics.incomeVentilationPerFamily",sWebLanguage))+
-	              writeTblChildWithCode("javascript:incomeVentilationExtended()",getTran(request,"Web","statistics.incomeVentilationPerCategoryAndService",sWebLanguage))+
-	              writeTblChildWithCode("javascript:incomeVentilationPerformers()",getTran(request,"Web","statistics.incomeVentilationPerPerformer",sWebLanguage))+
-	              writeTblChildWithCode("javascript:paymentrate()",getTran(request,"Web","statistics.paymentrate",sWebLanguage)));
+        out.print(writeTblChildWithCode(activeUser.getAccessRight("statistics.insurancestats.distribution.select"),"javascript:insuranceReport()",getTran(request,"Web","statistics.insurancestats.distribution",sWebLanguage))+
+	              writeTblChildWithCode(activeUser.getAccessRight("statistics.incomeventilationperfamily.select"),"javascript:incomeVentilation()",getTran(request,"Web","statistics.incomeVentilationPerFamily",sWebLanguage))+
+	              writeTblChildWithCode(activeUser.getAccessRight("statistics.incomeventilationpercategoryandservice.select"),"javascript:incomeVentilationExtended()",getTran(request,"Web","statistics.incomeVentilationPerCategoryAndService",sWebLanguage))+
+	              writeTblChildWithCode(activeUser.getAccessRight("statistics.incomeventilationperperformer.select"),"javascript:incomeVentilationPerformers()",getTran(request,"Web","statistics.incomeVentilationPerPerformer",sWebLanguage))+
+	              writeTblChildWithCode(activeUser.getAccessRight("statistics.paymentrate.select"),"javascript:paymentrate()",getTran(request,"Web","statistics.paymentrate",sWebLanguage)));
         out.print(ScreenHelper.writeTblFooter()+"<br>");
         
         String service = activeUser.activeService.code;
@@ -132,7 +133,7 @@
                     getTran(request,"web","to",sWebLanguage)+"&nbsp;"+writeDateField("end3b","stats",today,sWebLanguage)+
                    "</td>"+
                   "</tr>"+
-			      writeTblChildWithCode("javascript:extractspt()",getTran(request,"Web","statistics.extractspt",sWebLanguage)));
+			      writeTblChildWithCode(activeUser.getAccessRight("statistics.extractspt.select"),"javascript:extractspt()",getTran(request,"Web","statistics.extractspt",sWebLanguage)));
 
         
         out.print("<tr>"+
@@ -143,28 +144,28 @@
                     "<img src='_img/icons/icon_delete.png' class='link' alt='"+getTranNoLink("Web","clear",sWebLanguage)+"' onclick='statserviceid.value=\"\";statservicename.value=\"\";'>"+
                    "</td>"+
                   "</tr>"+
-                  writeTblChildWithCode("javascript:patientslistvisits()",getTran(request,"Web","statistics.patientslist.visits",sWebLanguage))+
-                  writeTblChildWithCode("javascript:patientslistadmissions()",getTran(request,"Web","statistics.patientslist.admissions",sWebLanguage))+
-                  writeTblChildWithCode("javascript:patientslistsummary()",getTran(request,"Web","statistics.patientslist.summary",sWebLanguage)));
+                  writeTblChildWithCode(activeUser.getAccessRight("statistics.patientslist.visits.select"),"javascript:patientslistvisits()",getTran(request,"Web","statistics.patientslist.visits",sWebLanguage))+
+                  writeTblChildWithCode(activeUser.getAccessRight("statistics.patientslist.admissions.select"),"javascript:patientslistadmissions()",getTran(request,"Web","statistics.patientslist.admissions",sWebLanguage))+
+                  writeTblChildWithCode(activeUser.getAccessRight("statistics.patientslist.summary.select"),"javascript:patientslistsummary()",getTran(request,"Web","statistics.patientslist.summary",sWebLanguage)));
         out.print(ScreenHelper.writeTblFooter()+"<br>");
 
         //*** 5c - SERVICE STATS *******************************
         out.print(ScreenHelper.writeTblHeader(getTran(request,"Web","statistics.servicestats",sWebLanguage),sCONTEXTPATH)+
-                  writeTblChildNoButton("main.do?Page=statistics/hospitalStats.jsp",getTran(request,"Web","statistics.hospitalstats.global",sWebLanguage))+
-                  writeTblChildNoButton("main.do?Page=statistics/serviceStats.jsp",getTran(request,"Web","statistics.servicestats.contacts",sWebLanguage))+
-                  writeTblChildNoButton("main.do?Page=statistics/districtStats.jsp",getTran(request,"Web","statistics.districtstats",sWebLanguage)));
+                  writeTblChildNoButton(activeUser.getAccessRight("statistics.hospitalstats.global.select"),"main.do?Page=statistics/hospitalStats.jsp",getTran(request,"Web","statistics.hospitalstats.global",sWebLanguage))+
+                  writeTblChildNoButton(activeUser.getAccessRight("statistics.servicestats.contacts.select"),"main.do?Page=statistics/serviceStats.jsp",getTran(request,"Web","statistics.servicestats.contacts",sWebLanguage))+
+                  writeTblChildNoButton(activeUser.getAccessRight("statistics.districtstats.select"),"main.do?Page=statistics/districtStats.jsp",getTran(request,"Web","statistics.districtstats",sWebLanguage)));
 
         if(activeUser.getAccessRight("statistics.servicetransactions.select")){
-            out.print(writeTblChildNoButton("main.do?Page=statistics/serviceTransactionStats.jsp",getTran(request,"Web","statistics.servicetransactions",sWebLanguage)));
+            out.print(writeTblChildNoButton(activeUser.getAccessRight("statistics.servicetransactions.select"),"main.do?Page=statistics/serviceTransactionStats.jsp",getTran(request,"Web","statistics.servicetransactions",sWebLanguage)));
         }
         if(activeUser.getAccessRight("statistics.episodesperdepartment.select")){
-            out.print(writeTblChildNoButton("main.do?Page=statistics/showEncountersPerService.jsp",getTran(request,"Web","statistics.serviceepisodes",sWebLanguage)));
+            out.print(writeTblChildNoButton(activeUser.getAccessRight("statistics.serviceepisodes.select"),"main.do?Page=statistics/showEncountersPerService.jsp",getTran(request,"Web","statistics.serviceepisodes",sWebLanguage)));
         }
 
         out.print(
-            writeTblChildNoButton("main.do?Page=statistics/hospitalizedPatients.jsp",getTran(request,"Web","statistics.hospitalizedpatients",sWebLanguage))+
-            writeTblChildNoButton("main.do?Page=statistics/serviceIncome.jsp",getTran(request,"Web","statistics.serviceIncome",sWebLanguage))+
-            writeTblChildNoButton("main.do?Page=statistics/diagnosesPerSituation.jsp",getTran(request,"Web","statistics.diagnosespersituation",sWebLanguage))
+            writeTblChildNoButton(activeUser.getAccessRight("statistics.hospitalizedpatients.select"),"main.do?Page=statistics/hospitalizedPatients.jsp",getTran(request,"Web","statistics.hospitalizedpatients",sWebLanguage))+
+            writeTblChildNoButton(activeUser.getAccessRight("statistics.serviceincome.select"),"main.do?Page=statistics/serviceIncome.jsp",getTran(request,"Web","statistics.serviceIncome",sWebLanguage))+
+            writeTblChildNoButton(activeUser.getAccessRight("statistics.diagnosespersituation.select"),"main.do?Page=statistics/diagnosesPerSituation.jsp",getTran(request,"Web","statistics.diagnosespersituation",sWebLanguage))
         );
         out.print(ScreenHelper.writeTblFooter()+"<br>");
 
@@ -180,56 +181,56 @@
         String b = ScreenHelper.formatDate(ScreenHelper.getBeginOfMonth(ScreenHelper.getBeginOfMonth(new java.util.Date(new java.util.Date().getTime()-day*70))));
     	
         out.print(ScreenHelper.writeTblHeader(getTran(request,"Web","statistics.download",sWebLanguage),sCONTEXTPATH));
-        out.print(writeTblChildWithCodeNoButton("javascript:downloadStats(\"patients.list\",\"openclinic\");",getTran(request,"Web","statistics.download.patients",sWebLanguage))+
+        out.print(writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.patients.select"),"javascript:downloadStats(\"patients.list\",\"openclinic\");",getTran(request,"Web","statistics.download.patients",sWebLanguage))+
                   "<tr>"+
         		   "<td class='admin2' colspan='2'>"+
                     getTran(request,"web","from",sWebLanguage)+"&nbsp;"+writeDateField("begin","stats",b,sWebLanguage)+"&nbsp;&nbsp;"+
         		    getTran(request,"web","to",sWebLanguage)+"&nbsp;"+writeDateField("end","stats",e,sWebLanguage)+
         		   "</td>"+
         		  "</tr>"+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"global.list\",\"openclinic\");",getTran(request,"Web","statistics.download.global",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"globalrfe.list\",\"openclinic\");",getTran(request,"Web","statistics.download.globalrfe",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"encounter.list\",\"openclinic\");",getTran(request,"Web","statistics.download.encounterlist",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"diagnosis.list\",\"openclinic\");",getTran(request,"Web","statistics.download.diagnosislist",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"rfe.list\",\"openclinic\");",getTran(request,"Web","statistics.download.rfelist",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"document.list\",\"openclinic\");",getTran(request,"Web","statistics.download.documentlist",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"user.list\",\"admin\");",getTran(request,"Web","statistics.download.userlist",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"service.list\",\"openclinic\");",getTran(request,"Web","statistics.download.servicelist",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"debet.list\",\"openclinic\");",getTran(request,"Web","statistics.download.debetlist",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"debet.list.per.encounter\",\"openclinic\");",getTran(request,"Web","statistics.download.debetlist.per.encounter",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"prestation.list\",\"openclinic\");",getTran(request,"Web","statistics.download.prestationlist",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"wicketcredits.list\",\"openclinic\");",getTran(request,"Web","statistics.download.wicketcredits",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"lab.list\",\"openclinic\");",getTran(request,"Web","statistics.download.labresults",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadStats(\"imaging.list\",\"openclinic\");",getTran(request,"Web","statistics.download.imagingresults",sWebLanguage))+
-                  writeTblChildWithCodeNoButton("javascript:downloadInvoicesSummary(\"hmk.invoices.list\",\"openclinic\");",getTran(request,"Web","statistics.download.invoicessummary",sWebLanguage))+
-                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton("javascript:downloadPBFdocs(\"pbf.burundi.consultationslist\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi",sWebLanguage)):"")+
-                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton("javascript:downloadPBFdocs(\"pbf.burundi.admissionslist\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.admissions",sWebLanguage)):"")+
-                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton("javascript:downloadPBFdocsNoService(\"pbf.burundi.surgerylist\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.surgerylist",sWebLanguage)):"")+
-                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton("javascript:downloadPBFdocsNoService(\"pbf.burundi.deliverieslist\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.deliverieslist",sWebLanguage)):"")+
-                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton("javascript:downloadPBFdocsNoService(\"pbf.burundi.lab.hiv\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.labhiv",sWebLanguage)):"")+
-                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton("javascript:downloadPBFdocsNoService(\"pbf.burundi.lab.tb\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.tb",sWebLanguage)):"")+
-                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton("javascript:downloadPBFdocsNoService(\"pbf.burundi.familyplanninglist\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.familyplanninglist",sWebLanguage)):"")+
-                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton("javascript:downloadPBFdocsInsurer(\"insurer.userlist\",\"openclinic\");",getTran(request,"Web","statistics.download.insurer.userlist",sWebLanguage)):"")+
-                  (MedwanQuery.getInstance().getConfigInt("enableMaliVaccinations",0)==1?writeTblChildWithCodeNoButton("javascript:downloadStats(\"vida\",\"stats\");",getTran(request,"Web","statistics.download.vida",sWebLanguage)):"")+
-                  (MedwanQuery.getInstance().getConfigInt("enableCNRKR",0)==1?writeTblChildWithCodeNoButton("javascript:downloadStats(\"cnrkr.burundi.consultationslist\",\"openclinic\");",getTran(request,"Web","cnrkr.consultation.activitylist",sWebLanguage)):"")+
-                  (MedwanQuery.getInstance().getConfigInt("enableCNRKR",0)==1?writeTblChildWithCodeNoButton("javascript:downloadStats(\"cnrkr.burundi.kinelist\",\"openclinic\");",getTran(request,"Web","cnrkr.kine.activitylist",sWebLanguage)):"")+
-			      (MedwanQuery.getInstance().getConfigInt("datacenterEnabled",0)==1?writeTblChildWithCodeNoButton("javascript:downloadDatacenterStats(\"service.income.list\",\"stats\");",getTran(request,"Web","statistics.download.serviceincomelist",sWebLanguage)):""));
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.global.select"),"javascript:downloadStats(\"global.list\",\"openclinic\");",getTran(request,"Web","statistics.download.global",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.globalrfe.select"),"javascript:downloadStats(\"globalrfe.list\",\"openclinic\");",getTran(request,"Web","statistics.download.globalrfe",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.encounterlist.select"),"javascript:downloadStats(\"encounter.list\",\"openclinic\");",getTran(request,"Web","statistics.download.encounterlist",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.diagnosislist.select"),"javascript:downloadStats(\"diagnosis.list\",\"openclinic\");",getTran(request,"Web","statistics.download.diagnosislist",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.rfelist.select"),"javascript:downloadStats(\"rfe.list\",\"openclinic\");",getTran(request,"Web","statistics.download.rfelist",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.documentlist.select"),"javascript:downloadStats(\"document.list\",\"openclinic\");",getTran(request,"Web","statistics.download.documentlist",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.userlist.select"),"javascript:downloadStats(\"user.list\",\"admin\");",getTran(request,"Web","statistics.download.userlist",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.servicelist.select"),"javascript:downloadStats(\"service.list\",\"openclinic\");",getTran(request,"Web","statistics.download.servicelist",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.debetlist.select"),"javascript:downloadStats(\"debet.list\",\"openclinic\");",getTran(request,"Web","statistics.download.debetlist",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.debetlist.per.encounter.select"),"javascript:downloadStats(\"debet.list.per.encounter\",\"openclinic\");",getTran(request,"Web","statistics.download.debetlist.per.encounter",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.prestationlist.select"),"javascript:downloadStats(\"prestation.list\",\"openclinic\");",getTran(request,"Web","statistics.download.prestationlist",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.wicketcredits.select"),"javascript:downloadStats(\"wicketcredits.list\",\"openclinic\");",getTran(request,"Web","statistics.download.wicketcredits",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.labresults.select"),"javascript:downloadStats(\"lab.list\",\"openclinic\");",getTran(request,"Web","statistics.download.labresults",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.imagingresults.select"),"javascript:downloadStats(\"imaging.list\",\"openclinic\");",getTran(request,"Web","statistics.download.imagingresults",sWebLanguage))+
+                  writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.invoicessummary.select"),"javascript:downloadInvoicesSummary(\"hmk.invoices.list\",\"openclinic\");",getTran(request,"Web","statistics.download.invoicessummary",sWebLanguage))+
+                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.pbfburundi.select"),"javascript:downloadPBFdocs(\"pbf.burundi.consultationslist\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi",sWebLanguage)):"")+
+                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.pbfburundi.admissions.select"),"javascript:downloadPBFdocs(\"pbf.burundi.admissionslist\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.admissions",sWebLanguage)):"")+
+                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.pbfburundi.surgerylist.select"),"javascript:downloadPBFdocsNoService(\"pbf.burundi.surgerylist\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.surgerylist",sWebLanguage)):"")+
+                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.pbfburundi.deliverieslist.select"),"javascript:downloadPBFdocsNoService(\"pbf.burundi.deliverieslist\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.deliverieslist",sWebLanguage)):"")+
+                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.pbfburundi.labhiv.select"),"javascript:downloadPBFdocsNoService(\"pbf.burundi.lab.hiv\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.labhiv",sWebLanguage)):"")+
+                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.pbfburundi.tb.select"),"javascript:downloadPBFdocsNoService(\"pbf.burundi.lab.tb\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.tb",sWebLanguage)):"")+
+                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.pbfburundi.familyplanninglist.select"),"javascript:downloadPBFdocsNoService(\"pbf.burundi.familyplanninglist\",\"openclinic\");",getTran(request,"Web","statistics.download.pbfburundi.familyplanninglist",sWebLanguage)):"")+
+                  (MedwanQuery.getInstance().getConfigInt("enablePBFBurundi",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.insurer.userlist.select"),"javascript:downloadPBFdocsInsurer(\"insurer.userlist\",\"openclinic\");",getTran(request,"Web","statistics.download.insurer.userlist",sWebLanguage)):"")+
+                  (MedwanQuery.getInstance().getConfigInt("enableMaliVaccinations",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.vida.select"),"javascript:downloadStats(\"vida\",\"stats\");",getTran(request,"Web","statistics.download.vida",sWebLanguage)):"")+
+                  (MedwanQuery.getInstance().getConfigInt("enableCNRKR",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("cnrkr.consultation.activitylist.select"),"javascript:downloadStats(\"cnrkr.burundi.consultationslist\",\"openclinic\");",getTran(request,"Web","cnrkr.consultation.activitylist",sWebLanguage)):"")+
+                  (MedwanQuery.getInstance().getConfigInt("enableCNRKR",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("cnrkr.kine.activitylist.select"),"javascript:downloadStats(\"cnrkr.burundi.kinelist\",\"openclinic\");",getTran(request,"Web","cnrkr.kine.activitylist",sWebLanguage)):"")+
+			      (MedwanQuery.getInstance().getConfigInt("datacenterEnabled",0)==1?writeTblChildWithCodeNoButton(activeUser.getAccessRight("statistics.download.serviceincomelist.select"),"javascript:downloadDatacenterStats(\"service.income.list\",\"stats\");",getTran(request,"Web","statistics.download.serviceincomelist",sWebLanguage)):""));
         out.print(ScreenHelper.writeTblFooter()+"<br>");
 
         //*** 5e - PATHOLOGY ***********************************	    
         out.print(ScreenHelper.writeTblHeader(getTran(request,"Web","financial",sWebLanguage),sCONTEXTPATH));	    
-        out.print(writeTblChildNoButton("main.do?Page=statistics/toInvoiceLists.jsp",getTran(request,"Web","statistics.toinvoicelists",sWebLanguage))+
+        out.print(writeTblChildNoButton(activeUser.getAccessRight("statistics.toinvoicelists.select"),"main.do?Page=statistics/toInvoiceLists.jsp",getTran(request,"Web","statistics.toinvoicelists",sWebLanguage))+
                   "<tr>"+
                    "<td class='admin2' colspan='2'>"+
                     getTran(request,"web","from",sWebLanguage)+"&nbsp;"+writeDateField("beginfin","stats",firstdayPreviousMonth,sWebLanguage)+"&nbsp;&nbsp;"+
                     getTran(request,"web","to",sWebLanguage)+"&nbsp;"+writeDateField("endfin","stats",lastdayPreviousMonth,sWebLanguage)+
                    "</td>"+
                   "</tr>"+
-                  writeTblChildWithCode("javascript:getOpenInvoices()",getTran(request,"Web","statistics.openinvoicelists",sWebLanguage))+
-                  writeTblChildWithCode("javascript:getClosedNonZeroInvoices()",getTran(request,"Web","statistics.closednonzeroinvoicelists",sWebLanguage))+
-                  writeTblChildWithCode("javascript:getCanceledInvoices()",getTran(request,"Web","statistics.canceledinvoicelists",sWebLanguage))+
-                  writeTblChildWithCode("javascript:getIssuedInsurerInvoices()",getTran(request,"Web","statistics.issuedinsurerinvoices",sWebLanguage))+
-        		  writeTblChildWithCode("javascript:getUserInvoices()",getTran(request,"Web","statistics.userinvoices",sWebLanguage)));
+                  writeTblChildWithCode(activeUser.getAccessRight("statistics.openinvoicelists.select"),"javascript:getOpenInvoices()",getTran(request,"Web","statistics.openinvoicelists",sWebLanguage))+
+                  writeTblChildWithCode(activeUser.getAccessRight("statistics.closednonzeroinvoicelists.select"),"javascript:getClosedNonZeroInvoices()",getTran(request,"Web","statistics.closednonzeroinvoicelists",sWebLanguage))+
+                  writeTblChildWithCode(activeUser.getAccessRight("statistics.canceledinvoicelists.select"),"javascript:getCanceledInvoices()",getTran(request,"Web","statistics.canceledinvoicelists",sWebLanguage))+
+                  writeTblChildWithCode(activeUser.getAccessRight("statistics.issuedinsurerinvoices.select"),"javascript:getIssuedInsurerInvoices()",getTran(request,"Web","statistics.issuedinsurerinvoices",sWebLanguage))+
+        		  writeTblChildWithCode(activeUser.getAccessRight("statistics.userinvoices.select"),"javascript:getUserInvoices()",getTran(request,"Web","statistics.userinvoices",sWebLanguage)));
         out.print(ScreenHelper.writeTblFooter()+"<br>");
 
         //*** 5f - MFP *****************************************
@@ -250,10 +251,10 @@
                         "<img src='_img/icons/icon_delete.png' class='link' alt='"+getTranNoLink("Web","clear",sWebLanguage)+"' onclick='mfpserviceid.value=\"\";mfpservicename.value=\"\";'>"+
                        "</td>"+
                	      "</tr>"+
-                      writeTblChildWithCode("javascript:getMFPSummary()",getTran(request,"Web","statistics.mfpsummary",sWebLanguage))+
-	                  writeTblChildWithCode("javascript:getMFPUnsignedInvoices()",getTran(request,"Web","statistics.mfpunsignedinvoices",sWebLanguage))+
-	                  writeTblChildWithCode("javascript:getMFPAcceptedUnsignedInvoices()",getTran(request,"Web","statistics.mfpacceptedunsignedinvoices",sWebLanguage))+
-	                  writeTblChildWithCode("javascript:getMFPUnvalidatedInvoices()",getTran(request,"Web","statistics.mfpunvalidatedinvoices",sWebLanguage)));
+                      writeTblChildWithCode(activeUser.getAccessRight("statistics.mfpsummary.select"),"javascript:getMFPSummary()",getTran(request,"Web","statistics.mfpsummary",sWebLanguage))+
+	                  writeTblChildWithCode(activeUser.getAccessRight("statistics.mfpunsignedinvoices.select"),"javascript:getMFPUnsignedInvoices()",getTran(request,"Web","statistics.mfpunsignedinvoices",sWebLanguage))+
+	                  writeTblChildWithCode(activeUser.getAccessRight("statistics.mfpacceptedunsignedinvoices.select"),"javascript:getMFPAcceptedUnsignedInvoices()",getTran(request,"Web","statistics.mfpacceptedunsignedinvoices",sWebLanguage))+
+	                  writeTblChildWithCode(activeUser.getAccessRight("statistics.mfpunvalidatedinvoices.select"),"javascript:getMFPUnvalidatedInvoices()",getTran(request,"Web","statistics.mfpunvalidatedinvoices",sWebLanguage)));
 	        out.print(ScreenHelper.writeTblFooter()+"<br>");
         }
     }
@@ -262,20 +263,20 @@
     if(activeUser.getAccessRight("statistics.chin.select")){      
         out.print(ScreenHelper.writeTblHeader(getTran(request,"Web","chin",sWebLanguage),sCONTEXTPATH));
         out.print("<tr>"+
-                writeTblChildWithCode("javascript:nationalreport()",getTran(request,"Web","nationalreport",sWebLanguage))+
-                writeTblChildWithCode("javascript:dhis2report()",getTran(request,"Web","dhis2report",sWebLanguage))+
+                writeTblChildWithCode(activeUser.getAccessRight("nationalreport.select"),"javascript:nationalreport()",getTran(request,"Web","nationalreport",sWebLanguage))+
+                writeTblChildWithCode(activeUser.getAccessRight("dhis2report.select"),"javascript:dhis2report()",getTran(request,"Web","dhis2report",sWebLanguage))+
                    "<td class='admin2' colspan='2'>"+
                     getTran(request,"web","from",sWebLanguage)+"&nbsp;"+writeDateField("begin2","stats",firstdayPreviousMonth,sWebLanguage)+"&nbsp;&nbsp;"+
                     getTran(request,"web","to",sWebLanguage)+"&nbsp;"+writeDateField("end2","stats",lastdayPreviousMonth,sWebLanguage)+
                    "</td>"+
                   "</tr>"+
-                  writeTblChildWithCode("javascript:coreStatistics()",getTran(request,"Web","statistics.activitystats.corestats",sWebLanguage))+
-                  writeTblChildWithCode("javascript:hospitalReport()",getTran(request,"Web","chin.global.hospital.report",sWebLanguage))+
-                  writeTblChildWithCode("javascript:minisanteReport()",getTran(request,"Web","chin.minisantereport.health.center",sWebLanguage))+
-                  writeTblChildWithCode("javascript:minisanteReportDH()",getTran(request,"Web","chin.minisantereport.district.hospital",sWebLanguage))+
-                  writeTblChildWithCode("javascript:jasperReports()",getTran(request,"Web","statistics.activitystats.jasperReports",sWebLanguage))+
-                  writeTblChildWithCode("javascript:openPopup(\"chin/chinGraph.jsp&ts="+getTs()+"\",1000,750)",getTran(request,"Web","chin.actualsituation",sWebLanguage))+
-                  writeTblChildWithCode("javascript:window.location.href=\"main.jsp?Page=healthnet/index.jsp&ts="+getTs()+"\"",getTran(request,"Web","chin.healthnet",sWebLanguage)));
+                  writeTblChildWithCode(activeUser.getAccessRight("statistics.activitystats.corestats.select"),"javascript:coreStatistics()",getTran(request,"Web","statistics.activitystats.corestats",sWebLanguage))+
+                  writeTblChildWithCode(activeUser.getAccessRight("chin.global.hospital.report.select"),"javascript:hospitalReport()",getTran(request,"Web","chin.global.hospital.report",sWebLanguage))+
+                  writeTblChildWithCode(activeUser.getAccessRight("chin.minisantereport.health.center.select"),"javascript:minisanteReport()",getTran(request,"Web","chin.minisantereport.health.center",sWebLanguage))+
+                  writeTblChildWithCode(activeUser.getAccessRight("chin.minisantereport.district.hospital.select"),"javascript:minisanteReportDH()",getTran(request,"Web","chin.minisantereport.district.hospital",sWebLanguage))+
+                  writeTblChildWithCode(activeUser.getAccessRight("statistics.activitystats.jasperreports.select"),"javascript:jasperReports()",getTran(request,"Web","statistics.activitystats.jasperReports",sWebLanguage))+
+                  writeTblChildWithCode(activeUser.getAccessRight("chin.actualsituation.select"),"javascript:openPopup(\"chin/chinGraph.jsp&ts="+getTs()+"\",1000,750)",getTran(request,"Web","chin.actualsituation",sWebLanguage))+
+                  writeTblChildWithCode(activeUser.getAccessRight("chin.healthnet.select"),"javascript:window.location.href=\"main.jsp?Page=healthnet/index.jsp&ts="+getTs()+"\"",getTran(request,"Web","chin.healthnet",sWebLanguage)));
         out.print(ScreenHelper.writeTblFooter());
     }
 %>

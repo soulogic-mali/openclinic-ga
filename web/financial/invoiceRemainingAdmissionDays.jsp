@@ -10,7 +10,7 @@
         	pStay = Prestation.get(encounter.getService().stayprestationuid);
         	Debet debet = new Debet();
         	debet.setQuantity(encounter.getDurationInDays()-Encounter.getAccountedAccomodationDays(encounter.getUid()));
-            double patientAmount=0,insurarAmount=0;
+            double patientAmount=0,insurarAmount=0,extraInsurarAmount=0;
             double dPrice = pStay.getPrice(insurance.getType());
             if(insurance.getInsurar()!=null && insurance.getInsurar().getNoSupplements()==0 && insurance.getInsurar().getCoverSupplements()==1){
             	dPrice+=pStay.getSupplement();
@@ -31,9 +31,15 @@
                 	patientAmount+=debet.getQuantity()*pStay.getSupplement();
                 }
             }
+            if(SH.c(insurance.getExtraInsurarUid()).length()>0){
+            	extraInsurarAmount=patientAmount;
+            	patientAmount=0;
+            }
 			if(insurance.getInsurar()!=null && pStay!=null && pStay.isVisibleFor(insurance.getInsurar(),encounter.getService())){
 	            debet.setAmount(patientAmount);
 	            debet.setInsurarAmount(insurarAmount);
+	            debet.setExtraInsurarAmount(extraInsurarAmount);
+	            debet.setExtraInsurarUid(insurance.getExtraInsurarUid());
 	            debet.setPrestationUid(pStay.getUid());
 	            debet.setInsuranceUid(insurance.getUid());
 	            debet.setDate(new java.util.Date());

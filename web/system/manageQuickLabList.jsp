@@ -1,7 +1,11 @@
 <%@page import="be.openclinic.medical.*"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
-<%=checkPermission(out,"system.management","select",activeUser)%>
+<%
+	if(!SH.c(request.getParameter("UserQuickLabList")).equalsIgnoreCase("1")){
+		out.print(checkPermission(out,"system.management","select",activeUser));
+	}
+%>
 <%!
 //--- GET PROFILE NAME FOR CODE ---------------------------------------------------------------
 public String getProfileNameForCode(String sCode, String sWebLanguage){

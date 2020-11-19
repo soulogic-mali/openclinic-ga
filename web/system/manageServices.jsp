@@ -6,7 +6,7 @@
 <%@page errorPage="/includes/error.jsp"%>
 
 <%=checkPermission(out,"system.manageservices","all",activeUser)%>
-
+<%=sJSPROTOTYPE %>
 <%
     String sAction = checkString(request.getParameter("Action"));
 
@@ -462,7 +462,7 @@
             service = new Service();
         }
         %>
-            <input type="hidden" name="EditOldServiceCode" value="<%=sFindServiceCode%>">
+            <input type="hidden" name="EditOldServiceCode" id="EditOldServiceCode" value="<%=sFindServiceCode%>">
             <%-- page title --%>
             <%=writeTableHeader("Web.manage","ManageServices",sWebLanguage," doBackToMenu();")%>
             
@@ -472,7 +472,7 @@
                 <tr>
                     <td class="admin" width="<%=sTDAdminWidth%>"> <%=getTran(request,"Web.Manage.Service","ID",sWebLanguage)%> *</td>
                     <td class="admin2">
-                        <input type="text" class="text" name="EditServiceCode" value="<%=service.code%>" size="<%=sTextWidth%>">
+                        <input type="text" class="text" name="EditServiceCode" id="EditServiceCode" value="<%=service.code%>" size="<%=sTextWidth%>" onblur="validateCode()">
                     </td>
                 </tr>
                 <%-- ParentID --%>
@@ -876,6 +876,24 @@
             <script>
               transactionForm.EditServiceCode.focus();
 
+              function validateCode(){
+            	  if(document.getElementById("EditServiceCode").value.length>0 && document.getElementById("EditOldServiceCode").value!=document.getElementById("EditServiceCode").value){
+					  //Check if new code does not exist yet
+            		    var today = new Date();
+            		    var url= '<c:url value="/system/serviceCodeExists.jsp"/>?servicecode='+document.getElementById("EditServiceCode").value+'&ts=' + today;
+            		    new Ajax.Request(url,{
+            		            method: "POST",
+            		            params: "",
+            		            onSuccess: function(resp){
+            		                if((resp.responseText).indexOf("<EXISTS>")>-1){
+            		                	  alert('<%=getTranNoLink("web","servicecode.already.exists",sWebLanguage)%>');
+            		            		  document.getElementById("EditServiceCode").focus();
+            		                }
+            		            }
+            		        }
+            		    ); 
+            	  }
+              }
               <%-- DO SAVE --%>
               function doSave(){
                 var maySubmit = true;

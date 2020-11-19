@@ -14,7 +14,7 @@
 <%@include file="/includes/validateUser.jsp"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%
-	String accessright="surveillance.covid19.assessment";
+	String accessright="surveillance.covid19.assessment.pulseoximetry";
 %>
 <%=checkPermission(accessright,"select",activeUser)%>
 <%!

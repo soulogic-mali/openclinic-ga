@@ -116,4 +116,6 @@
 		window.close();
 	}
 	
+	window.setTimeout("document.getElementById('productname').focus();",250);
+	
 </script>

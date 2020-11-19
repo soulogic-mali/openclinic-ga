@@ -77,6 +77,9 @@
                     RequestedLabAnalysis.setFinalValidation(Integer.parseInt(fields[1]),Integer.parseInt(fields[2]),Integer.parseInt(activeUser.userid),"'"+fields[3]+"'");
                 }
             }
+            else if(fields[0].equalsIgnoreCase("reject")){
+            	RequestedLabAnalysis.removeTechnicalValidation(Integer.parseInt(fields[1]),Integer.parseInt(fields[2]), "'"+fields[3]+"'");
+            }
         }
     }
 
@@ -365,7 +368,8 @@
 		                        	out.print("<td style='background-color: "+bgcolor+"'><center><input readonly style='background: "+sFieldColor+";text-align: center' readonly class='text' type='text' size='5' name='store." + labRequest.getServerid() + "." + labRequest.getTransactionid() + "." + requestedLabAnalysis.getAnalysisCode() + "' value='" + requestedLabAnalysis.getResultValue() + "'>");
 		                        }
 		                        if (requestedLabAnalysis != null && requestedLabAnalysis.getFinalvalidation() == 0) {
-		                         	out.print("<br/><input class='checkbox' type='checkbox' name='store." + labRequest.getServerid() + "." + labRequest.getTransactionid() + "." + requestedLabAnalysis.getAnalysisCode() + ".validated'/>");
+		                        	out.println("&nbsp;<img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_erase.gif' onclick='rejectResult(\"" + labRequest.getServerid() + "." + labRequest.getTransactionid() + "." + requestedLabAnalysis.getAnalysisCode() + "\")' title='"+getTranNoLink("web","rejectresult",sWebLanguage)+"'>");
+		                         	out.print("<br/><span id='span." + labRequest.getServerid() + "." + labRequest.getTransactionid() + "." + requestedLabAnalysis.getAnalysisCode() + "'><input class='checkbox' type='checkbox' name='store." + labRequest.getServerid() + "." + labRequest.getTransactionid() + "." + requestedLabAnalysis.getAnalysisCode() + ".validated'/></span>");
 		                        }
 		                        else{
 		                        	out.print("");
@@ -382,6 +386,13 @@
 	        %>
 	        </table>
         </div>
+        <script>
+        	function rejectResult(id){
+        		if(window.confirm('<%=getTranNoLink("web","areyousure",sWebLanguage)%>')){
+        			document.getElementById('span.'+id).innerHTML='<%=getTranNoLink("web","rejected",sWebLanguage)%><input type="hidden" name="reject.'+id+'"/>';
+        		}
+        	}
+        </script>
         <table width='100%'>
             <tr><td><input readonly style='background: yellow' type='text' size='5'/> = <%=MedwanQuery.getInstance().getLabel("web","notechnicalvalidation",sWebLanguage)%>&nbsp;<input readonly style='background: #ff9999' type='text' size='5'/> = <%=MedwanQuery.getInstance().getLabel("web","higherthanalertvalue",sWebLanguage)%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class='button' type='submit' name='save' value='<%=getTran(request,"web","save",sWebLanguage)%>'/></tr>
         </table>

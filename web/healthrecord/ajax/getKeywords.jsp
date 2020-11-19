@@ -57,7 +57,7 @@
 					while(labelIter.hasNext()){
 						labelId = (String)labelIter.next();
 						String value=((Label)labels.get(labelId)).value;
-						if(!value.startsWith("/")){
+						if(!value.startsWith("/") && !value.startsWith("<deleted>")){
 							sortedSet.put(value,labelId);
 						}
 					}

@@ -131,6 +131,7 @@ sEditGroupIdx = checkString(request.getParameter("EditGroupIdx"));
                     <option/>
                     <%
                         Vector vInsurances = Insurance.getCurrentInsurances(activePatient.personid);
+	                    String sSelectedInsuranceUid="";
                         if (vInsurances!=null){
                             boolean bInsuranceSelected = false;
                             Insurance insurance,selectedInsurance;
@@ -145,11 +146,13 @@ sEditGroupIdx = checkString(request.getParameter("EditGroupIdx"));
 	                                    if (selectedInsurance!=null && selectedInsurance.getUid().equals(insurance.getUid())){
 	                                        out.print(" selected");
 	                                        bInsuranceSelected = true;
+	                                        sSelectedInsuranceUid=insurance.getUid();
 	                                    }
 	                                    else if (!bInsuranceSelected){
 	                                        if(vInsurances!=null && vInsurances.size()==1){
 	                                            out.print(" selected");
 	                                            bInsuranceSelected = true;
+		                                        sSelectedInsuranceUid=insurance.getUid();
 	                                        }
 	                                    }
                                         try{
@@ -171,15 +174,18 @@ sEditGroupIdx = checkString(request.getParameter("EditGroupIdx"));
 	                                    if (checkString(debet.getInsuranceUid()).equals(insurance.getUid())){
 	                                        out.print(" selected");
 	                                        bInsuranceSelected = true;
+	                                        sSelectedInsuranceUid=insurance.getUid();
 	                                    }
 	                                    else if (!bInsuranceSelected){
 	                                        if(vInsurances.size()==1){
 	                                            out.print(" selected");
 	                                            bInsuranceSelected = true;
+		                                        sSelectedInsuranceUid=insurance.getUid();
 	                                        }
 	                                        else if(insurance.getInsuranceCategory()!=null && insurance.getInsuranceCategory().getInsurarUid()!=null && !insurance.getInsuranceCategory().getInsurarUid().equalsIgnoreCase(MedwanQuery.getInstance().getConfigString("patientSelfIsurarUID","none"))){
 	                                            out.print(" selected");
 	                                            bInsuranceSelected = true;
+		                                        sSelectedInsuranceUid=insurance.getUid();
 	                                        }
 	                                    }
 	
@@ -201,37 +207,47 @@ sEditGroupIdx = checkString(request.getParameter("EditGroupIdx"));
                     <option value=""></option>
 					<%
 						Insurance insurance=Insurance.getMostInterestingInsuranceForPatient(activePatient.personid);
-						String extrainsurar="";
-						if(insurance!=null && insurance.getExtraInsurarUid()!=null && insurance.getExtraInsurarUid().length()>0){
-							extrainsurar=insurance.getExtraInsurarUid();
+						Vector activeInsurances = Insurance.getCurrentInsurances(activePatient.personid);
+						if(SH.ci("onlyAuthorizeLinkedExtraInsurers",0)==1){
+	                        for(int n=0;n<vInsurances.size();n++){
+	                        	insurance = (Insurance)vInsurances.elementAt(n);
+	                        	if(insurance!=null && insurance.isAuthorized() && SH.c(insurance.getExtraInsurarUid()).length()>0){
+									out.println("<option value='"+insurance.getExtraInsurarUid()+"' "+(insurance.getUid().equalsIgnoreCase(sSelectedInsuranceUid)?"selected":"")+">"+getTran(request,"patientsharecoverageinsurance",insurance.getExtraInsurarUid(),sWebLanguage)+"</option>");								
+	                        	}
+	                        }
 						}
 						else{
-							extrainsurar=MedwanQuery.getInstance().getConfigString("defaultExtraInsurar");
-						}
-						if(!debet.getUid().equalsIgnoreCase("-1")){
-							extrainsurar=checkString(debet.getExtraInsurarUid());
-						}
-						
-						Vector activeInsurances = Insurance.getCurrentInsurances(activePatient.personid);
-						for(int n=0;n<activeInsurances.size();n++){
-							Insurance ins = (Insurance)activeInsurances.elementAt(n);
-							if(checkString(ins.getExtraInsurarUid()).length()>0){
-								extrainsurar+="*"+ins.getExtraInsurarUid()+"*";
+							String extrainsurar="";
+							if(insurance!=null && insurance.getExtraInsurarUid()!=null && insurance.getExtraInsurarUid().length()>0){
+								extrainsurar=insurance.getExtraInsurarUid();
 							}
-						}
-						Hashtable extrainsurars = (Hashtable)((Hashtable)MedwanQuery.getInstance().getLabels().get(sWebLanguage.toLowerCase())).get("patientsharecoverageinsurance");
-						if(extrainsurars!=null){
-							Enumeration eExtrainsurars = extrainsurars.keys();
-							while(eExtrainsurars.hasMoreElements()){
-								String key = (String)eExtrainsurars.nextElement();
-								//Check if the insurer needs approval
-								boolean bCanAdd=false;
-								Insurar insr = Insurar.get(key);
-								if(insr!=null && insr.getNeedsApproval()==0){
-									bCanAdd=true;
+							else{
+								extrainsurar=MedwanQuery.getInstance().getConfigString("defaultExtraInsurar");
+							}
+							if(!debet.getUid().equalsIgnoreCase("-1")){
+								extrainsurar=checkString(debet.getExtraInsurarUid());
+							}
+							
+							for(int n=0;n<activeInsurances.size();n++){
+								Insurance ins = (Insurance)activeInsurances.elementAt(n);
+								if(checkString(ins.getExtraInsurarUid()).length()>0){
+									extrainsurar+="*"+ins.getExtraInsurarUid()+"*";
 								}
-								if((bCanAdd && insurance!=null) || (insurance!=null && extrainsurar!=null && extrainsurar.contains(key+"*"))){
-									out.println("<option value='"+key+"' "+(checkString(insurance.getExtraInsurarUid()).equalsIgnoreCase(key)?"selected":"")+">"+getTran(request,"patientsharecoverageinsurance",key,sWebLanguage)+"</option>");								
+							}
+							Hashtable extrainsurars = (Hashtable)((Hashtable)MedwanQuery.getInstance().getLabels().get(sWebLanguage.toLowerCase())).get("patientsharecoverageinsurance");
+							if(extrainsurars!=null){
+								Enumeration eExtrainsurars = extrainsurars.keys();
+								while(eExtrainsurars.hasMoreElements()){
+									String key = (String)eExtrainsurars.nextElement();
+									//Check if the insurer needs approval
+									boolean bCanAdd=false;
+									Insurar insr = Insurar.get(key);
+									if(insr!=null && insr.getNeedsApproval()==0){
+										bCanAdd=true;
+									}
+									if((bCanAdd && insurance!=null) || (insurance!=null && extrainsurar!=null && extrainsurar.contains(key+"*"))){
+										out.println("<option value='"+key+"' "+(checkString(insurance.getExtraInsurarUid()).equalsIgnoreCase(key)?"selected":"")+">"+getTran(request,"patientsharecoverageinsurance",key,sWebLanguage)+"</option>");								
+									}
 								}
 							}
 						}

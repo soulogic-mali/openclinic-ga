@@ -96,9 +96,12 @@
 	            	if(death!=null){
 						out.print("<img src='_img/icons/icon_warning.gif'/> <font style='font-size:12px;font-weight:bold;vertical-align:2px;}'>"+getTran(request,"web","died",sWebLanguage)+" "+ScreenHelper.stdDateFormat.format(death)+"</font>");
 	            	}
-	            	else{
+	            	else if(activePatient.getAgeInMonths()>=6){
 	            		out.print(" ("+(activePatient.gender.equalsIgnoreCase("M")?getTran(request,"web.occup","male",sWebLanguage):getTran(request,"web.occup","female",sWebLanguage))+" - "+ activePatient.getAgeInMonths()/12+" "+getTran(request,"web","years",sWebLanguage).toLowerCase()+ " "+ activePatient.getAgeInMonths()%12+" "+getTran(request,"web","months",sWebLanguage).toLowerCase()+")");
 	            	}
+	            	else{
+	            		out.print(" ("+(activePatient.gender.equalsIgnoreCase("M")?getTran(request,"web.occup","male",sWebLanguage):getTran(request,"web.occup","female",sWebLanguage))+" - "+ activePatient.getAgeInMonths()+" "+getTran(request,"web","months",sWebLanguage).toLowerCase()+" - "+ activePatient.getAgeInDays()%30+" "+getTran(request,"web","days",sWebLanguage).toLowerCase()+")");
+	            	}	
             	}
             %>
             </td>

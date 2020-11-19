@@ -193,8 +193,8 @@ public class SaveLabAnalysesAction extends Action {
                 	Debug.println("checking prestation save for "+a.getLabcode());
                     if(a!=null && a.getPrestationcode()!=null && a.getPrestationcode().length()>0 && a.getUnavailable()==0){
                     	Debug.println("saving prestation "+a.getPrestationcode());
-                    	//Now check if the prestation was not coded yet in the past 24 hours
-                    	if(!Debet.existsRecent(a.getPrestationcode(),sPatientId,MedwanQuery.getInstance().getConfigInt("labinvoicing.minimumintervalinhours."+a.getLabId(),MedwanQuery.getInstance().getConfigInt("automaticLabInvoicingDelayInHours",24))*3600*1000,transaction!=null?transaction.getUpdateTime():new java.util.Date())){
+                    	//Now check if the prestation was not coded yet in the past x hours
+                    	if(!Debet.existsRecent(a.getPrestationcode(),sPatientId,MedwanQuery.getInstance().getConfigInt("labinvoicing.minimumintervalinhours."+a.getLabId(),MedwanQuery.getInstance().getConfigInt("automaticLabInvoicingDelayInHours",24))*3600*1000,new java.util.Date())){
                         	Debug.println("no recent identical prestation, commiting");
                     		Debet.createAutomaticDebet("LAB."+sServerId+"."+sTransactionId+"."+analysisCode, sPatientId, a.getPrestationcode(), sUserId, sPerformerId);
                     	}

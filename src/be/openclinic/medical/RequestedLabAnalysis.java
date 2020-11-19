@@ -2508,6 +2508,27 @@ public class RequestedLabAnalysis {
 		}
     }
 
+    public static void removeTechnicalValidation(int serverid,int transactionid, String worklistAnalyses){
+        Connection oc_conn=MedwanQuery.getInstance().getOpenclinicConnection();
+        try{
+            String sQuery="update RequestedLabAnalyses set technicalvalidator=null,technicalvalidationdatetime=null,updatetime="+MedwanQuery.getInstance().getConfigString("dateFunction","getdate()")+" where serverid=? and transactionid=? and analysiscode in ("+worklistAnalyses+")";
+            PreparedStatement ps = oc_conn.prepareStatement(sQuery);
+            ps.setInt(1,serverid);
+            ps.setInt(2,transactionid);
+            ps.executeUpdate();
+            ps.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        try {
+			oc_conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
     public static void setFinalValidation(int serverid,int transactionid, int finalvalidator){
         Connection oc_conn=MedwanQuery.getInstance().getOpenclinicConnection();
         try{

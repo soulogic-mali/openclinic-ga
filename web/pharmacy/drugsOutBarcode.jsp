@@ -135,7 +135,7 @@
 
 
 <%-- SEARCH RESULTS (ajax) --%>
-<div name="divDrugsOut" id="divDrugsOut"></div>
+<div name="divDrugsOut" id="divDrugsOut"><img src="<c:url value="/_img/themes/default/ajax-loader.gif"/>"/></div>
 
 <%=ScreenHelper.alignButtonsStart()%>
     <input type="button" class="button" name="closeButton" value="<%=getTranNoLink("web","close",sWebLanguage)%>" onclick="window.close();"/>
@@ -335,6 +335,6 @@
 	    openPopup("/pharmacy/popups/findRxNormDrugDrugInteractions.jsp&waitinglist=1&ts=<%=getTs()%>",800,600);
 	}
 
-  doAdd('yes');
+  window.setTimeout("doAdd('yes')",250);
   document.getElementById('drugbarcode').focus();
 </script>

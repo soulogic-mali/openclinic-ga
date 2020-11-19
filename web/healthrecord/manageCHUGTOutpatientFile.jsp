@@ -1,7 +1,7 @@
 <%@ page import="be.openclinic.medical.*" %>
 <%@include file="/includes/validateUser.jsp"%>
 <%@page errorPage="/includes/error.jsp"%>
-<%=checkPermission(out,"occup.gitegaoutpatientfile","select",activeUser)%>
+<%=checkPermission(out,"occup.chugtoutpatientfile","select",activeUser)%>
 
 <%!
     //--- GET KEYWORDS HTML -----------------------------------------------------------------------
@@ -175,6 +175,28 @@
 							</table>
 			            </td>
 			        </tr>
+         			<%-- General signs --%>
+         			<tr height="40">
+         				<td class='admin' width='20%'>
+         					<div id="title0"><%=getTran(request,"web","general.signs",sWebLanguage)%></div>
+         				</td>
+         				<td>
+         					<table width='100%'>
+         						<tr onclick='selectKeywords("general.signs.ids","general.signs.text","ikirezi2.general.signs","keywords",this)'>
+			         				<td class='admin2'>
+			         					<textarea class="text" onkeyup="resizeTextarea(this,10)" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_FUNCTIONALSIGNS_COMMENT" property="itemId"/>]>.value" id='functional.signs.comment' cols='45' ><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_GENERALSIGNS_COMMENT" property="value"/></textarea>
+			         				</td>
+			         				<td class='admin2' width='1%' nowrap style="text-align:center">
+			         				    <img width='16' id='key0' class="link" src='<c:url value="/_img/themes/default/keywords.jpg"/>'/>
+			         				</td>
+			         				<td class='admin2' width='50%' style="vertical-align:top;">
+			         					<div id='general.signs.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_GENERALSIGNS_IDS","general.signs.text","general.signs.ids",sWebLanguage)%></div>
+			         					<input type='hidden' id='general.signs.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_GENERALSIGNS_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_GENERALSIGNS_IDS" property="value"/>"/>
+			         				</td>
+			         			</tr>
+         					</table>
+         				</td>
+         			</tr>
          			<%-- Functional signs --%>
          			<tr height="40">
          				<td class='admin' width='20%'>
@@ -182,7 +204,7 @@
          				</td>
          				<td>
          					<table width='100%'>
-         						<tr onclick='selectKeywords("functional.signs.ids","functional.signs.text","ikirezi2.functional.signs","keywords",this)'>
+         						<tr onclick='selectKeywords("functional.signs.ids","functional.signs.text","ikirezi2.chugtfunctional.signs","keywords",this)'>
 			         				<td class='admin2'>
 			         					<textarea class="text" onkeyup="resizeTextarea(this,10)" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_FUNCTIONALSIGNS_COMMENT" property="itemId"/>]>.value" id='functional.signs.comment' cols='45' ><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_FUNCTIONALSIGNS_COMMENT" property="value"/></textarea>
 			         				</td>
@@ -261,6 +283,52 @@
 			         				<td class='admin2' width='50%' style="vertical-align:top;">
 			         					<div id='auscultation.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_HEARTAUSCULTATION_IDS","auscultation.text","auscultation.ids",sWebLanguage)%></div>
 			         					<input type='hidden' id='auscultation.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_HEARTAUSCULTATION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_HEARTAUSCULTATION_IDS" property="value"/>"/>
+			         				</td>
+			         			</tr>
+         					</table>
+         				</td>
+         			</tr>
+         			
+         			<%-- Percussion --%>
+         			<tr height="40">
+         				<td class='admin' width='20%'>
+         					<div id="title7"><%=getTran(request,"web","percussion",sWebLanguage)%></div>
+         				</td>
+         				<td>
+         					<table width='100%'>
+         						<tr onclick='selectKeywords("percussion.ids","percussion.text","ikirezi2.percussion","keywords",this)'>
+			         				<td class='admin2'>
+			         					<textarea class="text" onkeyup="resizeTextarea(this,10)" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PERCUSSION_COMMENT" property="itemId"/>]>.value" id='auscultation.comment' cols='45'><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PERCUSSION_COMMENT" property="value"/></textarea> 
+			         				</td>
+			         				<td class='admin2' width='1%' style="text-align:center">
+			         				    <img width='16' id='key7' class="link" src='<c:url value="/_img/themes/default/keywords.jpg"/>'/>
+			         				</td>
+			         				<td class='admin2' width='50%' style="vertical-align:top;">
+			         					<div id='percussion.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_PERCUSSION_IDS","percussion.text","percussion.ids",sWebLanguage)%></div>
+			         					<input type='hidden' id='percussion.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PERCUSSION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PERCUSSION_IDS" property="value"/>"/>
+			         				</td>
+			         			</tr>
+         					</table>
+         				</td>
+         			</tr>
+         			
+         			<%-- Percussion --%>
+         			<tr height="40">
+         				<td class='admin' width='20%'>
+         					<div id="title8"><%=getTran(request,"web","trtv",sWebLanguage)%></div>
+         				</td>
+         				<td>
+         					<table width='100%'>
+         						<tr onclick='selectKeywords("trtv.ids","trtv.text","ikirezi2.trtv","keywords",this)'>
+			         				<td class='admin2'>
+			         					<textarea class="text" onkeyup="resizeTextarea(this,10)" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_TRTV_COMMENT" property="itemId"/>]>.value" id='auscultation.comment' cols='45'><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_TRTV_COMMENT" property="value"/></textarea> 
+			         				</td>
+			         				<td class='admin2' width='1%' style="text-align:center">
+			         				    <img width='16' id='key8' class="link" src='<c:url value="/_img/themes/default/keywords.jpg"/>'/>
+			         				</td>
+			         				<td class='admin2' width='50%' style="vertical-align:top;">
+			         					<div id='trtv.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_TRTV_IDS","trtv.text","trtv.ids",sWebLanguage)%></div>
+			         					<input type='hidden' id='trtv.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_TRTV_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_TRTV_IDS" property="value"/>"/>
 			         				</td>
 			         			</tr>
          					</table>
@@ -450,19 +518,30 @@ function openEncounter(){
 	document.getElementById("activeLabeltype").value=labeltype;
 	document.getElementById("activeDivld").value=divid;
 	
+    document.getElementById("key0").width = "16";
     document.getElementById("key1").width = "16";
     document.getElementById("key2").width = "16";
     document.getElementById("key3").width = "16";
     document.getElementById("key4").width = "16";
     document.getElementById("key6").width = "16";
+    document.getElementById("key7").width = "16";
+    document.getElementById("key8").width = "16";
     
+    document.getElementById("title0").style.textDecoration = "none";
     document.getElementById("title1").style.textDecoration = "none";
     document.getElementById("title2").style.textDecoration = "none";
     document.getElementById("title3").style.textDecoration = "none";
     document.getElementById("title4").style.textDecoration = "none";
     document.getElementById("title6").style.textDecoration = "none";
+    document.getElementById("title7").style.textDecoration = "none";
+    document.getElementById("title8").style.textDecoration = "none";
     
-    if(labeltype=='ikirezi2.functional.signs'){
+    if(labeltype=='ikirezi2.general.signs'){
+        document.getElementById("title0").style.textDecoration = "underline";
+	  	document.getElementById('key0').width = '32';
+	  	//document.getElementById('keywordstd').style = "vertical-align:top";
+	}
+    else if(labeltype=='ikirezi2.chugtfunctional.signs'){
         document.getElementById("title1").style.textDecoration = "underline";
 	  	document.getElementById('key1').width = '32';
 	  	//document.getElementById('keywordstd').style = "vertical-align:top";
@@ -483,10 +562,20 @@ function openEncounter(){
 	  	//document.getElementById('keywordstd').style = "vertical-align:top";
 	}
     else if(labeltype=='reference'){
-      document.getElementById("title6").style.textDecoration = "underline";
-	  document.getElementById('key6').width = '32';
-	  	//document.getElementById('keywordstd').style = "vertical-align:bottom";
-	}
+        document.getElementById("title6").style.textDecoration = "underline";
+  	  document.getElementById('key6').width = '32';
+  	  	//document.getElementById('keywordstd').style = "vertical-align:bottom";
+  	}
+    else if(labeltype=='ikirezi2.percussion'){
+        document.getElementById("title7").style.textDecoration = "underline";
+  	  document.getElementById('key7').width = '32';
+  	  	//document.getElementById('keywordstd').style = "vertical-align:bottom";
+  	}
+    else if(labeltype=='ikirezi2.trtv'){
+        document.getElementById("title8").style.textDecoration = "underline";
+  	  document.getElementById('key8').width = '32';
+  	  	//document.getElementById('keywordstd').style = "vertical-align:bottom";
+  	}
     else{
     	bShowKeywords=false;
     }

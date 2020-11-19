@@ -30,346 +30,125 @@
                sImmatNew = checkString(request.getParameter("ImmatNew")).toUpperCase(),
                sNatReg = checkString(request.getParameter("NatReg")).toUpperCase();
 
+        System.out.println("activePatient.sourceid="+activePatient.sourceid);
+        System.out.println("sServiceSourceID="+sServiceSourceID);
+        
         //--- CHECK ON DOUBLES --------------------------------------------------------------------
-        if(activePatient.sourceid.equals(sServiceSourceID)){
-            //#####################################################################################
-            //################################## CREATE ###########################################
-            //#####################################################################################
-            if (sPersonID == null || sPersonID.trim().length() == 0) {
-                activePatient = new AdminPerson();
-                activePatient.lastname = sName.toUpperCase();
-                activePatient.firstname = sFirstname.toUpperCase();
-                activePatient.dateOfBirth = sDateOfBirth;
-                activePatient.updateuserid = activeUser.userid;
-                session.setAttribute("activePatient",activePatient);
+        //#####################################################################################
+        //################################## CREATE ###########################################
+        //#####################################################################################
+        if (sPersonID == null || sPersonID.trim().length() == 0) {
+            activePatient = new AdminPerson();
+            activePatient.lastname = sName.toUpperCase();
+            activePatient.firstname = sFirstname.toUpperCase();
+            activePatient.dateOfBirth = sDateOfBirth;
+            activePatient.updateuserid = activeUser.userid;
+            session.setAttribute("activePatient",activePatient);
 
-                //*** check double patients on IMMATNEW *******************************************
-                if (sImmatNew.length() > 0) {
-                    String sPersonId = AdminPerson.getPersonIdByImmatnew(sImmatNew);
+            //*** check double patients on IMMATNEW *******************************************
+            if (sImmatNew.length() > 0) {
+                String sPersonId = AdminPerson.getPersonIdByImmatnew(sImmatNew);
 
-                    if (sPersonId!=null) {
-                        doubleImmatNewFound = true;
-                        activePatient.checkImmatnew=false;
+                if (sPersonId!=null) {
+                    doubleImmatNewFound = true;
+                    activePatient.checkImmatnew=false;
 
-                        // double message
-                        msgImmatNew = "<font color='red'>" +
-                                getTran(request,"Web.PatientEdit", "patient.exists", sWebLanguage) + " " + getTran(request,"web", "immatnew", sWebLanguage) +
-                                ". (" + sImmatNew + ")" +
-                                "</font>" +
-                                "<br><br>";
+                    // double message
+                    msgImmatNew = "<font color='red'>" +
+                            getTran(request,"Web.PatientEdit", "patient.exists", sWebLanguage) + " " + getTran(request,"web", "immatnew", sWebLanguage) +
+                            ". (" + sImmatNew + ")" +
+                            "</font>" +
+                            "<br><br>";
 
-                        // click to open existing patient
-                        link1ImmatNew = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                " <a href='javascript:showExistingPatient(" + sPersonId + ");'> " +
-                                getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                getTran(request,"Web.PatientEdit", "patient.open.fiche", sWebLanguage) + "<br><br>";
+                    // click to open existing patient
+                    link1ImmatNew = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
+                            " <a href='javascript:showExistingPatient(" + sPersonId + ");'> " +
+                            getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
+                            getTran(request,"Web.PatientEdit", "patient.open.fiche", sWebLanguage) + "<br><br>";
 
-                        // click to open existing patient in new window
-                        link1ImmatNew += getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                " <a href='javascript:showExistingPatientInNewWindow(" + sPersonId + ");'> " +
-                                getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                getTran(request,"Web.PatientEdit", "patient.open.fiche.innewwindow", sWebLanguage) + "<br><br>";
+                    // click to open existing patient in new window
+                    link1ImmatNew += getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
+                            " <a href='javascript:showExistingPatientInNewWindow(" + sPersonId + ");'> " +
+                            getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
+                            getTran(request,"Web.PatientEdit", "patient.open.fiche.innewwindow", sWebLanguage) + "<br><br>";
 
-                        // creation impossible
-                        link2ImmatNew = getTran(request,"Web.PatientEdit", "patient.creation.impossible", sWebLanguage);
-                    }
-                }
-
-                //*** check double patients on NATREG *********************************************
-                if (sNatReg.length() > 0 && MedwanQuery.getInstance().getConfigString("checkNatreg","1").equalsIgnoreCase("1")) {
-                    String sPersonId = AdminPerson.getPersonIdByNatReg(sNatReg);
-
-                    if (sPersonId!=null) {
-                        doubleNatRegFound = true;
-                        activePatient.checkNatreg=false;
-
-                        // double message
-                        msgNatReg = "<font color='red'>" +
-                                getTran(request,"Web.PatientEdit", "patient.exists", sWebLanguage) + " " + getTran(request,"web", "natreg", sWebLanguage) + "." +
-                                "<br>(" + sNatReg + ")" +
-                                "</font>" +
-                                "<br><br>";
-
-                        // click to open existing patient
-                        link1NatReg = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                " <a href='javascript:showExistingPatient(" + sPersonId + ");'> " +
-                                getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                getTran(request,"Web.PatientEdit", "patient.open.fiche", sWebLanguage) + "<br><br>";
-
-                        // click to open existing patient in new window
-                        link1NatReg += getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                " <a href='javascript:showExistingPatientInNewWindow(" + sPersonId + ");'> " +
-                                getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                getTran(request,"Web.PatientEdit", "patient.open.fiche.innewwindow", sWebLanguage) + "<br><br>";
-
-                        // click to create double patient
-                        link2NatReg = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                " <a href='javascript:doSave();'> " +
-                                getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                getTran(request,"Web.PatientEdit", "patient.create.fiche", sWebLanguage);
-                    }
-                }
-
-                //*** check names and birthdate ***************************************************
-                Hashtable hSelect = new Hashtable();
-
-                if (sName.length() > 0) hSelect.put(" searchname = ? AND", sName + "," + sFirstname);
-                if (sDateOfBirth.length() > 0) hSelect.put(" dateofbirth = ? AND", sDateOfBirth);
-
-                // prepare query
-                if (hSelect.size() > 0) {
-                    String sPersonId = AdminPerson.getPersonIdBySearchNameDateofBirth(hSelect);
-
-                    if (sPersonId!=null) {
-                        doubleNamesFound = true;
-
-                        // double melding
-                        msgNames = "<font color='red'>" +
-                                getTran(request,"Web.PatientEdit", "patient.exists.mv", sWebLanguage) + " " + getTran(request,"Web", "lastname", sWebLanguage) + ", " + getTran(request,"Web", "firstname", sWebLanguage) + ", " + getTran(request,"Web", "dateofbirth", sWebLanguage) + "." +
-                                "<br>(" + sName + ", " + sFirstname + ", " + sDateOfBirth + ")" +
-                                "</font>" +
-                                "<br><br>";
-
-                        // click to open existing patient
-                        link1Names = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                " <a href='javascript:showExistingPatient(" + sPersonId + ");'> " +
-                                getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                getTran(request,"Web.PatientEdit", "patient.open.fiche", sWebLanguage) + "<br><br>";
-
-                        // click to open existing patient in new window
-                        link1Names += getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                " <a href='javascript:showExistingPatientInNewWindow(" + sPersonId + ");'> " +
-                                getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                getTran(request,"Web.PatientEdit", "patient.open.fiche.innewwindow", sWebLanguage) + "<br><br>";
-
-                        // click to create double patient
-                        link2Names = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                " <a href='javascript:doSave();'> " +
-                                getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                getTran(request,"Web.PatientEdit", "patient.create.fiche", sWebLanguage);
-                    }
+                    // creation impossible
+                    link2ImmatNew = getTran(request,"Web.PatientEdit", "patient.creation.impossible", sWebLanguage);
                 }
             }
-            //#####################################################################################
-            //#################################### UPDATE #########################################
-            //#####################################################################################
-            else {
-                //*** check double patients on IMMATNEW *******************************************
-                // only perform check when data to save different than saved data
-                if (!sImmatNew.equals(activePatient.getID("ImmatNew"))) {
-                    if (sImmatNew.length() > 0) {
-                        // get ids of enclosed files
-                        Vector enclosedFileIds = new Vector();
-                        String fileId = getEnclosedFileId(sImmatNew);
-                        while (fileId.length() > 0) {
-                            enclosedFileIds.add(fileId);
-                            fileId = getEnclosedFileId(fileId);
-                        }
 
-                        // get ids of double files
-                        Vector vData = AdminPerson.getImmatNewPersonIdByImmatNew(sImmatNew);
-                        Iterator vDataIterator = vData.iterator();
+            //*** check double patients on NATREG *********************************************
+            if (sNatReg.length() > 0 && MedwanQuery.getInstance().getConfigString("checkNatreg","1").equalsIgnoreCase("1")) {
+                String sPersonId = AdminPerson.getPersonIdByNatReg(sNatReg);
 
-                        Vector doubleFileIds = new Vector();
-                        Hashtable personIds = new Hashtable();
-                        Hashtable hData;
-                        while (vDataIterator.hasNext()) {
-                            hData = (Hashtable)vDataIterator.next();
-                            fileId = (String)hData.get("immatnew");
-                            doubleFileIds.add(fileId);
-                            personIds.put(fileId, hData.get("personid"));
-                        }
+                if (sPersonId!=null) {
+                    doubleNatRegFound = true;
+                    activePatient.checkNatreg=false;
 
-                        // remove enclosedFiles from doubleFiles
-                        if (doubleFileIds.size() > 0) {
-                            doubleFileIds.removeAll(enclosedFileIds);
-                        }
+                    // double message
+                    msgNatReg = "<font color='red'>" +
+                            getTran(request,"Web.PatientEdit", "patient.exists", sWebLanguage) + " " + getTran(request,"web", "natreg", sWebLanguage) + "." +
+                            "<br>(" + sNatReg + ")" +
+                            "</font>" +
+                            "<br><br>";
 
-                        // run thru remaining doubles
-                        int doubleCounter = 0;
-                        for (int i = 0; i < doubleFileIds.size() && doubleCounter < 2; i++) {
-                            doubleCounter++;
+                    // click to open existing patient
+                    link1NatReg = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
+                            " <a href='javascript:showExistingPatient(" + sPersonId + ");'> " +
+                            getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
+                            getTran(request,"Web.PatientEdit", "patient.open.fiche", sWebLanguage) + "<br><br>";
 
-                            fileId = (String) doubleFileIds.get(i);
-                            String existingPersonID = (String) personIds.get(fileId);
-                            if (!sPersonID.equals(existingPersonID)) {
-                                doubleImmatNewFound = true;
-                                activePatient.checkImmatnew=false;
+                    // click to open existing patient in new window
+                    link1NatReg += getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
+                            " <a href='javascript:showExistingPatientInNewWindow(" + sPersonId + ");'> " +
+                            getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
+                            getTran(request,"Web.PatientEdit", "patient.open.fiche.innewwindow", sWebLanguage) + "<br><br>";
 
-                                // double message
-                                msgImmatNew = "<font color='red'>" +
-                                        getTran(request,"Web.PatientEdit", "patient.exists", sWebLanguage) + " " + getTran(request,"Web", "immatnew", sWebLanguage) + "." +
-                                        "<br>(" + fileId + ")" +
-                                        "</font>" +
-                                        "<br><br>";
-
-                                // click to open existing patient
-                                link1ImmatNew = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                        " <a href='javascript:showExistingPatient(" + existingPersonID + ");'> " +
-                                        getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                        getTran(request,"Web.PatientEdit", "patient.open.fiche", sWebLanguage) + "<br><br>";
-
-                                // click to open existing patient in new window
-                                link1ImmatNew += getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                        " <a href='javascript:showExistingPatientInNewWindow(" + existingPersonID + ");'> " +
-                                        getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                        getTran(request,"Web.PatientEdit", "patient.open.fiche.innewwindow", sWebLanguage) + "<br><br>";
-
-                                // creation impossible
-                                link2ImmatNew = getTran(request,"Web.PatientEdit", "patient.creation.impossible", sWebLanguage);
-                            }
-                        }
-                    }
+                    // click to create double patient
+                    link2NatReg = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
+                            " <a href='javascript:doSave();'> " +
+                            getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
+                            getTran(request,"Web.PatientEdit", "patient.create.fiche", sWebLanguage);
                 }
+            }
 
-                //*** check double patients on NATREG *********************************************
-                // only perform check when data to save different than saved data
-                if (!sNatReg.equals(activePatient.getID("NatReg")) && MedwanQuery.getInstance().getConfigString("checkNatreg","1").equalsIgnoreCase("1")) {
-                    if (sNatReg.length() > 0) {
-                        // get ids of enclosed files
-                        Vector enclosedFileIds = new Vector();
-                        String fileId = getEnclosedFileId(sImmatNew);
-                        while (fileId.length() > 0) {
-                            enclosedFileIds.add(fileId);
-                            fileId = getEnclosedFileId(fileId);
-                        }
+            //*** check names and birthdate ***************************************************
+            Hashtable hSelect = new Hashtable();
 
-                        // get ids of double files
-                        Vector vData = AdminPerson.getImmatNewPersonIdByNatReg(sNatReg);
-                        Iterator vDataIterator = vData.iterator();
+            if (sName.length() > 0) hSelect.put(" searchname = ? AND", sName + "," + sFirstname);
+            if (sDateOfBirth.length() > 0) hSelect.put(" dateofbirth = ? AND", sDateOfBirth);
 
-                        Vector doubleFileIds = new Vector();
-                        Hashtable personIds = new Hashtable();
-                        Hashtable hData;
-                        while (vDataIterator.hasNext()) {
-                            hData = (Hashtable)vDataIterator.next();
-                            fileId = (String)hData.get("immatnew");
-                            doubleFileIds.add(fileId);
-                            personIds.put(fileId, hData.get("personid"));
-                        }
+            // prepare query
+            if (hSelect.size() > 0) {
+                String sPersonId = AdminPerson.getPersonIdBySearchNameDateofBirth(hSelect);
 
-                        // remove enclosedFiles from doubleFiles
-                        if (doubleFileIds.size() > 0) {
-                            doubleFileIds.removeAll(enclosedFileIds);
-                        }
+                if (sPersonId!=null) {
+                    doubleNamesFound = true;
 
-                        // run thru remaining doubles
-                        int doubleCounter = 0;
-                        for (int i = 0; i < doubleFileIds.size() && doubleCounter < 2; i++) {
-                            doubleCounter++;
+                    // double melding
+                    msgNames = "<font color='red'>" +
+                            getTran(request,"Web.PatientEdit", "patient.exists.mv", sWebLanguage) + " " + getTran(request,"Web", "lastname", sWebLanguage) + ", " + getTran(request,"Web", "firstname", sWebLanguage) + ", " + getTran(request,"Web", "dateofbirth", sWebLanguage) + "." +
+                            "<br>(" + sName + ", " + sFirstname + ", " + sDateOfBirth + ")" +
+                            "</font>" +
+                            "<br><br>";
 
-                            fileId = (String) doubleFileIds.get(i);
-                            String existingPersonID = (String) personIds.get(fileId);
-                            if (!sPersonID.equals(existingPersonID)) {
-                                doubleNatRegFound = true;
-                                activePatient.checkNatreg=false;
+                    // click to open existing patient
+                    link1Names = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
+                            " <a href='javascript:showExistingPatient(" + sPersonId + ");'> " +
+                            getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
+                            getTran(request,"Web.PatientEdit", "patient.open.fiche", sWebLanguage) + "<br><br>";
 
-                                // double message
-                                msgNatReg = "<font color='red'>" +
-                                        getTran(request,"Web.PatientEdit", "patient.exists", sWebLanguage) + " " + getTran(request,"Web", "natreg", sWebLanguage) + "." +
-                                        "<br>(" + fileId + " : " + sNatReg + ")" +
-                                        "</font>" +
-                                        "<br><br>";
+                    // click to open existing patient in new window
+                    link1Names += getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
+                            " <a href='javascript:showExistingPatientInNewWindow(" + sPersonId + ");'> " +
+                            getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
+                            getTran(request,"Web.PatientEdit", "patient.open.fiche.innewwindow", sWebLanguage) + "<br><br>";
 
-                                // click to open existing patient
-                                link1NatReg = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                        " <a href='javascript:showExistingPatient(" + existingPersonID + ");'> " +
-                                        getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                        getTran(request,"Web.PatientEdit", "patient.open.fiche", sWebLanguage) + "<br><br>";
-
-                                // click to open existing patient in new window
-                                link1NatReg += getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                        " <a href='javascript:showExistingPatientInNewWindow(" + existingPersonID + ");'> " +
-                                        getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                        getTran(request,"Web.PatientEdit", "patient.open.fiche.innewwindow", sWebLanguage) + "<br><br>";
-
-                                // click to update patient
-                                link2NatReg = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                        " <a href='javascript:doSave();'> " +
-                                        getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                        getTran(request,"Web.PatientEdit", "patient.update.fiche", sWebLanguage);
-                            }
-                        }
-                    }
-                }
-
-                //*** check names and birthdate ***************************************************
-                Hashtable hSelect = new Hashtable();
-
-                // only perform check when data to save different than saved data
-                if (!sName.equals(activePatient.lastname) && !sDateOfBirth.equals(activePatient.dateOfBirth)) {
-                    if (sName.length() > 0) hSelect.put(" searchname = ? AND", sName + "," + sFirstname);
-                    if (sDateOfBirth.length() > 0) hSelect.put(" dateofbirth = ? AND", sDateOfBirth);
-
-                    // prepare query
-                    if (hSelect.size() > 0) {
-                        Vector vData = AdminPerson.getImmatNewPersonIdBySearchNameDateofBirth(hSelect);
-                        Iterator vDataIterator = vData.iterator();
-
-                        // get ids of enclosed files
-                        Vector enclosedFileIds = new Vector();
-                        String fileId = getEnclosedFileId(sImmatNew);
-                        while (fileId.length() > 0) {
-                            enclosedFileIds.add(fileId);
-                            fileId = getEnclosedFileId(fileId);
-                        }
-
-                        Vector doubleFileIds = new Vector();
-                        Hashtable personIds = new Hashtable();
-                        Hashtable hData;
-                        while (vDataIterator.hasNext()) {
-                            hData = (Hashtable)vDataIterator.next();
-                            fileId = (String)hData.get("immatnew");
-                            doubleFileIds.add(fileId);
-                            personIds.put(fileId, hData.get("personid"));
-                        }
-
-                        // close DB-stuff
-                        //if (rs != null) rs.close();
-                        //if (ps != null) ps.close();
-
-                        // remove enclosedFiles from doubleFiles
-                        if (doubleFileIds.size() > 0) {
-                            doubleFileIds.removeAll(enclosedFileIds);
-                        }
-
-                        // run thru remaining doubles
-                        int doubleCounter = 0;
-                        for (int i = 0; i < doubleFileIds.size() && doubleCounter < 2; i++) {
-                            doubleCounter++;
-
-                            fileId = (String) doubleFileIds.get(i);
-                            String existingPersonID = (String) personIds.get(fileId);
-                            if (!sPersonID.equals(existingPersonID)) {
-                                doubleNamesFound = true;
-
-                                // double melding
-                                msgNames = "<font color='red'>" +
-                                        getTran(request,"Web.PatientEdit", "patient.exists.mv", sWebLanguage) + " " + getTran(request,"Web", "lastname", sWebLanguage) + ", " + getTran(request,"Web", "firstname", sWebLanguage) + ", " + getTran(request,"Web", "dateofbirth", sWebLanguage) + "." +
-                                        "<br>(" + fileId + " : " + sName + ", " + sFirstname + ", " + sDateOfBirth + ")" +
-                                        "</font>" +
-                                        "<br><br>";
-
-                                // click to open existing patient
-                                link1Names = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                        " <a href='javascript:showExistingPatient(" + existingPersonID + ");'> " +
-                                        getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                        getTran(request,"Web.PatientEdit", "patient.open.fiche", sWebLanguage) + "<br><br>";
-
-                                // click to open existing patient in new window
-                                link1Names += getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                        " <a href='javascript:showExistingPatientInNewWindow(" + existingPersonID + ");'> " +
-                                        getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                        getTran(request,"Web.PatientEdit", "patient.open.fiche.innewwindow", sWebLanguage) + "<br><br>";
-
-                                // click to update patient
-                                link2Names = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
-                                        " <a href='javascript:doSave();'> " +
-                                        getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
-                                        getTran(request,"Web.PatientEdit", "patient.update.fiche", sWebLanguage);
-                            }
-                        }
-                    }
+                    // click to create double patient
+                    link2Names = getTran(request,"Web.PatientEdit", "click", sWebLanguage) +
+                            " <a href='javascript:doSave();'> " +
+                            getTran(request,"Web.PatientEdit", "here", sWebLanguage) + "</a> " +
+                            getTran(request,"Web.PatientEdit", "patient.create.fiche", sWebLanguage);
                 }
             }
         }

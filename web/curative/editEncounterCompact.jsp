@@ -17,7 +17,7 @@
 			<%conditionalInclude("curative/insuranceStatusCompact.jsp",pageContext,"financial.balance.select",activeUser);%>
 			</div>
 			<%
-				if(Insurance.getDefaultInsuranceForPatientLimited(activePatient.personid)!=null && Insurance.getDefaultInsuranceForPatientLimited(activePatient.personid).isAuthorized()){
+				if(Insurance.getDefaultInsuranceForPatientLimited(activePatient.personid)!=null && Insurance.getDefaultInsuranceForPatientLimited(activePatient.personid).isAuthorized() && (activePatient.isDead()==null || activeUser.getAccessRightNoSA("deceasedpatient.add"))){
 			%>
 			<center><input type='button' class='button' id='prestationsButton' name='prestationsButton' value='=> <%=getTranNoLink("web","prestations",sWebLanguage)%>' onclick='showPrestations();'/></center>
 			<%

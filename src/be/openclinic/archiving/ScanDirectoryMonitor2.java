@@ -35,7 +35,7 @@ import be.mxs.common.util.system.PdfBarcode;
 import be.mxs.common.util.system.ScreenHelper;
 import net.admin.AdminPerson;
 
-public class ScanDirectoryMonitor implements Runnable{
+public class ScanDirectoryMonitor2 implements Runnable{
 	private boolean stopped = false;
 	private int runCounter;
 	private Thread thread;
@@ -63,7 +63,7 @@ public class ScanDirectoryMonitor implements Runnable{
 	
 	
 	//--- CONSTRUCTOR -----------------------------------------------------------------------------
-	public ScanDirectoryMonitor(){
+	public ScanDirectoryMonitor2(){
 		setCreated(new java.util.Date());
 	}
 	
@@ -821,8 +821,12 @@ public class ScanDirectoryMonitor implements Runnable{
         String sOrigExt = "DCM";
         
     	String sPathAndName = getFilePathAndName(sUDI,sOrigExt);
+    	Debug.println(".");
    		String sDir = sPathAndName.substring(0,sPathAndName.lastIndexOf("/"));
+    	Debug.println("..");
+    	Debug.println("Creating "+SCANDIR_BASE+"/"+SCANDIR_TO+"/"+sDir);
 		createDirs(SCANDIR_BASE+"/"+SCANDIR_TO,sDir);
+    	Debug.println("...");
 		
 		if(MedwanQuery.getInstance().getConfigInt("pacsTestLoad",0)==1){
 			DicomObject obj = Dicom.getDicomObject(file);
@@ -835,6 +839,7 @@ public class ScanDirectoryMonitor implements Runnable{
 			file.delete();
 		}
 		else {
+	    	Debug.println("....");
 			if(MedwanQuery.getInstance().getConfigString("archiveBackupFolder","").length()>0) {
 				File toFile = new File(MedwanQuery.getInstance().getConfigString("archiveBackupFolder","")+"/"+SCANDIR_TO+"/"+sPathAndName);
 				try {
@@ -844,7 +849,9 @@ public class ScanDirectoryMonitor implements Runnable{
 					e.printStackTrace();
 				}
 			}
+	    	Debug.println(".....");
 			File toFile = new File(SCANDIR_BASE+"/"+SCANDIR_TO+"/"+sPathAndName);
+	    	Debug.println("......");
 			Debug.println(moveFile(file,toFile));
 		}
 	    Debug.println("--> moved DICOM file to '"+SCANDIR_BASE+"/"+SCANDIR_TO+"/"+sPathAndName+"'");
@@ -972,6 +979,27 @@ public class ScanDirectoryMonitor implements Runnable{
     public static String moveFile(File srcFile, File dstFile) throws IOException {
     	if(srcFile.exists()){
     		FileUtils.moveFile(srcFile, dstFile);
+    		/*
+    		InputStream in = new FileInputStream(srcFile);
+	        OutputStream out = new FileOutputStream(dstFile);
+	        Debug.println("Copying bytes...");
+	        byte[] buf = new byte[1024];
+	        int len;
+	        while((len = in.read(buf)) > 0){
+	            out.write(buf,0,len);
+	        }
+	        Debug.println("Done...");
+	
+	        in.close();
+	        out.close();
+	        Debug.println("Setting last modified");
+	        
+	        // preserve original datetime
+	        dstFile.setLastModified(srcFile.lastModified());
+	        Debug.println("Deleting source");
+	        
+	        srcFile.delete();
+	        */
 	        return "moved file '"+srcFile.getName()+"' from '"+srcFile.getAbsolutePath()+"' to '"+dstFile.getAbsolutePath()+"'";
     	}
     	else {

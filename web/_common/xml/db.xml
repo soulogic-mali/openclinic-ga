@@ -4032,6 +4032,22 @@
 		</indexes>
 	</table>
 
+    <table name="OC_PRODUCTKITS" db="openclinic" sync="NONE">
+		<columns>
+			<column name="OC_PRODUCTKIT_SOURCEPRODUCTSTOCKUID" dbtype="varchar" javatype="string" size="50"/>
+			<column name="OC_PRODUCTKIT_SOURCEPRODUCTSTOCKQUANTITY" dbtype="int" javatype="integer"/>
+			<column name="OC_PRODUCTKIT_TARGETPRODUCTSTOCKUID" dbtype="varchar" javatype="string" size="50"/>
+		</columns>
+		<indexes>
+			<index name="OC_PRODUCTKIT_SOURCEPRODUCTSTOCKUID">
+				<indexcolumn order="ASC" name="OC_PRODUCTKIT_SOURCEPRODUCTSTOCKUID"/>
+			</index>
+			<index name="OC_PRODUCTKIT_TARGETPRODUCTSTOCKUID">
+				<indexcolumn order="ASC" name="OC_PRODUCTKIT_TARGETPRODUCTSTOCKUID"/>
+			</index>
+		</indexes>
+	</table>
+	
     <table name="OC_PRODUCTS" db="openclinic" sync="NONE">
 		<columns>
 			<column name="OC_PRODUCT_SERVERID" dbtype="int" javatype="integer" primary="1" nulls="0"/>

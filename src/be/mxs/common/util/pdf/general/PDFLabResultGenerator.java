@@ -1604,6 +1604,12 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
         	if(pItem!=null){
         		sPrescriber=pItem.getValue();
         	}
+        	else {
+        		pItem = tran.getItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_INTERNALPRESCRIBER");
+            	if(pItem!=null){
+            		sPrescriber=User.getFullUserName(pItem.getValue());
+            	}
+        	}
         }
         cell=createLabel(sPrescriber,10,45,Font.BOLD);
         cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);

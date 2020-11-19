@@ -21,11 +21,11 @@
     }
     
     String serviceId = checkString(request.getParameter("serviceid"));
-    if(serviceId.length()==0) serviceId = activeUser.activeService.code; 
+    if(request.getParameter("find")==null && serviceId.length()==0) serviceId = activeUser.activeService.code; 
     
-    String serviceName = activeUser.activeService.getLabel(sWebLanguage);
+    String serviceName = "";
     if(serviceId.length() > 0){
-    	serviceName = checkString(request.getParameter("servicename"));
+    	serviceName = getTranNoLink("service",serviceId,sWebLanguage);
     }
 
     /// DEBUG /////////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +53,7 @@
                 <%-- BUTTONS --%>
                 <input type="submit" class="button" name="find" value="<%=getTranNoLink("web","find",sWebLanguage)%>"/>&nbsp;
                 <input type="button" class="button" name="backButton" value="<%=getTranNoLink("web","back",sWebLanguage)%>" onclick="doBack();">
+                <input type="button" class="button" name="printPdfButton" value="<%=getTranNoLink("web","printpdf",sWebLanguage)%>" onclick="doPrintPDF();">
             </td>
         </tr>
         
@@ -116,26 +117,24 @@
     	Debug.println(sQuery);
         Connection conn = MedwanQuery.getInstance().getLongOpenclinicConnection();
         PreparedStatement ps = conn.prepareStatement(sQuery);
-        ps.setDate(1,new java.sql.Date(begin.getTime()));
-        ps.setDate(2,new java.sql.Date(end.getTime()));
-        ps.setDate(3,new java.sql.Date(begin.getTime()));
-        ps.setDate(4,new java.sql.Date(end.getTime()));
+        ps.setTimestamp(1,new java.sql.Timestamp(begin.getTime()));
+        ps.setTimestamp(2,new java.sql.Timestamp(end.getTime()));
+        ps.setTimestamp(3,new java.sql.Timestamp(begin.getTime()));
+        ps.setTimestamp(4,new java.sql.Timestamp(end.getTime()));
         ResultSet rs = ps.executeQuery();
         
         String activeservice = null;
-        int totalpatientincome = 0;
-        int totalinsurarincome = 0;
-        int totalservicepatientincome = 0;
-        int totalserviceinsurarincome = 0;
-        int recordCount = 0;
+        double totalpatientincome = 0;
+        double totalinsurarincome = 0;
+        double totalservicepatientincome = 0;
+        double totalserviceinsurarincome = 0;
+        double recordCount = 0;
+        %><table class="list" width="100%" cellpadding="0" cellspacing="1"><%
         
         while(rs.next()){
             String serviceuid = checkString(rs.getString("oc_debet_serviceuid"));
             
             if(activeservice==null || !activeservice.equalsIgnoreCase(serviceuid)){
-                if(recordCount==0){
-                    %><table class="list" width="100%" cellpadding="0" cellspacing="1"><%
-                }
                 
                 if(activeservice!=null){
                     out.print("<tr>"+
@@ -144,9 +143,9 @@
                               "</tr>"+
                               "<tr>"+
                                "<td colspan='2'/>"+
-                               "<td><b>"+(totalserviceinsurarincome+totalservicepatientincome)+"</b></td>"+
-                               "<td><b>"+totalservicepatientincome+"</b></td>"+
-                               "<td><b>"+totalserviceinsurarincome+"</b></td>"+
+                               "<td><b>"+SH.getPriceFormat(totalserviceinsurarincome+totalservicepatientincome)+"</b></td>"+
+                               "<td><b>"+SH.getPriceFormat(totalservicepatientincome)+"</b></td>"+
+                               "<td><b>"+SH.getPriceFormat(totalserviceinsurarincome)+"</b></td>"+
                               "</tr>");
                 }
                 
@@ -167,8 +166,8 @@
                 recordCount++;
             }
             
-            int patientincome = rs.getInt("patientincome");
-            int insurarincome = rs.getInt("insurarincome");
+            double patientincome = rs.getDouble("patientincome");
+            double insurarincome = rs.getDouble("insurarincome");
             
             totalserviceinsurarincome+= insurarincome;
             totalservicepatientincome+= patientincome;
@@ -176,9 +175,9 @@
             out.print("<tr>"+
                        "<td class='admin'>"+rs.getString("oc_prestation_code")+": "+rs.getString("oc_prestation_description")+"</td>"+
                        "<td>"+rs.getInt("quantity")+" ("+rs.getInt("number")+" "+getTran(request,"web","invoices",sWebLanguage)+")</td>"+
-                       "<td>"+(patientincome+insurarincome)+"</td>"+
-                       "<td>"+patientincome+"</td>"+
-                       "<td>"+insurarincome+"</td>"+
+                       "<td>"+SH.getPriceFormat(patientincome+insurarincome)+"</td>"+
+                       "<td>"+SH.getPriceFormat(patientincome)+"</td>"+
+                       "<td>"+SH.getPriceFormat(insurarincome)+"</td>"+
                       "</tr>");
         }
         
@@ -186,9 +185,9 @@
             out.print("<tr><td/><td colspan='4'><hr/></td></tr>");
             out.print("<tr>"+
                        "<td colspan='2'/>"+
-                       "<td><b>"+(totalserviceinsurarincome+totalservicepatientincome)+"</b></td>"+
-                       "<td><b>"+totalservicepatientincome+"</b></td>"+
-                       "<td><b>"+totalserviceinsurarincome+"</b></td>"+
+                       "<td><b>"+SH.getPriceFormat(totalserviceinsurarincome+totalservicepatientincome)+"</b></td>"+
+                       "<td><b>"+SH.getPriceFormat(totalservicepatientincome)+"</b></td>"+
+                       "<td><b>"+SH.getPriceFormat(totalserviceinsurarincome)+"</b></td>"+
                       "</tr>");
             
             totalpatientincome+= totalservicepatientincome;
@@ -197,21 +196,43 @@
             out.print("<tr class='admin'>"+
                        "<td>"+getTran(request,"web","allservices",sWebLanguage)+"</td>"+
             		   "<td/>"+
-                       "<td><b>"+(totalinsurarincome+totalpatientincome)+"</b></td>"+
-            		   "<td><b>"+totalpatientincome+"</b></td>"+
-                       "<td><b>"+totalinsurarincome+"</b></td>"+
+                       "<td><b>"+SH.getPriceFormat(totalinsurarincome+totalpatientincome)+"</b></td>"+
+            		   "<td><b>"+SH.getPriceFormat(totalpatientincome)+"</b></td>"+
+                       "<td><b>"+SH.getPriceFormat(totalinsurarincome)+"</b></td>"+
             		  "</tr>");
         }
         rs.close();
         ps.close();
-        conn.close();
         
+        
+        out.print("<tr><td>&nbsp;</td></tr><tr class='admin'><td >"+getTran(request,"web","otherwicketoperations",sWebLanguage)+"</td><td>#</td><td>"+getTran(request,"web","total",sWebLanguage)+"</td><td/><td/></tr>");
+        //Autres opérations de caisse
+		ps = conn.prepareStatement("select count(*) total,sum(oc_wicket_credit_amount) amount,oc_wicket_credit_type from oc_wicket_credits where oc_wicket_credit_operationdate>=? and oc_wicket_credit_operationdate<? and oc_wicket_credit_type<>'patient.payment' group by oc_wicket_credit_type");
+        ps.setTimestamp(1, new java.sql.Timestamp(begin.getTime()));
+        ps.setTimestamp(2, new java.sql.Timestamp(end.getTime()));
+        rs=ps.executeQuery();
+        totalpatientincome=0;
+        while(rs.next()){
+        	out.println("<tr><td class='admin'>"+getTran(request,"wicketcredit.type",rs.getString("oc_wicket_credit_type"),sWebLanguage)+"</td><td>"+rs.getInt("total")+"</td><td>"+SH.getPriceFormat(rs.getDouble("amount"))+"</td><td/><td/></tr>");
+        	totalpatientincome+=rs.getDouble("amount");
+        	recordCount++;
+        }
+        out.print("<tr class='admin'>"+
+                "<td>"+getTran(request,"web","alloperations",sWebLanguage)+"</td>"+
+     		   "<td/>"+
+                "<td><b>"+totalpatientincome+"</b></td>"+
+     		   "<td></td>"+
+                "<td></td>"+
+     		  "</tr>");
+        rs.close();
+        ps.close();
+        conn.close();
+        %></table><%
         if(recordCount==0){
         	%><%=getTran(request,"web","noRecordsFound",sWebLanguage)%><%
         }
         else{
         	%>
-                </table>
         	    <%=recordCount%> <%=getTran(request,"web","recordsFound",sWebLanguage)%>
         	<%
         }
@@ -228,5 +249,11 @@
   <%-- DO BACK --%>
   function doBack(){
     window.location.href = "<c:url value='/main.do'/>?Page=statistics/index.jsp";
+  }
+  
+  function doPrintPDF(){
+	  var parameters = "begin="+document.getElementById('begin').value+"&end="+document.getElementById('end').value+"&service="+document.getElementById('serviceid').value;
+      var url= '<c:url value="/financial/printCashDeskCertificatePdf.jsp"/>?ts='+new Date()+"&"+parameters;
+      window.open(url,"CashDeskCertificatePdf<%=new java.util.Date().getTime()%>","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
   }
 </script>

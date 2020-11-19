@@ -8,7 +8,7 @@
 		<tr class='admin'>
 			<td colspan='2'>
 				<%=getTran(request,"web","prestations",sWebLanguage) %>
-				<i>[<%=Insurance.getDefaultInsuranceForPatient(activePatient.personid).getInsurar().getName() %>]</i>
+				<i><%=Insurance.getDefaultInsuranceForPatient(activePatient.personid)==null?"":"["+Insurance.getDefaultInsuranceForPatient(activePatient.personid).getInsurar().getName()+"]" %></i>
 			</td>
 		</tr>
 		<tr>
@@ -71,22 +71,24 @@
 		var cost = document.getElementById('prestationid').value.split(";")[1];
 		var name = document.getElementById('prestationname').value;
 		var quantity = document.getElementById('prestationquantity').value;
-		if(prestationlist.indexOf(id+'~')<0){
-			//Prestation doesn't exist yet, add it
-			prestationlist+=id+"~"+name+"~"+quantity+"~"+cost+"|";
-		}
-		else{
-			var prestations = prestationlist.split('|');
-			for(n=0;n<prestations.length;n++){
-				if(prestations[n].indexOf(id+"~")>-1){
-					prestationlist=prestationlist.replace(prestations[n],prestations[n].split("~")[0]+"~"+prestations[n].split("~")[1]+"~"+(prestations[n].split("~")[2]*1+quantity*1)+"~"+prestations[n].split("~")[3]);
+		if(quantity*1>0){
+			if(prestationlist.indexOf(id+'~')<0){
+				//Prestation doesn't exist yet, add it
+				prestationlist+=id+"~"+name+"~"+quantity+"~"+cost+"|";
+			}
+			else{
+				var prestations = prestationlist.split('|');
+				for(n=0;n<prestations.length;n++){
+					if(prestations[n].indexOf(id+"~")>-1){
+						prestationlist=prestationlist.replace(prestations[n],prestations[n].split("~")[0]+"~"+prestations[n].split("~")[1]+"~"+(prestations[n].split("~")[2]*1+quantity*1)+"~"+prestations[n].split("~")[3]);
+					}
 				}
 			}
-		}
-		showPrestationList();
-		if(document.getElementById("EditEncounterService").value.length==0){
-			//Try to update the service from the prestation
-			updateService(id);
+			showPrestationList();
+			if(document.getElementById("EditEncounterService").value.length==0){
+				//Try to update the service from the prestation
+				updateService(id);
+			}
 		}
 	}
 	

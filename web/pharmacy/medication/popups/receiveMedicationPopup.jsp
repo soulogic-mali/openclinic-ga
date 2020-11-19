@@ -2,6 +2,8 @@
 <%@include file="/includes/validateUser.jsp"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%=checkPermission(out,"medication.medicationreceipt","all",activeUser)%>
+<%=sJSSCRPTACULOUS %>
+<%=sJSPROTOTYPE %>
 
 <%
     String sAction = checkString(request.getParameter("Action"));
@@ -725,6 +727,21 @@
                         <td class="admin"><%=getTran(request,"Web","date",sWebLanguage)%>&nbsp;*</td>
                         <td class="admin2"><%=writeDateField("EditOperationDate","transactionForm",sSelectedOperationDate,sWebLanguage)%></td>
                     </tr>
+                    <%
+	                    if(productStock!=null && productStock.isKit()){
+                    
+                    %>
+		                    <tr>
+		                        <td class="admin"><%=getTran(request,"web","createkits",sWebLanguage)%>&nbsp;*</td>
+		                        <td class="admin2">
+		                        	<input name='kitquantity' id='kitquantity' value='0' class='text' type='text' size='2' onblur='if(this.value.length>0 && !isNumberLimited(this,0,<%=productStock.getMaxNumberOfKits() %>)){this.value="";alert("<%=getTranNoLink("web","valueoutofrange",sWebLanguage)%>: 0 - <%=productStock.getMaxNumberOfKits() %>");this.focus();}'/> <=<b><%=productStock.getMaxNumberOfKits() %></b>
+		                        	<input type='button' class='button' name='createKitsButton' value='<%=getTranNoLink("web","create",sWebLanguage) %>' onclick='createKits()'/>
+		                        </td>
+		                    </tr>
+                    <%
+	                    }
+                    %>
+                    
                 </table>
 
                 <%-- indication of obligated fields --%>
@@ -760,6 +777,20 @@
           %>transactionForm.EditOperationDescr.focus();<%
       }
   %>
+
+	function createKits(){
+		if(window.confirm('<%=getTranNoLink("web","areyousure",sWebLanguage)%>')){
+		    var url = '<c:url value="/pharmacy/ajax/createKits.jsp"/>?EditTargetProductStockUid=<%=productStock==null?"":productStock.getUid()%>&EditTargetProductStockQuantity='+document.getElementById('kitquantity').value+'&ts='+new Date();
+		    new Ajax.Request(url,{
+		      method: "POST",
+		      parameters: "",
+		      onSuccess: function(resp){
+		    	  window.opener.location.reload();
+		    	  window.close();
+		      }
+		    });
+		}
+	}
 
   <%-- DO RECEIVE --%>
   function doReceive(){

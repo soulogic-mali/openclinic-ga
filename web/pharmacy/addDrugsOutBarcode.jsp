@@ -1,4 +1,4 @@
-<%@page import="be.openclinic.pharmacy.*,be.openclinic.medical.*"%>
+<%@page import="be.openclinic.pharmacy.*,be.openclinic.medical.*,be.openclinic.finance.*"%>
 <%@include file="/includes/validateUser.jsp"%>
 <%@page errorPage="/includes/error.jsp"%>
 
@@ -21,6 +21,7 @@
 	
 	String servicestock = checkString(request.getParameter("ServiceStock"));
 	String newPrescriptionUid="";
+	Insurance insurance = Insurance.getMostInterestingInsuranceForPatient(activePatient.personid);
 	
 	
 
@@ -246,6 +247,7 @@
 		ps.setString(1,activePatient.personid);
 		rs = ps.executeQuery();
 		int count = 0;
+		double dPatient=0,dInsurer=0,dExtraInsurer=0;
 		
 		ProductStock stock;
 		while(rs.next()){
@@ -288,7 +290,23 @@
 					stocklabel=" <font style='font-size: 8' color='darkgrey'>&nbsp;<img height='10' src='"+sCONTEXTPATH+"/_img/icons/icon_warning.gif'/>("+stock.getServiceStock().getName()+")</font>";
 				}
 				int nBatch=rs.getInt("OC_LIST_QUANTITY");
-				drugs+= "<tr>"+
+				 //Calculate costs for this drug. Only works with automatic invoicing activated.
+				 double dPat=0;
+				 if(SH.c(stock.getProduct().getPrestationcode()).length()>0){
+					 Prestation prestation = Prestation.get(stock.getProduct().getPrestationcode());
+					 if(prestation!=null){
+						 if(SH.c(insurance.getExtraInsurarUid()).length()==0){
+							 dPat=stock.getProduct().getPrestationquantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter());
+							 dPatient+=dPat;
+						 }
+						 else{
+							 dExtraInsurer+=stock.getProduct().getPrestationquantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter());
+						 }
+						 dInsurer+=stock.getProduct().getPrestationquantity()*prestation.getInsurarPrice(insurance, insurance.getInsuranceCategoryLetter());
+					 }
+				 }
+
+				 drugs+= "<tr>"+
 				         "<td class='admin2'>"+
 				         (activeUser.getAccessRight("fastdrugsprescription.delete")?
 				          "<a href='javascript:doDelete(\\\""+rs.getInt("OC_LIST_SERVERID")+"."+rs.getInt("OC_LIST_OBJECTID")+"\\\");'>"+
@@ -297,7 +315,7 @@
 				         "</td>"+
 				         "<td class='admin2'>"+stock.getUid()+"</td>"+
 				         "<td class='admin2'><b>"+stock.getProduct().getCode()+"</b></td>"+
-				         "<td class='admin2'><b><span id='drugname."+stock.getUid()+"'>"+stock.getProduct().getName()+"</span></b>"+stocklabel+"</td>"+
+				         "<td class='admin2'><b><span id='drugname."+stock.getUid()+"'>"+stock.getProduct().getName()+"&nbsp;&nbsp;<font style='color: #606060;font-size: 8px'>["+SH.getPriceFormat(dPat)+" "+SH.cs("currency","EUR")+"]</font></span></b>"+stocklabel+"</td>"+
 				         "<td class='admin2'><b>"+nBatch+(bInvoiced?" <img height='14px' src='"+sCONTEXTPATH+"/_img/icons/icon_money2.png'/>":"")+"</b></td>"+
 				         "<td class='admin2'>"+sBatch+"</td>"+
 				         "<td class='admin2'>"+level+(level<nBatch?" <NODELIVERY><img src='"+sCONTEXTPATH+"/_img/icons/icon_forbidden.png'/>":"")+"</td>"+
@@ -312,7 +330,12 @@
 		conn.close();
 
 		drugs+= "</table>";
+		String drugsCost = "<table width='100%' cellpadding='5px'><tr style='vertical-align: middle'>";
+		drugsCost+="<td>"+getTranNoLink("web","patient",sWebLanguage)+": <font style='color: red;font-size: 12px'>"+SH.getPriceFormat(dPatient)+" "+SH.cs("currency","EUR")+"</font></td>";
+		drugsCost+="<td>"+getTranNoLink("web","insurar",sWebLanguage)+": <font style='font-size: 12px'>"+SH.getPriceFormat(dInsurer)+" "+SH.cs("currency","EUR")+"</font></td>";
+		drugsCost+="<td>"+getTranNoLink("web","extrainsurar",sWebLanguage)+": <font style='font-size: 12px'>"+SH.getPriceFormat(dExtraInsurer)+" "+SH.cs("currency","EUR")+"</font></td>";
+		drugsCost+="</tr></table>";
 		
-		out.print("{\"drugs\":\""+drugs+"\",\"newprescriptionuid\":\""+newPrescriptionUid+"\"}");
+		out.print("{\"drugs\":\""+drugsCost+drugs+"\",\"newprescriptionuid\":\""+newPrescriptionUid+"\"}");
 	}
 %>

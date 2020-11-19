@@ -166,7 +166,7 @@
 		        		else{
 			        		out.println("<td class='"+cls+"'></td><td class='"+cls+"'></td>");
 		        		}
-		        		out.println("<td class='"+cls+"'>"+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(lastaccess)+" <img src='"+sCONTEXTPATH+"/_img/icons/icon_history2.gif' onclick='javascript:getAccessHistory(20,"+patient.personid+")'/></td>");
+		        		out.println("<td class='"+cls+"'>"+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(lastaccess)+" <img  style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_history2.gif' onclick='javascript:getAccessHistory(20,"+patient.personid+")'/></td>");
 		        		out.println("<td class='"+cls+"'>"+rs.getInt("number")+"</td>");
 		        		out.println("</tr>");
 	        		}

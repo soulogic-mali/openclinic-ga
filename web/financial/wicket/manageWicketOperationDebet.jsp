@@ -107,7 +107,7 @@
         <tr>
             <td class="admin" width="<%=sTDAdminWidth%>"><%=getTran(request,"wicket","wicket",sWebLanguage)%>&nbsp;*</td>
             <td class='admin2'>
-                <select class="text" name="EditWicketOperationWicket">
+                <select class="text" name="EditWicketOperationWicket" id="EditWicketOperationWicket" onchange="getMaxAmount()">
                     <option value=""><%=getTranNoLink("web","choose",sWebLanguage)%></option>
                     <%
                         Vector vWickets = Wicket.getWicketsForUser(activeUser.userid);
@@ -176,7 +176,9 @@
         <tr>
             <td class="admin"><%=getTran(request,"web","amount",sWebLanguage)%>&nbsp;*</td>
             <td class="admin2">
+            	<input type='hidden' name='maxAmount' id='maxAmount' value='0'/>
                 <input class="text" type="text" name="EditWicketOperationAmount" value="<%=sEditWicketOperationAmount%>" onblur="isNumberNegAndPos(this)"/> <%=MedwanQuery.getInstance().getConfigParam("currency","€")%>
+                <span id='showMaxAmount'></span>
             </td>
         </tr>
         
@@ -256,16 +258,20 @@
 
   <%-- DO SAVE --%>
   function doSave(){
-    if(EditForm.EditWicketOperationWicket.value==""){
-                window.showModalDialog?alertDialog("web.manage","dataMissing"):alertDialogDirectText('<%=getTran(null,"web.manage","dataMissing",sWebLanguage)%>');
+	if(EditForm.EditWicketOperationAmount.value*1>document.getElementById('maxAmount').value*1){
+        window.showModalDialog?alertDialog("web","valueoutofrange"):alertDialogDirectText('<%=getTran(null,"web","valueoutofrange",sWebLanguage)%>');
+		EditForm.EditWicketOperationAmount.focus();
+	}
+	else if(EditForm.EditWicketOperationWicket.value==""){
+      window.showModalDialog?alertDialog("web.manage","dataMissing"):alertDialogDirectText('<%=getTran(null,"web.manage","dataMissing",sWebLanguage)%>');
       EditForm.EditWicketOperationWicket.focus();
     }
     else if(EditForm.EditWicketOperationDate.value==""){
-                window.showModalDialog?alertDialog("web.manage","dataMissing"):alertDialogDirectText('<%=getTran(null,"web.manage","dataMissing",sWebLanguage)%>');
+      window.showModalDialog?alertDialog("web.manage","dataMissing"):alertDialogDirectText('<%=getTran(null,"web.manage","dataMissing",sWebLanguage)%>');
       EditForm.EditWicketOperationDate.focus();
     }
     else if(EditForm.EditWicketOperationType.value==""){
-                window.showModalDialog?alertDialog("web.manage","dataMissing"):alertDialogDirectText('<%=getTran(null,"web.manage","dataMissing",sWebLanguage)%>');
+      window.showModalDialog?alertDialog("web.manage","dataMissing"):alertDialogDirectText('<%=getTran(null,"web.manage","dataMissing",sWebLanguage)%>');
       EditForm.EditWicketOperationType.focus();
     }
     else if(EditForm.EditWicketOperationAmount.value==""){
@@ -292,6 +298,7 @@
           $('divMessage').innerHTML=label.Message;
           doClear();
           loadTodayDebets();
+          getMaxAmount();
         },
         onFailure: function(){
           $('divMessage').innerHTML = "Error in function doSave() => AJAX";
@@ -370,15 +377,29 @@
 
   <%-- LOAD TODAY DEBETS --%>
   function loadTodayDebets(){
-    var url = '<c:url value="/financial/wicket/todayWicketDebets.jsp"/>?ts='+new Date();
-    new Ajax.Request(url,{
-      method: "POST",
-      postBody: 'EditWicketOperationWicket=<%=sEditWicketOperationWicket%>',
-      onSuccess: function(resp){
-        $('divTodayDebets').innerHTML = resp.responseText;
-      }
-    });
-  }
+	    var url = '<c:url value="/financial/wicket/todayWicketDebets.jsp"/>?ts='+new Date();
+	    new Ajax.Request(url,{
+	      method: "POST",
+	      postBody: 'EditWicketOperationWicket=<%=sEditWicketOperationWicket%>',
+	      onSuccess: function(resp){
+	        $('divTodayDebets').innerHTML = resp.responseText;
+	      }
+	    });
+	  }
+
+  function getMaxAmount(){
+	    var url = '<c:url value="/financial/wicket/getMaxDebetAmount.jsp"/>?ts='+new Date();
+	    new Ajax.Request(url,{
+	      method: "POST",
+	      postBody: 'EditWicketOperationWicket='+document.getElementById('EditWicketOperationWicket').value+
+	      			'&EditWicketOperationUID='+document.getElementById('EditWicketOperationUID').value,
+	      onSuccess: function(resp){
+	          	var label = eval('('+resp.responseText+')');
+		        $('maxAmount').value = label.maxAmount;
+		        $('showMaxAmount').innerHTML = ' (<= <b>'+label.maxAmount + '</b> <%=SH.cs("currency","EUR")%>)';
+	      }
+	    });
+	  }
 
   <%-- DO PRINT PDF --%>
   function doPrintPdf(creditUid){
@@ -387,4 +408,5 @@
   }
 
   loadTodayDebets();
+  getMaxAmount();
 </script>

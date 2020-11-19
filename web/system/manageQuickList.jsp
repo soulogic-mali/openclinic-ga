@@ -1,7 +1,11 @@
 <%@page import="be.openclinic.finance.*"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
-<%=checkPermission(out,"system.management","select",activeUser)%>
+<%
+	if(!SH.c(request.getParameter("UserQuickList")).equalsIgnoreCase("1")){
+		out.print(checkPermission(out,"system.management","select",activeUser));
+	}
+%>
 <%!
     //--- GET ITEM VALUE --------------------------------------------------------------------------
 	public String getItemValue(String[] prestations,int column, int row){

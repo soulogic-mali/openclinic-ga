@@ -3,9 +3,8 @@
 <%
 	String labeltype=request.getParameter("labeltype");
 	String labelid=request.getParameter("labelid");
-	Label.delete(labeltype, labelid);
-	Hashtable labels = (Hashtable)MedwanQuery.getInstance().getLabels().get(sWebLanguage.toLowerCase());
-	labels = (Hashtable)labels.get(labeltype);
-	labels.remove(labelid);
-    //reloadSingleton(session);
+	Label label =Label.get(labeltype, labelid, sWebLanguage);
+	label.value="<deleted>"+label.value;
+	label.updateUserId=activeUser.userid;
+	label.saveToDB();
 %>

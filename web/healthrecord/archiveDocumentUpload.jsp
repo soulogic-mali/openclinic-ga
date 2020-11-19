@@ -17,10 +17,13 @@
     String sDocumentId = "";
 
     String sFileName = "";
+    System.out.println("A");
     if(MultipartFormDataRequest.isMultipartFormData(request)){
+        System.out.println("B");
         // Uses MultipartFormDataRequest to parse the HTTP request
         MultipartFormDataRequest mrequest = new MultipartFormDataRequest(request);
         try{
+            System.out.println("C");
             Hashtable files = mrequest.getFiles();
             if(files!=null && !files.isEmpty()){
                 UploadFile file = (UploadFile) files.get("filename");

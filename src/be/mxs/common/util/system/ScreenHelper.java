@@ -1848,6 +1848,20 @@ public static String removeAccents(String sTest){
     	}
     	return s;
     }
+    public static String checkPermissionNoSA(HttpServletResponse response, String sScreen, String sPermission, User activeUser,
+            boolean screenIsPopup, String sCONTEXTPATH){
+    	String s = ScreenHelper.checkPermissionNoSA(sScreen,sPermission,activeUser,false,sCONTEXTPATH);
+    	if(s.length()>0) {
+    		try {
+				response.sendRedirect(sCONTEXTPATH+"/util/noaccess.jsp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		return "<script>alert('"+sCONTEXTPATH+"/util/noaccess.jsp');</script>";
+    	}
+    	return s;
+    }
     //--- CHECK PERMISSION ------------------------------------------------------------------------
     public static String checkPermission(String sScreen, String sPermission, User activeUser,
                                          boolean screenIsPopup, String sAPPFULLDIR){
@@ -1875,6 +1889,56 @@ public static String removeAccents(String sTest){
                 else if(activeUser!=null && activeUser.getAccessRight(sScreen+".edit") &&
                          activeUser.getAccessRight(sScreen+".add") &&
                          activeUser.getAccessRight(sScreen+".delete")){
+                    jsAlert = "";
+                }
+
+                if(jsAlert.length() > 0){
+                    String sMessage = getTranNoLink("web","nopermission",activeUser==null || activeUser.person==null?"en":activeUser.person.language);
+                    jsAlert = "<script>"+
+                               "var popupUrl = '"+sAPPFULLDIR+"/_common/search/okPopup.jsp?ts="+getTs()+"&labelValue="+sMessage;
+
+                    // display permission when in Debug mode
+                    if(Debug.enabled) jsAlert+= " --> "+sScreen+(sPermission.length()==0?"":"."+sPermission);
+
+                    jsAlert+=  "';"+
+                               "var modalities = 'dialogWidth:266px;dialogHeight:143px;center:yes;scrollbars:no;resizable:no;status:no;location:no;';"+
+                               "var answer = (window.showModalDialog)?window.showModalDialog(popupUrl,\"\",modalities):window.confirm(\""+sMessage+"\");"+
+                               (screenIsPopup?"window.close();":"window.history.go(-1);")+
+                               "</script>";
+                }
+            }
+        }
+
+        return jsAlert;
+    }
+
+    //--- CHECK PERMISSION ------------------------------------------------------------------------
+    public static String checkPermissionNoSA(String sScreen, String sPermission, User activeUser,
+                                         boolean screenIsPopup, String sAPPFULLDIR){
+        sPermission = sPermission.toLowerCase();
+        String jsAlert = "Error in checkPermission : no screen specified !";
+        if(sScreen.trim().length() > 0){
+            if(Application.isDisabled(sScreen)){
+            	jsAlert = "Application is disabled : '"+sScreen+"'";
+            }
+            else if(activeUser!=null && activeUser.getParameter("sa")!=null && activeUser.getParameter("sa").length() > 0){
+                jsAlert = "";
+            }
+            else{
+                // screen and permission specified
+                if(activeUser!=null && sPermission.length() > 0 && !sPermission.equals("all")){
+                    if(sPermission.equals("none")){
+                    	jsAlert = "";
+                    }
+                    else if(activeUser.getAccessRightNoSA(sScreen+"."+sPermission)){
+                        jsAlert = "";
+                    }
+                }
+                // no permission specified -> interprete as all permissions required
+                // Managing a page, means you can add, edit and delete.
+                else if(activeUser!=null && activeUser.getAccessRightNoSA(sScreen+".edit") &&
+                         activeUser.getAccessRightNoSA(sScreen+".add") &&
+                         activeUser.getAccessRightNoSA(sScreen+".delete")){
                     jsAlert = "";
                 }
 

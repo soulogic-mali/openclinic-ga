@@ -2085,4 +2085,12 @@
 		<en>Follow-up Covid-19 (with pulsoximetry)</en>
 		<es>Seguimiento Covid-19 (con oximetría de pulso)</es>
 	</Row>
+	<Row>
+		<id>1215</id>
+		<class>internal.medicine</class>
+		<transactiontype>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CHUGTOUTPATIENTFILE</transactiontype>
+		<fr>Consultation externe (modèle CHU Gabriel Touré)</fr>
+		<en>Outpatient consultation (CHU Gabriel Touré model)</en>
+		<es>Consulta externa (modelo CHU Gabriel Touré)</es>
+	</Row>
 </Examinations>

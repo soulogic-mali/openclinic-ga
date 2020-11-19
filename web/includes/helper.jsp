@@ -151,17 +151,48 @@
         return ScreenHelper.writeTblChildNoButton(sPath,sHeader,sCONTEXTPATH);
     }
 
+    public String writeTblChildNoButton(boolean bShow, String sPath, String sHeader){
+    	if(!bShow){
+    		return "<tr><td><img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_forbidden.png'></td><td width='99%' nowrap><button class='buttoninvisible'></button>"+sHeader+"</td></tr>";
+    	}
+        return ScreenHelper.writeTblChildNoButton(sPath,sHeader,sCONTEXTPATH);
+    }
+
     public String writeTblChildWithCode(String sCommand, String sHeader){
+        return ScreenHelper.writeTblChildWithCode(sCommand,sHeader,sCONTEXTPATH);
+    }
+    public String writeTblChildWithCode(boolean bShow,String sCommand, String sHeader){
+    	if(!bShow){
+    		return "<tr><td><img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_forbidden.png'></td><td width='99%' nowrap><button class='buttoninvisible'></button>"+sHeader+"</td></tr>";
+    	}
         return ScreenHelper.writeTblChildWithCode(sCommand,sHeader,sCONTEXTPATH);
     }
     public String writeTblChildWithCode(String sCommand, String sHeader, int rowIdx){
         return ScreenHelper.writeTblChildWithCode(sCommand,sHeader,sCONTEXTPATH,rowIdx);
     }
+    public String writeTblChildWithCode(boolean bShow,String sCommand, String sHeader, int rowIdx){
+    	if(!bShow){
+    		return "<tr><td><img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_forbidden.png'></td><td width='99%' nowrap><button class='buttoninvisible'></button>"+sHeader+"</td></tr>";
+    	}
+        return ScreenHelper.writeTblChildWithCode(sCommand,sHeader,sCONTEXTPATH,rowIdx);
+    }
     public String writeTblChildWithCode(String sCommand, String sHeader, int rowIdx, boolean smallRows){
+        return ScreenHelper.writeTblChildWithCode(sCommand,sHeader,sCONTEXTPATH,rowIdx,smallRows);
+    }
+    public String writeTblChildWithCode(boolean bShow, String sCommand, String sHeader, int rowIdx, boolean smallRows){
+    	if(!bShow){
+    		return "<tr><td><img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_forbidden.png'></td><td width='99%' nowrap><button class='buttoninvisible'></button>"+sHeader+"</td></tr>";
+    	}
         return ScreenHelper.writeTblChildWithCode(sCommand,sHeader,sCONTEXTPATH,rowIdx,smallRows);
     }
 
     public String writeTblChildWithCodeNoButton(String sCommand, String sHeader){
+        return ScreenHelper.writeTblChildWithCodeNoButton(sCommand,sHeader,sCONTEXTPATH);
+    }
+    public String writeTblChildWithCodeNoButton(boolean bShow, String sCommand, String sHeader){
+    	if(!bShow){
+    		return "<tr><td><img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_forbidden.png'></td><td width='99%' nowrap><button class='buttoninvisible'></button>"+sHeader+"</td></tr>";
+    	}
         return ScreenHelper.writeTblChildWithCodeNoButton(sCommand,sHeader,sCONTEXTPATH);
     }
 
@@ -519,9 +550,33 @@
         return s;
     }
 
+    public String checkPermissionNoSA(String sScreen, String sPermission, User activeUser){
+        String s= ScreenHelper.checkPermissionNoSA(sScreen,sPermission,activeUser,false,sCONTEXTPATH);
+        if(s.length()>0){
+        	s+=getTranNoLink("web","nopermission",activeUser==null || activeUser.person==null?"en":activeUser.person.language)+"<div style='display: none'>";
+        }
+        return s;
+    }
+
     //--- CHECK PERMISSION (screen is a parent window) --------------------------------------------
     public String checkPermission(JspWriter out,String sScreen, String sPermission, User activeUser){
         String s= ScreenHelper.checkPermission(sScreen,sPermission,activeUser,false,sCONTEXTPATH);
+        if(s.length()>0){
+        	s+=getTranNoLink("web","nopermission",activeUser==null || activeUser.person==null?"en":activeUser.person.language)+"<div style='display: none'>";
+            try{
+    	        out.print(s);
+    	        out.flush();
+    	        out.close();
+            }
+            catch(Exception e){
+            	e.printStackTrace();
+            }
+        }
+        return s;
+    }
+
+    public String checkPermissionNoSA(JspWriter out,String sScreen, String sPermission, User activeUser){
+        String s= ScreenHelper.checkPermissionNoSA(sScreen,sPermission,activeUser,false,sCONTEXTPATH);
         if(s.length()>0){
         	s+=getTranNoLink("web","nopermission",activeUser==null || activeUser.person==null?"en":activeUser.person.language)+"<div style='display: none'>";
             try{

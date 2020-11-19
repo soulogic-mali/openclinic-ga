@@ -183,6 +183,10 @@
         <permission type="examination" id="1209">surveillance.covid19.assessment</permission>
         <permission type="examination" id="1210">surveillance.covid19.followup</permission>
         <permission type="examination" id="1211">surveillance.covid19.triage</permission>
+        <permission type="examination" id="1212">surveillance.covid19.triage.pulseoximetry</permission>
+        <permission type="examination" id="1213">surveillance.covid19.assessment.pulseoximetry</permission>
+        <permission type="examination" id="1214">surveillance.covid19.followup.pulseoximetry</permission>
+        <permission type="examination" id="1215">occup.chugtoutpatientfile</permission>
     </application>
     <application type="Web" id="newexaminations">
         <permission type="web" id="globalexaminations">examinations.global</permission>
@@ -252,17 +256,96 @@
         <permission type="web" id="queues">adt.queues</permission>
         <permission type="web" id="filetracking">adt.filetracking</permission>
         <permission type="web" id="generateanonymousticket">adt.generateanonymousticket</permission>
+        <permission type="web" id="deceasedpatient">deceasedpatient</permission>
     </application>
     <application type="Web" id="nursing">
         <permission type="web" id="nursing">nursing</permission>
     </application>
     <application type="Web" id="statistics">
         <permission type="web" id="statistics">statistics</permission>
-        <permission type="web" id="statistics.globalpathologydistribution">statistics.globalpathologydistribution</permission>
+        <permission type="web" id="statistics.globalpathology">statistics.globalpathology</permission>
         <permission type="web" id="statistics.episodesperdepartment">statistics.episodesperdepartment</permission>
         <permission type="web" id="statistics.servicetransactions">statistics.servicetransactions</permission>
         <permission type="web" id="statistics.chin">statistics.chin</permission>
         <permission type="web" id="statistics.quickdiagnosisentry">statistics.quickdiagnosisentry</permission>
+        <permission type="web" id="statistics.oldandnewcases">statistics.oldandnewcases</permission>
+        <permission type="web" id="statistics.newpatients">statistics.newpatients</permission>
+        <permission type="web" id="statistics.agedistribution">statistics.agedistribution</permission>
+        <permission type="web" id="statistics.quickdiagnosisentry">statistics.quickdiagnosisentry</permission>
+        <permission type="web" id="statistics.mortality">statistics.mortality</permission>
+        <permission type="web" id="statistics.diagnosislist">statistics.diagnosislist</permission>
+        <permission type="web" id="statistics.download.undelivered.rwamaterial.orders">statistics.download.undelivered.rwamaterial.orders</permission>
+        <permission type="web" id="statistics.lab">statistics.lab</permission>
+        <permission type="web" id="statistics.lab.extraction">statistics.lab.extraction</permission>
+        <permission type="web" id="statistics.activitystats.database">statistics.activitystats.database</permission>
+        <permission type="web" id="statistics.activitystats.diagnosticcoding">statistics.activitystats.diagnosticcoding</permission>
+        <permission type="web" id="statistics.activitystats.encountercoding">statistics.activitystats.encountercoding</permission>
+        <permission type="web" id="statistics.activitystats.recordviewing">statistics.activitystats.recordviewing</permission>
+        <permission type="web" id="statistics.activitystats.transactionviewing">statistics.activitystats.transactionviewing</permission>
+        <permission type="web" id="statistics.insurancestats.distribution">statistics.insurancestats.distribution</permission>
+        <permission type="web" id="statistics.incomeventilationperfamily">statistics.incomeventilationperfamily</permission>
+        <permission type="web" id="statistics.incomeventilationpercategoryandservice">statistics.incomeventilationpercategoryandservice</permission>
+        <permission type="web" id="statistics.incomeventilationperperformer">statistics.incomeventilationperperformer</permission>
+        <permission type="web" id="statistics.paymentrate">statistics.paymentrate</permission>
+        <permission type="web" id="statistics.extractspt">statistics.extractspt</permission>
+        <permission type="web" id="statistics.patientslist.visits">statistics.patientslist.visits</permission>
+        <permission type="web" id="statistics.patientslist.admissions">statistics.patientslist.admissions</permission>
+        <permission type="web" id="statistics.patientslist.summary">statistics.patientslist.summary</permission>
+        <permission type="web" id="statistics.hospitalstats.global">statistics.hospitalstats.global</permission>
+        <permission type="web" id="statistics.servicestats.contacts">statistics.servicestats.contacts</permission>
+        <permission type="web" id="statistics.districtstats">statistics.districtstats</permission>
+        <permission type="web" id="statistics.servicetransactions">statistics.servicetransactions</permission>
+        <permission type="web" id="statistics.serviceepisodes">statistics.serviceepisodes</permission>
+        <permission type="web" id="statistics.hospitalizedpatients">statistics.hospitalizedpatients</permission>
+        <permission type="web" id="statistics.serviceincome">statistics.serviceincome</permission>
+        <permission type="web" id="statistics.diagnosespersituation">statistics.diagnosespersituation</permission>
+        <permission type="web" id="statistics.download.patients">statistics.download.patients</permission>
+        <permission type="web" id="statistics.download.global">statistics.download.global</permission>
+        <permission type="web" id="statistics.download.globalrfe">statistics.download.globalrfe</permission>
+        <permission type="web" id="statistics.download.encounterlist">statistics.download.encounterlist</permission>
+        <permission type="web" id="statistics.download.diagnosislist">statistics.download.diagnosislist</permission>
+        <permission type="web" id="statistics.download.rfelist">statistics.download.rfelist</permission>
+        <permission type="web" id="statistics.download.documentlist">statistics.download.documentlist</permission>
+        <permission type="web" id="statistics.download.userlist">statistics.download.userlist</permission>
+        <permission type="web" id="statistics.download.servicelist">statistics.download.servicelist</permission>
+        <permission type="web" id="statistics.download.debetlist">statistics.download.debetlist</permission>
+        <permission type="web" id="statistics.download.debetlist.per.encounter">statistics.download.debetlist.per.encounter</permission>
+        <permission type="web" id="statistics.download.prestationlist">statistics.download.prestationlist</permission>
+        <permission type="web" id="statistics.download.wicketcredits">statistics.download.wicketcredits</permission>
+        <permission type="web" id="statistics.download.labresults">statistics.download.labresults</permission>
+        <permission type="web" id="statistics.download.imagingresults">statistics.download.imagingresults</permission>
+        <permission type="web" id="statistics.download.invoicessummary">statistics.download.invoicessummary</permission>
+        <permission type="web" id="statistics.download.pbfburundi">statistics.download.pbfburundi</permission>
+        <permission type="web" id="statistics.download.pbfburundi.admissions">statistics.download.pbfburundi.admissions</permission>
+        <permission type="web" id="statistics.download.pbfburundi.surgerylist">statistics.download.pbfburundi.surgerylist</permission>
+        <permission type="web" id="statistics.download.pbfburundi.deliverieslist">statistics.download.pbfburundi.deliverieslist</permission>
+        <permission type="web" id="statistics.download.pbfburundi.labhiv">statistics.download.pbfburundi.labhiv</permission>
+        <permission type="web" id="statistics.download.pbfburundi.tb">statistics.download.pbfburundi.tb</permission>
+        <permission type="web" id="statistics.download.pbfburundi.familyplanninglist">statistics.download.pbfburundi.familyplanninglist</permission>
+        <permission type="web" id="statistics.download.insurer.userlist">statistics.download.insurer.userlist</permission>
+        <permission type="web" id="statistics.download.vida">statistics.download.vida</permission>
+        <permission type="web" id="cnrkr.consultation.activitylist">cnrkr.consultation.activitylist</permission>
+        <permission type="web" id="cnrkr.kine.activitylist">cnrkr.kine.activitylist</permission>
+        <permission type="web" id="statistics.download.serviceincomelist">statistics.download.serviceincomelist</permission>
+        <permission type="web" id="statistics.toinvoicelists">statistics.toinvoicelists</permission>
+        <permission type="web" id="statistics.openinvoicelists">statistics.openinvoicelists</permission>
+        <permission type="web" id="statistics.closednonzeroinvoicelists">statistics.closednonzeroinvoicelists</permission>
+        <permission type="web" id="statistics.canceledinvoicelists">statistics.canceledinvoicelists</permission>
+        <permission type="web" id="statistics.issuedinsurerinvoices">statistics.issuedinsurerinvoices</permission>
+        <permission type="web" id="statistics.userinvoices">statistics.userinvoices</permission>
+        <permission type="web" id="statistics.mfpsummary">statistics.mfpsummary</permission>
+        <permission type="web" id="statistics.mfpunsignedinvoices">statistics.mfpunsignedinvoices</permission>
+        <permission type="web" id="statistics.mfpacceptedunsignedinvoices">statistics.mfpacceptedunsignedinvoices</permission>
+        <permission type="web" id="statistics.mfpunvalidatedinvoices">statistics.mfpunvalidatedinvoices</permission>
+        <permission type="web" id="nationalreport">nationalreport</permission>
+        <permission type="web" id="dhis2report">dhis2report</permission>
+        <permission type="web" id="statistics.activitystats.corestats">statistics.activitystats.corestats</permission>
+        <permission type="web" id="chin.global.hospital.report">chin.global.hospital.report</permission>
+        <permission type="web" id="chin.minisantereport.health.center">chin.minisantereport.health.center</permission>
+        <permission type="web" id="chin.minisantereport.district.hospital">chin.minisantereport.district.hospital</permission>
+        <permission type="web" id="statistics.activitystats.jasperreports">statistics.activitystats.jasperreports</permission>
+        <permission type="web" id="chin.actualsituation">chin.actualsituation</permission>
+        <permission type="web" id="chin.healthnet">chin.healthnet</permission>
     </application>
     <application type="Web" id="medication">
         <permission type="web" id="medicationschema">medication.medicationschema</permission>

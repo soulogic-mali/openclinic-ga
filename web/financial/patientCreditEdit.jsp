@@ -1,3 +1,4 @@
+<%@page import="java.math.BigDecimal"%>
 <%@page import="be.openclinic.mobilemoney.MobileMoney"%>
 <%@page import="be.openclinic.adt.Encounter,
                 be.openclinic.finance.*,
@@ -126,6 +127,61 @@
         credit.setCurrency(sEditCreditCurrency);
         credit.setPatientUid(MedwanQuery.getInstance().getConfigString("serverId")+"."+adminPerson.personid);
         credit.store();
+        
+        if(SH.c(sEditCreditInvoiceUid).split("\\.").length==2){
+		    PatientInvoice pi = PatientInvoice.get(sEditCreditInvoiceUid);
+		    double dBalance=pi.getBalance();
+		    System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD "+dBalance);
+		    if (dBalance < 0) {
+				Encounter encounter = Encounter.getActiveEncounter(pi.getPatientUid());
+				if(encounter==null){
+					encounter = Encounter.getLastEncounter(pi.getPatientUid());
+				}
+		
+		        double dCredit = dBalance;
+		        dBalance = 0;
+		        PatientCredit patientcredit = new PatientCredit();
+		        patientcredit.setAmount(dCredit * (-1));
+		        patientcredit.setEncounterUid(encounter==null?"":encounter.getUid());
+		        patientcredit.setDate(ScreenHelper.getSQLDate(getDate()));
+		        patientcredit.setType("transfer.de.credit");
+		        patientcredit.setUpdateDateTime(ScreenHelper.getSQLDate(getDate()));
+		        patientcredit.setUpdateUser(activeUser.userid);
+		        patientcredit.store();
+		        credit.setAmount(credit.getAmount()+dCredit);
+		        credit.store();
+			    System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX "+patientcredit.getUid());
+				
+		        String sCreditUid;
+		        double dTmpCredits = 0,dTotalDebets=pi.getTotalAmount();
+		        boolean paymentCovered=false;
+				
+		        for (int i = 0; i < pi.getCredits().size(); i++) {
+		            sCreditUid = checkString((String) pi.getCredits().elementAt(i));
+		
+		            if (sCreditUid.length() > 0) {
+		                credit = PatientCredit.get(sCreditUid);
+		
+		                if (credit != null) {
+		                    dTmpCredits += credit.getAmount();
+		                    if (dTmpCredits > dTotalDebets) {
+		                        if(!paymentCovered){
+		                        	credit.setAmount(new BigDecimal("" + (credit.getAmount() - (dTmpCredits - dTotalDebets))).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		                        }
+		                        else {
+		                        	credit.setAmount(0);
+		                        }
+		                        credit.store();
+		                        paymentCovered=true;
+		                    }
+		                }
+		            }
+		        }
+		    }
+		    pi.setBalance(dBalance);
+		    pi.store();
+        }
+        
 		String wicketCreditUid="";
         msg = getTran(request,"web","dataIsSaved",sWebLanguage);
 
@@ -182,29 +238,6 @@
     				PatientInvoice linkedInvoice = PatientInvoice.get(sEditCreditInvoiceUid);
     				if(linkedInvoice!=null && checkString(linkedInvoice.getUid()).split("\\.").length==2){
     					linkedInvoice.createProductionOrders();
-    					/*
-    					Vector debets = linkedInvoice.getDebets();
-    					for(int n=0;n<debets.size();n++){
-    						Debet debet = (Debet)debets.elementAt(n);
-    						Prestation prestation = debet.getPrestation();
-    						if(prestation.getProductionOrder().trim().length()>0){
-    							//Check if the value of the paid sum >= minimum payment
-    							if(linkedInvoice.getAmountPaid()>=debet.getAmount()*prestation.getProductionOrderPaymentLevel()/100){
-    								if(ProductionOrder.getProductionOrders(null,null,debet.getUid(),null,null).size()==0){
-        								//Add the target productstockuid to the candidate production orders
-        								ProductionOrder productionOrder = new ProductionOrder();
-        								productionOrder.setCreateDateTime(debet.getDate());
-        								productionOrder.setPatientUid(Integer.parseInt(activePatient.personid));
-        								productionOrder.setTargetProductStockUid(prestation.getProductionOrder());
-        								productionOrder.setDebetUid(debet.getUid());
-        								productionOrder.setUpdateDateTime(new java.sql.Timestamp(new java.util.Date().getTime()));
-        								productionOrder.setUpdateUid(Integer.parseInt(activeUser.userid));
-        								productionOrder.store();
-    								}
-    							}
-    						}
-    					}
-    					*/
     				}
     			}
            	}

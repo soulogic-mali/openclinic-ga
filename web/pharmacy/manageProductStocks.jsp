@@ -6,6 +6,7 @@
 <%@page errorPage="/includes/error.jsp"%>
 <%=checkPermission(out,"pharmacy.manageproductstocks","all",activeUser)%>
 <%=sJSSORTTABLE%>
+<%=sJSPROTOTYPE %>
 
 <%!
     //--- OBJECTS TO HTML (layout 1) --------------------------------------------------------------
@@ -373,7 +374,10 @@
 
     // external data
     String sServiceId = checkString(request.getParameter("ServiceId"));
-
+	
+    if(sAction.equalsIgnoreCase("showDetailsNew")){
+    	sEditStockUid="-1";
+    }
     /// DEBUG /////////////////////////////////////////////////////////////////////////////////////
     if(Debug.enabled){
         Debug.println("\n******************** pharmacy/manageProductStocks.jsp *******************");
@@ -1096,7 +1100,7 @@
                     
                     <%-- Product --%>
 	                <tr class="gray">
-                        <td colspan="2">&nbsp;<%=getTran(request,"Web","productstockid",sWebLanguage)%>: <%=sEditStockUid %></td>
+                        <td colspan="2">&nbsp;<%=getTran(request,"Web","productstockid",sWebLanguage)%>: <%=sEditStockUid.equalsIgnoreCase("-1")?"":sEditStockUid %></td>
                     </tr>
                     <tr>
                         <td class="admin" width="<%=sTDAdminWidth%>" nowrap><%=getTran(request,"Web","product",sWebLanguage)%> *</td>
@@ -1202,7 +1206,21 @@
                             <input class="text" type="text" name="EditLocation" id="EditLocation" size="<%=sTextWidth%>" value="<%=sSelectedLocation%>">
                         </td>
                     </tr>
-                    
+                    <%if(!sEditStockUid.equals("-1")){ %>
+	                    <tr>
+	                        <td class="admin" nowrap><%=getTran(request,"Web","pharmacy.kit",sWebLanguage)%></td>
+	                        <td class="admin2">
+	                        	<input type='text' class='text' size='2' name='EditSourceProductStockQuantity' id='EditSourceProductStockQuantity' value='0'/> x
+					            <input type="hidden" name="EditSourceProductStockUid" id="EditSourceProductStockUid">
+					            <input type="text" size="80" class="text" name="EditSourceProductStockName" id="EditSourceProductStockName"/>
+					            <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("Web","select",sWebLanguage)%>" onclick="searchProductStock('EditSourceProductStockUid','EditSourceProductStockName');">
+					            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="transactionForm.EditSourceProductStockUid.value='';transactionForm.EditSourceProductStockName.value='';">
+	                            <input type='button' class='button' name='addKitButton' value='<%=getTranNoLink("web","add",sWebLanguage) %>' onclick='addToKit();'/>
+	                            <div id='divKit'/>
+	                        </td>
+	                    </tr>
+                    <%} %>
+
                     <%-- EDIT BUTTONS --%>
                     <tr>
                         <td class="admin">&nbsp;</td>
@@ -1277,6 +1295,51 @@
       }
   %>
 
+	function searchProductStock(productStockUidField,productStockNameField){
+    	openPopup("/_common/search/searchProductStock2.jsp&ts=<%=getTs()%>&PopupWidth=600&PopupHeight=400&ReturnProductStockUidField="+productStockUidField+"&ReturnProductStockNameField="+productStockNameField);
+  	}
+	
+	function addToKit(){
+		if(document.getElementById('EditSourceProductStockQuantity').value*1>0 && document.getElementById('EditSourceProductStockUid').value.length>0){
+		    var url = '<c:url value="/pharmacy/ajax/addSourceProductToKit.jsp"/>?EditTargetProductStockUid=<%=sEditStockUid%>&EditSourceProductStockQuantity='+document.getElementById("EditSourceProductStockQuantity").value+'&EditSourceProductStockUid='+document.getElementById("EditSourceProductStockUid").value+'&ts='+new Date();
+		    new Ajax.Request(url,{
+		      method: "POST",
+		      parameters: "",
+		      onSuccess: function(resp){
+		    	  document.getElementById('EditSourceProductStockUid').value='';
+		    	  document.getElementById('EditSourceProductStockName').value='';
+		    	  loadKitProducts();
+		      }
+		    });
+		}
+	}
+	
+	function loadKitProducts(){
+		if(document.getElementById('divKit')){
+			document.getElementById('divKit').innerHTML='<img src="<%=sCONTEXTPATH%>/_img/themes/default/ajax-loader.gif"/>';
+		    var url = '<c:url value="/pharmacy/ajax/loadKitProducts.jsp"/>?EditTargetProductStockUid=<%=sEditStockUid%>&ts='+new Date();
+		    new Ajax.Request(url,{
+		      method: "POST",
+		      parameters: "",
+		      onSuccess: function(resp){
+		    	  document.getElementById('divKit').innerHTML=resp.responseText;
+		      }
+		    });
+		}
+	}
+	
+	function deleteKitProduct(id){
+		if(window.confirm('<%=getTranNoLink("web","areyousuretodelete",sWebLanguage)%>')){
+		    var url = '<c:url value="/pharmacy/ajax/removeProductFromKit.jsp"/>?EditTargetProductStockUid=<%=sEditStockUid%>&EditSourceProductStockUid='+id+'&ts='+new Date();
+		    new Ajax.Request(url,{
+		      method: "POST",
+		      parameters: "",
+		      onSuccess: function(resp){
+		    	  loadKitProducts();
+		      }
+		    });
+		}
+	}
   <%-- DO ADD --%>
   function doAdd(){
     transactionForm.EditStockUid.value = "-1";
@@ -1710,4 +1773,6 @@
       var url = "<c:url value='/pharmacy/createInventoryUpdatePdf.jsp'/>?serviceStockUid=<%=sEditServiceStockUid%>&printall=1";
       printwindow=window.open(url,"createInventoryUpdatePdf<%=new java.util.Date().getTime()%>","height=300,width=400,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
   }
+  
+  window.setTimeout("loadKitProducts();",250);
 </script>

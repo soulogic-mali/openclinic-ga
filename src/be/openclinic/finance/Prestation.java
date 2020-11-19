@@ -891,7 +891,13 @@ public class Prestation extends OC_Object{
             	dInsurarAmount = dInsuranceMaxPrice;
            		dPatientAmount = dPrice - dInsurarAmount;
             }
-            dPatientAmount+= getSupplement();
+            if(insurance.getInsurar().getNoSupplements()==1 || insurance.getInsurar().getCoverSupplements()==0) {
+            	dPatientAmount+= getSupplement();
+            }
+            else {
+            	dPatientAmount+= getSupplement() * Double.parseDouble(sShare) / 100;
+            	dInsurarAmount+= getSupplement() * (100-Double.parseDouble(sShare))/100;
+            }
         }
         
         return dPatientAmount;
@@ -912,7 +918,13 @@ public class Prestation extends OC_Object{
            		dPatientAmount=dPrice - dInsurarAmount;
             }
             
-            dPatientAmount+=getSupplement();
+            if(insurance.getInsurar().getNoSupplements()==1 || insurance.getInsurar().getCoverSupplements()==0) {
+            	dPatientAmount+= getSupplement();
+            }
+            else {
+            	dPatientAmount+= getSupplement() * Double.parseDouble(sShare) / 100;
+            	dInsurarAmount+= getSupplement() * (100-Double.parseDouble(sShare))/100;
+            }
         }
         
         return dInsurarAmount;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application>
-	<version major="5" minor="174" bug="1" date="02/11/2020"/>
+	<version major="5" minor="176" bug="7" date="19/11/2020"/>
 	<integrityChecks>
 		<integrityCheck className="be.mxs.common.util.diagnostics.CleanHealthRecord"/>
 		<integrityCheck className="be.mxs.common.util.diagnostics.CleanUsers"/>

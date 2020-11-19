@@ -66,18 +66,22 @@
     <%
     	}
     %>
+    <tr id='trMsg'><td colspan='2'></td></tr>
     <tr>
         <td class="admin"><%=getTran(request,"web","service",sWebLanguage)%> *</td>
         <td class='admin2' nowrap>
         	<input type='hidden' name='encounteruid' id='encounteruid' value='<%=encounteruid %>'/>
             <input type="hidden" name="EditEncounterService" id="EditEncounterService" value="<%=encounterservice%>"/>
             <input class="text" type="text" name="EditEncounterServiceName" id="EditEncounterServiceName" value="<%=encounterservicename%>" readonly size="50"/>
-            <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTran(null,"web","select",sWebLanguage)%>" onclick="searchService('EditEncounterService','EditEncounterServiceName');">
-            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTran(null,"web","clear",sWebLanguage)%>" onclick="EditEncounterService.value='';EditEncounterServiceName.value='';">
+            <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" title="<%=getTran(null,"web","select",sWebLanguage)%>" onclick="searchService('EditEncounterService','EditEncounterServiceName');">
+            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" title="<%=getTran(null,"web","clear",sWebLanguage)%>" onclick="EditEncounterService.value='';EditEncounterServiceName.value='';">
+            <%if(SH.c(encounteruid).length()>0){ %>
+            	<img id='imgCloseEncounter' src="<c:url value="/_img/icons/icon_locked.png"/>" class="link" title="<%=getTran(null,"web","close",sWebLanguage)%>" onclick="closeEncounter();">
+            <%} %>
         </td>
     </tr>
     <tr>
-        <td class="admin"><%=getTran(request,"web","manager",sWebLanguage)%> *</td>
+        <td class="admin"><%=getTran(request,"web","manager",sWebLanguage)%></td>
         <td class="admin2" nowrap>
             <input type="hidden" name="EditEncounterManager" id="EditEncounterManager" value="<%=encountermanager%>">
             <input class="text" type="text" name="EditEncounterManagerName" id="EditEncounterManagerName" readonly size="50" value="<%=encountermanagername%>">
@@ -133,10 +137,10 @@
   	}
 	
 	function doPayment(){
-		if(	document.getElementById("wicketuid").value.length==0||
+		if(	document.getElementById("prestationlist").innerHTML.length<40 ||
+			document.getElementById("wicketuid").value.length==0||
 			document.getElementById("EditEncounterService").value.length==0||
 			document.getElementById("EditEncounterType").value.length==0||
-			document.getElementById("EditEncounterManager").value.length==0||
 			document.getElementById("EditEncounterOrigin").value.length==0){
 			alert('<%=getTranNoLink("web","datamissing",sWebLanguage)%>');
 		}
@@ -184,5 +188,30 @@
     function searchManager(managerUidField,managerNameField){
       openPopup("/_common/search/searchUser.jsp&ts=<%=getTs()%>&ReturnUserID="+managerUidField+"&ReturnName="+managerNameField+"&displayImmatNew=no&FindServiceID="+document.getElementById("EditEncounterService").value+"&FindServiceName="+document.getElementById("EditEncounterServiceName").value);
       EditEncounterForm.EditEncounterManagerName.focus();
+    }
+    
+    function closeEncounter(){
+	    var url= '<c:url value="/curative/ajax/closeEncounter.jsp"/>?ts='+new Date();
+	    var params = 'encounteruid='+document.getElementById('encounteruid').value;
+	    new Ajax.Request(url,{
+		  method: "POST",
+	      parameters: params,
+	      onSuccess: function(resp){
+	    	  if((resp.responseText).indexOf('<CLOSED>')>-1){
+		    	  document.getElementById('encounteruid').value='';
+		    	  document.getElementById('EditEncounterService').value='';
+		    	  document.getElementById('EditEncounterServiceName').value='';
+		    	  document.getElementById('EditEncounterManager').value='';
+		    	  document.getElementById('EditEncounterManagerName').value='';
+		    	  document.getElementById('EditEncounterType').value='';
+		    	  document.getElementById('EditEncounterOrigin').value='';
+		    	  document.getElementById('imgCloseEncounter').style.display='none';
+		    	  document.getElementById('trMsg').innerHTML='<td colspan="2"><font style="font-weight: bold;color: red"><%=getTran(request,"web","encountermustbecreated",sWebLanguage) %></font></td>';
+	    	  }
+	      },
+		  onFailure: function(){
+		    alert('error');
+	      }
+	    });
     }
 </script>

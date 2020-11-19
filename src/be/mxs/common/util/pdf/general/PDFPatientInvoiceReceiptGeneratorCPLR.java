@@ -17,6 +17,7 @@ import be.mxs.common.util.system.ScreenHelper;
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.io.ExportSAP_AR_INV;
 import be.openclinic.finance.*;
+import be.openclinic.system.SH;
 import be.openclinic.adt.Encounter;
 import net.admin.*;
 
@@ -123,6 +124,9 @@ public class PDFPatientInvoiceReceiptGeneratorCPLR extends PDFInvoiceGenerator {
 	            		service=debet.getService().getLabel(sPrintLanguage);
 	            	}
 		            if(service!=null){
+		            	if(SH.c(debet.getEncounter().getManagerUID()).length()>0) {
+		            		service+=" ["+debet.getEncounter().getManager().person.getFullName()+"]";
+		            	}
 		            	services.put(service, "1");
 		            }
 	            	if(debet.getInsurance()!=null && debet.getInsurance().getInsurar()!=null){

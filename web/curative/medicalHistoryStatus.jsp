@@ -24,6 +24,7 @@ try{
         <tr class="admin">
             <td>
                 <%=getTran(request,"curative","clinicaldocuments.status.title",sWebLanguage)%>&nbsp;
+                <%if(activePatient.isDead()==null || activeUser.getAccessRightNoSA("deceasedpatient.add")){ %>
                 <a href="javascript:newExamination();"><img height='16px' style='vertical-align: middle' src="<c:url value='/_img/icons/icon_newpage.png'/>" class="link" alt="<%=getTranNoLink("web","manageExaminations",sWebLanguage)%>" style="vertical-align: middle"></a>
 				<%if(MedwanQuery.getInstance().getConfigString("quickTransaction1."+activeUser.userid,"").length()>0){ %>
                     <a href="javascript:newFastTransaction('<%=MedwanQuery.getInstance().getConfigString("quickTransaction1."+activeUser.userid)%>');"><img height='20px' style='vertical-align: middle'  src="<c:url value='/_img/icons/icon_new1.png'/>" class="link" title="<%=getTranNoLink("web.occup",MedwanQuery.getInstance().getConfigString("quickTransaction1."+activeUser.userid).split("\\&")[0],sWebLanguage)%>" style="vertical-align:-4px;"></a>
@@ -39,7 +40,8 @@ try{
                 <%} %>
 				<%if(MedwanQuery.getInstance().getConfigString("quickTransaction5."+activeUser.userid,"").length()>0){ %>
                     <a href="javascript:newFastTransaction('<%=MedwanQuery.getInstance().getConfigString("quickTransaction5."+activeUser.userid)%>');"><img height='20px' style='vertical-align: middle'  src="<c:url value='/_img/icons/icon_new5.png'/>" class="link" title="<%=getTranNoLink("web.occup",MedwanQuery.getInstance().getConfigString("quickTransaction5."+activeUser.userid).split("\\&")[0],sWebLanguage)%>" style="vertical-align:-4px;"></a>
-                <%} %>
+                <%}
+				  }%>
             </td>
         </tr>
 

@@ -28,7 +28,6 @@
 <%!
     //--- OBJECTS TO HTML -------------------------------------------------------------------------
     private StringBuffer objectsToHtml(Vector objects, String sWebLanguage, User activeUser, HttpServletRequest request){
-	System.out.println("--C.1");
 	StringBuffer html = new StringBuffer();
         String sClass = "1", sDateBeginFormatted, sDateEndFormatted, sProductName = "", sProductUid,
                sPreviousProductUid = "", sTimeUnit, sTimeUnitCount, sUnitsPerTimeUnit, sPrescrRule = "",
@@ -41,14 +40,12 @@
         // frequently used translations
         String detailsTran = getTranNoLink("web","showdetails",sWebLanguage),
                deleteTran  = getTranNoLink("Web","delete",sWebLanguage);
-    	System.out.println("--C.2");
 
         // run thru found prescriptions
         Hashtable productDeliveries = new Hashtable();
         Prescription prescr;
         for(int i=0; i<objects.size(); i++){
         	try{
-        	System.out.println("--C.3");
             prescr = (Prescription) objects.get(i);
             // format date begin
             tmpDate = prescr.getBegin();
@@ -59,7 +56,6 @@
             tmpDate = prescr.getEnd();
             if(tmpDate!=null) sDateEndFormatted = ScreenHelper.formatDate(tmpDate);
             else sDateEndFormatted = "";
-        	System.out.println("--C.4");
 
             // only search product-name when different product-UID
             sProductUid = prescr.getProductUid();
@@ -74,7 +70,6 @@
                     sProductName = "<font color='red'>"+getTran(null,"web","nonexistingproduct",sWebLanguage)+"</font>";
                 }
             }
-        	System.out.println("--C.5");
 
             //*** compose prescriptionrule (gebruiksaanwijzing) ***
             // unit-stuff
@@ -108,8 +103,6 @@
                 }
                 sPrescrRule = sPrescrRule.replaceAll("#timeunit#",timeUnitTran.toLowerCase());
             }
-        	System.out.println("--C.6");
-
             // supplying service name
             sSupplyingServiceUid = checkString(prescr.getSupplyingServiceUid());
             if(sSupplyingServiceUid.length() > 0){
@@ -128,33 +121,24 @@
             else{
                 sServiceStockName = "";
             }
-        	System.out.println("--C.7");
 
             // alternate row-style
             if(sClass.equals("")) sClass = "1";
             else                  sClass = "";
             double deliveredQuantity=prescr.getDeliveredQuantity();
-        	System.out.println("--C.7.1");
-        	System.out.println("--C.7.1a="+prescr.getBegin());
-        	System.out.println("--C.7.1b="+prescr.getPatientUid());
-        	System.out.println("--C.7.1c="+prescr.getProductUid());
-        	System.out.println("--C.7.1d="+prescr.getServiceStockUid());
             Encounter activeEncounter= Encounter.getActiveEncounterOnDate(new java.sql.Timestamp(prescr.getBegin().getTime()), prescr.getPatientUid());
             boolean available = Product.isInStock(prescr.getProductUid(),prescr.getServiceStockUid());
             double openQuantity = prescr.getRequiredPackages() - deliveredQuantity;
-        	System.out.println("--C.7.2");
             if(openQuantity<0 || (prescr.getEnd()!=null && prescr.getEnd().before(ScreenHelper.parseDate(ScreenHelper.formatDate(new java.util.Date()))))){
                 openQuantity = 0;
             }
             deliveredQuantity-=prescr.getRequiredPackages();
-        	System.out.println("--C.7.3");
             if(deliveredQuantity<0){
             	deliveredQuantity=0;
             }
 			if(activeEncounter!=null){
 	            productDeliveries.put(activeEncounter.getUid()+"."+prescr.getProductUid(),deliveredQuantity);
 			}
-        	System.out.println("--C.7.4");
 			if(checkString(request.getParameter("showDiagnosis")).equalsIgnoreCase("1")){
 				sAuthorized = "";
 				if(checkString(prescr.getDiagnosisUid()).length()>0){
@@ -164,18 +148,17 @@
 					}
 				}
 			}
-			System.out.println("--C.8");
             //*** display prescription in one row ***
             html.append("<tr class='list"+sClass+"' onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\" title='"+detailsTran+"'>")
                  .append("<td>"+(((prescr==null || (prescr!=null && prescr.getDeliveredQuantity()==0))) && (activeUser.getAccessRight("prescriptions.drugs.delete"))?"<img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' border='0' title='"+deleteTran+"' onclick=\"doDelete('"+prescr.getUid()+"');\">":"")+"</td>")
-                 .append("<td onclick=\"doShowDetails('"+prescr.getUid()+"');\"><b>"+sProductName.toUpperCase()+"</b></td>")
+                 .append("<td><input "+(openQuantity>0?"checked":"")+" type='checkbox' class='text' name='"+prescr.getProduct().getName()+"' id='cb_"+prescr.getUid()+"'/><span onclick=\"doShowDetails('"+prescr.getUid()+"');\"><b>"+sProductName.toUpperCase()+"</b></span></td>")
                  .append("<td onclick=\"doShowDetails('"+prescr.getUid()+"');\">"+sDateBeginFormatted+"</td>")
                  .append("<td onclick=\"doShowDetails('"+prescr.getUid()+"');\">"+sDateEndFormatted+"</td>")
                  .append("<td onclick=\"doShowDetails('"+prescr.getUid()+"');\">"+sAuthorized+"</td>")
                  .append("<td onclick=\"doShowDetails('"+prescr.getUid()+"');\">"+User.getFullUserName(prescr.getPrescriberUid())+"</td>")
                  .append("<td onclick=\"doShowDetails('"+prescr.getUid()+"');\">"+sPrescrRule.toLowerCase()+"</td>")
                  .append("<td onclick=\"doShowDetails('"+prescr.getUid()+"');\">"+(prescr.getRequiredPackages()-openQuantity)+"</td>")
-                 .append("<td  onclick=\"doShowDetails('"+prescr.getUid()+"');\" "+(openQuantity>0?" bgcolor='#ff9999'":"")+"><font style='color: black;'>"+openQuantity+"</font></a></td>")
+                 .append("<td onclick=\"doShowDetails('"+prescr.getUid()+"');\" "+(openQuantity>0?" bgcolor='#ff9999'":"")+"><font style='color: black;'>"+openQuantity+"</font></a></td>")
                 .append("</tr>");
         	}
         	catch(Exception a){
@@ -187,7 +170,6 @@
 		//Excess deliveries
 		boolean bInit=false;
 		Enumeration eDeliveries = productDeliveries.keys();
-		System.out.println("--C.9");
 		while(eDeliveries.hasMoreElements()){
 			String key = (String)eDeliveries.nextElement();
 			double quantity = (Double)productDeliveries.get(key);
@@ -210,7 +192,6 @@
                .append("</tr>");
 			}
 		}
-		System.out.println("--C.10");
         return html;
     }
 %>
@@ -218,7 +199,6 @@
 <%
     String sDefaultSortCol = "OC_PRESCR_BEGIN",
            sDefaultSortDir = "DESC";
-System.out.println("--1");
     String sAction = checkString(request.getParameter("Action"));
 
     // retreive form data
@@ -243,7 +223,6 @@ System.out.println("--1");
     if(sDispensingStockUID.length()>0){
     	session.setAttribute("activeDispensingStock", sDispensingStockUID);
     }
-    System.out.println("--2");
 
     double originalQuantity=0;
 
@@ -280,7 +259,6 @@ System.out.println("--1");
     if(sTime6.length() > 0){
         prescriptionSchema.getTimequantities().add(new KeyValue(sTime6,sQuantity6));
     }
-    System.out.println("--3");
 
     // afgeleide data
     String sEditPatientFullName      = checkString(request.getParameter("EditPatientFullName")),
@@ -324,7 +302,6 @@ System.out.println("--1");
     StringBuffer prescriptionsHtml;
     //boolean patientIsHospitalized = (activePatient!=null && activePatient.isHospitalized());
     boolean displayEditFields = false;
-    System.out.println("--4");
 
     //*********************************************************************************************
     //*** process actions *************************************************************************
@@ -406,7 +383,6 @@ System.out.println("--1");
         msg = getTran(request,"web","dataisdeleted",sWebLanguage);
         out.println("<script>isModified=true;</script>");
     }
-    System.out.println("--5");
 
     //--- SHOW DETAILS ----------------------------------------------------------------------------
     if(sAction.startsWith("showDetails")){
@@ -506,7 +482,6 @@ System.out.println("--1");
             sSelectedTimeUnitCount = "1";
         }
     }
-    System.out.println("--6");
 
     // onclick : when editing, save, else search when pressing 'enter'
     String sOnKeyDown = "";
@@ -532,7 +507,6 @@ System.out.println("--1");
     if(sAction.startsWith("showDetails")){
         sCloseAction = "doBack();";
     }
-    System.out.println("--6.1");
 %>
 
 <form name="transactionForm" id="transactionForm" method="post" action="<c:url value='/'/>/popup.jsp?Page=medical/managePrescriptionsPopup.jsp&PopupHeight=400&PopupWidth=900" <%=sOnKeyDown%> onClick='setSaveButton(event);clearMessage();' onKeyUp='setSaveButton(event);'>
@@ -549,7 +523,6 @@ System.out.println("--1");
     //*************************************************************************************
 
     //--- EDIT FIELDS ---------------------------------------------------------------------
-    System.out.println("--6.2: "+displayEditFields);
     if(displayEditFields){
         DecimalFormat doubleFormat = new DecimalFormat("#.#");
 %>
@@ -567,7 +540,6 @@ System.out.println("--1");
 		<div id="autocomplete_prescription" class="autocomple"></div>
     </td>
 </tr>
-<%    System.out.println("--6.21"); %>
 <%-- ***** prescription-rule (dosage) ***** --%>
 <tr>
     <td class="admin"><%=getTran(request,"Web","prescriptionrule",sWebLanguage)%>&nbsp;*&nbsp;</td>
@@ -589,7 +561,6 @@ System.out.println("--1");
         <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" style="vertical-align:-4px;" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="clearDescriptionRule();">
     </td>
 </tr>
-<%    System.out.println("--6.22"); %>
 
 <%-- date begin --%>
 <tr>
@@ -601,7 +572,6 @@ System.out.println("--1");
         <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="transactionForm.EditDateBegin.value='';">
     </td>
 </tr>
-<%    System.out.println("--6.23"); %>
 
 <%-- date end --%>
 <tr>
@@ -618,7 +588,6 @@ System.out.println("--1");
 
 <%-- number of packages needed for this prescription --%>
 <%
-System.out.println("--6.3");
     // units per package
     String sUnitsPerPackage = "";
     Prescription prescr = null;
@@ -631,7 +600,6 @@ System.out.println("--6.3");
             }
         }
     }
-    System.out.println("--7");
 
 %>
 <tr>
@@ -764,7 +732,6 @@ System.out.println("--6.3");
 	    
 		%><input class="button" type="button" name="returnButton" value='<%=getTranNoLink("Web","back",sWebLanguage)%>' onclick="doBack();"><%
     }
-System.out.println("--8");
 
 %>
 <%=ScreenHelper.alignButtonsStop()%>
@@ -1037,7 +1004,6 @@ function isEndDateBeforeBeginDate(){
 </script>
 <%
     }
-    System.out.println("--9: "+sAction);
     //--- DISPLAY ACTIVE PRESCRIPTIONS (for activePatient) --------------------------------
     if(!sAction.startsWith("showDetails")){
         if("true".equalsIgnoreCase(request.getParameter("ServicePrescriptions"))){
@@ -1045,12 +1011,10 @@ function isEndDateBeforeBeginDate(){
 <table width="100%" cellspacing="0" cellpadding="0" class="list">
     <tbody class="hand">
         <%
-        System.out.println("--9.1");
             foundPrescrCount = 0;
             Vector services = Service.getChildIds(activeUser.activeService.code);
             services.add(activeUser.activeService.code);
             Vector activePatients;
-            System.out.println("--10");
            
             for(int s=0; s<services.size(); s++){
                 activePatients = AdminPerson.getPatientsAdmittedInService((String)services.elementAt(s));
@@ -1085,7 +1049,6 @@ function isEndDateBeforeBeginDate(){
                     }
                 }
             }
-            System.out.println("--11");
         %>
     </tbody>
 </table>
@@ -1106,12 +1069,9 @@ function isEndDateBeforeBeginDate(){
     }
 }
 else{
-    System.out.println("--A");
     Vector activePrescrs = Prescription.findActive(activePatient.personid,"","","","","","OC_PRESCR_BEGIN","DESC");
-    System.out.println("--A.1="+activePrescrs);
     prescriptionsHtml = objectsToHtml(activePrescrs,sWebLanguage,activeUser,request);
     foundPrescrCount = activePrescrs.size();
-    System.out.println("--B");
 
     if(foundPrescrCount > 0 || !"1".equals(request.getParameter("skipEmpty"))){
 %>
@@ -1152,7 +1112,6 @@ else{
 	        %><script>window.location.href = "<c:url value='/popup.jsp'/>?Page=medical/managePrescriptionsPopup.jsp&Action=showDetailsNew&Close=true&findProduct=true&ts=<%=getTs()%>&PopupHeight=400&PopupWidth=900";</script><%
 	    }
 	}
-        System.out.println("--12");
 
     if(msg.length() > 0){
         %>
@@ -1175,7 +1134,10 @@ else{
 <%=ScreenHelper.alignButtonsStart()%>
 	<%
 	    if(!"true".equalsIgnoreCase(request.getParameter("ServicePrescriptions")) && activeUser.getAccessRight("prescriptions.drugs.add")){
-	        %><input type="button" class="button" name="newButton" value="<%=getTranNoLink("Web","new",sWebLanguage)%>" onclick="doNew();"><%
+	        %>
+	        <input type="button" class="button" name="newButton" value="<%=getTranNoLink("Web","new",sWebLanguage)%>" onclick="doNew();">
+	        <input type="button" class="button" name="paperPrescriptionButton" value="<%=getTranNoLink("Web","prescription",sWebLanguage)%>" onclick="printPaperPrescription();">
+	        <%
 	    }
 	%>
 	<input type="button" class="button" name="closeButton" value="<%=getTranNoLink("Web","close",sWebLanguage)%>" onclick="window.close();">
@@ -1184,7 +1146,6 @@ else{
 <%
         }
     }
-            System.out.println("--13");
 %>
 
 <%-- hidden fields --%>
@@ -1192,6 +1153,10 @@ else{
 <input type="hidden" name="findProduct" id="findProduct">
 <input type="hidden" name="EditPrescrUid" id="EditPrescrUid" value="<%=sEditPrescrUid%>">
 <input type="hidden" name="DispensingStockUID" id="DispensingStockUID"/>
+</form>
+<form name="printPrescriptionForm" id="printPrescriptionForm" method="post" action="<c:url value='/'/>medical/createPrescriptionPdf.jsp">
+    <input type="hidden" name="prescriptiondate" id="prescriptiondate" value="<%=ScreenHelper.stdDateFormat.format(new java.util.Date())%>"/>
+    <input type="hidden" name="prescription" id="prescription" value=""/>
 </form>
 
 <%-- SCRIPTS ------------------------------------------------------------------------------------%>
@@ -1377,6 +1342,19 @@ function doDelete(prescriptionUid){
     transactionForm.Action.value = "delete";
     transactionForm.submit();
   }
+}
+
+function printPaperPrescription(){
+	  document.getElementById('prescription').value="";
+	  var elements = document.all;
+	  for(n=0;n<elements.length;n++){
+		  if(elements[n].id && elements[n].id.startsWith('cb_') && elements[n].checked){
+			  document.getElementById('prescription').value+='R/ '+elements[n].name+"\n\n";
+		  }
+	  }
+	  if(document.getElementById('prescription').value.length>0){
+		  document.getElementById('printPrescriptionForm').submit();
+	  }
 }
 
 <%-- DO NEW --%>

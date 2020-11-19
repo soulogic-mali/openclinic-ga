@@ -560,7 +560,7 @@ public abstract class PDFBasic {
         cell.setBorder(PdfPCell.BOX);
         cell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
         cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
-        cell.setBackgroundColor(new BaseColor(150,150,150)); // light gray
+        cell.setBackgroundColor(new BaseColor(200,200,200)); // light gray
 
         return cell;
     }
@@ -571,7 +571,7 @@ public abstract class PDFBasic {
         cell.setBorder(PdfPCell.BOX);
         cell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
         cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
-        cell.setBackgroundColor(new BaseColor(150,150,150)); // light gray
+        cell.setBackgroundColor(new BaseColor(200,200,200)); // light gray
 
         return cell;
     }
