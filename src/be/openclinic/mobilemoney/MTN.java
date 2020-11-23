@@ -126,7 +126,7 @@ public class MTN {
 		    	return paymentTransactionId;
 		    }
 		    else {
-		    	System.out.println(resp.getStatusLine().toString());
+			    	System.out.println(resp.getStatusLine().toString());
 		    }
 		}
 		catch(Exception e) {

@@ -8,7 +8,7 @@
 	if(sEditWicketOperationWicket.length()>0){
 		Wicket wicket = Wicket.get(sEditWicketOperationWicket);
 		if(wicket!=null){
-			dAvailable = wicket.getBalance();
+			dAvailable = wicket.calculateBalance(new java.util.Date());
 		}
 	}
 	if(sEditWicketOperationUID.length()>0){

@@ -97,6 +97,36 @@ public class PDFPatientInvoiceReceiptGeneratorCPLR extends PDFInvoiceGenerator {
 	    	table = new PdfPTable(50);
 	        table.setWidthPercentage(98);
 
+	        if(SH.ci("enablePatientInvoiceReceiptCPLRLogo",0)==1) {
+		        // logo
+		        try{
+		            Image img = Miscelaneous.getImage("JavaPOSImage1.gif",sProject);
+		            for(int n=0;n<debets.size();n++){
+		            	Debet debet = (Debet)debets.elementAt(n);
+		            	if(debet.getInsurance()!=null && debet.getInsurance().getInsurarUid()!=null && MedwanQuery.getInstance().getConfigString("insurancelogo."+debet.getInsurance().getInsurarUid(),"").length()>0){
+		            		img = Miscelaneous.getImage(MedwanQuery.getInstance().getConfigString("insurancelogo."+debet.getInsurance().getInsurarUid(),""),sProject);
+		            		break;
+		            	}
+		            }
+		            if(img==null){
+		                cell = createEmptyCell(10);
+		                table.addCell(cell);
+		            }
+		            else {
+		                img.scaleToFit(50,50);
+		                cell = new PdfPCell(img);
+		                cell.setBorder(PdfPCell.NO_BORDER);
+		                cell.setPadding(0);
+		                cell.setColspan(50);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+		                table.addCell(cell);
+		            }
+		        }
+		        catch (Exception e){
+		        	Debug.println("WARNING : PDFPatientInvoiceGenerator --> IMAGE NOT FOUND : logo_"+sProject+".gif");
+		            e.printStackTrace();
+		        }
+	        }
 	        cell = createBorderlessCell(ScreenHelper.getTranNoLink("web","javaposcentername",sPrintLanguage), 1,50,new Double(10*titleScaleFactor).intValue());
 	        cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
 	        table.addCell(cell);
@@ -358,13 +388,26 @@ public class PDFPatientInvoiceReceiptGeneratorCPLR extends PDFInvoiceGenerator {
 	        cell.setBorder(PdfPCell.NO_BORDER);
 	        table.addCell(cell);
 
-	        cell = createValueCell(user.person.getFullName().toUpperCase(), 40,new Double(7*scaleFactor).intValue(),Font.NORMAL);
-	        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	        table.addCell(cell);
+	        if(MedwanQuery.getInstance().getConfigInt("enablePatientReceiptPrintBy",0)==1){
+		        //Signature patient
+		        cell = createValueCell(ScreenHelper.getTranNoLink("web","printedby",sPrintLanguage)+": "+user.person.getFullName(), 50,new Double(7*scaleFactor).intValue(),Font.NORMAL);
+		        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		        table.addCell(cell);
 	
-	        cell = createValueCell(ScreenHelper.getTran(null,"web","thankyou",sPrintLanguage), 10,new Double(7*scaleFactor).intValue(),Font.NORMAL);
-	        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
-	        table.addCell(cell);
+		        cell=createValueCell("\r\n",50);
+		        cell.setBorder(PdfPCell.NO_BORDER);
+		        table.addCell(cell);
+	        }
+	        else {
+		        cell = createValueCell(user.person.getFullName().toUpperCase(), 40,new Double(7*scaleFactor).intValue(),Font.NORMAL);
+		        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		        table.addCell(cell);
+		
+		        cell = createValueCell(ScreenHelper.getTran(null,"web","thankyou",sPrintLanguage), 10,new Double(7*scaleFactor).intValue(),Font.NORMAL);
+		        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+		        table.addCell(cell);
+	        }
+
 
 	        cell=createValueCell("",50);
 	        cell.setBorder(PdfPCell.BOTTOM);

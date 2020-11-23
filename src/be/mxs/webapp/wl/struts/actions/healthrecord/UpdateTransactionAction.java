@@ -563,9 +563,13 @@ public class UpdateTransactionAction extends org.apache.struts.action.Action {
                     if(encounteruid.length()>0){
 	                    while(iInvoiceItems.hasNext()){
 	                    	ItemVO itemVO = (ItemVO)iInvoiceItems.next();
-	                    	if(itemVO.getType().contains("ITEM_TYPE_FUNCTIONALSIGNS_IDS")||
+	                    	if( itemVO.getType().contains("ITEM_TYPE_GENERALSIGNS_IDS")||
+	                    		itemVO.getType().contains("ITEM_TYPE_FUNCTIONALSIGNS_IDS")||
+	                    		itemVO.getType().contains("ITEM_TYPE_FUNCTIONALSIGNS_IDS")||
 	                    		itemVO.getType().contains("ITEM_TYPE_INSPECTION_IDS")||
 	                    		itemVO.getType().contains("ITEM_TYPE_PALPATION_IDS")||
+	                    		itemVO.getType().contains("ITEM_TYPE_PERCUSSION_IDS")||
+	                    		itemVO.getType().contains("ITEM_TYPE_TRTV_IDS")||
 	                    		itemVO.getType().contains("ITEM_TYPE_HEARTAUSCULTATION_IDS")||
 	                    		itemVO.getType().contains("ITEM_TYPE_LUNGAUSCULTATION_IDS")){
 	                    		String[] inspectionids = ScreenHelper.checkString(itemVO.getValue()).split(";");

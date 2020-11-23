@@ -151,7 +151,7 @@
             //*** display prescription in one row ***
             html.append("<tr class='list"+sClass+"' onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\" title='"+detailsTran+"'>")
                  .append("<td>"+(((prescr==null || (prescr!=null && prescr.getDeliveredQuantity()==0))) && (activeUser.getAccessRight("prescriptions.drugs.delete"))?"<img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' border='0' title='"+deleteTran+"' onclick=\"doDelete('"+prescr.getUid()+"');\">":"")+"</td>")
-                 .append("<td><input "+(openQuantity>0?"checked":"")+" type='checkbox' class='text' name='"+prescr.getProduct().getName()+"' id='cb_"+prescr.getUid()+"'/><span onclick=\"doShowDetails('"+prescr.getUid()+"');\"><b>"+sProductName.toUpperCase()+"</b></span></td>")
+                 .append("<td><input "+(openQuantity>0?"checked":"")+" type='checkbox' class='text' name='"+prescr.getProduct().getName()+"_"+sPrescrRule.toLowerCase()+"' id='cb_"+prescr.getUid()+"'/><span onclick=\"doShowDetails('"+prescr.getUid()+"');\"><b>"+sProductName.toUpperCase()+"</b></span></td>")
                  .append("<td onclick=\"doShowDetails('"+prescr.getUid()+"');\">"+sDateBeginFormatted+"</td>")
                  .append("<td onclick=\"doShowDetails('"+prescr.getUid()+"');\">"+sDateEndFormatted+"</td>")
                  .append("<td onclick=\"doShowDetails('"+prescr.getUid()+"');\">"+sAuthorized+"</td>")
@@ -1349,7 +1349,11 @@ function printPaperPrescription(){
 	  var elements = document.all;
 	  for(n=0;n<elements.length;n++){
 		  if(elements[n].id && elements[n].id.startsWith('cb_') && elements[n].checked){
-			  document.getElementById('prescription').value+='R/ '+elements[n].name+"\n\n";
+			  document.getElementById('prescription').value+='R/ '+elements[n].name.split("_")[0]+"\n";
+			  if(elements[n].name.split("_").length>1){
+				  document.getElementById('prescription').value+='S. '+elements[n].name.split("_")[1]+"\n";
+			  }
+			  document.getElementById('prescription').value+="\n";
 		  }
 	  }
 	  if(document.getElementById('prescription').value.length>0){

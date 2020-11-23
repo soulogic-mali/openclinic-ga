@@ -103,12 +103,14 @@ public class ProductStock extends OC_Object implements Comparable {
 							Vector vBatches = stock.getActiveBatches();
 							if(vBatches.size()>0) {
 								Batch batch = (Batch)vBatches.elementAt(0);
-								sBatchUid=batch.getUid();
-								if(quantity-deliveredquantity<=batch.getLevel()) {
-									operationQuantity=quantity-deliveredquantity;
-								}
-								else {
-									operationQuantity=batch.getLevel();
+								if(batch.getLevel()>0) {
+									sBatchUid=batch.getUid();
+									if(quantity-deliveredquantity<=batch.getLevel()) {
+										operationQuantity=quantity-deliveredquantity;
+									}
+									else {
+										operationQuantity=batch.getLevel();
+									}
 								}
 							}
 							else {

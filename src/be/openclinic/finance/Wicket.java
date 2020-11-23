@@ -600,7 +600,7 @@ public class Wicket extends OC_Object{
                 sSql+= " AND OC_WICKET_DEBET_OPERATIONDATE < ?";
             }
 
-            oc_conn.prepareStatement(sSql);
+            ps=oc_conn.prepareStatement(sSql);
             ps.setString(1,this.getUid());
             if(sDateTo.length() > 0){
                 ps.setDate(2,ScreenHelper.getSQLDate(ScreenHelper.getDateAdd(sDateTo,"1"))); // next day
@@ -623,7 +623,7 @@ public class Wicket extends OC_Object{
                 sSql+= " AND OC_WICKET_CREDIT_OPERATIONDATE < ?";
             }
 
-            oc_conn.prepareStatement(sSql);
+            ps=oc_conn.prepareStatement(sSql);
             ps.setString(1,this.getUid());
             if(sDateTo.length() > 0){
                 ps.setDate(2,ScreenHelper.getSQLDate(ScreenHelper.getDateAdd(sDateTo,"1"))); // next day

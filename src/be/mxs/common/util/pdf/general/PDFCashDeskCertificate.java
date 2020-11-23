@@ -83,6 +83,9 @@ public class PDFCashDeskCertificate extends PDFOfficialBasic {
         ByteArrayOutputStream baosPDF = new ByteArrayOutputStream();
 		docWriter = PdfWriter.getInstance(doc,baosPDF);
         this.req = req;
+        long hour=3600*1000;
+        long day = 24*hour;
+        end=new java.util.Date(end.getTime()+day-1);
 
         String sURL = req.getRequestURL().toString();
         if(sURL.indexOf("openclinic",10) > 0){

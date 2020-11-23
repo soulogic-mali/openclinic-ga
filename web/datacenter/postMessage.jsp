@@ -4,7 +4,6 @@
 	String key = SH.c(request.getParameter("key"));
 	String type = SH.c(request.getParameter("type"));
 	String message = SH.c(request.getParameter("message"));
-	System.out.println(message);
 	String sResult = "<ERROR>";
 	if(type.equalsIgnoreCase("post")){
     	//Store the message in the oc_imports database here and delete it if successful
@@ -27,21 +26,19 @@
 		    	ps.setString(2,key);
 		    	ResultSet rs = ps.executeQuery();
 		    	if(rs.next()){
+		    		rs.close();
+		    		ps.close();
+		    		conn.close();
 					msg.setType(root.attributeValue("type"));
-				    Debug.println("Message type = "+root.attributeValue("type")+ " from "+SH.getRemoteAddr(request));
 			    	msg.setReceiveDateTime(new java.util.Date());
 			    	msg.setRef("HTTP:"+SH.getRemoteAddr(request));
-			    	try {
-						msg.setAckDateTime(new java.util.Date());
-						msg.store();
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						bOk=false;
-						break;
-					}
+					msg.setAckDateTime(new java.util.Date());
+	    			msg.store();
 		    	}
 		    	else{
+		    		rs.close();
+		    		ps.close();
+		    		conn.close();
 		    		bOk=false;
 		    		break;
 		    	}
@@ -51,15 +48,14 @@
 				sResult="<OK>";
 			}
 			else{ 
-			    Debug.println("Refusing received message ");
+			    Debug.println("Refusing received message");
 				sResult="<ERROR>";
 			}
-        } catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		    Debug.println("Document exception. Sending ACK for received message in order to not block further messages");
+			sResult="<OK>";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

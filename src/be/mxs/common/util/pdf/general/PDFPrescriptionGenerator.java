@@ -5,6 +5,7 @@ import be.mxs.common.util.pdf.official.PDFOfficialBasic;
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.ScreenHelper;
 import be.openclinic.adt.Encounter;
+import be.openclinic.system.SH;
 import net.admin.User;
 import net.admin.AdminPerson;
 import com.itextpdf.text.*;
@@ -247,14 +248,30 @@ public class PDFPrescriptionGenerator extends PDFOfficialBasic {
             else {
                 table = new PdfPTable(10);
                 table.setWidthPercentage(pageWidth);
-                cell = new PdfPCell();
-                cell.setBorder(PdfPCell.BOTTOM);
-                cell.setPaddingLeft(0);
-                cell.setPaddingRight(0);
-                cell.setFixedHeight(100*72/254);
-                cell.setColspan(10);
-                table.addCell(cell);
-                //Identification of prescriber
+                if(SH.ci("enablePrescriptionHeader",0)==1) {
+	                //Hospital logo
+	                try{
+	        	        Image image =Image.getInstance(new URL(url+contextPath+projectDir+"/_img/logo_patientcard.gif"));
+	        	        image.scaleToFit(36*400/254,72);
+	        	        cell = new PdfPCell(image);
+	                    cell.setPadding(10);
+	                    cell.setBorder(PdfPCell.BOTTOM);
+	        	        cell.setColspan(3);
+	                }
+	                catch(Exception e){
+	                	cell=emptyCell(3);
+	                    cell.setPadding(10);
+	                }
+	                table.addCell(cell);
+	                cell = new PdfPCell(new Paragraph(getTran("pdfprescriptions","hospitalname"),FontFactory.getFont(FontFactory.HELVETICA,12,Font.BOLD)));
+	                cell.setColspan(7);
+	                cell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+	                cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+	                cell.setBorder(PdfPCell.BOTTOM);
+	                cell.setPadding(10);
+	                table.addCell(cell);
+                }
+	            //Identification of prescriber
                 // - barcode
                 PdfContentByte cb = docWriter.getDirectContent();
                 Barcode39 barcode39 = new Barcode39();
@@ -266,7 +283,7 @@ public class PDFPrescriptionGenerator extends PDFOfficialBasic {
                 cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
                 cell.setColspan(5);
                 cell.setPadding(0);
-                cell.setFixedHeight(230*72/254);
+                //cell.setFixedHeight(230*72/254);
                 table.addCell(cell);
                 // - name prescriber
                 PdfPTable wrappertable = new PdfPTable(1);
@@ -286,7 +303,7 @@ public class PDFPrescriptionGenerator extends PDFOfficialBasic {
                 cell.setBorder(PdfPCell.BOTTOM);
                 cell.setPaddingLeft(0);
                 cell.setPaddingRight(0);
-                cell.setFixedHeight(230*72/254);
+                //cell.setFixedHeight(230*72/254);
                 cell.setColspan(5);
                 cell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
                 table.addCell(cell);
@@ -328,7 +345,7 @@ public class PDFPrescriptionGenerator extends PDFOfficialBasic {
                 cell.setPaddingLeft(0);
                 cell.setPaddingRight(10);
                 cell.setColspan(3);
-                cell.setFixedHeight(930*72/254);
+                cell.setFixedHeight(730*72/254);
                 table.addCell(cell);
                 cell=new PdfPCell(formatPresctiption(prescription));
                 cell.setBorder(PdfPCell.BOTTOM);

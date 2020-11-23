@@ -4,9 +4,11 @@
 	try{
 		String sEditTargetProductStockUid = SH.c(request.getParameter("EditTargetProductStockUid"));
 		String sEditTargetProductStockQuantity = SH.c(request.getParameter("EditTargetProductStockQuantity"));
-		if(Integer.parseInt(sEditTargetProductStockQuantity)>0){
+		if(sEditTargetProductStockUid.length()>0 && Integer.parseInt(sEditTargetProductStockQuantity)>0){
 			ProductStock stock = ProductStock.get(sEditTargetProductStockUid);
-			stock.createKits(Integer.parseInt(sEditTargetProductStockQuantity), activeUser.userid);
+			if(stock!=null){
+				stock.createKits(Integer.parseInt(sEditTargetProductStockQuantity), activeUser.userid);
+			}
 		}
 	}
 	catch(Exception e){

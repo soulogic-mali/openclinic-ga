@@ -220,7 +220,7 @@
         out.print("<tr class='admin'>"+
                 "<td>"+getTran(request,"web","alloperations",sWebLanguage)+"</td>"+
      		   "<td/>"+
-                "<td><b>"+totalpatientincome+"</b></td>"+
+                "<td><b>"+SH.getPriceFormat(totalpatientincome)+"</b></td>"+
      		   "<td></td>"+
                 "<td></td>"+
      		  "</tr>");
