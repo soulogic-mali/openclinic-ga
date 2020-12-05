@@ -90,6 +90,7 @@
            sEditProductCode      = checkString(request.getParameter("EditProductCode")),
            sEditProductDHIS2     = checkString(request.getParameter("EditProductDHIS2")),
            sEditUnit             = checkString(request.getParameter("EditUnit")),
+           sEditRoute            = checkString(request.getParameter("EditRoute")),
            sEditUnitPrice        = checkString(request.getParameter("EditUnitPrice")),
            sEditPackageUnits     = checkString(request.getParameter("EditPackageUnits")),
            sEditMinOrderPackages = checkString(request.getParameter("EditMinOrderPackages")),
@@ -154,7 +155,7 @@
            sSelectedTimeUnit = "", sFindSupplierName, sSelectedTimeUnitCount = "", sAverageUnitPrice="0",
            sSelectedUnitsPerTimeUnit = "", sSelectedSupplierName = "", sSelectedProductGroup = "",
            sSelectedProductSubGroup = "", sSelectedBarcode = "", sSelectedAtccode = "", sSelectedRxnormcode = "", sSelectedPrestationCode = "", 
-           sSelectedPrestationQuantity = "", sSelectedApplyLowerPrices = "", sSelectedAutomaticInvoicing = "", sSelectedTotalUnits="";
+           sSelectedPrestationQuantity = "", sSelectedApplyLowerPrices = "", sSelectedAutomaticInvoicing = "", sSelectedTotalUnits="", sSelectedRoute="";
     String sSelectedMargin = MedwanQuery.getInstance().getConfigString("defaultProductsMargin","");
 
     // get data from form
@@ -222,6 +223,7 @@
         product.setName(sEditProductName);
         product.setDose(sEditProductDose);
         product.setDhis2code(sEditProductDHIS2);
+        product.setRoute(sEditRoute);
         product.setUnit(sEditUnit);
         product.setSupplierUid(sEditSupplierUid);
         product.setTimeUnit(sEditTimeUnit);
@@ -352,6 +354,7 @@
         sSelectedProductName = sFindProductName;
         sSelectedProductCode = sFindProductCode;
         sSelectedUnit = sFindUnit;
+        sSelectedRoute = "";
         sSelectedUnitPrice = "";
         sSelectedProductDose="";
         sSelectedPackageUnits = sFindPackageUnits;
@@ -389,6 +392,7 @@
                 sSelectedProductDHIS2 = checkString(product.getDhis2code());
                 sSelectedProductCode = checkString(product.getCode());
                 sSelectedUnit = checkString(product.getUnit());
+                sSelectedRoute = checkString(product.getRoute());
                 sSelectedUnitPrice = (product.getUnitPrice() < 0 ? "" : product.getUnitPrice()+"");
                 sSelectedPackageUnits = (product.getPackageUnits() <= 0 ? "" : product.getPackageUnits()+"");
                 sSelectedMinOrderPackages = (product.getMinimumOrderPackages() < 0 ? "" : product.getMinimumOrderPackages()+"");
@@ -421,6 +425,7 @@
             sSelectedProductDHIS2 = sEditProductDHIS2;
             sSelectedProductCode = sEditProductCode;
             sSelectedUnit = sEditUnit;
+            sSelectedRoute = sEditRoute;
             sSelectedUnitPrice = sEditUnitPrice;
             sSelectedPackageUnits = sEditPackageUnits;
             sSelectedMinOrderPackages = sEditMinOrderPackages;
@@ -448,6 +453,7 @@
             sSelectedProductDose = "";
             sSelectedProductDHIS2 = "";
             sSelectedUnit = sFindUnit;
+            sSelectedRoute = "";
             sSelectedUnitPrice = "";
             sSelectedPackageUnits = sFindPackageUnits;
             sSelectedMinOrderPackages = sFindMinOrderPackages;
@@ -735,6 +741,17 @@
                         <td class="admin" width="<%=sTDAdminWidth%>" nowrap><%=getTran(request,"Web","dose",sWebLanguage)%> *</td>
                         <td class="admin2">
                             <input class="text" type="text" name="EditProductDose" id="EditProductDose" size="15" value="<%=sSelectedProductDose%>">
+                        </td>
+                    </tr>
+                    
+                    <%-- route --%>
+                    <tr>
+                        <td class="admin" width="<%=sTDAdminWidth%>" nowrap><%=getTran(request,"Web","route",sWebLanguage)%></td>
+                        <td class="admin2">
+                            <select class="text" name="EditRoute">
+                                <option value=""><%=getTranNoLink("web","choose",sWebLanguage)%></option>
+                                <%=ScreenHelper.writeSelect(request,"product.route",sSelectedRoute,sWebLanguage)%>
+                            </select>
                         </td>
                     </tr>
                     

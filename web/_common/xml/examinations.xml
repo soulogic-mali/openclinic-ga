@@ -2087,10 +2087,18 @@
 	</Row>
 	<Row>
 		<id>1215</id>
-		<class>internal.medicine</class>
+		<class>general.medicine</class>
 		<transactiontype>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CHUGTOUTPATIENTFILE</transactiontype>
 		<fr>Consultation externe (modèle CHU Gabriel Touré)</fr>
 		<en>Outpatient consultation (CHU Gabriel Touré model)</en>
 		<es>Consulta externa (modelo CHU Gabriel Touré)</es>
+	</Row>
+	<Row>
+		<id>1216</id>
+		<class>general.medicine</class>
+		<transactiontype>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_NDH_ADMISSION</transactiontype>
+		<fr>Fiche d'admission en hospitalisation (modèle NDH)</fr>
+		<en>Inpatient admission form (NDH model)</en>
+		<es>Formulario de admisión para pacientes hospitalizados (modelo NDH)</es>
 	</Row>
 </Examinations>

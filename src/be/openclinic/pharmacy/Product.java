@@ -47,8 +47,17 @@ public class Product extends OC_Object implements Comparable {
 	private double lastYearsAverage=-1;
     private Hashtable lastYearAverages=new Hashtable();
     private Hashtable looseLastYearAverages=new Hashtable();
+    private String route;
     
-    public String getDhis2code() {
+    public String getRoute() {
+		return route;
+	}
+
+	public void setRoute(String route) {
+		this.route = route;
+	}
+
+	public String getDhis2code() {
 		return dhis2code;
 	}
 
@@ -1330,6 +1339,7 @@ public class Product extends OC_Object implements Comparable {
                     product.setUpdateUser(ScreenHelper.checkString(rs.getString("OC_PRODUCT_UPDATEUID")));
                     product.setVersion(rs.getInt("OC_PRODUCT_VERSION"));
                     product.setTotalUnits(rs.getInt("OC_PRODUCT_TOTALUNITS"));
+                    product.setRoute(rs.getString("OC_PRODUCT_ROUTE"));
                 }
                 else{
                     throw new Exception("ERROR : PRODUCT "+productUid+" NOT FOUND");
@@ -1437,6 +1447,7 @@ public class Product extends OC_Object implements Comparable {
                 product.setVersion(rs.getInt("OC_PRODUCT_VERSION"));
                 product.setPrescriptionInfo(rs.getString("OC_PRODUCT_PRESCRIPTIONINFO"));
                 product.setTotalUnits(rs.getInt("OC_PRODUCT_TOTALUNITS"));
+                product.setRoute(rs.getString("OC_PRODUCT_ROUTE"));
             }
         }
         catch(Exception e){
@@ -1505,14 +1516,17 @@ public class Product extends OC_Object implements Comparable {
                       "  OC_PRODUCT_TIMEUNITCOUNT,OC_PRODUCT_UNITSPERTIMEUNIT,OC_PRODUCT_PRODUCTGROUP,"+
                       "  OC_PRODUCT_CREATETIME,OC_PRODUCT_UPDATETIME,OC_PRODUCT_UPDATEUID,OC_PRODUCT_VERSION,OC_PRODUCT_PRESCRIPTIONINFO,"+
                       "  OC_PRODUCT_BARCODE,OC_PRODUCT_PRESTATIONCODE,OC_PRODUCT_PRESTATIONQUANTITY,OC_PRODUCT_MARGIN,OC_PRODUCT_APPLYLOWERPRICES,"+
-                      "  OC_PRODUCT_AUTOMATICINVOICING,OC_PRODUCT_PRODUCTSUBGROUP,OC_PRODUCT_ATCCODE,OC_PRODUCT_TOTALUNITS,OC_PRODUCT_RXNORMCODE,OC_PRODUCT_CODE,OC_PRODUCT_DOSE,OC_PRODUCT_DHIS2CODE) "
+                      "  OC_PRODUCT_AUTOMATICINVOICING,OC_PRODUCT_PRODUCTSUBGROUP,OC_PRODUCT_ATCCODE,OC_PRODUCT_TOTALUNITS,OC_PRODUCT_RXNORMCODE,"
+                      + "OC_PRODUCT_CODE,OC_PRODUCT_DOSE,OC_PRODUCT_DHIS2CODE,OC_PRODUCT_ROUTE) "
                       + "SELECT OC_PRODUCT_SERVERID,OC_PRODUCT_OBJECTID,"+
                       "  OC_PRODUCT_NAME,OC_PRODUCT_UNIT,OC_PRODUCT_UNITPRICE,OC_PRODUCT_PACKAGEUNITS,"+
                       "  OC_PRODUCT_MINORDERPACKAGES,OC_PRODUCT_SUPPLIERUID,OC_PRODUCT_TIMEUNIT,"+
                       "  OC_PRODUCT_TIMEUNITCOUNT,OC_PRODUCT_UNITSPERTIMEUNIT,OC_PRODUCT_PRODUCTGROUP,"+
                       "  OC_PRODUCT_CREATETIME,OC_PRODUCT_UPDATETIME,OC_PRODUCT_UPDATEUID,OC_PRODUCT_VERSION,OC_PRODUCT_PRESCRIPTIONINFO,"+
                       "  OC_PRODUCT_BARCODE,OC_PRODUCT_PRESTATIONCODE,OC_PRODUCT_PRESTATIONQUANTITY,OC_PRODUCT_MARGIN,OC_PRODUCT_APPLYLOWERPRICES,"+
-                      "  OC_PRODUCT_AUTOMATICINVOICING,OC_PRODUCT_PRODUCTSUBGROUP,OC_PRODUCT_ATCCODE,OC_PRODUCT_TOTALUNITS,OC_PRODUCT_RXNORMCODE,OC_PRODUCT_CODE,OC_PRODUCT_DOSE,OC_PRODUCT_DHIS2CODE FROM OC_PRODUCTS WHERE OC_PRODUCT_SERVERID = ? AND OC_PRODUCT_OBJECTID = ?";
+                      "  OC_PRODUCT_AUTOMATICINVOICING,OC_PRODUCT_PRODUCTSUBGROUP,OC_PRODUCT_ATCCODE,OC_PRODUCT_TOTALUNITS,OC_PRODUCT_RXNORMCODE,"
+                      + "OC_PRODUCT_CODE,OC_PRODUCT_DOSE,OC_PRODUCT_DHIS2CODE,OC_PRODUCT_ROUTE FROM OC_PRODUCTS "
+                      + "WHERE OC_PRODUCT_SERVERID = ? AND OC_PRODUCT_OBJECTID = ?";
                 ps = oc_conn.prepareStatement(sSelect);
                 ps.setInt(1,Integer.parseInt(this.getUid().substring(0,this.getUid().indexOf("."))));
                 ps.setInt(2,Integer.parseInt(this.getUid().substring(this.getUid().indexOf(".")+1)));
@@ -1536,8 +1550,9 @@ public class Product extends OC_Object implements Comparable {
                       "  OC_PRODUCT_TIMEUNITCOUNT,OC_PRODUCT_UNITSPERTIMEUNIT,OC_PRODUCT_PRODUCTGROUP,"+
                       "  OC_PRODUCT_CREATETIME,OC_PRODUCT_UPDATETIME,OC_PRODUCT_UPDATEUID,OC_PRODUCT_VERSION,OC_PRODUCT_PRESCRIPTIONINFO,"+
                       "  OC_PRODUCT_BARCODE,OC_PRODUCT_PRESTATIONCODE,OC_PRODUCT_PRESTATIONQUANTITY,OC_PRODUCT_MARGIN,OC_PRODUCT_APPLYLOWERPRICES,"+
-                      "  OC_PRODUCT_AUTOMATICINVOICING,OC_PRODUCT_PRODUCTSUBGROUP,OC_PRODUCT_ATCCODE,OC_PRODUCT_TOTALUNITS,OC_PRODUCT_RXNORMCODE,OC_PRODUCT_CODE,OC_PRODUCT_DOSE,OC_PRODUCT_DHIS2CODE)"+
-                      " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                      "  OC_PRODUCT_AUTOMATICINVOICING,OC_PRODUCT_PRODUCTSUBGROUP,OC_PRODUCT_ATCCODE,OC_PRODUCT_TOTALUNITS,OC_PRODUCT_RXNORMCODE,"
+                      + "OC_PRODUCT_CODE,OC_PRODUCT_DOSE,OC_PRODUCT_DHIS2CODE,OC_PRODUCT_ROUTE)"+
+                      " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             ps = oc_conn.prepareStatement(sSelect);
             ps.setInt(1,Integer.parseInt(this.getUid().substring(0,this.getUid().indexOf("."))));
@@ -1588,6 +1603,7 @@ public class Product extends OC_Object implements Comparable {
             ps.setString(28, this.getCode());
             ps.setString(29, this.getDose());
             ps.setString(30, this.getDhis2code());
+            ps.setString(31,  this.getRoute());
             ps.executeUpdate();
             
             //If a health service and a margin were provided, automatically update the health service price
@@ -1778,6 +1794,7 @@ public class Product extends OC_Object implements Comparable {
                 product.setAutomaticInvoicing(rs.getInt("OC_PRODUCT_AUTOMATICINVOICING")==1);
                 product.setCode(ScreenHelper.checkString(rs.getString("OC_PRODUCT_CODE")));
                 product.setDhis2code(ScreenHelper.checkString(rs.getString("OC_PRODUCT_DHIS2CODE")));
+                product.setRoute(rs.getString("OC_PRODUCT_ROUTE"));
                 
                 // timeUnit
                 String tmpValue = rs.getString("OC_PRODUCT_TIMEUNIT");
@@ -1881,6 +1898,7 @@ public class Product extends OC_Object implements Comparable {
                 product.setAutomaticInvoicing(rs.getInt("OC_PRODUCT_AUTOMATICINVOICING")==1);
                 product.setCode(ScreenHelper.checkString(rs.getString("OC_PRODUCT_CODE")));
                 product.setDhis2code(ScreenHelper.checkString(rs.getString("OC_PRODUCT_DHIS2CODE")));
+                product.setRoute(rs.getString("OC_PRODUCT_ROUTE"));
                 
                 // timeUnit
                 String tmpValue = rs.getString("OC_PRODUCT_TIMEUNIT");
@@ -1977,14 +1995,17 @@ public class Product extends OC_Object implements Comparable {
                     "  OC_PRODUCT_TIMEUNITCOUNT,OC_PRODUCT_UNITSPERTIMEUNIT,OC_PRODUCT_PRODUCTGROUP,"+
                     "  OC_PRODUCT_CREATETIME,OC_PRODUCT_UPDATETIME,OC_PRODUCT_UPDATEUID,OC_PRODUCT_VERSION,OC_PRODUCT_PRESCRIPTIONINFO,"+
                     "  OC_PRODUCT_BARCODE,OC_PRODUCT_PRESTATIONCODE,OC_PRODUCT_PRESTATIONQUANTITY,OC_PRODUCT_MARGIN,OC_PRODUCT_APPLYLOWERPRICES,"+
-                    "  OC_PRODUCT_AUTOMATICINVOICING,OC_PRODUCT_PRODUCTSUBGROUP,OC_PRODUCT_ATCCODE,OC_PRODUCT_TOTALUNITS,OC_PRODUCT_RXNORMCODE,OC_PRODUCT_CODE,OC_PRODUCT_DOSE,OC_PRODUCT_DHIS2CODE) "
+                    "  OC_PRODUCT_AUTOMATICINVOICING,OC_PRODUCT_PRODUCTSUBGROUP,OC_PRODUCT_ATCCODE,OC_PRODUCT_TOTALUNITS,OC_PRODUCT_RXNORMCODE,"
+                    + "OC_PRODUCT_CODE,OC_PRODUCT_DOSE,OC_PRODUCT_DHIS2CODE,OC_PRODUCT_ROUTE) "
                     + "SELECT OC_PRODUCT_SERVERID,OC_PRODUCT_OBJECTID,"+
                     "  OC_PRODUCT_NAME,OC_PRODUCT_UNIT,OC_PRODUCT_UNITPRICE,OC_PRODUCT_PACKAGEUNITS,"+
                     "  OC_PRODUCT_MINORDERPACKAGES,OC_PRODUCT_SUPPLIERUID,OC_PRODUCT_TIMEUNIT,"+
                     "  OC_PRODUCT_TIMEUNITCOUNT,OC_PRODUCT_UNITSPERTIMEUNIT,OC_PRODUCT_PRODUCTGROUP,"+
                     "  OC_PRODUCT_CREATETIME,OC_PRODUCT_UPDATETIME,OC_PRODUCT_UPDATEUID,OC_PRODUCT_VERSION,OC_PRODUCT_PRESCRIPTIONINFO,"+
                     "  OC_PRODUCT_BARCODE,OC_PRODUCT_PRESTATIONCODE,OC_PRODUCT_PRESTATIONQUANTITY,OC_PRODUCT_MARGIN,OC_PRODUCT_APPLYLOWERPRICES,"+
-                    "  OC_PRODUCT_AUTOMATICINVOICING,OC_PRODUCT_PRODUCTSUBGROUP,OC_PRODUCT_ATCCODE,OC_PRODUCT_TOTALUNITS,OC_PRODUCT_RXNORMCODE,OC_PRODUCT_CODE,OC_PRODUCT_DOSE,OC_PRODUCT_DHIS2CODE FROM OC_PRODUCTS WHERE OC_PRODUCT_SERVERID = ? AND OC_PRODUCT_OBJECTID = ?";
+                    "  OC_PRODUCT_AUTOMATICINVOICING,OC_PRODUCT_PRODUCTSUBGROUP,OC_PRODUCT_ATCCODE,OC_PRODUCT_TOTALUNITS,OC_PRODUCT_RXNORMCODE,"
+                    + "OC_PRODUCT_CODE,OC_PRODUCT_DOSE,OC_PRODUCT_DHIS2CODE,OC_PRODUCT_ROUTE FROM OC_PRODUCTS "
+                    + "WHERE OC_PRODUCT_SERVERID = ? AND OC_PRODUCT_OBJECTID = ?";
               ps = oc_conn.prepareStatement(sSelect);
               ps.setInt(1,Integer.parseInt(productUid.split("\\.")[0]));
               ps.setInt(2,Integer.parseInt(productUid.split("\\.")[1]));

@@ -58,5 +58,6 @@
 	"packageunits": "<%=product.getPackageUnits()>0?product.getPackageUnits():1 %>",
 	"productunit": "<%=getTran(request,"product.unit",product.getUnit(),sWebLanguage) %>",
 	"diagnosis": "<%=diagnosisuid %>",
+	"route": "<%=checkString(product.getRoute()) %>",
 	"schema": "<%=ProductSchema.getProductSchema(product.getUid()).asString() %>"
 }

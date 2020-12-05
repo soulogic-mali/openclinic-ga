@@ -187,6 +187,7 @@
         <permission type="examination" id="1213">surveillance.covid19.assessment.pulseoximetry</permission>
         <permission type="examination" id="1214">surveillance.covid19.followup.pulseoximetry</permission>
         <permission type="examination" id="1215">occup.chugtoutpatientfile</permission>
+        <permission type="examination" id="1216">occup.ndhadmission</permission>
     </application>
     <application type="Web" id="newexaminations">
         <permission type="web" id="globalexaminations">examinations.global</permission>

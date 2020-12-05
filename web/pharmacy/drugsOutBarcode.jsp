@@ -202,7 +202,7 @@
 	  var elements = document.all;
 	  for(n=0;n<elements.length;n++){
 		  if(elements[n].id && elements[n].id.startsWith('drugname.')){
-			  document.getElementById('prescription').value+='R/ '+elements[n].innerHTML+"\n\n";
+			  document.getElementById('prescription').value+='R/ '+elements[n].innerHTML.split("<br>")[0]+"\n\n";
 		  }
 	  }
 	  document.getElementById('printPrescriptionForm').submit();

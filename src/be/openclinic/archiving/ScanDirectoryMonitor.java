@@ -542,7 +542,7 @@ public class ScanDirectoryMonitor implements Runnable{
 		int err=0;
     	DicomObject obj = Dicom.getDicomObjectNoPixels(file);
     	Debug.println("DICOM object: "+obj);
-    	if(obj!=null){
+    	if(obj!=null && obj.getString(Tag.PatientID)!=null){
         	Debug.println("Patient ID: "+obj.getString(Tag.PatientID));
         	int nPatientId = -1;
         	if(MedwanQuery.getInstance().getConfigInt("PACSUseNatregForPatientIdentification",0)==1) {
@@ -612,7 +612,16 @@ public class ScanDirectoryMonitor implements Runnable{
 		    		if(rs.next()){
 		    			Debug.println("Instance number "+sequence+" for study "+studyUid+" already exists");
 		    			err=0;
-		    			file.delete();
+		    			//Check if file also exists on disk
+		    			String sFileName = rs.getString("OC_PACS_FILENAME");
+		    			File f = new File(SCANDIR_BASE+"/"+SCANDIR_TO+"/"+sFileName);
+		    			if(!f.exists()) {
+		    				//The file is missing. Move the received file to the destination file
+		    				Debug.println(moveFile(file,f));
+		    			}
+		    			else {
+		    				file.delete();
+		    			}
 		    		}
 		    		else {
 		    			//file does not exist yet, insert it

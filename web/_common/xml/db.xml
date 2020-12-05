@@ -3927,6 +3927,7 @@
 			<column name="OC_PRESCR_VERSION" dbtype="int" javatype="integer" nulls="0"/>
 			<column name="OC_PRESCR_AUTHORIZATION" dbtype="varchar" javatype="string" size="255" nulls="0"/>
 			<column name="OC_PRESCR_DIAGNOSISUID" dbtype="varchar" javatype="string" size="50"/>
+			<column name="OC_PRESCR_ROUTE" dbtype="varchar" javatype="string" size="50"/>
 		</columns>
 		<indexes>
 			<index name="OC_PRESCR_OBJECTID">
@@ -4080,6 +4081,7 @@
             <column name="OC_PRODUCT_CODE" dbtype="varchar" javatype="string" size="50"/>
             <column name="OC_PRODUCT_DOSE" dbtype="varchar" javatype="string" size="50"/>
             <column name="OC_PRODUCT_DHIS2CODE" dbtype="varchar" javatype="string" size="50"/>
+            <column name="OC_PRODUCT_ROUTE" dbtype="varchar" javatype="string" size="50"/>
 		</columns>
 		<indexes>
 			<index name="OC_PRODUCT_OBJECTID">
@@ -4157,6 +4159,7 @@
             <column name="OC_PRODUCT_CODE" dbtype="varchar" javatype="string" size="50"/>
             <column name="OC_PRODUCT_DOSE" dbtype="varchar" javatype="string" size="50"/>
             <column name="OC_PRODUCT_DHIS2CODE" dbtype="varchar" javatype="string" size="50"/>
+            <column name="OC_PRODUCT_ROUTE" dbtype="varchar" javatype="string" size="50"/>
 		</columns>
 	</table>
     <table name="OC_PRODUCTSTOCKS" db="openclinic" sync="NONE">

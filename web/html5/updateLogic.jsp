@@ -14,7 +14,7 @@
 <%=sJSPROTOTYPE%>
 <%=sJSSCRPTACULOUS%>
 
-<title><%=getTran(request,"web","editdrugprescription",sWebLanguage) %></title>
+<title><%=getTran(request,"web.userprofile","update",sWebLanguage) %></title>
 <html>
 	<body onresize='window.parent.document.getElementById("ocframe").style.height=screen.height;'>
 		<div>
@@ -35,7 +35,7 @@
 					</tr>
 					<tr>
 		                <td nowrap>
-							<input style='font-size:4vw;' type='file' name='uploadFile'/>
+							<input style='font-size:4vw;height: 30px' type='file' name='uploadFile'/>
 		                </td>
 		            </tr>
 				</table>
@@ -43,3 +43,6 @@
 		</div>
 	</body>
 </html>
+<script>
+	window.parent.parent.scrollTo(0,0);
+</script>

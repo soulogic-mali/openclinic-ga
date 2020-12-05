@@ -80,33 +80,33 @@
 
             // only compose prescriptio-rule if all data is available
             if(!sTimeUnitCount.equals("0") && !sUnitsPerTimeUnit.equals("0") && product!=null){
-                sPrescrRule = getTran(null,"web.prescriptions","prescriptionrule",sWebLanguage);
+                sPrescrRule = getTranNoLink("web.prescriptions","prescriptionrule",sWebLanguage);
                 sPrescrRule = sPrescrRule.replaceAll("#unitspertimeunit#",unitCountDeci.format(Double.parseDouble(sUnitsPerTimeUnit)));
 
                 // productunits
                 if(Double.parseDouble(sUnitsPerTimeUnit)==1){
-                    sProductUnit = getTran(null,"product.unit",product.getUnit(),sWebLanguage);
+                    sProductUnit = getTranNoLink("product.unit",product.getUnit(),sWebLanguage);
                 }
                 else{
-                    sProductUnit = getTran(null,"product.unit",product.getUnit(),sWebLanguage);
+                    sProductUnit = getTranNoLink("product.unit",product.getUnit(),sWebLanguage);
                 }
                 sPrescrRule = sPrescrRule.replaceAll("#productunit#",sProductUnit.toLowerCase());
 
                 // timeunits
                 if(Integer.parseInt(sTimeUnitCount)==1){
                     sPrescrRule = sPrescrRule.replaceAll("#timeunitcount#","");
-                    timeUnitTran = getTran(null,"prescription.timeunit",sTimeUnit,sWebLanguage);
+                    timeUnitTran = getTranNoLink("prescription.timeunit",sTimeUnit,sWebLanguage);
                 }
                 else{
                     sPrescrRule = sPrescrRule.replaceAll("#timeunitcount#",sTimeUnitCount);
-                    timeUnitTran = getTran(null,"prescription.timeunits",sTimeUnit,sWebLanguage);
+                    timeUnitTran = getTranNoLink("prescription.timeunits",sTimeUnit,sWebLanguage);
                 }
                 sPrescrRule = sPrescrRule.replaceAll("#timeunit#",timeUnitTran.toLowerCase());
             }
             // supplying service name
             sSupplyingServiceUid = checkString(prescr.getSupplyingServiceUid());
             if(sSupplyingServiceUid.length() > 0){
-                sSupplyingServiceName = getTran(null,"service",sSupplyingServiceUid,sWebLanguage);
+                sSupplyingServiceName = getTranNoLink("service",sSupplyingServiceUid,sWebLanguage);
             }
             else{
                 sSupplyingServiceName = "";
@@ -206,6 +206,7 @@
            sEditPrescriberUid       = checkString(request.getParameter("EditPrescriberUid")),
            sEditProductUid          = checkString(request.getParameter("EditProductUid")),
            sEditDateBegin           = checkString(request.getParameter("EditDateBegin")),
+	       sEditRoute           	= checkString(request.getParameter("EditRoute")),
            sEditDateEnd             = checkString(request.getParameter("EditDateEnd")),
            sEditTimeUnit            = checkString(request.getParameter("EditTimeUnit")),
            sEditTimeUnitCount       = checkString(request.getParameter("EditTimeUnitCount")),
@@ -295,7 +296,7 @@
            sSelectedUnitsPerTimeUnit = "", sSelectedSupplyingServiceUid = "", sSelectedProductUnit = "",
            sSelectedPrescriberFullName = "", sSelectedProductName = "", sSelectedSupplyingServiceName = "",
            sSelectedServiceStockUid = "", sSelectedServiceStockName = "", sSelectedRequiredPackages = "",
-           sSelectedAuthorization="",sSelectedDiagnosis="";
+           sSelectedAuthorization="",sSelectedDiagnosis="", sSelectedRoute="";
 
     // variables
     int foundPrescrCount;
@@ -320,6 +321,7 @@
         prescr.setTimeUnit(sEditTimeUnit);
         prescr.setAuthorization(sEditAuthorization);
         prescr.setDiagnosisUid(sEditDiagnosis);
+        prescr.setRoute(sEditRoute);
         
         if(sEditDateBegin.length() > 0) prescr.setBegin(ScreenHelper.parseDate(sEditDateBegin));
         if(sEditDateEnd.length() > 0) prescr.setEnd(ScreenHelper.parseDate(sEditDateEnd));
@@ -415,6 +417,7 @@
                 sSelectedPrescriberUid = prescr.getPrescriberUid();
                 sSelectedAuthorization = checkString(prescr.getAuthorization());
                 sSelectedDiagnosis = checkString(prescr.getDiagnosisUid());
+                sSelectedRoute = checkString(prescr.getRoute());
 
                 // afgeleide data
 	          	Connection ad_conn = MedwanQuery.getInstance().getAdminConnection();
@@ -460,6 +463,7 @@
             sSelectedSupplyingServiceUid = sEditSupplyingServiceUid;
             sSelectedServiceStockUid = sEditServiceStockUid;
             sSelectedRequiredPackages = sEditRequiredPackages;
+            sSelectedRoute = sEditRoute;
             try{
             	originalQuantity = Double.parseDouble(sEditRequiredPackages);
             }catch(Exception e){}
@@ -480,6 +484,7 @@
             sSelectedDateBegin = ScreenHelper.formatDate(new java.util.Date());
             sSelectedTimeUnit = "type2day";
             sSelectedTimeUnitCount = "1";
+            sSelectedRoute="";
         }
     }
 
@@ -559,6 +564,17 @@
         </select>
 
         <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" style="vertical-align:-4px;" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="clearDescriptionRule();">
+    </td>
+</tr>
+
+<%-- route --%>
+<tr>
+    <td class="admin" width="<%=sTDAdminWidth%>" nowrap><%=getTran(request,"Web","route",sWebLanguage)%></td>
+    <td class="admin2">
+        <select class="text" name="EditRoute" id="EditRoute">
+            <option value=""><%=getTranNoLink("web","choose",sWebLanguage)%></option>
+            <%=ScreenHelper.writeSelect(request,"product.route",sSelectedRoute,sWebLanguage)%>
+        </select>
     </td>
 </tr>
 
@@ -1610,6 +1626,7 @@ function doBack(){
 	        document.getElementById("EditPrescriberUid").value=product.prescriberuid;
 	        document.getElementById("EditPrescriberFullName").value=product.prescribername;
 	        document.getElementById("EditDiagnosis").value=product.diagnosis;
+	        document.getElementById("EditRoute").value=product.route;
 	        document.getElementById("productmsg").innerHTML='';
 	        if(product.levels.indexOf("0/")==0){
 	        	document.getElementById("productmsg").innerHTML=document.getElementById("productmsg").innerHTML+"<br/><img src='<c:url value="/"/>_img/icons/icon_warning.gif'/><%=getTran(request,"web","nodistributionstock",sWebLanguage)%>";

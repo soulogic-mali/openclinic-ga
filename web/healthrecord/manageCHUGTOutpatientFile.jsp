@@ -312,7 +312,7 @@
          				</td>
          			</tr>
          			
-         			<%-- Percussion --%>
+         			<%-- trtv --%>
          			<tr height="40">
          				<td class='admin' width='20%'>
          					<div id="title8"><%=getTran(request,"web","trtv",sWebLanguage)%></div>

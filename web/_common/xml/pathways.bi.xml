@@ -21,186 +21,191 @@
 				<argument type="spt" id="drh.2" value="yes"/>
 				<treatment id="drh1"/>
 			</node>
-			<!-- Evaluer et traiter la déshydratation éventuelle. Donner SRO à tous ceux qui peuvent boire -->
 			<node>
-				<label language="fr"><![CDATA[Déshydratation sévère]]></label>
-				<arguments select="1">
-					<argument type="spt" id="drh.3.1" value="yes"/>
-					<argument type="spt" id="drh.3.2" value="yes"/>
-					<argument type="spt" id="drh.3.3" value="yes"/>
-					<argument type="spt" id="drh.3.4" value="yes"/>
-				</arguments>
-				<treatment id="drh2.0"/>
+				<!-- Choléra éliminé-->
+				<label language="fr"><![CDATA[Pas de suspicion ou épidémie de choléra]]></label>
+				<argument type="spt" id="drh.2" value="no"/>
+				<!-- Evaluer et traiter la déshydratation éventuelle. Donner SRO à tous ceux qui peuvent boire -->
 				<node>
-					<label language="fr"><![CDATA[Pas d'amélioration et/ou ne boit pas.]]></label>
+					<label language="fr"><![CDATA[Déshydratation sévère]]></label>
 					<arguments select="1">
-						<argument type="spt" id="drh.4" value="no"/>
-						<argument type="spt" id="drh.5" value="no"/>
+						<argument type="spt" id="drh.3.1" value="yes"/>
+						<argument type="spt" id="drh.3.2" value="yes"/>
+						<argument type="spt" id="drh.3.3" value="yes"/>
+						<argument type="spt" id="drh.3.4" value="yes"/>
 					</arguments>
-					<treatment id="drh2"/>
+					<treatment id="drh2.0"/>
+					<node>
+						<label language="fr"><![CDATA[Pas d'amélioration et/ou ne boit pas.]]></label>
+						<arguments select="1">
+							<argument type="spt" id="drh.4" value="no"/>
+							<argument type="spt" id="drh.5" value="no"/>
+						</arguments>
+						<treatment id="drh2"/>
+					</node>
 				</node>
-			</node>
-			<node>
-				<label language="fr"><![CDATA[Déshydratation modérée]]></label>
-				<arguments select="all">
+				<node>
+					<label language="fr"><![CDATA[Déshydratation modérée]]></label>
 					<arguments select="all">
-						<argument type="spt" id="drh.3.1" value="no"/>
-						<argument type="spt" id="drh.3.2" value="no"/>
-						<argument type="spt" id="drh.3.3" value="no"/>
-						<argument type="spt" id="drh.3.4" value="no"/>
+						<arguments select="all">
+							<argument type="spt" id="drh.3.1" value="no"/>
+							<argument type="spt" id="drh.3.2" value="no"/>
+							<argument type="spt" id="drh.3.3" value="no"/>
+							<argument type="spt" id="drh.3.4" value="no"/>
+						</arguments>
+						<argument type="spt" id="drh.3" value="yes"/>
 					</arguments>
-					<argument type="spt" id="drh.3" value="yes"/>
-				</arguments>
-				<treatment id="drh3.0">
-					<label language="fr"><![CDATA[Observation pendant 12 heures. SRO à volonté. Evaluer la déshydratation toutes les 6 heures]]></label>
-				</treatment>
-				<node>
-					<label language="fr"><![CDATA[Amélioration]]></label>
-					<arguments select="1">
-						<argument type="spt" id="drh.4" value="yes"/>
-					</arguments>
-					<treatment id="drh3"/>
+					<treatment id="drh3.0">
+						<label language="fr"><![CDATA[Observation pendant 12 heures. SRO à volonté. Evaluer la déshydratation toutes les 6 heures]]></label>
+					</treatment>
+					<node>
+						<label language="fr"><![CDATA[Amélioration]]></label>
+						<arguments select="1">
+							<argument type="spt" id="drh.4" value="yes"/>
+						</arguments>
+						<treatment id="drh3"/>
+					</node>
+					<node>
+						<label language="fr"><![CDATA[Pas d'amélioration]]></label>
+						<arguments select="1">
+							<argument type="spt" id="drh.4" value="no"/>
+						</arguments>
+						<treatment id="drh4"/>
+					</node>
 				</node>
 				<node>
-					<label language="fr"><![CDATA[Pas d'amélioration]]></label>
-					<arguments select="1">
-						<argument type="spt" id="drh.4" value="no"/>
-					</arguments>
-					<treatment id="drh4"/>
-				</node>
-			</node>
-			<node>
-				<label language="fr"><![CDATA[Pas de déshydratation évidente]]></label>
-				<arguments select="all">
+					<label language="fr"><![CDATA[Pas de déshydratation évidente]]></label>
 					<arguments select="all">
-						<argument type="spt" id="drh.3.1" value="no"/>
-						<argument type="spt" id="drh.3.2" value="no"/>
-						<argument type="spt" id="drh.3.3" value="no"/>
-						<argument type="spt" id="drh.3.4" value="no"/>
+						<arguments select="all">
+							<argument type="spt" id="drh.3.1" value="no"/>
+							<argument type="spt" id="drh.3.2" value="no"/>
+							<argument type="spt" id="drh.3.3" value="no"/>
+							<argument type="spt" id="drh.3.4" value="no"/>
+						</arguments>
+						<argument type="spt" id="drh.3" value="no"/>
 					</arguments>
-					<argument type="spt" id="drh.3" value="no"/>
-				</arguments>
-				<treatment id="drh5"/>
-			</node>
-			<!-- Evaluer et traiter une cause curable -->
-			<node>
-				<label language="fr"><![CDATA[Température &gt;=38°C]]></label>
-				<argument type="spt" id="drh.6" value="yes"/>
-				<treatment id="drh6.0"/>
+					<treatment id="drh5"/>
+				</node>
+				<!-- Evaluer et traiter une cause curable -->
 				<node>
-					<label language="fr"><![CDATA[Rendez-vous après 3 jours. Pas de fièvre.]]></label>
-					<argument type="spt" id="drh.7" value="no"/>
-					<treatment id="drh6"/>
+					<label language="fr"><![CDATA[Température &gt;=38°C]]></label>
+					<argument type="spt" id="drh.6" value="yes"/>
+					<treatment id="drh6.0"/>
+					<node>
+						<label language="fr"><![CDATA[Rendez-vous après 3 jours. Pas de fièvre.]]></label>
+						<argument type="spt" id="drh.7" value="no"/>
+						<treatment id="drh6"/>
+					</node>
+					<node>
+						<label language="fr"><![CDATA[Rendez-vous après 3 jours. Toujours de la fièvre.]]></label>
+						<argument type="spt" id="drh.7" value="yes"/>
+						<treatment id="drh7"/>
+					</node>
 				</node>
 				<node>
-					<label language="fr"><![CDATA[Rendez-vous après 3 jours. Toujours de la fièvre.]]></label>
-					<argument type="spt" id="drh.7" value="yes"/>
-					<treatment id="drh7"/>
-				</node>
-			</node>
-			<node>
-				<label language="fr"><![CDATA[Pas de fièvre]]></label>
-				<argument type="spt" id="drh.6" value="no"/>
-				<node>
-					<label language="fr"><![CDATA[Présence de sang ou de glaires]]></label>
-					<arguments select="1">
-						<argument type="spt" id="drh.8" value="yes"/>
-						<argument type="spt" id="drh.8.1" value="yes"/>
-					</arguments>
+					<label language="fr"><![CDATA[Pas de fièvre]]></label>
+					<argument type="spt" id="drh.6" value="no"/>
 					<node>
-						<label language="fr"><![CDATA[Présence d'amibes]]></label>
-						<argument type="spt" id="drh.9" value="yes"/>
-						<treatment id="drh8"/>
-					</node>
-					<node>
-						<label language="fr"><![CDATA[Présence de vers]]></label>
-						<argument type="spt" id="drh.10" value="yes"/>
-						<treatment id="drh9"/>
-					</node>
-					<node>
-						<label language="fr"><![CDATA[Présence de schistosoma]]></label>
-						<argument type="spt" id="drh.10b" value="yes"/>
-						<treatment id="drh9b"/>
-					</node>
-					<node>
-						<label language="fr"><![CDATA[Pas de présence de vers ou amibes ou schistosoma]]></label>
-						<argument type="spt" id="drh.9" value="no"/>
-						<argument type="spt" id="drh.10" value="no"/>
-						<argument type="spt" id="drh.10b" value="no"/>
-						<treatment id="drh10"/>
-					</node>
-					<node>
-						<label language="fr"><![CDATA[Examen de selles impossible]]></label>
-						<argument type="spt" id="drh.9" value="examimpossible"/>
-						<argument type="spt" id="drh.10" value="examimpossible"/>
-						<argument type="spt" id="drh.10b" value="examimpossible"/>
-						<treatment id="drh11.0"/>
+						<label language="fr"><![CDATA[Présence de sang ou de glaires]]></label>
+						<arguments select="1">
+							<argument type="spt" id="drh.8" value="yes"/>
+							<argument type="spt" id="drh.8.1" value="yes"/>
+						</arguments>
 						<node>
-							<label language="fr"><![CDATA[Amélioration après traitement]]></label>
-							<argument type="spt" id="drh.11" value="yes"/>
-							<treatment id="drh11"/>
+							<label language="fr"><![CDATA[Présence d'amibes]]></label>
+							<argument type="spt" id="drh.9" value="yes"/>
+							<treatment id="drh8"/>
 						</node>
 						<node>
-							<label language="fr"><![CDATA[Pas d'amélioration après traitement]]></label>
-							<argument type="spt" id="drh.11" value="no"/>
-							<treatment id="drh12"/>
-						</node>
-					</node>
-				</node>
-				<node>
-					<label language="fr"><![CDATA[pas de sang ou glaires dans les selles]]></label>
-					<arguments select="all">
-						<argument type="spt" id="drh.8" value="no"/>
-						<argument type="spt" id="drh.8.1" value="no"/>
-					</arguments>
-					<node>
-						<label language="fr"><![CDATA[Diarrhée chronique &gt;3 semaines]]></label>
-						<argument type="spt" id="drh.12" value="yes"/>
-						<treatment id="drh13.0"/>
-						<node>
-							<label language="fr"><![CDATA[Test VIH positif]]></label>
-							<argument type="spt" id="drh.13" value="positive"/>
-							<treatment id="drh13"/>
+							<label language="fr"><![CDATA[Présence de vers]]></label>
+							<argument type="spt" id="drh.10" value="yes"/>
+							<treatment id="drh9"/>
 						</node>
 						<node>
-							<label language="fr"><![CDATA[Test VIH négatif ou refusé]]></label>
-							<arguments select="1">
-								<argument type="spt" id="drh.13" value="negative"/>
-								<argument type="spt" id="drh.13" value="refused"/>
-							</arguments>
-							<treatment id="drh14.0"/>
+							<label language="fr"><![CDATA[Présence de schistosoma]]></label>
+							<argument type="spt" id="drh.10b" value="yes"/>
+							<treatment id="drh9b"/>
+						</node>
+						<node>
+							<label language="fr"><![CDATA[Pas de présence de vers ou amibes ou schistosoma]]></label>
+							<argument type="spt" id="drh.9" value="no"/>
+							<argument type="spt" id="drh.10" value="no"/>
+							<argument type="spt" id="drh.10b" value="no"/>
+							<treatment id="drh10"/>
+						</node>
+						<node>
+							<label language="fr"><![CDATA[Examen de selles impossible]]></label>
+							<argument type="spt" id="drh.9" value="examimpossible"/>
+							<argument type="spt" id="drh.10" value="examimpossible"/>
+							<argument type="spt" id="drh.10b" value="examimpossible"/>
+							<treatment id="drh11.0"/>
 							<node>
-								<label language="fr"><![CDATA[Amélioration après traitement SRO]]></label>
-								<arguments select="1">
-									<argument type="spt" id="drh.14" value="yes"/>
-								</arguments>
-								<treatment id="drh14"/>
+								<label language="fr"><![CDATA[Amélioration après traitement]]></label>
+								<argument type="spt" id="drh.11" value="yes"/>
+								<treatment id="drh11"/>
 							</node>
+							<node>
+								<label language="fr"><![CDATA[Pas d'amélioration après traitement]]></label>
+								<argument type="spt" id="drh.11" value="no"/>
+								<treatment id="drh12"/>
+							</node>
+						</node>
+					</node>
+					<node>
+						<label language="fr"><![CDATA[pas de sang ou glaires dans les selles]]></label>
+						<arguments select="all">
+							<argument type="spt" id="drh.8" value="no"/>
+							<argument type="spt" id="drh.8.1" value="no"/>
+						</arguments>
+						<node>
+							<label language="fr"><![CDATA[Diarrhée chronique &gt;3 semaines]]></label>
+							<argument type="spt" id="drh.12" value="yes"/>
+							<treatment id="drh13.0"/>
+							<node>
+								<label language="fr"><![CDATA[Test VIH positif]]></label>
+								<argument type="spt" id="drh.13" value="positive"/>
+								<treatment id="drh13"/>
+							</node>
+							<node>
+								<label language="fr"><![CDATA[Test VIH négatif ou refusé]]></label>
+								<arguments select="1">
+									<argument type="spt" id="drh.13" value="negative"/>
+									<argument type="spt" id="drh.13" value="refused"/>
+								</arguments>
+								<treatment id="drh14.0"/>
+								<node>
+									<label language="fr"><![CDATA[Amélioration après traitement SRO]]></label>
+									<arguments select="1">
+										<argument type="spt" id="drh.14" value="yes"/>
+									</arguments>
+									<treatment id="drh14"/>
+								</node>
+								<node>
+									<label language="fr"><![CDATA[Pas d'amélioration après traitement SRO]]></label>
+									<arguments select="1">
+										<argument type="spt" id="drh.14" value="no"/>
+									</arguments>
+									<treatment id="drh15"/>
+								</node>
+							</node>
+						</node>
+						<node>
+							<label language="fr"><![CDATA[Pas de diarrhée chronique]]></label>
+							<argument type="spt" id="drh.12" value="no"/>
+							<treatment id="drh16.0"/>
 							<node>
 								<label language="fr"><![CDATA[Pas d'amélioration après traitement SRO]]></label>
 								<arguments select="1">
 									<argument type="spt" id="drh.14" value="no"/>
 								</arguments>
-								<treatment id="drh15"/>
-							</node>
-						</node>
-					</node>
-					<node>
-						<label language="fr"><![CDATA[Pas de diarrhée chronique]]></label>
-						<argument type="spt" id="drh.12" value="no"/>
-						<treatment id="drh16.0"/>
-						<node>
-							<label language="fr"><![CDATA[Pas d'amélioration après traitement SRO]]></label>
-							<arguments select="1">
-								<argument type="spt" id="drh.14" value="no"/>
-							</arguments>
-							<treatment id="drh16.1"/>
-							<node>
-								<label language="fr"><![CDATA[Vérification aspect des selles: diarrhée]]></label>
-								<arguments select="1">
-									<argument type="spt" id="drh.15" value="diarrea"/>
-								</arguments>
-								<treatment id="drh16"/>
+								<treatment id="drh16.1"/>
+								<node>
+									<label language="fr"><![CDATA[Vérification aspect des selles: diarrhée]]></label>
+									<arguments select="1">
+										<argument type="spt" id="drh.15" value="diarrea"/>
+									</arguments>
+									<treatment id="drh16"/>
+								</node>
 							</node>
 						</node>
 					</node>
@@ -6618,7 +6623,7 @@
 		</excludes>
 		<label language="fr"><![CDATA[E.19 Stratégie amaigrissement]]></label>
 		<node>
-			<label language="fr"><![CDATA[Troubles de comportement ou conscience]]></label>
+			<label language="fr"><![CDATA[Amaigrissement]]></label>
 			<argument type="spt" id="mai.1" value="yes"/>
 			<node>
 				<label language="fr"><![CDATA[Test VIH positif]]></label>

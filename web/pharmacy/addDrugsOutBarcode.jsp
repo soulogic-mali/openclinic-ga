@@ -315,7 +315,7 @@
 				         "</td>"+
 				         "<td class='admin2'>"+stock.getUid()+"</td>"+
 				         "<td class='admin2'><b>"+stock.getProduct().getCode()+"</b></td>"+
-				         "<td class='admin2'><b><span id='drugname."+stock.getUid()+"'>"+stock.getProduct().getName()+"&nbsp;&nbsp;<font style='color: #606060;font-size: 8px'>["+SH.getPriceFormat(dPat)+" "+SH.cs("currency","EUR")+"]</font></span></b>"+stocklabel+"</td>"+
+				         "<td class='admin2'><b><span id='drugname."+stock.getUid()+"'>"+stock.getProduct().getName()+"<br><font style='color: #606060;font-size: 8'>"+(SH.c(stock.getProduct().getRoute()).length()==0?"":"["+getTranNoLink("product.route",stock.getProduct().getRoute(),sWebLanguage)+"] ")+"["+SH.getPriceFormat(dPat)+" "+SH.cs("currency","EUR")+"]</font></span></b>"+stocklabel+"</td>"+
 				         "<td class='admin2'><b>"+nBatch+(bInvoiced?" <img height='14px' src='"+sCONTEXTPATH+"/_img/icons/icon_money2.png'/>":"")+"</b></td>"+
 				         "<td class='admin2'>"+sBatch+"</td>"+
 				         "<td class='admin2'>"+level+(level<nBatch?" <NODELIVERY><img src='"+sCONTEXTPATH+"/_img/icons/icon_forbidden.png'/>":"")+"</td>"+
