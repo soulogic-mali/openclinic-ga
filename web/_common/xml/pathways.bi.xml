@@ -1,4 +1,4 @@
-<pathways domain="bi.spt" version="14">
+<pathways domain="bi.spt" version="15">
 	<label language="fr"><![CDATA[Stratégies plainte-traitement du MSPLS - Burundi]]></label>
 	<pathway complaint="drh.1" value="yes">
 		<cave><![CDATA[Infections intestinales, dysenterie, amibiase intestinale aiguë, choléra, diarrhée banale, toxiinfection alimentaire]]></cave>
@@ -6651,8 +6651,15 @@
 						<argument type="spt" id="mai.4" value="no"/>
 					</arguments>
 					<node>
+						<argument type="ageinmonths" compare="greaterthan" value="143"/>
+						<treatment id="mai5"/>
+					</node>
+					<node>
 						<label language="fr"><![CDATA[Enfant malnourri]]></label>
-						<argument type="spt" id="mai.5" value="yes"/>
+						<arguments select="all">
+							<argument type="ageinmonths" compare="lessthan" value="144"/>
+							<argument type="spt" id="mai.5" value="yes"/>
+						</arguments>
 						<treatment id="mai3.0"/>
 						<node>
 							<label language="fr"><![CDATA[Améioration après traitement]]></label>
@@ -6666,8 +6673,11 @@
 						</node>
 					</node>
 					<node>
-						<label language="fr"><![CDATA[Enfant pas malnourri]]></label>
-						<argument type="spt" id="mai.5" value="no"/>
+						<label language="fr"><![CDATA[Pas d'enfant malnourri]]></label>
+						<arguments select="all">
+							<argument type="ageinmonths" compare="lessthan" value="144"/>
+							<argument type="spt" id="mai.5" value="no"/>
+						</arguments>
 						<treatment id="mai5"/>
 					</node>
 				</node>

@@ -41,6 +41,12 @@
 			                <!-- End time section -->
 			            </td>
 			        </tr>
+			        <%
+			        	if(MedwanQuery.getInstance().getConfigInt("loadRecentVitalSignsInRMHConsultation",0)==1 && ((TransactionVO)transaction).isNew()){
+			        		((TransactionVO)transaction).setHealthrecordId(MedwanQuery.getInstance().getHealthRecordIdFromPersonId(Integer.parseInt(activePatient.personid)));
+			        		((TransactionVO)transaction).preloadRecentVitalSigns();
+			        	}
+			        %>
 					
 			        <%-- VITAL SIGNS --%>
 			        <tr>

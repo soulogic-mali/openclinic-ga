@@ -15,6 +15,10 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -707,5 +711,51 @@ public class TransactionVO extends IObjectReference implements Serializable, IId
 
     	Debug.println("\n******************************************************************\n");
     }    
+    
+    public void preloadRecentVitalSigns() {
+    	HashSet knownItems = new HashSet();
+    	String sVitalSignItemTypes="'"+IConstants.IConstants_PREFIX+"[GENERAL.ANAMNESE]ITEM_TYPE_TEMPERATURE'";
+    	sVitalSignItemTypes+=",'"+IConstants.IConstants_PREFIX+"ITEM_TYPE_BIOMETRY_HEIGHT'";
+    	sVitalSignItemTypes+=",'"+IConstants.IConstants_PREFIX+"ITEM_TYPE_BIOMETRY_WEIGHT'";
+    	sVitalSignItemTypes+=",'"+IConstants.IConstants_PREFIX+"[GENERAL.ANAMNESE]ITEM_TYPE_SATURATION'";
+    	sVitalSignItemTypes+=",'"+IConstants.IConstants_PREFIX+"ITEM_TYPE_ABDOMENCIRCUMFERENCE'";
+    	sVitalSignItemTypes+=",'"+IConstants.IConstants_PREFIX+"ITEM_TYPE_FOETAL_HEARTRATE'";
+    	sVitalSignItemTypes+=",'"+IConstants.IConstants_PREFIX+"ITEM_TYPE_CARDIAL_CLINICAL_EXAMINATION_SYSTOLIC_PRESSURE_RIGHT'";
+    	sVitalSignItemTypes+=",'"+IConstants.IConstants_PREFIX+"ITEM_TYPE_CARDIAL_CLINICAL_EXAMINATION_DIASTOLIC_PRESSURE_RIGHT'";
+    	sVitalSignItemTypes+=",'"+IConstants.IConstants_PREFIX+"ITEM_TYPE_CARDIAL_CLINICAL_EXAMINATION_SYSTOLIC_PRESSURE_LEFT'";
+    	sVitalSignItemTypes+=",'"+IConstants.IConstants_PREFIX+"ITEM_TYPE_CARDIAL_CLINICAL_EXAMINATION_DIASTOLIC_PRESSURE_LEFT'";
+    	sVitalSignItemTypes+=",'"+IConstants.IConstants_PREFIX+"[GENERAL.ANAMNESE]ITEM_TYPE_RESPIRATORY_FRENQUENCY'";
+    	sVitalSignItemTypes+=",'"+IConstants.IConstants_PREFIX+"ITEM_TYPE_CARDIAL_CLINICAL_EXAMINATION_HEARTH_FREQUENCY'";
+    	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+    	try {
+    		String sSql="select * from transactions t,items i where t.transactionid=i.transactionid and t.serverid=i.serverid and"
+    				+ " i.type in ("+sVitalSignItemTypes+") and t.updatetime>=? and t.healthrecordid=? order by t.updatetime desc,t.ts desc";
+    		PreparedStatement ps = conn.prepareStatement(sSql);
+    		ps.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
+    		ps.setInt(2,this.healthrecordId);
+    		ResultSet rs = ps.executeQuery();
+    		while (rs.next()) {
+    			String type = rs.getString("type");
+    			if(!knownItems.contains(type)) {
+    				if(this.getItem(type)!=null) {
+    					this.getItem(type).setValue(rs.getString("value"));
+    				}
+    				knownItems.add(type);
+    			}
+    		}
+    		rs.close();
+    		ps.close();
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	finally {
+    		try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+    	}
+    }
     
 }
