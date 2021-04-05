@@ -152,8 +152,8 @@
                 out.print("<td class='tscrollcol'>");
                 out.print("<table width='100%'>");
                 out.print("<tr>");
-                out.print("<td width='80px'><a class='tscrolladmin' href='javascript:showRequest("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'>"+labRequest.getTransactionid()+"</a><br/>"+ScreenHelper.formatDate(labRequest.getRequestdate())+"</td>");
-                out.print("<td class='tscrolladmin'><a class='tscrolladmin' href='javascript:readBarcode3(\"0"+labRequest.getPersonid()+"\");'><b>"+labRequest.getPatientname()+"</b></a> (°"+(labRequest.getPatientdateofbirth()!=null?ScreenHelper.formatDate(labRequest.getPatientdateofbirth()):"")+" - "+labRequest.getPatientgender()+")<br/><i>"+labRequest.getServicename()+" - "+MedwanQuery.getInstance().getUserName(labRequest.getUserid())+"</i></td>");
+                out.print("<td width='80px'><a class='tscrolladmin' href='javascript:showRequest("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'>"+labRequest.getTransactionid()+"</a>"+(labRequest.isUrgent()?" <img height='14px' title='"+getTranNoLink("labrequest.urgency","urgent",sWebLanguage)+"' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>":"")+"<br/>"+ScreenHelper.formatDate(labRequest.getRequestdate())+"</td>");
+                out.print("<td class='tscrolladmin'><a class='tscrolladmin' href='javascript:readBarcode3(\"0"+labRequest.getPersonid()+"\");'><b>"+labRequest.getPersonid()+" "+labRequest.getPatientname()+"</b></a> (°"+(labRequest.getPatientdateofbirth()!=null?ScreenHelper.formatDate(labRequest.getPatientdateofbirth()):"")+" - "+labRequest.getPatientgender()+")<br/><i>"+labRequest.getServicename()+" - "+MedwanQuery.getInstance().getUserName(labRequest.getUserid())+"</i></td>");
                 out.print("</tr>");
                 out.print("</table>");
                 out.print("</td>");

@@ -17,7 +17,7 @@
 			//Check if there is quantity available for this batchnumber in this productstock
 			for(int i=0;i<batches.size();i++){
 				Batch batch = (Batch)batches.elementAt(i);
-				if(checkString(batch.getBatchNumber()).equalsIgnoreCase(bloodgift.getTransactionId()+"")){
+				if(checkString(batch.getBatchNumber()).startsWith(bloodgift.getTransactionId()+".")){
 					//Yes we have a match, add it to the available batches
 					totalBatches+= productstockuid+"$"+batch.getUid()+";"+batch.getBatchNumber()+";"+batch.getLevel()+";"+(batch.getEnd()==null?"":ScreenHelper.stdDateFormat.format(batch.getEnd()))+";"+batch.getComment()+";";
 				}

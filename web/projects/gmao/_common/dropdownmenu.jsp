@@ -470,6 +470,10 @@
         url = "<c:url value='/main.do'/>?Page=financial/patientCreditEdit.jsp&ts=<%=ScreenHelper.getTs()%>&LoadPatientId=true&FindPatientCreditUID="+barcode.substring(1);
         window.location.href = url;
       }
+    else if(barcode.substring(0,1)=="B"){
+        url = "<c:url value='/main.do'/>?Page=cnts/loadBloodgift.jsp&ts=<%=ScreenHelper.getTs()%>&giftid="+barcode.substring(1);
+        window.location.href = url;
+      }
     else if(barcode.substring(0,1)=="7"){
         url = "<c:url value='/main.do'/>?Page=financial/patientInvoiceEdit.jsp&ts=<%=ScreenHelper.getTs()%>&LoadPatientId=true&FindPatientInvoiceUID="+barcode.substring(1);
         window.location.href = url;

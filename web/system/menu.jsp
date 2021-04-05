@@ -116,6 +116,8 @@
                     hMenu = new Hashtable();
 	                hMenu.put(getTran(request,"web.manage","exporttowhonet",sWebLanguage),"main.do?Page=system/exportToWHONet.jsp");
                     hMenu.put(getTran(request,"web.manage","manageDHIS2",sWebLanguage),"main.do?Page=system/manageDHIS2.jsp");
+                    hMenu.put(getTran(request,"web","analyzedhis2server",sWebLanguage),"main.do?Page=dhis2/analyzeDHIS2.jsp");
+                    hMenu.put(getTran(request,"web","testsmsgateways",sWebLanguage),"main.do?Page=util/smsGatewayTest.jsp");
 					if(SH.ci("enableOpenCarenetMaster",0)==1){
 	                    hMenu.put(getTran(request,"web.manage","manageOpenCarenetTokens",sWebLanguage),"main.do?Page=system/manageOpenCarenetTokens.jsp");
 					}
@@ -164,6 +166,9 @@
                     hMenu.put(getTran(request,"web.manage","configure.core",sWebLanguage),"main.do?Page=system/resetDefaults.jsp");
                     hMenu.put(getTran(request,"web.manage","load.file",sWebLanguage),"main.do?Page=system/loadTable.jsp");
                     hMenu.put(getTran(request,"web.manage","export.labels",sWebLanguage),"main.do?Page=system/exportLabels.jsp");
+                    if(SH.ci("enableOfflineSync",0)==1){
+                    	hMenu.put(getTran(request,"web.manage","offline.sync",sWebLanguage),"main.do?Page=util/sendOfflineData.jsp");
+                    }
 
                     out.print(ScreenHelper.writeTblHeader(getTran(request,"web.manage","Synchronization",sWebLanguage),sCONTEXTPATH)+
                     		  sortMenu(hMenu)+

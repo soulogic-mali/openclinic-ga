@@ -1,3 +1,4 @@
+<%@page import="be.openclinic.medical.RequestedLabAnalysis"%>
 <%@page import="be.openclinic.id.FingerPrint,
                 be.mxs.common.util.system.Picture,
                 be.openclinic.id.Barcode,
@@ -95,7 +96,17 @@
 %>
 
 <%
-    //--- 1 - USER DEFINED ICONS ------------------------------------------------------------------
+	if(activePatient!=null && SH.ci("enableBloodbank",0)==1){
+		String bloodgroup="";
+		RequestedLabAnalysis analysis = RequestedLabAnalysis.getByPersonid(Integer.parseInt(activePatient.personid), MedwanQuery.getInstance().getConfigString("cntsBloodgroupCode","ABO"));
+		if(analysis!=null) bloodgroup+=analysis.getResultValue().toUpperCase();
+		analysis = RequestedLabAnalysis.getByPersonid(Integer.parseInt(activePatient.personid), MedwanQuery.getInstance().getConfigString("cntsRhesusCode","Rh"));
+		if(analysis!=null) bloodgroup+=analysis.getResultValue();
+		if(bloodgroup.length()>0){
+			out.println("<font style='font-family: Arial, Helvetica, sans-serif;border-radius: 8px;padding: 1px;color: #edeff2;background-color:#4c79ad;font-weight: 900;font-size: 12px'>"+bloodgroup+"</font>&nbsp;");
+		}
+	}
+	//--- 1 - USER DEFINED ICONS ------------------------------------------------------------------
     String sIconsDir = sAPPFULLDIR+"/_img/shortcutIcons";
     Vector userParameters = activeUser.getUserParametersByType(activeUser.userid,"usershortcut$");
 

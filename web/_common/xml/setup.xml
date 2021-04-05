@@ -10,6 +10,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="fr,nl,de,en,es,pt"/>
 		<config key="supportedLanguages" value="fr,en,es,pt,nl"/>
+		<config key="cellPhoneCountryPrefix" value="32"/>
 		<config key="mxsref" value="BE"/>
 		<config key="priceFormat" value="#0.00"/>
 		<config key="priceFormatInsurar" value="#0.00"/>
@@ -34,6 +35,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="fr,nl,de,en,es,pt"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="226"/>
 		<config key="mxsref" value="BE"/>
 		<config key="priceFormat" value="#0"/>
 		<config key="priceFormatInsurar" value="#0"/>
@@ -54,6 +56,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="li,fr,en,de,nl,ki,sw,ts"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="243"/>
 		<config key="mxsref" value="CD"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -74,6 +77,7 @@
 		<config key="DefaultLanguage" value="en"/>
 		<config key="PatientLanguages" value="en"/>
 		<config key="supportedLanguages" value="en"/>
+		<config key="cellPhoneCountryPrefix" value="251"/>
 		<config key="mxsref" value="ET"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -94,6 +98,7 @@
 		<config key="DefaultLanguage" value="es"/>
 		<config key="PatientLanguages" value="es"/>
 		<config key="supportedLanguages" value="es"/>
+		<config key="cellPhoneCountryPrefix" value="51"/>
 		<config key="mxsref" value="PE"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -114,6 +119,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="fr,en,kr"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="250"/>
 		<config key="mxsref" value="RW"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -139,6 +145,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="fr,en"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="257"/>
 		<config key="mxsref" value="BI"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -161,6 +168,7 @@
 		<config key="DefaultLanguage" value="pt"/>
 		<config key="PatientLanguages" value="pt,es,en,fr"/>
 		<config key="supportedLanguages" value="pt,es,en,fr"/>
+		<config key="cellPhoneCountryPrefix" value="55"/>
 		<config key="mxsref" value="BR"/>
 		<config key="priceFormat" value="#0.00"/>
 		<config key="priceFormatInsurar" value="#0.00"/>
@@ -181,6 +189,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="fr,en"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="223"/>
 		<config key="mxsref" value="ML"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -215,6 +224,7 @@
 		<config key="DefaultLanguage" value="en"/>
 		<config key="PatientLanguages" value="en,sw"/>
 		<config key="supportedLanguages" value="en"/>
+		<config key="cellPhoneCountryPrefix" value="254"/>
 		<config key="mxsref" value="KE"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -235,6 +245,7 @@
 		<config key="DefaultLanguage" value="en"/>
 		<config key="PatientLanguages" value="en"/>
 		<config key="supportedLanguages" value="en"/>
+		<config key="cellPhoneCountryPrefix" value="94"/>
 		<config key="mxsref" value="LK"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -255,6 +266,7 @@
 		<config key="DefaultLanguage" value="en"/>
 		<config key="PatientLanguages" value="en"/>
 		<config key="supportedLanguages" value="en"/>
+		<config key="cellPhoneCountryPrefix" value="880"/>
 		<config key="mxsref" value="BD"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -275,6 +287,7 @@
 		<config key="DefaultLanguage" value="en"/>
 		<config key="PatientLanguages" value="en,sw"/>
 		<config key="supportedLanguages" value="en"/>
+		<config key="cellPhoneCountryPrefix" value="256"/>
 		<config key="mxsref" value="UG"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -295,6 +308,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="fr,en"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="225"/>
 		<config key="mxsref" value="CI"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -315,6 +329,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="fr,en"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="237"/>
 		<config key="mxsref" value="CM"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -335,6 +350,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="fr,en"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="242"/>
 		<config key="mxsref" value="CG"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -354,6 +370,7 @@
 		<config key="DefaultLanguage" value="en"/>
 		<config key="PatientLanguages" value="fr,en,es,it"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="355"/>
 		<config key="mxsref" value="AL"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -374,6 +391,7 @@
 		<config key="DefaultLanguage" value="en"/>
 		<config key="PatientLanguages" value="fr,en,es,it,sw"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="255"/>
 		<config key="mxsref" value="TZ"/>
 		<config key="priceFormat" value="#"/>
 		<config key="priceFormatInsurar" value="#"/>
@@ -394,6 +412,7 @@
 		<config key="DefaultLanguage" value="en"/>
 		<config key="PatientLanguages" value="fr,en,es,it,sw"/>
 		<config key="supportedLanguages" value="en"/>
+		<config key="cellPhoneCountryPrefix" value="260"/>
 		<config key="mxsref" value="ZM"/>
 		<config key="priceFormat" value="#0.00"/>
 		<config key="priceFormatInsurar" value="#0.00"/>
@@ -414,6 +433,7 @@
 		<config key="DefaultLanguage" value="en"/>
 		<config key="PatientLanguages" value="fr,en,es,it,sw"/>
 		<config key="supportedLanguages" value="en"/>
+		<config key="cellPhoneCountryPrefix" value="234"/>
 		<config key="mxsref" value="NG"/>
 		<config key="priceFormat" value="#0.00"/>
 		<config key="priceFormatInsurar" value="#0.00"/>
@@ -434,6 +454,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="fr,en,es,it,sw"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="241"/>
 		<config key="mxsref" value="GA"/>
 		<config key="priceFormat" value="#0.00"/>
 		<config key="priceFormatInsurar" value="#0.00"/>
@@ -454,6 +475,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="fr,en,es,it,sw"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="221"/>
 		<config key="mxsref" value="SN"/>
 		<config key="priceFormat" value="#0.00"/>
 		<config key="priceFormatInsurar" value="#0.00"/>
@@ -474,6 +496,7 @@
 		<config key="DefaultLanguage" value="fr"/>
 		<config key="PatientLanguages" value="fr,en"/>
 		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="224"/>
 		<config key="mxsref" value="BE"/>
 		<config key="projectref" value="vub"/>
 		<config key="priceFormat" value="#0"/>

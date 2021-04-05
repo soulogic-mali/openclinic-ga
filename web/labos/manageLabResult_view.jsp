@@ -28,12 +28,15 @@
         
         if(items[0].equalsIgnoreCase("show")){
             LabRequest labRequest = new LabRequest(Integer.parseInt(items[1]),Integer.parseInt(items[2]));
+            if(activePatient==null || !activePatient.personid.equalsIgnoreCase(labRequest.getPersonid()+"")){
+            	activePatient=AdminPerson.get(labRequest.getPersonid()+"");
+            }
             if(labRequest.getRequestdate()!=null){
                 requestList.put(new SimpleDateFormat("yyyyMMddHHmmss").format(labRequest.getRequestdate())+"."+items[1]+"."+items[2],labRequest);
             }
         }
     }
-
+    
     SortedMap groups = new TreeMap();
     Iterator iterator = requestList.keySet().iterator();
     while(iterator.hasNext()){
@@ -48,7 +51,6 @@
             ((Hashtable)groups.get(MedwanQuery.getInstance().getLabel("labanalysis.group",requestedLabAnalysis.getLabgroup(),sWebLanguage))).put(requestedLabAnalysis.getAnalysisCode(),"1");
         }
     }
-
 %>
 <%=writeTableHeader("Web","patientLaboResults",sWebLanguage," doBack();")%>
 <table class="list" width="100%" cellpadding="0" cellspacing="1">

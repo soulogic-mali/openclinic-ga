@@ -80,7 +80,7 @@
 		
 		Element group, parameter, descrEl;
 		Iterator parameters, descrIter;
-		String sGroupClass, sGroupShow;
+		String sGroupClass, sGroupShow, sGroupSort;
 		int infoIconCount = 0;
 
 		Iterator groups = root.elementIterator("parametergroup");
@@ -90,6 +90,8 @@
 			
 			sGroupShow = checkString(group.attributeValue("show"));
 			if(sGroupShow.equalsIgnoreCase("false")) continue; // do not show group
+
+			sGroupSort = checkString(group.attributeValue("sort"),"true");
 
 			sGroupClass = checkString(group.attributeValue("class"));
 			if(!sGroupClass.equals("advanced") || advanced){
@@ -111,16 +113,21 @@
 					//*** order by parameter-name ***
 					Hashtable parameterHash = new Hashtable();
 					String sName;
+					Vector parameterVector = new Vector();
 					while(parameters.hasNext()){
 						parameter = (Element)parameters.next();						
 						sName = checkString(parameter.attributeValue("name"));
 						if(sName.length()==0) continue; // do not display empty parameters
 						parameterHash.put(sName,parameter);
+						if(sGroupSort.equalsIgnoreCase("false")){
+							parameterVector.add(sName);
+						}
 					}
 					
-					Vector parameterVector = new Vector(parameterHash.keySet());
-					Collections.sort(parameterVector);
-						
+					if(!sGroupSort.equalsIgnoreCase("false")){
+						parameterVector = new Vector(parameterHash.keySet());
+						Collections.sort(parameterVector);
+					}						
 					//*** display parameters ***
 					parameters = parameterVector.iterator();
 					while(parameters.hasNext()){
@@ -134,7 +141,10 @@
 							   sOptions = checkString(parameter.attributeValue("options"));
 																		
 						//*** interprete xml to html ***
-						if(!sClass.equalsIgnoreCase("advanced") || advanced){
+						if(sClass.equalsIgnoreCase("title")){
+							out.println("<tr><td colspan='4' class='configtitle'>"+sName+"</td></tr>");
+						}
+						else if(!sClass.equalsIgnoreCase("advanced") || advanced){
 							//*** look for description in weblanguage ***
 							descrIter = parameter.elementIterator("description");
 							String sDescription = "", sDescrLang;
@@ -227,6 +237,10 @@
 									if(sUnit.length() > 0) out.print(" "+sUnit);
 								}
 								//*** text (default) ***
+								else if(sType.equalsIgnoreCase("password")){
+									out.print("<input type='password' class='text' size='60' name='par_"+sName+"' id='par_"+sName+"' value='"+sStoredValue+"' "+(sStoredValue.length()==0&&sDefaultValue.length()>0?"style='background:#ff9999'":"")+" "+(sModus.equalsIgnoreCase("readonly")?"readonly":"")+"/>");
+									if(sUnit.length() > 0) out.print(" "+sUnit);
+								}
 								else{
 									out.print("<input type='text' class='text' size='60' name='par_"+sName+"' id='par_"+sName+"' value='"+sStoredValue+"' "+(sStoredValue.length()==0&&sDefaultValue.length()>0?"style='background:#ff9999'":"")+" "+(sModus.equalsIgnoreCase("readonly")?"readonly":"")+"/>");
 									if(sUnit.length() > 0) out.print(" "+sUnit);

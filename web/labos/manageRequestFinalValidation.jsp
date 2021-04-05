@@ -115,7 +115,7 @@
             for(int n=0; n<results.size(); n++){
                 LabRequest labRequest = (LabRequest)results.elementAt(n);
                 out.print("<tr>");
-                out.print("<td><a href='javascript:showRequest(" + labRequest.getServerid() + "," + labRequest.getTransactionid() + ")'><b>" + labRequest.getTransactionid()+"</a><br/>#"+ labRequest.getPersonid() + "</b><br/>" + ScreenHelper.stdDateFormat.format(labRequest.getRequestdate()) + "&nbsp;&nbsp;&nbsp;</td>");
+                out.print("<td><a href='javascript:showRequest(" + labRequest.getServerid() + "," + labRequest.getTransactionid() + ")'><b>" + labRequest.getTransactionid()+"</a>"+(labRequest.isUrgent()?" <img height='14px' title='"+getTranNoLink("labrequest.urgency","urgent",sWebLanguage)+"' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>":"")+"<br/>#"+ labRequest.getPersonid() + "</b><br/>" + ScreenHelper.stdDateFormat.format(labRequest.getRequestdate()) + "&nbsp;&nbsp;&nbsp;</td>");
                 out.print("<td nowrap><a href='javascript:readBarcode3(\"0" + labRequest.getPersonid() + "\");'><b>" + labRequest.getPatientname() + "</b></a> (°" + (labRequest.getPatientdateofbirth() != null ? ScreenHelper.stdDateFormat.format(labRequest.getPatientdateofbirth()) : "") + " - " + labRequest.getPatientgender() + ")<br/><i>" + MedwanQuery.getInstance().getUserName(labRequest.getUserid()) + "</i></td>");
                 //Add all analysis results/requests
                 for (int i = 0; i < profileAnalysis.length; i++) {

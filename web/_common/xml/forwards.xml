@@ -1,4 +1,5 @@
 <mappings>
+    <mapping id="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODGIFT_SUPERVISION"           	path="/main.do?Page=/healthrecord/manageCNTSBloodgiftSupervision.jsp"        	 accessright="cnts.supervision"/>
     <mapping id="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_NDH_ADMISSION"                			path="/main.do?Page=/healthrecord/manageNDHAdmission.jsp"        				 accessright="occup.ndhadmission"/>
     <mapping id="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CHUGTOUTPATIENTFILE"					path="/main.do?Page=/healthrecord/manageCHUGTOutpatientFile.jsp"      	 		 accessright="occup.chugtoutpatientfile"/>
     <mapping id="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_COVID19_FOLLOWUPWITHPULSOXIMETRY"		path="/main.do?Page=/healthrecord/manageCovid19FollowUpPulseoximetry.jsp"      	 accessright="surveillance.covid19.followup"/>

@@ -4,6 +4,7 @@
 		<Menu labelid="administration_compact" enableparameter="enableFastEncounter" accessrights="patient.administration.select" url="/main.jsp?Page=_common/patient/patientEditCompact.jsp&amp;edit=1" patientselected="true"/>
 		<Menu labelid="new_patient" accessrights="patient.administration.add" url="/patientnew.do?PatientNew=true"/>
 		<Menu labelid="new_patient_compact" enableparameter="enableFastEncounter" accessrights="patient.administration.add" url="/main.jsp?Page=_common/patient/patientEditCompact.jsp"/>
+		<Menu labelid="search_bloodgift" enableparameter="enableBloodbank" accessrights="patient.administration.add" url="javascript:findBloodGift();"/>
 		<Menu labelid="clear" accessrights="patient.administration.select" url="/start.do?PatientNew=true"/>
 		<Menu labelid="printPatientCard" accessrights="patient.administration.select" url="javascript:printPatientCard();" patientselected="true"/>
 		<Menu labelid="uploadPaptientPicture" accessrights="patient.administration.select" url="/main.do?Page=util/uploadPicture.jsp" patientselected="true"/>

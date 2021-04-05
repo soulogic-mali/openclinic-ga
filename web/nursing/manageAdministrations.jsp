@@ -13,10 +13,10 @@
     int adminDays = MedwanQuery.getInstance().getConfigInt("administrationSchemaDays",5);
 
 	// start date
-	java.util.Date dStart = new java.util.Date(ScreenHelper.getDate(new java.util.Date()).getTime() - 2 * 24 * 3600 * 1000);
+	java.util.Date dStart = new java.util.Date(ScreenHelper.getDate(new java.util.Date()).getTime() - 1 * 24 * 3600 * 1000);
 	String sStartDate = checkString(request.getParameter("startdate"));
 	if(sStartDate.length() > 0){
-	    dStart = new java.util.Date(ScreenHelper.parseDate(sStartDate).getTime() - 2 * 24 * 3600 * 1000);
+	    dStart = new java.util.Date(ScreenHelper.parseDate(sStartDate).getTime() - 1 * 24 * 3600 * 1000);
 	}
     
     /// DEBUG /////////////////////////////////////////////////////////////////////////////////////
@@ -82,12 +82,13 @@
         if(schema.getPrescriptionSchemas()==null || schema.getPrescriptionSchemas().size() == 0){
 			%>
             <%-- 1 - TREATMENT DIAGRAM ------------------------------------------------------------------%>
+			<div id='divscroll' class='tscroll'>
             <table width="100%" cellspacing="0" cellpadding="0">
-            <tr class='admin'><td colspan='6'><%=getTran(request,"web","medicationschema",sWebLanguage)%></td></tr>
+            <tr class='admin'><td class='tscrollcol'><%=getTran(request,"web","medicationschema",sWebLanguage)%></td><td class='tscrolladmin' colspan='5'></td></tr>
 			<%
             // Day header
             out.print("<tr>"+
-                       "<td width='10%'/><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
+                       "<td width='1%' nowrap/><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
             for(int d=0; d<adminDays; d++){
                 %>
                     <td class="admin" width="<%=(100/(adminDays))%>%">
@@ -101,16 +102,16 @@
             AdministrationSchema.AdministrationSchemaLine line = (AdministrationSchema.AdministrationSchemaLine)schema.getPrescriptionSchemas().elementAt(0);
 			int tablewidth=100;
 			if(line.getTimeQuantities().size()>8-adminDays){
-				tablewidth=100*line.getTimeQuantities().size()/(8-adminDays);
+				//	tablewidth=100*line.getTimeQuantities().size()/(8-adminDays);
 			}
 			%>
             <%-- 1 - TREATMENT DIAGRAM ------------------------------------------------------------------%>
             <table width="<%=tablewidth%>%" cellspacing="0" cellpadding="0">
-            <tr class='admin'><td colspan='6'><%=getTran(request,"web","medicationschema",sWebLanguage)%></td></tr>
+            <tr class='admin'><td class='tscrollcol'><%=getTran(request,"web","medicationschema",sWebLanguage)%></td><td class='tscrolladmin' colspan='5'></td></tr>
 			<%
             // Day header
             out.print("<tr>"+
-                       "<td width='10%'/><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
+                       "<td bgcolor='white' width='1%' nowrap class='tscrollcolwhite'/><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
             String hours = line.getTimeQuantities().size()+"";
             for(int d=0; d<adminDays; d++){
                 %>
@@ -123,19 +124,18 @@
 
             // Hour header
             out.print("<tr>"+
-                       "<td/><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
+                       "<td bgcolor='white' class='tscrollcolwhite'/><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
             for(int d=0; d<adminDays; d++){
                 for(int i=0; i<line.getTimeQuantities().size(); i++){
                     out.print("<td width='"+(100/((adminDays)*line.getTimeQuantities().size()))+"%' class='admin'><center>"+((KeyValue)line.getTimeQuantities().elementAt(i)).getKey()+getTran(request,"web","abbreviation.hour", sWebLanguage)+"</center></td>");
                 }
             }
             out.print("</tr></table></td></tr>");
-
 	        for(int n=0; n<schema.getPrescriptionSchemas().size(); n++){
 	            line = (AdministrationSchema.AdministrationSchemaLine)schema.getPrescriptionSchemas().elementAt(n);
 				HashSet hPrestations = new HashSet();
-	            out.print("<tr>");
-	             out.print("<td bgcolor='lightgrey' nowrap>&nbsp;<b>"+(line.getPrescription().getProduct()!=null?line.getPrescription().getProduct().getName():"Unknown product")+"</b>&nbsp;</td><td><table style='table-layout: fixed' width='100%' cellspacing='1' cellpadding='0'><tr>");
+	            out.print("<tr style='vertical-align: top'>");
+	             out.print("<td bgcolor='lightgrey' nowrap class='tscrollcolgrey'>&nbsp;<b>"+(line.getPrescription().getProduct()!=null?line.getPrescription().getProduct().getName():"Unknown product")+"</b>&nbsp;</td><td><table style='table-layout: fixed' width='100%' cellspacing='1' cellpadding='0'><tr>");
 	
 	            for(int d=0; d<adminDays; d++){
 	                
@@ -163,8 +163,7 @@
 	                        		sval=new Double(val).intValue()+"";
 	                        	}
 	                        }
-	                        out.print("<td bgcolor='lightgrey' nowrap width='"+(100/((adminDays)*line.getTimeQuantities().size()))+"%'>"+
-	                                   "<center>"+sval);
+	                        out.print("<td bgcolor='lightgrey' nowrap style='width: 50px;vertical-align: middle;text-align: center'>"+sval);
 	                        try{
 	                            adminVal = Double.parseDouble(line.getTimeAdministration(compactDateFormat.format(day)+"."+((KeyValue)line.getTimeQuantities().elementAt(i)).getKey()));
 	                        }
@@ -173,7 +172,7 @@
 	                        }
 	                        if(activeUser.getAccessRightNoSA("nursing.edit") && !day.before(new java.util.Date(new java.util.Date().getTime()-MedwanQuery.getInstance().getConfigInt("maximumNursingDataEditableHours",48)*lHour-((KeyValue)line.getTimeQuantities().elementAt(i)).getKeyInt()*lHour)) && val > 0){
 	
-	                            sClass = "text";
+	                            sClass = "textbold";
 	                            if(adminVal ==0){
 	                                sClass = "textred";
 	                            }
@@ -182,12 +181,12 @@
 	                        		sval=adminVal+"";
 	                        	}
 	                        	String sKey=compactDateFormat.format(day)+"_"+line.getPrescription().getUid()+"_"+((KeyValue)line.getTimeQuantities().elementAt(i)).getKey();
-	                            out.print("&nbsp;<input name='drugprescr"+sKey+"' type='text' class='"+sClass+"' size='1' value='"+sval+"'/>");
+	                            out.print("&nbsp;<input name='drugprescr"+sKey+"' type='text' class='"+sClass+"' style='width:20px;height: 16px;vertical-align: top' size='1' value='"+sval+"'/>");
 	                            if(hPrestations.contains(activePatient.personid+"_"+sKey)){
-	                            	out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_edit.png' onclick='addPrestation(\""+activePatient.personid+"_"+sKey+"\");' title='"+Pointer.getPointer(activePatient.personid+"_"+sKey)+"'/>");
+	                            	out.println("<img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_edit.png' onclick='addPrestation(\""+activePatient.personid+"_"+sKey+"\");' title='"+Pointer.getPointer(activePatient.personid+"_"+sKey)+"'/>");
 	                            }
 	                            else{
-	                            	out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_add.gif' onclick='addPrestation(\""+activePatient.personid+"_"+sKey+"\");' title='"+Pointer.getPointer(activePatient.personid+"_"+sKey)+"'/>");
+	                            	out.println("<img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_add.gif' onclick='addPrestation(\""+activePatient.personid+"_"+sKey+"\");' title='"+Pointer.getPointer(activePatient.personid+"_"+sKey)+"'/>");
 	                            }
 	                        }
 	                        else{
@@ -197,11 +196,10 @@
 	                        	}
 	                        	out.print(" [<b>"+sval+"</b>]");
 	                        }
-	                        out.print( "</center>"+
-	                                  "</td>");
+	                        out.print( "</td>");
 	                    }
 	                    else{
-	                        out.print("<td bgcolor='lightgrey' width='"+(100/((adminDays)*line.getTimeQuantities().size()))+"%'>&nbsp;</td>");
+	                        out.print("<td bgcolor='lightgrey' style='width:50px;min-width:50px'>&nbsp;</td>");
 	                    }
 	                }
 	            }
@@ -216,13 +214,13 @@
         if(cSchema.getCarePrescriptionSchemas().size() > 0){
         	%>
 		    <%-- 2 - CARE DIAGRAM -----------------------------------------------------------------------%>
-		    <tr class='admin'><td colspan='6'><%=getTran(request,"web","careschema",sWebLanguage)%></td></tr>
+		    <tr class='admin'><td class='tscrollcol'><%=getTran(request,"web","careschema",sWebLanguage)%></td><td class='tscrolladmin' colspan='5'></tr>
         	<%
             cLine = (CarePrescriptionAdministrationSchema.AdministrationSchemaLine)cSchema.getCarePrescriptionSchemas().elementAt(0);
 
             // Day header
             out.print("<tr>"+
-                       "<td width='10%'/><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
+                       "<td bgcolor='white' class='tscrollcolwhite'/><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
             String hours = cLine.getTimeQuantities().size()+"";
             for(int d=0; d<adminDays; d++){
                 %>
@@ -235,7 +233,7 @@
 
             // Hour header
             out.print("<tr>"+
-                       "<td/><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
+                       "<td bgcolor='white' class='tscrollcolwhite'/><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
             for(int d=0; d<adminDays; d++){
                 for(int i=0; i<cLine.getTimeQuantities().size(); i++){
                     out.print("<td class='admin' width='"+(100/((adminDays)*cLine.getTimeQuantities().size()))+"%'><center>"+((KeyValue)cLine.getTimeQuantities().elementAt(i)).getKey()+getTran(request,"web","abbreviation.hour",sWebLanguage)+"</center></td>");
@@ -249,7 +247,7 @@
             cLine = (CarePrescriptionAdministrationSchema.AdministrationSchemaLine)cSchema.getCarePrescriptionSchemas().elementAt(n);
 
             out.print("<tr>");
-             out.print("<td bgcolor='lightgrey'>&nbsp;<b>"+(cLine.getCarePrescription().getCareUid()!=null?getTran(request,"care_type",cLine.getCarePrescription().getCareUid(),sWebLanguage):"Unknown care type")+"&nbsp;</b></td><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
+             out.print("<td bgcolor='lightgrey' nowrap class='tscrollcolgrey'>&nbsp;<b>"+(cLine.getCarePrescription().getCareUid()!=null?getTran(request,"care_type",cLine.getCarePrescription().getCareUid(),sWebLanguage):"Unknown care type")+"&nbsp;</b></td><td><table width='100%' cellspacing='1' cellpadding='0'><tr>");
 
             for(int d=0; d<adminDays; d++){
                 day = new java.util.Date(dStart.getTime()+d * 24 * lHour);
@@ -257,8 +255,7 @@
                 for(int i=0; i<cLine.getTimeQuantities().size(); i++){
                     if(!cLine.getCarePrescription().getBegin().after(day) && !(cLine.getCarePrescription().getEnd()!=null && cLine.getCarePrescription().getEnd().before(day))){
                         val = ((KeyValue)cLine.getTimeQuantities().elementAt(i)).getValueInt();
-                        out.print("<td bgcolor='lightgrey' width='"+(100/((adminDays)*cLine.getTimeQuantities().size()))+"%'>"+
-                                   "<center>"+(val>0?new Double(val).intValue()+"":"&nbsp;"));
+                        out.print("<td bgcolor='lightgrey' nowrap style='min-width: 50px;width: 50px;height: 18px;vertical-align: middle;text-align: center'>"+(val>0?new Double(val).intValue()+"":"&nbsp;"));
                         try{
                             adminVal = Integer.parseInt(cLine.getTimeAdministration(compactDateFormat.format(day)+"."+((KeyValue)cLine.getTimeQuantities().elementAt(i)).getKey()));
                         }
@@ -267,12 +264,12 @@
                         }
                         if(activeUser.getAccessRightNoSA("nursing.edit") && !day.before(new java.util.Date(new java.util.Date().getTime()-MedwanQuery.getInstance().getConfigInt("maximumNursingDataEditableHours",48)*lHour-((KeyValue)cLine.getTimeQuantities().elementAt(i)).getKeyInt()*lHour)) && val > 0){
 
-                            sClass = "text";
+                            sClass = "textbold";
                             if(adminVal ==0){
                                 sClass = "textred";
                             }
 
-                            out.print("&nbsp;<input name='careprescr"+compactDateFormat.format(day)+"_"+cLine.getCarePrescription().getUid()+"_"+((KeyValue)cLine.getTimeQuantities().elementAt(i)).getKey()+"' type='text' class='"+sClass+"' size='1' value='"+new Double(adminVal).intValue()+"'/>");
+                            out.print("&nbsp;<input style='width: 20px; height: 16px' name='careprescr"+compactDateFormat.format(day)+"_"+cLine.getCarePrescription().getUid()+"_"+((KeyValue)cLine.getTimeQuantities().elementAt(i)).getKey()+"' type='text' class='"+sClass+"' size='1' value='"+new Double(adminVal).intValue()+"'/>");
                             if(ScreenHelper.checkString(cLine.getCarePrescription().getComment()).length()>0){
                             	out.print(" <img src='"+sCONTEXTPATH+"/_img/icons/icon_info.gif' title='"+cLine.getCarePrescription().getComment()+"'/>");
                             }
@@ -281,17 +278,27 @@
                         	out.print(" [<b>"+adminVal+"</b>]");
                         }
 
-                        out.print(" </center>"+
-                                  "</td>");
+                        out.print("</td>");
                     }
                     else{
-                        out.print("<td bgcolor='lightgrey' width='"+(100/((adminDays)*cLine.getTimeQuantities().size()))+"%'>&nbsp;</td>");
+                        out.print("<td bgcolor='lightgrey' style='min-width: 50px;width: 50px;'>&nbsp;</td>");
                     }
                 }
             }
             out.print("</tr></table></td></tr>");
         }
     %>
+    <tr>
+    	<td class='tscrollcolwhite' nowrap>
+    		<br/>
+	    	<%if(activeUser.getAccessRightNoSA("nursing.edit")){ %>
+	        	<input class="button" type="submit" name="saveButton" value="<%=getTranNoLink("Web","save",sWebLanguage)%>"/>
+	        	<input class="button" type="button" name="addPrestationButton" value="<%=getTranNoLink("Web","prestations",sWebLanguage)%>" onclick='addPrestation("<%=activePatient.personid%>_")'/>
+	        <%} %>
+	        <input class="button" type="button" name="todayButton" value="<%=getTranNoLink("Web","today",sWebLanguage)%>" onclick="doToday();"/>
+	    </td>
+	    <td colspan='5'/>
+    </tr>
     </table>
     <br/>
     
@@ -301,14 +308,6 @@
         }
     %>
     
-    <%-- BUTTONS --%>
-    <%=ScreenHelper.alignButtonsStart()%>
-    	<%if(activeUser.getAccessRightNoSA("nursing.edit")){ %>
-        	<input class="button" type="submit" name="saveButton" value="<%=getTranNoLink("Web","save",sWebLanguage)%>"/>
-        	<input class="button" type="button" name="addPrestationButton" value="<%=getTranNoLink("Web","prestations",sWebLanguage)%>" onclick='addPrestation("<%=activePatient.personid%>_")'/>
-        <%} %>
-        <input class="button" type="button" name="todayButton" value="<%=getTranNoLink("Web","today",sWebLanguage)%>" onclick="doToday();"/>
-    <%=ScreenHelper.alignButtonsStart()%>
 </form>
 
 <script>

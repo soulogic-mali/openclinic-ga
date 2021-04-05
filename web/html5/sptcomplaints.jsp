@@ -212,7 +212,7 @@
 			}
 		}
 
-		session.setAttribute(sAPPTITLE+"WebLanguage","fr");
+		session.setAttribute(sAPPTITLE+"WebLanguage",SH.cs("sptLanguage","fr"));
 		String gender=checkString(request.getParameter("gender"));	
 		int age=-1;
 		try{

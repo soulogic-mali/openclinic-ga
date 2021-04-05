@@ -1198,14 +1198,28 @@
                         	</select>
                         </td>
                     </tr>
-                    
-                    <%-- location --%>
-                    <tr>
-                        <td class="admin" nowrap><%=getTran(request,"Web","location",sWebLanguage)%>&nbsp;</td>
-                        <td class="admin2">
-                            <input class="text" type="text" name="EditLocation" id="EditLocation" size="<%=sTextWidth%>" value="<%=sSelectedLocation%>">
-                        </td>
-                    </tr>
+                    <%	if(SH.ci("enableBloodbank",0)==1){ %>
+	                    <%-- location --%>
+	                    <tr>
+	                        <td class="admin" nowrap><%=getTran(request,"Web","bloodproducttype",sWebLanguage)%>&nbsp;</td>
+	                        <td class="admin2">
+								<select name="EditLocation" id="EditLocation" class='text'>
+									<option/>
+									<%=SH.writeSelect(request, "bloodproducts", sSelectedLocation, sWebLanguage) %>
+								</select>
+	                        </td>
+	                    </tr>
+                    <%	}
+                    	else{
+                    %>
+	                    <%-- location --%>
+	                    <tr>
+	                        <td class="admin" nowrap><%=getTran(request,"Web","location",sWebLanguage)%>&nbsp;</td>
+	                        <td class="admin2">
+	                            <input class="text" type="text" name="EditLocation" id="EditLocation" size="<%=sTextWidth%>" value="<%=sSelectedLocation%>">
+	                        </td>
+	                    </tr>
+	                <%	} %>
                     <%if(!sEditStockUid.equals("-1")){ %>
 	                    <tr>
 	                        <td class="admin" nowrap><%=getTran(request,"Web","pharmacy.kit",sWebLanguage)%></td>

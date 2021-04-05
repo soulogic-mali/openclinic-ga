@@ -5,6 +5,7 @@
 	String type = SH.c(request.getParameter("type"));
 	String message = SH.c(request.getParameter("message"));
 	String sResult = "<ERROR>";
+
 	if(type.equalsIgnoreCase("post")){
     	//Store the message in the oc_imports database here and delete it if successful
         SAXReader reader = new SAXReader(false);

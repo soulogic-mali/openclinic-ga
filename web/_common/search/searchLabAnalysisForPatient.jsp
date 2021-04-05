@@ -40,7 +40,7 @@
            sSearchCode       = checkString(request.getParameter("FindCode")),
            sSearchProfileID  = checkString(request.getParameter("FindProfileID")),
            sSortCol          = checkString(request.getParameter("sortCol"));
-
+    
     if(sSortCol.length()==0) sSortCol = "code";
 
     String sLabID, sLabType, sLabCode, sLabLabel, sCodeOther, sComment, sMonster;
@@ -78,7 +78,7 @@
 
             sOut.append(writeRow(sLabType, sLabCode, sLabLabel, sCodeOther, sComment,objLabAnalysis.getUnavailable(), iTotal,sWebLanguage));
             sScript.append("<script>addLabAnalysisToArray(")
-                    .append("'").append(sLabID).append("',")
+                    .append("'").append(objLabAnalysis.getUnavailable()==1 && MedwanQuery.getInstance().getConfigInt("blockUnavailableLabanalysis",0)==1?"-"+sLabID:sLabID).append("',")
                     .append("'").append(sLabCode).append("',")
                     .append("'").append(sLabType).append("',")
                     .append("'").append(sLabLabel.replaceAll("\'","´")).append("',")
@@ -121,7 +121,7 @@
 
             sOut.append(writeRow(sLabType, sLabCode, sLabLabel, sCodeOther, sComment,objLabAnalysis.getUnavailable(), iTotal,sWebLanguage));
             sScript.append("<script>addLabAnalysisToArray(")
-                    .append("'").append(sLabID).append("',")
+		            .append("'").append(objLabAnalysis.getUnavailable()==1 && MedwanQuery.getInstance().getConfigInt("blockUnavailableLabanalysis",0)==1?"-"+sLabID:sLabID).append("',")
                     .append("'").append(sLabCode).append("',")
                     .append("'").append(sLabType).append("',")
                     .append("'").append(sLabLabel.replaceAll("\'","´")).append("',")
@@ -162,7 +162,7 @@
 
                 sOut.append(writeRow(sLabType,sLabCode,sLabLabel,sCodeOther,sComment,objLabAnalysis.getUnavailable(),iTotal,sWebLanguage));
                 sScript.append("<script>addLabAnalysisToArray(")
-                        .append("'").append(sLabID).append("',")
+		                .append("'").append(objLabAnalysis.getUnavailable()==1 && MedwanQuery.getInstance().getConfigInt("blockUnavailableLabanalysis",0)==1?"-"+sLabID:sLabID).append("',")
                         .append("'").append(sLabCode).append("',")
                         .append("'").append(sLabType).append("',")
                         .append("'").append(sLabLabel.replaceAll("\'","´")).append("',")
@@ -308,7 +308,9 @@
   <%-- ADD ALL LABANALYSIS --%>
   function addAllLabAnalysis(){
     for(var i=0; i<foundAnalysis.length; i++){
-      addLabAnalysis(foundAnalysis[i][1],foundAnalysis[i][2],foundAnalysis[i][3],foundAnalysis[i][4],foundAnalysis[i][5],(i+1));
+    	if(foundAnalysis[i][0]*1>=0){
+    		addLabAnalysis(foundAnalysis[i][1],foundAnalysis[i][2],foundAnalysis[i][3],foundAnalysis[i][4],foundAnalysis[i][5],(i+1));
+    	}
     }
     window.opener.sortLabAnalyses();
   }

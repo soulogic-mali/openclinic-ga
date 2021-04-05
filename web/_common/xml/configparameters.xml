@@ -29,6 +29,9 @@
 		<parameter name="patientLabelHeight" default="890" type="integer" unit="pixels">
 		    <description language="en"></description>
 		</parameter>
+		<parameter name="enableLabrev" default="1" type="radio" options="0;1">
+		    <description language="en">Wether to display the user who registered, executed and validated each lab analysis on a lab order</description>
+		</parameter>
 		<parameter name="patientLabelWidth" default="360" type="integer" unit="pixels">
 		    <description language="en"></description>
 		</parameter>
@@ -508,7 +511,7 @@
 		<parameter name="datacenterPOP3Host" default="mail.globalhealthbarometer.net">
 		    <description language="en">URL for mail-server</description>
         </parameter>
-		<parameter name="datacenterPOP3Password" default="server.mxs@globalhealthbarometer.net">
+		<parameter name="datacenterPOP3Password" type="password" default="server.mxs@globalhealthbarometer.net">
 		    <description language="en">Password for mail-server</description>
         </parameter>
 		<parameter name="datacenterPOP3Username" default="server.mxs@globalhealthbarometer.net">
@@ -792,7 +795,10 @@
 			field will be considered abnormal.</description>
 		</parameter>	
 		<parameter name="enableAutomaticLabInvoicing" default="0" type="radio" options="0;1">
-		    <description language="en">Wether to automatically invoice labresults or not</description>
+		    <description language="en">Whether to automatically invoice lab results or not</description>
+		</parameter>
+		<parameter name="blockUnavailableLabanalysis" default="0" type="radio" options="0;1">
+		    <description language="en">Whether to block the prescription of lab tests which have been marked 'unavailable' by the lab department</description>
 		</parameter>
 		<parameter name="brokerScheduleInterval" default="20000" type="integer" unit="milliseconds">
 		    <description language="en">Periodicity used when checking for new lab-results (continuous background process)</description>
@@ -1096,7 +1102,7 @@
 		    <description language="en">User name that will be used to connect to the SIS webservices</description>
 		    <description language="es">Nombre de usuario que se utilizará para conectarse a los servicios web de SIS</description>
 		</parameter>
-		<parameter name="sis.password" default="">
+		<parameter name="sis.password" type="password" default="">
 		    <description language="en">Password that will be used to connect to the SIS webservices</description>
 		    <description language="es">Contraseña que se utilizará para conectarse a los servicios web SIS</description>
 		</parameter>
@@ -1248,7 +1254,7 @@
 		<parameter name="MPIServerLogin" default="changeme">
 		    <description language="en">HTTP Basic Authentication login to be used for accessing the Master Patient Index HL7 FHIR API on MPIFhirServerURL. The default login will work on the reference MPI server on http://mpi.ocf.world/openclinic/fhir.</description>
 		</parameter>
-		<parameter name="MPIServerPassword" default="changeme">
+		<parameter name="MPIServerPassword" type="password" default="changeme">
 		    <description language="en">HTTP Basic Authentication password to be used for accessing the Master Patient Index HL7 FHIR API on MPIFhirServerURL. The default password will work on the reference MPI server on http://mpi.ocf.world/openclinic/fhir.</description>
 		</parameter>
 		<parameter name="hin.server.identifier" default="#random">
@@ -1323,6 +1329,21 @@
 		<parameter name="momo.targetsystem" default="sandbox" type="radio" options="sandbox;production">
 		    <description language="en">Select "sandbox" to use the Mobile Money test environment. Select "production" to use the Mobile Money production environment.</description>
 		</parameter>
+		<parameter name="momo.sandbox.disbursement.baseurl" default="https://sandbox.momodeveloper.mtn.com/disbursement/v1_0">
+		    <description language="en">Base URL used to call requesttopay command in production environment.</description>
+		</parameter>
+		<parameter name="momo.sandbox.requesttopay.baseurl" default="https://sandbox.momodeveloper.mtn.com/collection/v1_0">
+		    <description language="en">Base URL used to call requesttopay command in production environment.</description>
+		</parameter>
+		<parameter name="momo.sandbox.createapikey.baseurl" default="https://sandbox.momodeveloper.mtn.com/v1_0">
+		    <description language="en">Base URL used to call token command in production environment.</description>
+		</parameter>
+		<parameter name="momo.sandbox.token.baseurl" default="https://sandbox.momodeveloper.mtn.com/collection">
+		    <description language="en">Base URL used to call token command in production environment.</description>
+		</parameter>
+		<parameter name="momo.production.disbursement.baseurl" default="https://momo.mtn.com/disbursement/v1_0">
+		    <description language="en">Base URL used to call requesttopay command in production environment.</description>
+		</parameter>
 		<parameter name="momo.production.requesttopay.baseurl" default="https://momo.mtn.com/collection/v1_0">
 		    <description language="en">Base URL used to call requesttopay command in production environment.</description>
 		</parameter>
@@ -1331,6 +1352,248 @@
 		</parameter>
 		<parameter name="momo.merchantphonenumber" default="">
 		    <description language="en">Phone number linked to the merchant account.</description>
+		</parameter>
+	</parametergroup>
+	<parametergroup id="messaginggateway" name="Messaging Gateway" sort="false">
+		<parameter name="cellPhoneCountryPrefix" default="32">
+		    <description language="en">Default country prefix that must be automatically added to local phone numbers, e.g. 32 for Belgium. Phone numbers starting with a + sign are exempted from this rule.</description>
+		</parameter>
+		<parameter name="cellPhoneRemoveLeadingZero" default="1" type="radio" options="0;1">
+		    <description language="en">If set to 1, leading zeros are automatically removed from local phone numbers before prefixing with the country phone code.</description>
+		</parameter>
+		<parameter name="SMS" class="title"/>
+		<parameter name="labsmscontent" default="Lab test ##transactionid# for #patient#&lt;br&gt;#results#&lt;br&gt;The certificate is sent by e-mail to #email#">
+		    <description language="en">Header for SMS messages sent when new lab results are available. Use the following place holders for content: #patient# = patient full name, #transactionid# = lab order id, #results# = lab results, #email# = patient's email address</description>
+		</parameter>
+		<parameter name="smsgateway" default="" type="select" options=";africastalking;bulksms;d7;experttexting;hqsms;releans;smsglobal">
+		    <description language="en">SMS gateway to be used</description>
+		</parameter>
+		<parameter name="smsinternationalgateway" default="" type="select" options=";africastalking;bulksms;d7;experttexting;hqsms;releans;smsglobal">
+		    <description language="en">SMS gateway to be used for international communication</description>
+		</parameter>
+		<parameter name="SMS Global" class="title"/>
+		<parameter name="smsglobal.url" default="https://api.smsglobal.com/http-api.php">
+		    <description language="en">URL for the smsglobal API</description>
+		</parameter>
+		<parameter name="smsglobal.user" default="">
+		    <description language="en">User name for the smsglobal API</description>
+		</parameter>
+		<parameter name="smsglobal.password" type="password" default="">
+		    <description language="en">Password for the smsglobal API</description>
+		</parameter>
+		<parameter name="smsglobal.from" default="">
+		    <description language="en">Sender phone number for the smsglobal API</description>
+		</parameter>
+		<parameter name="BulkSMS" class="title"/>
+		<parameter name="bulksms.url" default="https://api.bulksms.com/v1">
+		    <description language="en">URL for the bulksms API</description>
+		</parameter>
+		<parameter name="bulksms.username" default="">
+		    <description language="en">User name for the bulksms API</description>
+		</parameter>
+		<parameter name="bulksms.password" type="password" default="">
+		    <description language="en">Password for the bulksms API</description>
+		</parameter>
+		<parameter name="bulksms.from" default="OpenClinic">
+		    <description language="en">Sender phone number or alphanumeric sender identifier for the bulksms API</description>
+		</parameter>
+		<parameter name="EXPERTTEXTING" class="title"/>
+		<parameter name="experttexting.url" default="https://www.experttexting.com/ExptRestApi/sms/json/Message/Send">
+		    <description language="en">URL for the experttexting API</description>
+		</parameter>
+		<parameter name="experttexting.from" default="OpenClinic">
+		    <description language="en">Sender ID for the experttexting API</description>
+		</parameter>
+		<parameter name="experttexting.username" default="">
+		    <description language="en">Username for the experttexting API</description>
+		</parameter>
+		<parameter name="experttexting.api_key" default="">
+		    <description language="en">API key for the experttexting API</description>
+		</parameter>
+		<parameter name="experttexting.api_secret" default="">
+		    <description language="en">API secret for the experttexting API</description>
+		</parameter>
+		<parameter name="RELEANS" class="title"/>
+		<parameter name="releans.url" default="https://platform.releans.com/api/v2">
+		    <description language="en">URL for the releans API</description>
+		</parameter>
+		<parameter name="releans.sender" default="OpenClinic">
+		    <description language="en">User name for the releans API</description>
+		</parameter>
+		<parameter name="releans.auth" default="">
+		    <description language="en">Authentication key for the releans API</description>
+		</parameter>
+		<parameter name="HQSMS" class="title"/>
+		<parameter name="hqsms.url" default="https://api2.smsapi.com/sms.do">
+		    <description language="en">URL for the HQSMS API</description>
+		</parameter>
+		<parameter name="hqsms.user" default="">
+		    <description language="en">User name for the HQSMS API</description>
+		</parameter>
+		<parameter name="hqsms.password" type="password" default="">
+		    <description language="en">MD5 Password for the HQSMS API (from http://ssl.smsapi.com)</description>
+		</parameter>
+		<parameter name="hqsms.from" default="OpenClinic">
+		    <description language="en">Sender phone number or alphanumeric sender identifier for the HQSMS API</description>
+		</parameter>
+		<parameter name="D7" class="title"/>
+		<parameter name="d7.url" default="https://http-api.d7networks.com/send">
+		    <description language="en">URL for the d7 API</description>
+		</parameter>
+		<parameter name="d7.username" default="">
+		    <description language="en">User name for the d7 API</description>
+		</parameter>
+		<parameter name="d7.password" type="password" default="">
+		    <description language="en">MD5 Password for the d7 API</description>
+		</parameter>
+		<parameter name="d7.coding" default="0">
+		    <description language="en">Coding used for message. O = text.</description>
+		</parameter>
+		<parameter name="d7.from" default="OpenClinic">
+		    <description language="en">Sender phone number or alphanumeric sender identifier for the d7 API</description>
+		</parameter>
+		<parameter name="AfricasTalking" class="title"/>
+		<parameter name="africastalking.username" default="">
+		    <description language="en">User name for the AfricasTalking API</description>
+		</parameter>
+		<parameter name="africastalking.api_key" default="">
+		    <description language="en">API key for the AfricasTalking API</description>
+		</parameter>
+		<parameter name="africastalking.senderid" default="">
+		    <description language="en">Sender ID for the AfricasTalking API</description>
+		</parameter>
+		<parameter name="SMPP" class="title"/>
+		<parameter name="smppgateway" default="" type="select" options=";orangemali;smpp;">
+		    <description language="en">SMPP gateway to be used</description>
+		</parameter>
+		<parameter name="smppsmscaddress" default="" type="select" options=";Orange SMSC;smsc">
+		    <description language="en">SMPP SMSC address to be used</description>
+		</parameter>
+		<parameter name="smppsmscport" default="3339">
+		    <description language="en">SMPP port to be used</description>
+		</parameter>
+		<parameter name="smppsmscusername" default="">
+		    <description language="en">SMPP username to be used</description>
+		</parameter>
+		<parameter name="smppsmscpassword" type="password" default="">
+		    <description language="en">SMPP p to be used</description>
+		</parameter>
+		<parameter name="enableSmppSource" default="0" type="radio" options="0;1">
+		    <description language="en">If set to 1, SMPP source address sill be used</description>
+		</parameter>
+		<parameter name="smppSourceAddress" default="">
+		    <description language="en">Can be a word or the source phone number</description>
+		</parameter>
+		<parameter name="smppSourceNPI" default="0" type="select" options="0;1;3;4;6;8;9;10;13;18">
+		    <description language="en">SMPP Numbering Plan Identification: 0=Unknown, 1=ISDN, 3=Data, 4=Telex, 6=Land mobile, 8=National numbering, 9=Private numbering, 10=ERMES, 13=internet (IP), 18=WAP</description>
+		</parameter>
+		<parameter name="smppSourceTON" default="0" type="select" options="0;1;2;3;4;5;6">
+		    <description language="en">SMPP type of number: 0=Unknown, 1=International, 2=National, 3=Network, 4= Subscriber number, 5=Alphanumeric, 6=Abbreviated</description>
+		</parameter>
+		<parameter name="smppDestinationNPI" default="1" type="select" options="0;1;3;4;6;8;9;10;13;18">
+		    <description language="en">SMPP Numbering Plan Identification: 0=Unknown, 1=ISDN, 3=Data, 4=Telex, 6=Land mobile, 8=National numbering, 9=Private numbering, 10=ERMES, 13=internet (IP), 18=WAP</description>
+		</parameter>
+		<parameter name="smppDestinationTON" default="1" type="select" options="0;1;2;3;4;5;6">
+		    <description language="en">SMPP type of number: 0=Unknown, 1=International, 2=National, 3=Network, 4=Subscriber number, 5=Alphanumeric, 6=Abbreviated</description>
+		</parameter>
+	</parametergroup>
+	<parametergroup id="bloodbank" name="Bloodbank" class="advanced" sort="false">
+		<parameter name="Lab codes" class="title"/>
+		<parameter name="enableBloodbank" default="0" type="radio" options="0;1">
+		    <description language="en">Activate functionality which is specific for the Bloodbank edition</description>
+		</parameter>
+		<parameter name="cntsBloodgroupCode" default="ABO">
+		    <description language="en">Code for blood group lab test</description>
+		</parameter>
+		<parameter name="cntsRhesusCode" default="Rh">
+		    <description language="en">Code for Rhesus factor lab test</description>
+		</parameter>
+		<parameter name="cntsHIVCode" default="HIV">
+		    <description language="en">Code for HIV lab test</description>
+		</parameter>
+		<parameter name="cntsHBSCode" default="HBS">
+		    <description language="en">Code for Hepatitis B surface antigen lab test</description>
+		</parameter>
+		<parameter name="cntsHCVCode" default="HCV">
+		    <description language="en">Code for Hepatitis C virus antibody lab test</description>
+		</parameter>
+		<parameter name="cntsBWCode" default="BW">
+		    <description language="en">Code for Bordet Wassermann (syphilis) lab test</description>
+		</parameter>
+		<parameter name="cntsDonorCode" default="9999">
+		    <description language="en">Virtual for identifying that this is a donor lab test</description>
+		</parameter>
+		<parameter name="cntsPhenotypeCode" default="pheno">
+		    <description language="en">Code for Phenotype lab test</description>
+		</parameter>
+		<parameter name="Blood product expiry times" class="title"/>
+		<parameter name="cntsDefaultBloodExpiryDays" default="90">
+		    <description language="en">Default blood expiry time in days</description>
+		</parameter>
+		<parameter name="Other" class="title"/>
+		<parameter name="cntsDefaultLocation" default="CNTS">
+		    <description language="en">Department code (from) where blood products are stored by default</description>
+		</parameter>
+		<parameter name="cntsDefaultBloodExpiryDays" default="90">
+		    <description language="en">Number of days a blood donation can be used to produce blood derivates</description>
+		</parameter>
+		<parameter name="cntscpexpirationdays" default="5">
+		    <description language="en">Number of days blood patelets can be used</description>
+		</parameter>
+		<parameter name="cntsstexpirationdays" default="35">
+		    <description language="en">Number of days total blood can be used</description>
+		</parameter>
+		<parameter name="cntscgrexpirationdays" default="35">
+		    <description language="en">Number of days concentrated red blood cells can be used</description>
+		</parameter>
+		<parameter name="cntsprpexpirationdays" default="5">
+		    <description language="en">Number of days total platelet rich plasma can be used</description>
+		</parameter>
+		<parameter name="cntspfcexpirationdays" default="365">
+		    <description language="en">Number of days deep-frozen fresh plasma can be used</description>
+		</parameter>
+	</parametergroup>
+	<parametergroup id="offline" name="Offline" class="advanced" sort="false">
+		<parameter name="enableOfflineSync" default="0" type="radio" options="0;1">
+		    <description language="en">Activate functionality for offline registration and synchronization. Must ONLY be activated on offline client machines and NOT on the reference server.</description>
+		</parameter>
+		<parameter name="offlineSyncServerAPI" default="http://server.ip.address/openclinic/api/postOfflineData.jsp">
+		    <description language="en">URL of offline API on reference server</description>
+		</parameter>
+		<parameter name="offlineSyncServer.username" default="nil">
+		    <description language="en">User name for accessing offline API on reference server</description>
+		</parameter>
+		<parameter name="offlineSyncServer.password" type="password" default="">
+		    <description language="en">Password for accessing offline API on reference server</description>
+		</parameter>
+		<parameter name="offlineMySQLBinDirectory" default="C:/Program Files/MySQL/MySQL Server 5.7/bin">
+		    <description language="en">Folder where the local MySQL binaries are installed</description>
+		</parameter>
+		<parameter name="Reference MySQL server" class="title"/>
+		<parameter name="offlineReferenceMySQLServerIPAddress" default="">
+		    <description language="en">IP address of the reference MySQL server</description>
+		</parameter>
+		<parameter name="offlineReferenceMySQLServerPort" default="3306">
+		    <description language="en">Port of the reference MySQL server</description>
+		</parameter>
+		<parameter name="offlineReferenceMySQLServerUser" default="">
+		    <description language="en">User name for connecting to the reference MySQL server</description>
+		</parameter>
+		<parameter name="offlineReferenceMySQLServerPassword" type="password" default="">
+		    <description language="en">Password for connecting to the reference MySQL server</description>
+		</parameter>
+		<parameter name="Local MySQL server" class="title"/>
+		<parameter name="offlineLocalMySQLServerIPAddress" default="127.0.0.1">
+		    <description language="en">IP address of the local MySQL server</description>
+		</parameter>
+		<parameter name="offlineLocalMySQLServerPort" default="3306">
+		    <description language="en">Port of the local MySQL server</description>
+		</parameter>
+		<parameter name="offlineLocalMySQLServerUser" default="">
+		    <description language="en">User name for connecting to the local MySQL server</description>
+		</parameter>
+		<parameter name="offlineLocalMySQLServerPassword" type="password" default="">
+		    <description language="en">Password for connecting to the local MySQL server</description>
 		</parameter>
 	</parametergroup>
 </parameters>

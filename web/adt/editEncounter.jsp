@@ -729,6 +729,10 @@
 	        
 	        <%=ScreenHelper.setFormButtonsStart()%>
 	        <%
+	        	if(SH.ci("enableOfflineSync",0)==1 && SH.c(tmpEncounter.getUid()).split("\\.").length==2 && !SH.getSyncOpen("encounter", tmpEncounter.getObjectId()+"")){
+	        		sReadOnly="yes";
+	        	}
+
 	            if(!sReadOnly.equalsIgnoreCase("yes")){
 	                %><input class='button' type="button" id="saveButton" name="saveButton" value='<%=getTranNoLink("web","save",sWebLanguage)%>' onclick="doSave();">&nbsp;<%
 	            }

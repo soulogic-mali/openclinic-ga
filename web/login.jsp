@@ -13,6 +13,10 @@
 <%@include file="/includes/SingletonContainer.jsp"%>
 
 <%
+if(!request.isSecure() && MedwanQuery.getInstance(true).getConfigString("forceInsecureRedirect","").length()>0){
+	out.println("<script>window.location.href='"+MedwanQuery.getInstance(true).getConfigString("forceInsecureRedirect","")+"';</script>");
+	out.flush();
+}
 if(MedwanQuery.getInstance(true).getConfigString("edition","openclinic").equalsIgnoreCase("mpi")){
 	out.println("<script>window.location.href='"+sCONTEXTPATH+"/mpiLogin.jsp';</script>");
 	out.flush();

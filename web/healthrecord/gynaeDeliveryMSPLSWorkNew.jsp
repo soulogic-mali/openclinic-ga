@@ -443,7 +443,7 @@
             				<input <%=setRightClick(session,"ITEM_TYPE_DELIVERY_PREGNANCY_VDRL")%> type="text" class="text" size="5" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_VDRL" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_VDRL" property="value"/>">
             			</td>
             			<td width="16%">
-            				<%=getTran(request,"web", "pmtct", sWebLanguage)%>:
+            				<%=getTran(request,"web", "pmtct2", sWebLanguage)%>:
             				<input <%=setRightClick(session,"ITEM_TYPE_DELIVERY_PREGNANCY_PMTCT")%> type="text" class="text" size="5" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_PMTCT" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_PMTCT" property="value"/>">
             			</td>
             			<td colspan="2">
@@ -468,19 +468,23 @@
                                                       property="value"
                                                       outputString="checked"/>><%=getTran(request,"gynecology", "metroraghie", sWebLanguage)%>
             			</td>
-            			<td width="42%">
+            			<td width="32%">
                             <input type="checkbox" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_DH_INTRAVAGINALLOSS" property="itemId"/>]>.value" value="medwan.common.true"
                             <mxs:propertyAccessorI18N name="transaction.items" scope="page"
                                                       compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_DH_INTRAVAGINALLOSS;value=medwan.common.true"
                                                       property="value"
                                                       outputString="checked"/>><%=getTran(request,"gynecology", "intravaginalloss", sWebLanguage)%>
             			</td>
-            			<td width="*">
+            			<td width="32%">
                             <input type="checkbox" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_DH_LUMBARPAIN" property="itemId"/>]>.value" value="medwan.common.true"
                             <mxs:propertyAccessorI18N name="transaction.items" scope="page"
                                                       compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_DH_LUMBARPAIN;value=medwan.common.true"
                                                       property="value"
                                                       outputString="checked"/>><%=getTran(request,"gynecology", "lumbarpain", sWebLanguage)%>
+            			</td>
+            			<td width="16%">
+            				<%=SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_DELIVERY_PREECLAMPSIA", "") %>
+            				<%=getTran(request,"web", "preeclampsia", sWebLanguage)%>
             			</td>
             		</tr>
             	</table>
@@ -548,12 +552,18 @@
                                                       property="value"
                                                       outputString="checked"/>><%=getTran(request,"gynecology", "albendazole", sWebLanguage)%>
             			</td>
-            			<td colspan="2">
+            			<td width="16%">
                             <input type="checkbox" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_IRON" property="itemId"/>]>.value" value="medwan.common.true"
                             <mxs:propertyAccessorI18N name="transaction.items" scope="page"
                                                       compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_IRON;value=medwan.common.true"
                                                       property="value"
                                                       outputString="checked"/>><%=getTran(request,"gynecology", "iron", sWebLanguage)%>
+            			</td>
+            			<td width="32%">
+            				<%=SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_DELIVERY_HBVPOS", "") %>
+            				<%=getTran(request,"web","hbvplus",sWebLanguage) %>
+            				<%=SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_DELIVERY_HBVPOSTREATED", "") %>
+            				<%=getTran(request,"web","undertreatment",sWebLanguage) %>
             			</td>
             		</tr>
             		<tr>
@@ -592,7 +602,7 @@
             			</td>
             			<td width="16%">
             				<%=getTran(request,"web", "ptme", sWebLanguage)%>:
-            				<input <%=setRightClick(session,"ITEM_TYPE_DELIVERY_PREGNANCY_PTME")%> type="text" class="text" size="5" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_PTME" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_PTME" property="value"/>">
+            				<%=SH.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_DELIVERY_PREGNANCY_PTME", "ptme",sWebLanguage, "") %>
             			</td>
             			<td width="16%">
                             <input type="checkbox" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_ARV" property="itemId"/>]>.value" value="medwan.common.true"

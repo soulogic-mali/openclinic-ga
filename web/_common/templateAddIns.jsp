@@ -198,7 +198,7 @@ function checkAfter(afterId,beforeObj){
   }
      
   <%-- WRITE MY DATE --%>
-  function writeMyDate(sObject,sImg,sText,allowPastDates,allowFutureDates){    
+  function writeMyDate(sObject,sImg,sText,allowPastDates,allowFutureDates,sEvent){    
     if(sImg==undefined){
       sImg = "<c:url value='/_img/icons/icon_agenda.png'/>";
     }
@@ -219,10 +219,14 @@ function checkAfter(afterId,beforeObj){
            if(allowFutureDates) gfPopType = "3";
       else if(allowPastDates) gfPopType = "2";
     }
+    var myEvent="";
+    if(sEvent){
+    	myEvent=sEvent;
+    }
 
     document.write("<a href='javascript:void(0);' onclick='if(self.gfPop"+gfPopType+")gfPop"+gfPopType+".fPopCalendar(document.getElementById(\""+sObject+"\"));return false;' HIDEFOCUS>" +
                    "<img style='vertical-align: middle' id='"+sObject+".CALENDAR' name='popcal' class='link' src='"+sImg+"' alt='<%=getTranNoLink("web","Select",sWebLanguage)%>'></a>" +
-                   "&nbsp;<a href='javascript:void(0);' onClick='getToday("+sObject+");'>" +
+                   "&nbsp;<a href='javascript:void(0);' onClick='getToday("+sObject+");"+myEvent+"'>" +
                    "<img style='vertical-align: middle' id='"+sObject+".TODAY' class='link' src='<c:url value="/_img/icons/icon_compose.png"/>' alt='<%=getTranNoLink("web","putToday",sWebLanguage)%>'></a>");
   } 
     

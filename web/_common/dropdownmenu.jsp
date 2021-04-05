@@ -719,6 +719,9 @@
     else if(barcode.substring(0,1)=="T"){
         window.location.href = "<c:url value='/main.do'/>?Page=curative/loadTicketPerson.jsp&ts=<%=ScreenHelper.getTs()%>&TicketID="+barcode.substring(1);
     }
+    else if(barcode.substring(0,1)=="B"){
+        window.location.href = "<c:url value='/main.do'/>?Page=cnts/loadBloodgift.jsp&ts=<%=ScreenHelper.getTs()%>&giftid="+barcode.substring(1);
+    }
     else if(barcode.substring(0,1)=="1"){
       alert("OldBarcode = "+oldbarcode);
       alert("Barcode = "+barcode);
@@ -750,6 +753,13 @@
         url = "<c:url value='/main.do'/>?Page=pharmacy/manageProductStockDocuments.jsp&ts=<%=ScreenHelper.getTs()%>&doaction=edit&documentuid="+barcode.substring(1);
         window.location.href = url;
       }
+  }
+  
+  function findBloodGift(){
+	  var giftid = window.prompt("<%=getTranNoLink("web","bloodgiftid",sWebLanguage)%>");
+	  if(giftid.length>0){
+		  readBarcode2("B"+giftid);
+	  }
   }
 
   function executeLocalDeviceCommand(devicetype,examtype){

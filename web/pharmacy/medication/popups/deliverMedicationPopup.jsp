@@ -756,7 +756,7 @@
 					}
 					// For specific EditOperationDescr values, an EditSrcDestType value may be forced
 					if(document.getElementById('EditOperationDescr') && '<%=MedwanQuery.getInstance().getConfigString("forceservicestockforproductstockoperations","medicationdelivery.2")%>'.indexOf(document.getElementById('EditOperationDescr').value)>-1){
-					  transactionForm.EditSrcDestType.value='servicestock';
+						transactionForm.EditSrcDestType.value='servicestock';
 					}
 					if(document.getElementById('EditOperationDescr') && '<%=MedwanQuery.getInstance().getConfigString("forcepatientforproductstockoperations","medicationdelivery.1")%>'.indexOf(document.getElementById('EditOperationDescr').value)>-1){
 					  transactionForm.EditSrcDestType.value='patient';
@@ -841,8 +841,8 @@
                       }
                       <%-- service --%>
                       else if(srcDestType.indexOf('servicestock') > -1 && '<%=MedwanQuery.getInstance().getConfigString("productstockoperationswithoutdestination","")%>'.indexOf(document.getElementById('EditOperationDescr').value)==-1){
-						document.getElementById('documentline').style.visibility = "visible";
-						document.getElementById('encounterline').style.visibility = "hidden";
+                    	if(document.getElementById('documentline')) document.getElementById('documentline').style.visibility = "visible";
+                    	if(document.getElementById('encounterline')) document.getElementById('encounterline').style.visibility = "hidden";
 								
 						<%
 							if(MedwanQuery.getInstance().getConfigInt("productstockoperationdocumentmandatory",1)!=1){
@@ -850,7 +850,7 @@
 			                      document.getElementById('SearchSrcDestButtonDiv').innerHTML = "<img src='<c:url value="/_img/icons/icon_search.png"/>' class='link' alt='<%=getTranNoLink("Web","select",sWebLanguage)%>' onclick=\"searchService('EditSrcDestUid','EditSrcDestName');\">&nbsp;"+
 	        		                                                                            "<img src='<c:url value="/_img/icons/icon_delete.png"/>' class='link' alt='<%=getTranNoLink("Web","clear",sWebLanguage)%>' onclick=\"transactionForm.EditSrcDestUid.value='';transactionForm.EditSrcDestName.value='';\">";
 	        		                                                                              
-			                      if('<%=sPrevUsedSrcDestUid%>'.length > 0){
+	        		              if('<%=sPrevUsedSrcDestUid%>'.length > 0){
 			                        transactionForm.EditSrcDestUid.value = "<%=sPrevUsedSrcDestUid%>";
 			                        transactionForm.EditSrcDestName.value = "<%=sPrevUsedSrcDestName%>";
 			                      }
@@ -886,7 +886,7 @@
 	                            %>
 								  document.getElementById('SearchSrcDestButtonDiv').innerHTML = "";
 								  
-								  if(document.getElementById('EditProductStockDocumentUid').value.length==0){
+								  if(!document.getElementById('EditProductStockDocumentUid') || document.getElementById('EditProductStockDocumentUid').value.length==0){
 			                        transactionForm.EditSrcDestUid.value = "";
 			                        transactionForm.EditSrcDestName.value = "";
 								  }

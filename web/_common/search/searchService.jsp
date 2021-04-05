@@ -77,27 +77,35 @@
     
   <%-- SELECT PARENT SERVICE --%>
   function selectParentService(sCode,sText){
-    window.opener.document.getElementsByName('<%=sVarCode%>')[0].value = sCode;
-
+	if(window.opener.document.getElementById('<%=sVarCode%>')){
+		window.opener.document.getElementById('<%=sVarCode%>').value = sCode;
+	}
+	else{
+		window.opener.document.getElementsByName('<%=sVarCode%>')[0].value = sCode;
+	}
     if('1'=='<%=MedwanQuery.getInstance().getConfigString("showUnitID")%>'){
       window.opener.document.getElementsByName('<%=sVarText%>')[0].value = sCode+" "+sText;
     }
     else{
       window.opener.document.getElementsByName('<%=sVarText%>')[0].value = sText;
     }
-
     window.opener.document.getElementsByName('<%=sVarText%>')[0].title = sText;
 
     if(window.opener.submitSelect!=null){
       window.opener.submitSelect();
     }
-    
-    if(window.opener.document.getElementsByName('<%=sVarCode%>')[0] != null){
-      if(window.opener.document.getElementsByName('<%=sVarCode%>')[0].onchange != null){
-         window.opener.document.getElementsByName('<%=sVarCode%>')[0].onchange();
-      }
-    }
-       
+	if(window.opener.document.getElementById('<%=sVarCode%>')){
+		if(window.opener.document.getElementById('<%=sVarCode%>').onchange != null){
+			window.opener.document.getElementById('<%=sVarCode%>').onchange();
+		}
+	}
+	else{
+	    if(window.opener.document.getElementsByName('<%=sVarCode%>')[0] != null){
+	      if(window.opener.document.getElementsByName('<%=sVarCode%>')[0].onchange != null){
+	         window.opener.document.getElementsByName('<%=sVarCode%>')[0].onchange();
+	      }
+	    }
+	}    
     window.close();
   }
     

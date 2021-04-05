@@ -1103,12 +1103,12 @@
 
     //--- GET BUTTONS HTML ------------------------------------------------------------------------
     public String getButtonsHtml(HttpServletRequest req, User activeUser, AdminPerson activePatient,
-                                 String sAccessRight, String sWebLanguage){
+                                 String sAccessRight, String sWebLanguage) throws Exception{
         return getButtonsHtml(req,activeUser,activePatient,sAccessRight,sWebLanguage,true);
     }
     
     public String getButtonsHtml(HttpServletRequest req, User activeUser, AdminPerson activePatient,
-                                 String sAccessRight, String sWebLanguage, boolean displayPrintButton){
+                                 String sAccessRight, String sWebLanguage, boolean displayPrintButton) throws Exception {
     	if(req.getParameter("nobuttons")!=null){
     		return "<input type='button' class='button' name='closebutton' value='"+ScreenHelper.getTran(null,"web","close",sWebLanguage)+"' onclick='window.close();'/>";
     	}
@@ -1141,22 +1141,27 @@
 	            html.append("</select>&nbsp;\n");
         	}
 
-            if(checkString(req.getParameter("be.mxs.healthrecord.server_id")).length()==0 || checkString(req.getParameter("be.mxs.healthrecord.server_id")).equalsIgnoreCase("1")){
-                // print and save button
-            	if(displayPrintButton){
-                    html.append("<input class='button' type='button' name='saveAndPrintButton' id='saveAndPrintButton' value='").append(getTran(null,"Web.Occup","medwan.common.record-and-print",sWebLanguage)).append("' onclick='doSave(true);'/>&nbsp;\n");	
-            	}
-	            // save button
-	            if(MedwanQuery.getInstance().getConfigInt("enableArmyWeek",0)==0){
-	            	html.append("<input type='button' class='button' name='saveButton' id='saveButton' onclick='submitForm();' value='").append(getTran(null,"accesskey","save",sWebLanguage)).append("'/>&nbsp;\n");
-		            html.append("<button accesskey='").append(ScreenHelper.getAccessKey(getTranNoLink("accesskey","save",sWebLanguage))).append("' class='buttoninvisible' onclick='submitForm();'></button>\n");
-		            if(activeUser.getAccessRight("sendmedicaldossier.select")){
-		                html.append("<input class='button' type='button' name='sendButton' id='sendButton' value='").append(getTran(null,"web","send",sWebLanguage)).append("' onclick='sendPdf();'/>&nbsp;\n");	
+            SessionContainerWO sessionContainerWO = (SessionContainerWO)SessionContainerFactory.getInstance().getSessionContainerWO( req , SessionContainerWO.class.getName() );
+            TransactionVO tran = sessionContainerWO.getCurrentTransactionVO();
+            boolean bIsNew=tran==null || tran.getTransactionId()<0 || SH.getSyncOpen("transaction", tran.getTransactionId()+"");
+            if(SH.ci("enableOfflineSync",0)==0 || bIsNew ){
+	            if(checkString(req.getParameter("be.mxs.healthrecord.server_id")).length()==0 || checkString(req.getParameter("be.mxs.healthrecord.server_id")).equalsIgnoreCase("1")){
+	                // print and save button
+	            	if(displayPrintButton){
+	                    html.append("<input class='button' type='button' name='saveAndPrintButton' id='saveAndPrintButton' value='").append(getTran(null,"Web.Occup","medwan.common.record-and-print",sWebLanguage)).append("' onclick='doSave(true);'/>&nbsp;\n");	
+	            	}
+		            // save button
+		            if(MedwanQuery.getInstance().getConfigInt("enableArmyWeek",0)==0){
+		            	html.append("<input type='button' class='button' name='saveButton' id='saveButton' onclick='submitForm();' value='").append(getTran(null,"accesskey","save",sWebLanguage)).append("'/>&nbsp;\n");
+			            html.append("<button accesskey='").append(ScreenHelper.getAccessKey(getTranNoLink("accesskey","save",sWebLanguage))).append("' class='buttoninvisible' onclick='submitForm();'></button>\n");
+			            if(activeUser.getAccessRight("sendmedicaldossier.select")){
+			                html.append("<input class='button' type='button' name='sendButton' id='sendButton' value='").append(getTran(null,"web","send",sWebLanguage)).append("' onclick='sendPdf();'/>&nbsp;\n");	
+			            }
 		            }
-	            }
-	            else{
-	            	html.append("<input type='button' class='button' name='saveButton' id='saveButton' onclick='sendPdf();' value='").append(getTran(null,"accesskey","save",sWebLanguage)).append("'/>&nbsp;\n");
-	            }
+		            else{
+		            	html.append("<input type='button' class='button' name='saveButton' id='saveButton' onclick='sendPdf();' value='").append(getTran(null,"accesskey","save",sWebLanguage)).append("'/>&nbsp;\n");
+		            }
+                }
             }
         }
 

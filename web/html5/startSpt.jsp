@@ -7,7 +7,7 @@
 		activeUser.initialize(4);
 		session.setAttribute("activeUser",activeUser);
 	}
-	session.setAttribute(sAPPTITLE+"WebLanguage","fr");
+	session.setAttribute(sAPPTITLE+"WebLanguage",SH.cs("sptLanguage","fr"));
 	reloadSingleton(session);
 %>
 <script>

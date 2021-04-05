@@ -240,6 +240,7 @@
 					<option value='openinsurance' <%=sEdition.equals("openinsurance")?"selected":"" %>>openinsurance</option>
 					<option value='gmao' <%=sEdition.equals("gmao")?"selected":"" %>>gmao</option>
 					<option value='mpi' <%=sEdition.equals("mpi")?"selected":"" %>>mpi</option>
+					<option value='bloodbank' <%=sEdition.equals("bloodbank")?"selected":"" %>>bloodbank</option>
 				</select>
 			</td>
 		</tr>

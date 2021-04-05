@@ -96,7 +96,7 @@
 	                LabRequest labRequest = LabRequest.getUnsampledRequest(serverid, Integer.toString(transactionid), sWebLanguage);
 	                if(labRequest != null && labRequest.getRequestdate()!=null){
 	                    out.print("<tr>");
-	                     out.print("<td colspan='2'>"+(labRequest.getRequestdate()!=null?ScreenHelper.formatDate(labRequest.getRequestdate(),ScreenHelper.fullDateFormat):"")+"<BR/><a href='javascript:showRequest("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'><b>"+labRequest.getTransactionid()+"</b></a></td>");
+	                     out.print("<td colspan='2'>"+(labRequest.getRequestdate()!=null?ScreenHelper.formatDate(labRequest.getRequestdate(),ScreenHelper.fullDateFormat):"")+"<BR/><a href='javascript:showRequest("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'><b>"+labRequest.getTransactionid()+"</b></a>"+(labRequest.isUrgent()?" <img height='14px' title='"+getTranNoLink("labrequest.urgency","urgent",sWebLanguage)+"' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>":"")+"</td>");
 	                     out.print("<td><a href='javascript:readBarcode3(\"0"+labRequest.getPersonid()+"\");'><b>"+labRequest.getPatientname()+"</b></a> (°"+(labRequest.getPatientdateofbirth()!=null?ScreenHelper.formatDate(labRequest.getPatientdateofbirth()):"")+" - "+labRequest.getPatientgender()+")<br/><i>"+labRequest.getServicename()+" - "+MedwanQuery.getInstance().getUserName(labRequest.getUserid())+"</i></td>");
 	                    out.print("</tr>");
 	                    
@@ -164,7 +164,7 @@
                 LabRequest labRequest = LabRequest.getUnsampledRequest(serverid, Integer.toString(transactionid), sWebLanguage);
                 if(labRequest != null && labRequest.getTransactionid()==transactionid){
                     out.print("<tr>");
-                     out.print("<td colspan='2'>"+(labRequest.getRequestdate()!=null?ScreenHelper.formatDate(labRequest.getRequestdate(),ScreenHelper.fullDateFormat):"")+"<BR/><a href='javascript:showRequest("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'><b><font style='background-color: yellow'>"+labRequest.getTransactionid()+"</font></b></a></td>");
+                     out.print("<td colspan='2'>"+(labRequest.getRequestdate()!=null?ScreenHelper.formatDate(labRequest.getRequestdate(),ScreenHelper.fullDateFormat):"")+"<BR/><a href='javascript:showRequest("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'><b><font style='background-color: yellow'>"+labRequest.getTransactionid()+" </font></b></a>"+" "+(labRequest.isUrgent()?" <img height='14px' title='"+getTranNoLink("labrequest.urgency","urgent",sWebLanguage)+"' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>":"")+"</td>");
                      out.print("<td><a href='javascript:readBarcode3(\"0"+labRequest.getPersonid()+"\");'><b>"+labRequest.getPatientname()+"</b></a> (°"+(labRequest.getPatientdateofbirth()!=null?ScreenHelper.formatDate(labRequest.getPatientdateofbirth()):"")+" - "+labRequest.getPatientgender()+")<br/><i>"+labRequest.getServicename()+" - "+MedwanQuery.getInstance().getUserName(labRequest.getUserid())+"</i></td>");
                     out.print("</tr>");
                     
@@ -217,7 +217,8 @@
                 LabRequest labRequest = (LabRequest)unsampledRequests.elementAt(n);
                 if(labRequest!=null && labRequest.getRequestdate()!=null) {
                     out.print("<tr><td class='admin2'><b><a href='javascript:document.getElementById(\"labrequestid\").value=\""+labRequest.getServerid()+"."+labRequest.getTransactionid()+"\";selectRequest();'>"+(labRequest.getRequestdate()==null?"?":ScreenHelper.stdDateFormat.format(labRequest.getRequestdate()))+"</a> "+labRequest.getPatientname()+" </b></td><td class='admin2'> "+labRequest.getPatientgender()+" </td>"+
-                            "<td class='admin2'> "+(labRequest.getPatientdateofbirth()==null?"?":ScreenHelper.stdDateFormat.format(labRequest.getPatientdateofbirth()))+" </td><td class='admin2'><i> "+labRequest.getServicename()+"</i></td></tr>");
+                            "<td class='admin2'> "+(labRequest.getPatientdateofbirth()==null?"?":ScreenHelper.stdDateFormat.format(labRequest.getPatientdateofbirth()))+" </td><td class='admin2'><i> "+labRequest.getServicename()+"</i></td>"+
+                    		"<td class='admin2'>&nbsp;<i>"+getTran(request,"web","requestid",sWebLanguage)+":</i> <a href='javascript:showRequest("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'><b>"+labRequest.getTransactionid()+"</b></a>"+(labRequest.isUrgent()?" <img height='14px' title='"+getTranNoLink("labrequest.urgency","urgent",sWebLanguage)+"' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>":"")+"</td></tr>");
                 }
             }
         }

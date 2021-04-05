@@ -713,7 +713,7 @@
               "&ReturnFieldInvoiceNr="+invoiceNrField+
               //"&FindInvoiceBalanceMin=0.01"+
               "&FindInvoiceStatus=<%=MedwanQuery.getInstance().getConfigString("defaultInvoiceStatus","open")%>"+
-              "&FindInvoicePatient=<%=adminPerson.personid%>"+
+              "&FindInvoicePatientId=<%=adminPerson.personid%>"+
               "&Action=search";
 
     if(invoiceBalanceField!=undefined){

@@ -500,7 +500,7 @@
 		<form name="transactionForm" id="transactionForm" method="post">
 			<table width="100%">
 		<%
-			session.setAttribute(sAPPTITLE+"WebLanguage","fr");
+			session.setAttribute(sAPPTITLE+"WebLanguage",SH.cs("sptLanguage","fr"));
 			//Initialize sptconcepts
 			Hashtable sptSigns = (Hashtable)session.getAttribute("sptconcepts");
 			Hashtable rt = (Hashtable)session.getAttribute("sptconcepts");

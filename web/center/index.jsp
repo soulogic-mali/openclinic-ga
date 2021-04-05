@@ -5,6 +5,7 @@
 
 <%
     String sAction = checkString(request.getParameter("Action"));
+MedwanQuery.getInstance().loadHealthRecord(personVO, sortOrder, sessionContainerWO)
 %>
 
 <form id="searchFormForm" name="searchFormForm">

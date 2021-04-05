@@ -1,3 +1,4 @@
+
 @media
 screen
 {
@@ -576,6 +577,19 @@ td.admin2 {
  border-bottom: 0.5px solid white;
  vertical-align: middle;
  background-color: #DEEAFF;
+}
+	
+td.configtitle {
+ color: #505050;
+ font-family: Verdana, Geneva, sans-serif;
+ font-size:10px;
+ font-weight:bolder;
+ text-align:left;
+ padding:1px;
+ height: 20px;
+ border-bottom: 0.5px solid white;
+ vertical-align: middle;
+ background-color: #F0F0F0;
 }
 	
 td.admin2top {
@@ -1197,6 +1211,17 @@ INPUT.text {
  font-family: Verdana, Geneva, sans-serif; 
 }
 
+INPUT.textbold {
+ padding-left: 3px;
+ padding-right: 2px;
+ FONT-WEIGHT:bolder;
+ FONT-SIZE:10px;
+ COLOR:black;
+ height:18px;
+ vertical-align: middle;
+ font-family: Verdana, Geneva, sans-serif; 
+}
+
 INPUT.textcenter {
  FONT-WEIGHT:normal;
  FONT-SIZE:10px;
@@ -1320,10 +1345,10 @@ INPUT.checkbox:focus {
 INPUT.textred {
  padding-left: 3px;
  padding-right: 2px;
-	FONT-WEIGHT:normal;
+ FONT-WEIGHT:normal;
  FONT-SIZE:10px;
  BACKGROUND:#fff;
- COLOR:black;
+ COLOR: white;
  height:18px;
  font-family: Verdana, Geneva, sans-serif;
  background-color:#ff9999;
@@ -1413,6 +1438,7 @@ TEXTAREA.text {
  COLOR:black;
  font-family: Verdana, Geneva, sans-serif;
  resize:both;
+ vertical-align: middle;
 }
 TEXTAREA.redbox {
  padding-left: 3px;
@@ -2917,6 +2943,26 @@ div#loginopeninsurance #error_msg div{
   color:white;
   background-color: #4975A7;
   z-index: 2;
+}
+
+.tscrollcolgrey {
+  position: sticky;
+  left: 0;
+  font-family: Verdana, Geneva, sans-serif;
+  font-weight:bolder;
+  color: black;
+  background-color: #lightgrey;
+  z-index: 4;
+}
+
+.tscrollcolwhite {
+  position: sticky;
+  left: 0;
+  font-family: Verdana, Geneva, sans-serif;
+  font-weight:bolder;
+  color: black;
+  background-color: #white;
+  z-index: 5;
 }
 
 .tscrollcorner {

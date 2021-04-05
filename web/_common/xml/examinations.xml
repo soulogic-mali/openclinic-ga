@@ -2101,4 +2101,12 @@
 		<en>Inpatient admission form (NDH model)</en>
 		<es>Formulario de admisión para pacientes hospitalizados (modelo NDH)</es>
 	</Row>
+	<Row>
+		<id>1217</id>
+		<class>cnts</class>
+		<transactiontype>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODGIFT_SUPERVISION</transactiontype>
+		<fr>Supervision durant le don de sang</fr>
+		<en>Supervision during blood donation</en>
+		<es>Supervisión durante la donación de sangre</es>
+	</Row>
 </Examinations>

@@ -232,11 +232,8 @@
 			                                           outputString="checked"/>><%=getTran(request,"gynecology", "collartear", sWebLanguage)%>
 			 			</td>
 			 			<td>
-			                 <input type="checkbox" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_HEMORRHAGIA" property="itemId"/>]>.value" value="medwan.common.true"
-			                 <mxs:propertyAccessorI18N name="transaction.items" scope="page"
-			                                           compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_HEMORRHAGIA;value=medwan.common.true"
-			                                           property="value"
-			                                           outputString="checked"/>><%=getTran(request,"gynecology", "hemorrhagia", sWebLanguage)%>
+			                 <%=SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_DELIVERY_HEMORRHAGIA", "") %>
+			                 <%=getTran(request,"gynecology", "hemorrhagiaante", sWebLanguage)%>
 			 			</td>
 			 		</tr>
  					<tr>
@@ -289,7 +286,11 @@
 			                 <mxs:propertyAccessorI18N name="transaction.items" scope="page"
 			                                           compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREMATURE;value=medwan.common.true"
 			                                           property="value"
-			                                           outputString="checked"/>><%=getTran(request,"gynecology", "premature", sWebLanguage)%>
+			outputString="checked"/>><%=getTran(request,"gynecology", "premature", sWebLanguage)%>
+			 			</td>                                           
+			 			<td>
+			                 <%=SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_DELIVERY_HEMORRHAGIAPOST", "") %>
+			                 <%=getTran(request,"gynecology", "hemorrhagiapost", sWebLanguage)%>
 			 			</td>
 			 		</tr>
 			 		<tr>

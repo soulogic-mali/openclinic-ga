@@ -1,9 +1,11 @@
+<%@page import="be.mxs.common.util.system.Pointer"%>
 <%@page import="be.mxs.common.util.system.HTMLEntities"%>
 <%@ page import="be.openclinic.finance.*,be.openclinic.medical.*"%>
 <%@include file="/includes/validateUser.jsp"%>
 <%@page errorPage="/includes/error.jsp"%>
 <bean:define id="transaction" name="be.mxs.webapp.wl.session.SessionContainerFactory.WO_SESSION_CONTAINER" property="currentTransactionVO"/>
 <script>var bRejected=false;</script>
+<%=sJSPROTOTYPE %>
 <%
 	TransactionVO tran = (TransactionVO)transaction;
 	if(tran.getTransactionId()<0){
@@ -18,10 +20,14 @@
 			}
 		}
 		if(bRejected){
-			out.println("<script>bRejected=true;alert('"+ScreenHelper.getTran(request,"cnts","patientpermanentlyrejected",sWebLanguage)+"');window.history.go(-1);</script>");
+			out.println("<script>bRejected=true;alert('"+ScreenHelper.getTranNoLink("cnts","patientpermanentlyrejected",sWebLanguage)+"');window.history.go(-1);</script>");
 			out.flush();
 		}
 		
+		if(activePatient.comment5.equalsIgnoreCase("1")){
+			out.println("<script>bRejected=true;alert('"+ScreenHelper.getTranNoLink("cnts","donorcanceled",sWebLanguage)+"');window.history.go(-1);</script>");
+			out.flush();
+		}
 	}
 %>
 <%=checkPermission(out,"occup.cnts.bloodgift","select",activeUser)%>
@@ -52,53 +58,132 @@
         <tr>
         	<td colspan="2">
 	        	<table width='100%'>
+		        	<tr>
 	        		<% 
 	        			if(tran.getTransactionId()>=0){
 	        		%>
-		        	<tr>
 			            <td class="admin"><%=getTran(request,"bloodgift","sampleid",sWebLanguage)%></td>
-			            <td class="admin2" colspan="3">
+			            <td class="admin2">
 			                <font style="font-size:14px;font-weight:bold"><%=tran.getTransactionId() %></font>
 			            </td>
-			        </tr>
-	        		<%	        			}
+	        		<%	}
+	        			else{
+					%>
+						<td class="admin2" colspan="2"/>
+					<%        				
+	        			}
 	        		%>
+			            <td class="admin"><%=getTran(request,"bloodgift","totalgifts",sWebLanguage)%></td>
+			            <td class="admin2">
+			            	<table width='100%' cellspacing='0' cellpadding='0'>
+			            		<tr>
+			                		<td><b><span id="totalblooddonations"></span></b></td>
+			                		<td class='admin' width='1%' nowrap><%=getTran(request,"web","beforeict",sWebLanguage) %>&nbsp;</td>
+			                		<td class='admin2'>
+			                			<a href='javascript:setOldBloodDonations()'><span id="oldblooddonations"></span></a>
+			                		</td>
+			                	</tr>
+			                </table>
+			            </td>
+			        </tr>
 		        	<tr>
 			            <td class="admin"><%=getTran(request,"bloodgift","location",sWebLanguage)%></td>
+			            <%
+				            String sDefaultLocation=SH.c((String)session.getAttribute("defaultCNTSLocation"));
+				            if(((TransactionVO)transaction).getTransactionId()>0){
+				            	sDefaultLocation=((TransactionVO)transaction).getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_LOCATIONPRESET");
+				            }
+				        %>
 			            <td class="admin2">
+			                <input type="hidden" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_LOCATIONPRESET" property="itemId"/>]>.value" id="searchServiceUid" value="<%=sDefaultLocation%>"/>
+			                <input class="text" type="text" name="searchServiceName" id="searchServiceName" readonly size="50" value="<%=getTranNoLink("service",sDefaultLocation,sWebLanguage)%>" >
+			                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTran(null,"Web","select",sWebLanguage)%>" onclick="searchService('searchServiceUid','searchServiceName');">
+			                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="document.getElementById('searchServiceUid').value='';document.getElementById('searchServiceName').value='';">
 			                <input class="text" type="text" id="cntslocation" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_LOCATION" property="itemId"/>]>.value" size="40" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_LOCATION" property="value"/>"/>
 			            </td>
 			            <td class="admin"><%=getTran(request,"bloodgift","collectionunit",sWebLanguage)%></td>
 			            <td class="admin2">
-			                <input class="text" type="text" id="cntscollectionunit" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_COLLECTIONUNIT" property="itemId"/>]>.value" size="40" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_COLLECTIONUNIT" property="value"/>"/>
+			            	<%=SH.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_CNTSBLOODGIFT_COLLECTIONUNIT","cnts.collectionunit", sWebLanguage, "",SH.c((String)session.getAttribute("defaultCNTSCollectionUnit"))) %>
 			            </td>
 			        </tr>
 		        	<tr>
+			            <td class="admin"><%=getTran(request,"bloodgift","donortype",sWebLanguage)%>&nbsp;</td>
+			            <td class="admin2" colspan="3">
+			            	<%=SH.writeDefaultRadioButtons((TransactionVO)transaction, request, "cnts.donortype", "ITEM_TYPE_CNTSBLOODGIFT_DONORTYPE", sWebLanguage, false, "", "")%>
+			            </td>
+			        </tr>
+			        <tr class='admin'><td colspan='4'><%=getTran(request,"bloodgift","rejectioncriteria",sWebLanguage) %></td></tr>
+		        	<tr>
 			            <td class="admin"><%=getTran(request,"bloodgift","rejectioncriteria",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2" colspan="3"><table>
-			            	<%
-			            		String activecriteria=((TransactionVO)transaction).getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA");
-			            		Hashtable labels=MedwanQuery.getInstance().getLabels();
-			            		Hashtable hLang=(Hashtable)labels.get(sWebLanguage.toLowerCase());
-			            		if(hLang!=null){
-			            			SortedMap values =  new TreeMap((Hashtable)hLang.get("cnts.bloodgift.rejectioncriteria"));
-				            		if(values!=null){
-				            			Iterator e = values.keySet().iterator();
-				            			while(e.hasNext()){
-				            				String id = (String)e.next();
-				            				out.println("<tr><td><span style='white-space: nowrap'><input class='text' name='rejectioncriteria."+id+"' id='rejectioncriteria."+id+"' type='checkbox' "+(("*"+activecriteria+"*").indexOf("*"+id+"*")>-1?"checked":"")+" onclick='verifyPermanentRejection();if(this.checked){document.getElementById(\"unfit\").checked=true;}'/>"+getTran(request,"cnts.bloodgift.rejectioncriteria",id,sWebLanguage)+"&nbsp;</span></td></tr>");
-				            			}
-				            		}
-			            		}
-			            	%>
-			            	</table>
-			                <input type='hidden' id="rejectioncriteria" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA" property="itemId"/>]>.value"/>
+			            <td class="admin2" colspan="3">
+			            	<%=SH.writeDefaultCheckBoxes((TransactionVO)transaction, request, "cnts.bloodgift.rejectioncriteria", "ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA", sWebLanguage, true, "onchange='checkCriteria();'")%>
 			            </td>
 			        </tr>
 		        	<tr>
 			            <td class="admin"><%=getTran(request,"bloodgift","permanentrejection",sWebLanguage)%></td>
+			            <td class="admin2">
+			                <input onchange='checkCriteria(true);' class="text" type="checkbox" id='permanentrejection' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_PERMANENTREJECTION" property="itemId"/>]>.value" size="40" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_PERMANENTREJECTION;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/>
+			            </td>
+			            <td class="admin"><%=getTran(request,"bloodgift","temporaryrejection",sWebLanguage)%></td>
+			            <td class="admin2">
+			                <input onchange='checkCriteria(true);' class="text" type="checkbox" id='temporaryrejection' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_TEMPORARYREJECTION" property="itemId"/>]>.value" size="40" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_TEMPORARYREJECTION;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/>
+			            </td>
+			        </tr>
+			        <tr class='admin'><td colspan='4'><%=getTran(request,"bloodgift","medicalevaluation",sWebLanguage) %></td></tr>
+		        	<tr>
+			            <td class="admin"><%=getTran(request,"bloodgift","lastdonation",sWebLanguage)%></td>
 			            <td class="admin2" colspan="3">
-			                <input class="text" type="checkbox" id='permanentrejection' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_PERMANENTREJECTION" property="itemId"/>]>.value" size="40" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_PERMANENTREJECTION;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/>
+							<%
+								TransactionVO lastTran = MedwanQuery.getInstance().getLastTransactionByType(Integer.parseInt(activePatient.personid), "be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODGIFT");
+								if(lastTran!=null && lastTran.getTransactionId()!=((TransactionVO)transaction).getTransactionId()){
+									((TransactionVO)transaction).getItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_LASTDONATION").setValue(SH.formatDate(lastTran.getUpdateTime()));
+								}
+							%>
+			            	<%=SH.writeDefaultDateInput(session, (TransactionVO)transaction, "ITEM_TYPE_CNTSBLOODGIFT_LASTDONATION", sWebLanguage, sCONTEXTPATH,"onchange='checkCriteria();' onfocus='checkCriteria();'") %>
+			            	&nbsp;&nbsp;<b><%=getTran(request,"web","results",sWebLanguage)%></b>: <%=SH.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_CNTSBLOODGIFT_LASTDONATIONRESULTS", 30, 1) %>
+			            	&nbsp;&nbsp;<b><%=getTran(request,"web","goodshape",sWebLanguage)%></b>: <%=SH.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno", "ITEM_TYPE_CNTSBLOODGIFT_GOODSHAPE", sWebLanguage, true, "", "") %>
+			            </td>
+			        </tr>
+			        <%	if(activePatient.gender.equalsIgnoreCase("f")){ %>
+		        	<tr>
+			            <td class="admin"><%=getTran(request,"bloodgift","lastperiod",sWebLanguage)%></td>
+			            <td class="admin2">
+			            	<%=SH.writeDefaultDateInput(session, (TransactionVO)transaction, "ITEM_TYPE_CNTSBLOODGIFT_LASTPERIOD", sWebLanguage, sCONTEXTPATH) %>
+			            </td>
+			            <td class="admin"><%=getTran(request,"bloodgift","pregnant",sWebLanguage)%></td>
+			            <td class="admin2">
+			            	<%=SH.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno", "ITEM_TYPE_CNTSBLOODGIFT_PREGNANT", sWebLanguage, true, "","") %>
+			            </td>
+			        </tr>
+			        <%	} %>
+		        	<tr>
+			            <td class="admin"><%=getTran(request,"bloodgift","std",sWebLanguage)%></td>
+			            <td class="admin2">
+			            	<%=SH.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_CNTSBLOODGIFT_STD", 40, 2)%>
+			            </td>
+			            <td class="admin"><%=getTran(request,"bloodgift","sexlast6months",sWebLanguage)%></td>
+			            <td class="admin2">
+			            	<%=SH.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno", "ITEM_TYPE_CNTSBLOODGIFT_SEXLAST6MONTHS", sWebLanguage, true, "","") %>
+			            </td>
+			        </tr>
+		        	<tr>
+			            <td class="admin"><%=getTran(request,"bloodgift","multiplesexualpartnerslast3months",sWebLanguage)%></td>
+			            <td class="admin2">
+			            	<%=SH.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno", "ITEM_TYPE_CNTSBLOODGIFT_MULTIPLEPARTNERS", sWebLanguage, true, "","") %>
+			            </td>
+			            <td class="admin"><%=getTran(request,"bloodgift","preservatives",sWebLanguage)%></td>
+			            <td class="admin2">
+			            	<%=SH.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno", "ITEM_TYPE_CNTSBLOODGIFT_PRESERVATIVES", sWebLanguage, true, "","") %>
+			            </td>
+			        </tr>
+		        	<tr>
+			            <td class="admin"><%=getTran(request,"bloodgift","weightloss",sWebLanguage)%></td>
+			            <td class="admin2">
+			            	<%=SH.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno", "ITEM_TYPE_CNTSBLOODGIFT_WEIGHTLOSS", sWebLanguage, true, "","") %>
+			            </td>
+			            <td class="admin"><%=getTran(request,"bloodgift","skinchange",sWebLanguage)%></td>
+			            <td class="admin2">
+			            	<%=SH.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno", "ITEM_TYPE_CNTSBLOODGIFT_SKINCHANGE", sWebLanguage, true, "","") %>
 			            </td>
 			        </tr>
 			        <%-- VITAL SIGNS --%>
@@ -120,23 +205,31 @@
 			            	</table>
 			            </td>
 			        </tr>
+		        	<tr>
+			            <td class="admin"><%=getTran(request,"bloodgift","diseases",sWebLanguage)%>&nbsp;</td>
+			            <td class="admin2" colspan="3">
+			            	<%=SH.writeDefaultCheckBoxes((TransactionVO)transaction, request, "cnts.bloodgift.diseases", "ITEM_TYPE_CNTSBLOODGIFT_DISEASES", sWebLanguage, true, "onchange='checkCriteria();'")%>
+			            </td>
+			        </tr>
 			        <%-- TEXT FIELDS --%>
 			        <tr>
-			            <td class="admin"><%=getTran(request,"Web.Occup","rmh.clinical.history",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2" colspan="3">
-			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_RMH_CLINICALHISTORY")%> class="text" cols="105" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_CLINICALHISTORY" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_CLINICALHISTORY" property="value"/></textarea>
+			            <td class="admin" nowrap><%=getTran(request,"Web.Occup","rmh.clinical.history",sWebLanguage)%>&nbsp;</td>
+			            <td class="admin2">
+			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_RMH_CLINICALHISTORY")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_CLINICALHISTORY" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_CLINICALHISTORY" property="value"/></textarea>
+			            </td>
+			            <td class="admin" nowrap><%=getTran(request,"Web.Occup","rmh.clinical.medication",sWebLanguage)%>&nbsp;</td>
+			            <td class="admin2">
+			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_RMH_MEDICATION")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_MEDICATION" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_MEDICATION" property="value"/></textarea>
 			            </td>
 			        </tr>
 			        <tr>
-			            <td class="admin"><%=getTran(request,"Web.Occup","rmh.physical.examination",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2" colspan="3">
-			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_RMH_PHYSICALEXAM")%> class="text" cols="105" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PHYSICALEXAM" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PHYSICALEXAM" property="value"/></textarea>
+			            <td class="admin"><%=getTran(request,"bloodgift","physical.examination",sWebLanguage)%>&nbsp;</td>
+			            <td class="admin2">
+			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_RMH_PHYSICALEXAM")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PHYSICALEXAM" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PHYSICALEXAM" property="value"/></textarea>
 			            </td>
-			        </tr>
-			        <tr>
 			            <td class="admin"><%=getTran(request,"Web.Occup","rmh.clinical.summary",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2" colspan="3">
-			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_RMH_CLINICALSUMMARY")%> class="text" cols="105" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_CLINICALSUMMARY" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_CLINICALSUMMARY" property="value"/></textarea>
+			            <td class="admin2">
+			                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_RMH_CLINICALSUMMARY")%> class="text" cols="40" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_CLINICALSUMMARY" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_CLINICALSUMMARY" property="value"/></textarea>
 			            </td>
 			        </tr>
 			        <tr>
@@ -146,6 +239,7 @@
 			                <input class="text" type="radio" id='unfit' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_FIT" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_FIT;value=medwan.common.false" property="value" outputString="checked"/> value="medwan.common.false"  ondblclick="this.checked=false"/><%=getTran(request,"web","no",sWebLanguage) %>
 			            </td>
 			        </tr>
+			        <tr class='admin'><td colspan='4'><%=getTran(request,"bloodgift","donation",sWebLanguage) %></td></tr>
 			        <tr>
 			            <td class="admin"><%=getTran(request,"bloodgift","receptiondate",sWebLanguage)%>&nbsp;</td>
 			            <td class="admin2">
@@ -211,12 +305,9 @@
 			            </td>
 			        </tr>
 		        	<tr>
-			            <td class="admin"><%=getTran(request,"web","comment",sWebLanguage)%>*&nbsp;</td>
-			            <td class="admin2">
-			               <textarea onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_CNTSBLOODGIFT_COMMENT")%> class="text" cols="50" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_COMMENT" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_COMMENT" property="value"/></textarea>
-			            </td>
-			            <td class="admin2" colspan="2">
-			            </td>
+			            <td class="admin"><%=getTran(request,"lab","comment",sWebLanguage)%>*&nbsp;</td>
+			            <td class="admin2" colspan="3">
+			               <textarea onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_CNTSBLOODGIFT_COMMENT")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_COMMENT" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_COMMENT" property="value"/></textarea>
 			        </tr>
 	            </table>
 	        </td>
@@ -236,7 +327,7 @@
      		<td class='admin'><%=getTran(request,"web","location",sWebLanguage) %></td>
      		<td class='admin'><%=getTran(request,"web","product",sWebLanguage) %></td>
      		<td class='admin'><%=getTran(request,"web","pockets",sWebLanguage) %></td>
-     		<td class='admin'><%=getTran(request,"web","patient",sWebLanguage) %></td>
+     		<td class='admin'><%=getTran(request,"cnts","patient",sWebLanguage) %></td>
      		<td class='admin'><%=getTran(request,"web","telephone",sWebLanguage) %></td>
      	</tr>
      	<%
@@ -288,8 +379,19 @@ function searchEncounter(){
     document.getElementById(diagnosisUserName).focus();
   }
 
+  function searchService(serviceUidField,serviceNameField){
+	 	openPopup("/_common/search/searchService.jsp&ts=<%=getTs()%>&VarCode="+serviceUidField+"&VarText="+serviceNameField+"&needsvisits=1");
+		document.getElementById(serviceNameField).focus();
+  }
+
   function submitForm(){
-	  if(document.getElementById('cntsreceptiondate').value.length>0 && document.getElementById('cntsexpirydate').value==''){
+	  setSessionAttribute('defaultCNTSLocation',document.getElementById('searchServiceUid').value);
+	  setSessionAttribute('defaultCNTSCollectionUnit',document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_COLLECTIONUNIT').value);
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_COLLECTIONUNIT').value.length==0){
+		  alert('<%=getTranNoLink("web","somedataismissing",sWebLanguage)%>');
+		  document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_COLLECTIONUNIT').focus();
+	  }
+	  else if(document.getElementById('cntsreceptiondate').value.length>0 && document.getElementById('cntsexpirydate').value==''){
 		  alert('<%=getTranNoLink("web","somedataismissing",sWebLanguage)%>');
 		  document.getElementById('cntsexpirydate').focus();
 	  }
@@ -297,13 +399,6 @@ function searchEncounter(){
 	    transactionForm.saveButton.disabled = true;
 	    document.getElementById("receptiondate").value=document.getElementById("cntsreceptiondate").value;
 	    document.getElementById("expirydate").value=document.getElementById("cntsexpirydate").value;
-	    document.getElementById('rejectioncriteria').value="*";
-	    for(n=0;n<document.all.length;n++){
-	    	var el = document.all[n];
-	    	if(el.name && el.name.indexOf("rejectioncriteria.")>-1 && el.checked){
-	    		document.getElementById('rejectioncriteria').value+=el.name.replace("rejectioncriteria.","")+"*";
-	    	}
-	    }
 	    <%
 	        SessionContainerWO sessionContainerWO = (SessionContainerWO)SessionContainerFactory.getInstance().getSessionContainerWO(request,SessionContainerWO.class.getName());
 	        out.print(takeOverTransaction(sessionContainerWO,activeUser,"document.transactionForm.submit();"));
@@ -345,6 +440,40 @@ function searchEncounter(){
 	  }
   }
   
+  function setOldBloodDonations(){
+	  var n = window.prompt('<%=getTranNoLink("web.occup","total-number",sWebLanguage)%>','<%=Pointer.getPointer("oldblooddonations."+activePatient.personid,"0") %>');
+	  countBloodDonations(n);
+  }
+  
+  function setSessionAttribute(id,value){
+	  var params = "id="+id+"&value="+value;
+	  var url = '<c:url value="/system/setSessionAttribute.jsp"/>?ts='+new Date().getTime();
+	  new Ajax.Request(url,{
+		  	method: "POST",
+		    parameters: params,
+			onSuccess: function(resp){
+		  }
+	  });
+  }
+  
+  function countBloodDonations(setVal){
+      var params = "";
+      if(setVal){
+    	  params="setold="+setVal;
+      }
+	  var url = '<c:url value="/cnts/countBloodDonations.jsp"/>?ts='+new Date().getTime();
+	  new Ajax.Request(url,{
+		  	method: "POST",
+		    parameters: params,
+			onSuccess: function(resp){
+                var label = eval('('+resp.responseText+')');
+				document.getElementById("totalblooddonations").innerHTML = label.total;
+				document.getElementById("oldblooddonations").innerHTML = label.old;
+		  }
+	  });
+  }
+  
+  countBloodDonations();
   calculateBMI();
   <%
   	if(tran.getTransactionId()<0){
@@ -354,6 +483,75 @@ function searchEncounter(){
   <%
   	}
   %>
+  
+  function checkCriteria(bReset){
+	  if(!bReset){
+		  document.getElementById('permanentrejection').checked=false;
+		  document.getElementById('temporaryrejection').checked=false;
+	  }
+	  <% if(activePatient.gender.equalsIgnoreCase("m")){%>
+	  	document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.10').checked=false;
+	  	document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.10').disabled=true;
+	  	document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.10').parentElement.style.color='white';
+	  	document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.11').checked=false;
+	  	document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.11').disabled=true;
+	  	document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.11').parentElement.style.color='white';
+	  <% }%>
+	  //Last donation check
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_LASTDONATION').value.length=10){
+		  var ld = document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_LASTDONATION').value;
+		  year=ld.substring(6,10);
+		  month=ld.substring(3,5)*1-1;
+		  day=ld.substring(0,2);
+		  var lastdonation=new Date(year,month,day);
+		  var day=24*3600*1000;
+		  document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.1').checked=(new Date()-lastdonation)/day<84;
+		  document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.1').onclick();
+	  }
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.1').checked){
+		  document.getElementById('temporaryrejection').checked=true;
+	  }
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.3').checked){
+		  document.getElementById('temporaryrejection').checked=true;
+	  }
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.4').checked){
+		  document.getElementById('permanentrejection').checked=true;
+	  }
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.5').checked){
+		  document.getElementById('permanentrejection').checked=true;
+	  }
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.6').checked){
+		  document.getElementById('permanentrejection').checked=true;
+	  }
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.7').checked){
+		  document.getElementById('permanentrejection').checked=true;
+	  }
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.8').checked){
+		  document.getElementById('permanentrejection').checked=true;
+	  }
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.9').checked){
+		  document.getElementById('temporaryrejection').checked=true;
+	  }
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.10').checked){
+		  document.getElementById('temporaryrejection').checked=true;
+	  }
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.11').checked){
+		  document.getElementById('temporaryrejection').checked=true;
+	  }
+	  if(document.getElementById('ITEM_TYPE_CNTSBLOODGIFT_REJECTIONCRITERIA.12').checked){
+		  document.getElementById('temporaryrejection').checked=true;
+	  }
+	  var allelements = document.all;
+	  for(n=0;n<allelements.length;n++){
+		  if(allelements[n].id){
+			  if(allelements[n].id.indexOf('ITEM_TYPE_CNTSBLOODGIFT_DISEASES')>-1 && allelements[n].checked){
+				  document.getElementById('permanentrejection').checked=true;
+				  break;
+			  }
+		  }
+	  }
+  }
+  checkCriteria();
 </script>
     
 <%=writeJSButtons("transactionForm","saveButton")%>

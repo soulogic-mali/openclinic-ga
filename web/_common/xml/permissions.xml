@@ -188,6 +188,7 @@
         <permission type="examination" id="1214">surveillance.covid19.followup.pulseoximetry</permission>
         <permission type="examination" id="1215">occup.chugtoutpatientfile</permission>
         <permission type="examination" id="1216">occup.ndhadmission</permission>
+        <permission type="examination" id="1217">cnts.supervision</permission>
     </application>
     <application type="Web" id="newexaminations">
         <permission type="web" id="globalexaminations">examinations.global</permission>
@@ -325,6 +326,7 @@
         <permission type="web" id="statistics.download.pbfburundi.familyplanninglist">statistics.download.pbfburundi.familyplanninglist</permission>
         <permission type="web" id="statistics.download.insurer.userlist">statistics.download.insurer.userlist</permission>
         <permission type="web" id="statistics.download.vida">statistics.download.vida</permission>
+        <permission type="web" id="statistics.download.bloodgift">statistics.download.bloodgift</permission>
         <permission type="web" id="cnrkr.consultation.activitylist">cnrkr.consultation.activitylist</permission>
         <permission type="web" id="cnrkr.kine.activitylist">cnrkr.kine.activitylist</permission>
         <permission type="web" id="statistics.download.serviceincomelist">statistics.download.serviceincomelist</permission>

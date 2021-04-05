@@ -410,7 +410,7 @@
 
     <%-- REMARK --%>
     <tr>
-        <td class="admin"><%=getTran(request,"Web","comment",sWebLanguage)%></td>
+        <td class="admin"><%=getTran(request,"lab","comment",sWebLanguage)%></td>
         <td class="admin2">
             <textarea id="remark" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_LAB_REMARK")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_REMARK" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_REMARK" property="value"/></textarea>
         </td>
@@ -439,7 +439,12 @@
 	                			try{
 	                				java.util.Date expdate = ScreenHelper.parseDate(expirydate);
 	                				if(expdate.after(new java.util.Date())){
-	                					out.println("<option value='"+bloodgift.getTransactionId()+"' "+(sObjectId.equalsIgnoreCase(bloodgift.getTransactionId()+"")?"selected":"")+">"+bloodgift.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_RECEPTIONDATE")+" (ID: "+bloodgift.getTransactionId()+")");
+	                					if(bloodgift.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_PERMANENTREJECTION").equalsIgnoreCase("medwan.common.true") || bloodgift.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTSBLOODGIFT_TEMPORARYREJECTION").equalsIgnoreCase("medwan.common.true") ){
+	                						out.println("<option disabled value='"+bloodgift.getTransactionId()+"'>"+bloodgift.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_RECEPTIONDATE")+" (ID: "+bloodgift.getTransactionId()+")</option>");
+	                					}
+	                					else{
+	                						out.println("<option value='"+bloodgift.getTransactionId()+"' "+(sObjectId.equalsIgnoreCase(bloodgift.getTransactionId()+"")?"selected":"")+">"+bloodgift.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_RECEPTIONDATE")+" (ID: "+bloodgift.getTransactionId()+")</option>");
+	                					}
 	                				}
 	                			}
 	                			catch(Exception e){}
@@ -472,10 +477,21 @@
     <tr>
         <td class="admin"><%=getTran(request,"Web","warnSms",sWebLanguage)%></td>
         <td class="admin2" >
+	        <%
+				String labSMS="";
+				if(SH.ci("useraddressforlabsms",1)==1){
+					labSMS=UserParameter.getParameter(activeUser.userid,"lastLabSMS");
+				}
+				else{
+					labSMS=SH.c(activePatient.getActivePrivate().mobile);
+				}
+	    		if(SH.ci("autofilllabsms",0)==1){
+	    			((TransactionVO)transaction).getItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_SMS").setValue(labSMS);
+	    		}
+	        %>
             <input type='text' id="labsms" <%=setRightClick(session,"ITEM_TYPE_LAB_SMS")%> class="text" size="50" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_SMS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_SMS" property="value"/>"/>
 	        <%
 	        	if(tran.getTransactionId()<=0){
-	        		String labSMS=UserParameter.getParameter(activeUser.userid,"lastLabSMS");
 	        		if(checkString(labSMS).length()>0){
 	        			%><a href="javascript:set('labsms','<%=labSMS %>')"><img class='link' src='<c:url value="/_img/themes/default/valid.gif"/>'/> <%=labSMS%></a><%
 	        		}
@@ -494,10 +510,21 @@
     <tr>
         <td class="admin"><%=getTran(request,"Web","warnEmail",sWebLanguage)%></td>
         <td class="admin2">
+        	<%
+	    		String labMail="";
+	    		if(SH.ci("useraddressforlabmail",1)==1){
+	        		labMail=UserParameter.getParameter(activeUser.userid,"lastLabEmail");
+	    		}
+	    		else{
+	        		labMail=SH.c(activePatient.getActivePrivate().email);
+	    		}
+	    		if(SH.ci("autofilllabmail",0)==1){
+	    			((TransactionVO)transaction).getItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_EMAIL").setValue(labMail);
+	    		}
+        	%>
             <input type='text' id="labmail" <%=setRightClick(session,"ITEM_TYPE_LAB_EMAIL")%> class="text" size="50" onBlur="checkEmailAddress(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_EMAIL" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_EMAIL" property="value"/>"/>
 	        <%
 	        	if(tran.getTransactionId()<=0){
-	        		String labMail=UserParameter.getParameter(activeUser.userid,"lastLabEmail");
 	        		if(checkString(labMail).length()>0){
 	        			%><a href="javascript:set('labmail','<%=labMail %>')"><img class='link' src='<c:url value="/_img/themes/default/valid.gif"/>'/> <%=labMail%></a><%
 	        		}
@@ -632,8 +659,8 @@
 		    document.getElementById('prescriber').focus();
 		    return;
 		}
-	<%}%>
-	<%if(MedwanQuery.getInstance().getConfigString("mandatoryLabOrderFields","").contains("clinicalinformation")){%>
+	<%}
+	if(MedwanQuery.getInstance().getConfigString("mandatoryLabOrderFields","").contains("clinicalinformation")){%>
 	if(document.getElementById('clinicalinformation').value.length==0){
 	    alertDialog("web","datamissing");
 	    document.getElementById('clinicalinformation').focus();
@@ -929,7 +956,19 @@
     updateRowStyles();
 
   }
-
+  <% if(((TransactionVO)transaction).getTransactionId()<0){
+  		if(SH.cs("prefillLabAnalyses","").length()>0){
+  			for(int n=0;n<SH.cs("prefillLabAnalyses","").split(";").length;n++){
+  				LabAnalysis lb = LabAnalysis.getLabAnalysisByLabcode(SH.cs("prefillLabAnalyses","").split(";")[n]);
+  				if(lb!=null){
+  					%>
+  			  		addLabAnalysis('<%=lb.getLabcode()%>','<%=lb.getLabtype()%>','<%=getTranNoLink("labanalysis",lb.getLabId()+"",sWebLanguage)%>','<%=lb.getComment()%>','<%=lb.getMonster()%>');
+  					<%
+  				}
+  			}
+  		}
+  %>
+  <%}%>
   <%-- DO BACK --%>
   function doBack(){
     if(checkSaveButton()){

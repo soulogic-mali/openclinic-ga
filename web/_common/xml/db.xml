@@ -2254,11 +2254,28 @@
       </indexes>
     </table>
     
+    <table name="OC_SYNC" db="openclinic" sync="NONE">
+    	<columns>
+	        <column name="type" dbtype="varchar" javatype="string" size="50"/>
+	        <column name="oldid" dbtype="int" javatype="integer"/>
+	        <column name="newid" dbtype="int" javatype="integer"/>
+		    <column name="created" dbtype="datetime" javatype="date"/>
+		    <column name="processed" dbtype="datetime" javatype="date"/>
+    	</columns>
+      	<indexes>
+        	<index name="OC_SYNC_MAIN">
+          		<indexcolumn order="ASC" name="type"/>
+          		<indexcolumn order="ASC" name="oldid"/>
+        	</index>
+        	<index name="processed">
+          		<indexcolumn order="ASC" name="processed"/>
+        	</index>
+        </indexes>
+    </table>
     <table name="OC_SUPPLIERS" db="openclinic" sync="NONE">
       <columns>
         <column name="OC_SUPPLIER_SERVERID" dbtype="int" javatype="integer"/>
     	<column name="OC_SUPPLIER_OBJECTID" dbtype="int" javatype="integer"/>
-	     
         <column name="OC_SUPPLIER_CODE" dbtype="varchar" javatype="string" size="50"/>
         <column name="OC_SUPPLIER_NAME" dbtype="varchar" javatype="string" size="255"/> 
     	<column name="OC_SUPPLIER_ADDRESS" dbtype="varchar" javatype="string" size="255"/> 

@@ -56,7 +56,7 @@ try{
                         if (sessionContainerWO.getTransactionsLimited() != null && sessionContainerWO.getTransactionsLimited().size() > 0){
                             %>
                                 <logic:present name="be.mxs.webapp.wl.session.SessionContainerFactory.WO_SESSION_CONTAINER" property="healthRecordVO">
-                                <table width="100%" cellspacing="0" class="sortable" id="searchresults" style="border:0;">
+                                <table width="100%" cellspacing="0" cellpadding='0' class="sortable" id="searchresults">
 
                                     <%-- HEADER --%>
                                     <tr class='gray'>
@@ -184,7 +184,7 @@ try{
                                                 }
                                             	out.println("<tr id='"+sClass+"' class='list"+(hMasterTransactions.contains(transactionVO.getServerId()+"."+transactionVO.getTransactionId())?sClass+sList:"Text2")+"' >");
 												%>
-	                                                    <td  nowrap width='1%' class="modal" nowrap onmouseover='this.style.cursor="hand"' onmouseout='this.style.cursor="default"'>
+	                                                    <td  nowrap width='40px' class="modal" nowrap onmouseover='this.style.cursor="hand"' onmouseout='this.style.cursor="default"'>
 	                                                    	<%if(activeUser.getAccessRightNoSA("examinations.delete")){ %>
                                                             	<img class='hand' src="<c:url value='/_img/icons/icon_delete.png'/>" alt="<%=getTranNoLink("Web.Occup","medwan.common.delete",sWebLanguage)%>" border="0"  onclick="deltran(<%=transactionVO.getTransactionId()%>,<%=transactionVO.getServerId()%>,<%=transactionVO.getUser().getUserId()%>)">
 															<%
@@ -195,7 +195,7 @@ try{
 			                                                }
 			                                    			%>&nbsp;
                                                         </td>
-                                                        <td align="center" width='100'><%=hMasterTransactions.contains(transactionVO.getServerId()+"."+transactionVO.getTransactionId())?ScreenHelper.formatDate(transactionVO.getUpdateTime()):""%></td>
+                                                        <td align="right" width='100'><%=hMasterTransactions.contains(transactionVO.getServerId()+"."+transactionVO.getTransactionId())?new java.text.SimpleDateFormat("dd-MM-yy").format(transactionVO.getUpdateTime())+"&nbsp;&nbsp;&nbsp;"+new java.text.SimpleDateFormat("HH:mm").format(transactionVO.getUpdateTime()):new java.text.SimpleDateFormat("HH:mm").format(transactionVO.getUpdateTime())%></td>
                                                         <td align="center" width='42%'>
                                                             <%
                                                                 try {
@@ -356,7 +356,7 @@ try{
                                                 <%
                                             	if(hMasterTransactions.contains(transactionVO.getServerId()+"."+transactionVO.getTransactionId()) && (Integer)hTransactions.get(key)>1){
 													//Create a hidden section
-													out.println("<tr id='expand."+transactionVO.getServerId()+"."+transactionVO.getTransactionId()+"' style='display: none'><td colspan='5'><table width='100%' cellspacing='0'>");
+													out.println("<tr id='expand."+transactionVO.getServerId()+"."+transactionVO.getTransactionId()+"' style='display: none'><td colspan='5'><table width='100%' cellpadding='0' cellspacing='0'>");
 													bHiddenSectionOpened=true;
                                             	}
                                             }
