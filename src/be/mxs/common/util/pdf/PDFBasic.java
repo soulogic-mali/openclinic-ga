@@ -576,6 +576,17 @@ public abstract class PDFBasic {
         return cell;
     }
 
+    protected PdfPCell createBoldGreyCell(int fontsize, String value, int colspan){
+        cell = new PdfPCell(new Paragraph(value,FontFactory.getFont(FontFactory.HELVETICA,fontsize,Font.BOLD)));
+        cell.setColspan(colspan);
+        cell.setBorder(PdfPCell.BOX);
+        cell.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+        cell.setBackgroundColor(new BaseColor(200,200,200)); // light gray
+
+        return cell;
+    }
+
     protected PdfPCell createGreyCell(String value){
         return createGreyCell(value,1);
     }

@@ -94,6 +94,27 @@ public class Pointer {
 		return pointer;
 	}
 	
+	public static String getPointer(String key, String defaultValue){
+		String pointer = defaultValue;
+		Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+		PreparedStatement ps = null;
+		try{
+			ps=conn.prepareStatement("select OC_POINTER_VALUE from OC_POINTERS where OC_POINTER_KEY=?");
+			ps.setString(1, key);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()){
+				pointer=rs.getString("OC_POINTER_VALUE");
+			}
+			rs.close();
+			ps.close();
+			conn.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return pointer;
+	}
+	
 	public static String getPointer(String key, Connection conn){
 		String pointer = "";
 		PreparedStatement ps = null;

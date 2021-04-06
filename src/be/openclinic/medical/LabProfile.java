@@ -534,6 +534,7 @@ public class LabProfile {
                                 " FROM LabProfiles lp, LabProfilesAnalysis lap, LabAnalysis la"+
                                 " WHERE lap.profileID = lp.profileID"+
                                 "  AND lap.labID = la.labID"+
+                                (MedwanQuery.getInstance().getConfigInt("blockUnavailableLabanalysis",0)==1?" AND la.unavailable=0":"")+
                                 "  AND lp.profileCode = ? and la.deletetime is null"+
                                 " ORDER BY "+labcodeLower+","+commentLower;
 

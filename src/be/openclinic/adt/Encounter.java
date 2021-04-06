@@ -10,6 +10,7 @@ import be.openclinic.system.SH;
 import net.admin.AdminPerson;
 import net.admin.Service;
 import net.admin.User;
+import org.dom4j.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -147,6 +148,10 @@ public class Encounter extends OC_Object {
 		
 	}
 	// TO HERE
+	
+	public int getHealthRecordId() {
+		return MedwanQuery.getInstance().getHealthRecordIdFromPersonId(Integer.parseInt(getPatientUID()));
+	}
 	
 	public String getModifiers() {
 		return modifiers;
@@ -413,6 +418,76 @@ public class Encounter extends OC_Object {
 
     public void setEnd(Date end){
         this.end = end;
+    }
+    
+    public Element toXmlElement() {
+    	Element eEncounter = DocumentHelper.createElement("encounter");
+    	eEncounter.addAttribute("uid", getUid());
+    	eEncounter.addElement("type").setText(SH.c(getType()));
+    	eEncounter.addElement("begindate").setText(SH.formatDate(getBegin(),SH.timestampFormat));
+    	eEncounter.addElement("enddate").setText(SH.formatDate(getEnd(),SH.timestampFormat));
+    	eEncounter.addElement("patientuid").setText(SH.c(getPatientUID()));
+    	eEncounter.addElement("createtime").setText(SH.formatDate(getCreateDateTime(),SH.timestampFormat));
+    	eEncounter.addElement("updatetime").setText(SH.formatDate(getUpdateDateTime(),SH.timestampFormat));
+    	eEncounter.addElement("updatetuid").setText(SH.c(getUpdateUser()));
+    	eEncounter.addElement("version").setText(getVersion()+"");
+    	eEncounter.addElement("outcome").setText(SH.c(getOutcome()));
+    	eEncounter.addElement("destinationuid").setText(SH.c(getDestinationUID()));
+    	eEncounter.addElement("origin").setText(SH.c(getOrigin()));
+    	eEncounter.addElement("situation").setText(SH.c(getSituation()));
+    	eEncounter.addElement("categories").setText(SH.c(getCategories()));
+    	eEncounter.addElement("newcase").setText(getNewcase()+"");
+    	eEncounter.addElement("etiology").setText(SH.c(getEtiology()));
+    	eEncounter.addElement("modifiers").setText(SH.c(getModifiers()));
+    	eEncounter.addElement("beduid").setText(SH.c(getBedUID()));
+    	eEncounter.addElement("serviceuid").setText(SH.c(getServiceUID()));
+    	eEncounter.addElement("manageruid").setText(SH.c(getManagerUID()));
+    	return eEncounter;
+    }
+    
+    public String toXml() {
+    	return toXmlElement().asXML();
+    }
+    
+    public static Encounter fromXmlElement(Element eEncounter) {
+    	Encounter encounter = new Encounter();
+    	encounter.setUid(SH.c(eEncounter.attributeValue("uid")));
+    	encounter.setType(eEncounter.elementText("type"));
+    	encounter.setBegin(SH.parseDate(eEncounter.elementText("begindate"),SH.timestampFormat));
+    	encounter.setEnd(SH.parseDate(eEncounter.elementText("enddate"),SH.timestampFormat));
+    	encounter.setPatientUID(eEncounter.elementText("patientuid"));
+    	encounter.setCreateDateTime(SH.parseDate(eEncounter.elementText("createtime"),SH.timestampFormat));
+    	encounter.setUpdateDateTime(SH.parseDate(eEncounter.elementText("updatetime"),SH.timestampFormat));
+    	encounter.setUpdateUser(eEncounter.elementText("updatetuid"));
+    	encounter.setVersion(eEncounter.elementText("version")==null?0:Integer.parseInt(eEncounter.elementText("version")));
+    	encounter.setOutcome(eEncounter.elementText("outcome"));
+    	encounter.setDestinationUID(eEncounter.elementText("destinationuid"));
+    	encounter.setOrigin(eEncounter.elementText("origin"));
+    	encounter.setSituation(eEncounter.elementText("situation"));
+    	encounter.setCategories(eEncounter.elementText("categories"));
+    	encounter.setNewcase(eEncounter.elementText("newcase")==null?0:Integer.parseInt(eEncounter.elementText("newcase")));
+    	encounter.setEtiology(eEncounter.elementText("etiology"));
+    	encounter.setModifiers(eEncounter.elementText("modifiers"));
+    	encounter.setBedUID(eEncounter.elementText("beduid"));
+    	encounter.setServiceUID(eEncounter.elementText("serviceuid"));
+    	encounter.setManagerUID(eEncounter.elementText("manageruid"));
+    	return encounter;
+    }
+    
+    public static boolean updateEncounterUid(String oldUid, String newUid) {
+    	return SH.updateEncounterUid(oldUid, newUid);
+    }
+    
+    public static Encounter fromXml(String xml) {
+    	Element eEncounter;
+		try {
+			eEncounter = DocumentHelper.parseText(xml).getRootElement();
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+    	return fromXmlElement(eEncounter);
     }
     
     public static HashSet getFreeTextDiagnoses(String encounterUid){

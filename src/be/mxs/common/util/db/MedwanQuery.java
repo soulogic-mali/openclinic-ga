@@ -17,6 +17,7 @@ import be.mxs.common.util.system.Debug;
 import be.mxs.common.util.system.ScreenHelper;
 import be.openclinic.finance.Prestation;
 import be.openclinic.system.PreLoader;
+import be.openclinic.system.SH;
 import ca.uhn.fhir.context.FhirContext;
 
 import com.jpos.POStest.DS6708;
@@ -2903,6 +2904,7 @@ public class MedwanQuery {
                 sQuery = " select distinct code as code from ICD10 where "+label+" like '%"+ScreenHelper.normalizeSpecialCharacters(keys[n].toLowerCase()).toUpperCase()+"%' or code like '%"+ScreenHelper.normalizeSpecialCharacters(keys[n].toLowerCase()).toUpperCase()+"%'";
                 sQuery += " union select distinct b.icd10 as code from Concepts b,Keywords c where c.language='"+language+"' and b.icd10 is not null and b.concept=c.concept and c.keyword like '"+ScreenHelper.normalizeSpecialCharacters(keys[n].toLowerCase()).toUpperCase()+"%'";
                 sQuery += " order by code";
+                System.out.println(sQuery);
                 PreparedStatement ps;
                 Connection OccupdbConnection;
                 try{
@@ -2919,6 +2921,7 @@ public class MedwanQuery {
                                 counters.put(c, new Integer(((Integer) counters.get(c)).intValue()+1));
                             }
                         }
+                        System.out.println(c+": "+counters.get(c));
                     }
                     rs.close();
                     ps.close();
@@ -4034,6 +4037,92 @@ public class MedwanQuery {
         if(usedCounters.get(name)!=null && newCounter <= ((Integer) usedCounters.get(name)).intValue()){
             newCounter = getOpenclinicCounter(name,((Integer) usedCounters.get(name)).intValue()+1);
         }
+        else {
+            //If this is an offline server, then register new counters for synchronisation
+            if(SH.ci("enableOfflineSync",0)==1) {
+            	if(name.equalsIgnoreCase("personid")) {
+            		SH.setSync("admin", newCounter+"");
+            	}
+            	else if(name.equalsIgnoreCase("oc_encounters")) {
+            		SH.setSync("encounter", newCounter+"");
+            	}
+            	else if(name.equalsIgnoreCase("transactionid")) {
+            		SH.setSync("transaction", newCounter+"");
+            	}
+            }
+        }
+        usedCounters.put(name, new Integer(newCounter));
+        
+        return newCounter;
+    }
+    
+    public int getOpenclinicCounterNoOffline(String name,int mincounter){
+    	int loopcounter=0;
+    	while(countersInUse.get(name)!=null && loopcounter<500){
+    		loopcounter++;
+    		try{
+				Thread.sleep(10);
+			}
+    		catch(InterruptedException e){
+				e.printStackTrace();
+			}
+    	}
+    	countersInUse.put(name, "1");
+        int newCounter = 0;
+        Connection oc_conn=getOpenclinicConnection();
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        try{
+        	ps = oc_conn.prepareStatement("select OC_COUNTER_VALUE from OC_COUNTERS where OC_COUNTER_NAME=?");
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                newCounter = rs.getInt("OC_COUNTER_VALUE");
+                if(newCounter==0){
+                	newCounter=1;
+                }
+                if(newCounter<mincounter){
+                	newCounter=mincounter;
+                }
+                rs.close();
+                ps.close();
+            } 
+            else{
+                rs.close();
+                ps.close();
+                newCounter = 1;
+                if(newCounter<mincounter){
+                	newCounter=mincounter;
+                }
+                ps = oc_conn.prepareStatement("insert into OC_COUNTERS(OC_COUNTER_NAME,OC_COUNTER_VALUE) values(?,1)");
+                ps.setString(1, name);
+                ps.execute();
+                ps.close();
+            }
+            ps = oc_conn.prepareStatement("update OC_COUNTERS set OC_COUNTER_VALUE=? where OC_COUNTER_NAME=?");
+            ps.setInt(1, newCounter+1);
+            ps.setString(2, name);
+            ps.execute();
+            ps.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally{
+        	try{
+        		if(rs!=null) rs.close();
+        		if(ps!=null) ps.close();
+                oc_conn.close();
+        	}
+        	catch(Exception e2){
+        		e2.printStackTrace();
+        	}
+        }
+        
+        countersInUse.remove(name);
+        if(usedCounters.get(name)!=null && newCounter <= ((Integer) usedCounters.get(name)).intValue()){
+            newCounter = getOpenclinicCounter(name,((Integer) usedCounters.get(name)).intValue()+1);
+        }
         usedCounters.put(name, new Integer(newCounter));
         
         return newCounter;
@@ -5044,7 +5133,6 @@ public class MedwanQuery {
                     transactionVO.setVersion(version);
                     transactionVO.setVersionServerId(versionserverid);
                     transactionVO.setTimestamp(timestamp);
-                    //transactionVO = new TransactionVO(new Integer(transactionId), transactionType, creationDate, updateTime, status, null, new Vector(), serverId, version, versionserverid, timestamp);
                     transactionVO.setHealthrecordId(Occuprs.getInt("healthRecordId"));
                     dateBegin = null;
                     dateEnd = null;

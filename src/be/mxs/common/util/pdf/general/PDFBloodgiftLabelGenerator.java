@@ -9,6 +9,7 @@ import be.mxs.common.util.system.ScreenHelper;
 import be.openclinic.adt.Encounter;
 import be.openclinic.medical.LabRequest;
 import be.openclinic.medical.RequestedLabAnalysis;
+import be.openclinic.system.SH;
 import net.admin.User;
 import net.admin.AdminPerson;
 
@@ -108,9 +109,6 @@ public class PDFBloodgiftLabelGenerator extends PDFOfficialBasic {
     	if(analysis!=null) abo=analysis.getResultValue()+" "+analysis.getResultUnit();
     	analysis = RequestedLabAnalysis.getByPersonid(Integer.parseInt(personid), MedwanQuery.getInstance().getConfigString("cntsRhesusCode","Rh"));
     	if(analysis!=null) rhesus=analysis.getResultValue()+" "+analysis.getResultUnit();
-    	//String abo = transactiondata.split(";")[0];
-    	//String rhesus = transactiondata.split(";")[1];
-    	//String sampledate = transactiondata.split(";")[2];
     	String pfcpockets = transactiondata.split(";")[3];
     	String pfcexpirydate = transactiondata.split(";")[4];
     	String prppockets = transactiondata.split(";")[5];
@@ -121,7 +119,6 @@ public class PDFBloodgiftLabelGenerator extends PDFOfficialBasic {
     	String ctexpirydate = transactiondata.split(";")[10];
     	String cppockets = transactiondata.split(";")[11];
     	String cpexpirydate = transactiondata.split(";")[12];
-    	//String giftid = transactiondata.split(";")[13];
     	String phenotype="";
     	Vector labrequests = MedwanQuery.getInstance().getTransactionsByType(Integer.parseInt(personid), "be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_LAB_REQUEST");
     	for(int n=0;n<labrequests.size();n++){
@@ -143,9 +140,10 @@ public class PDFBloodgiftLabelGenerator extends PDFOfficialBasic {
 		        	if(n>0){
 		        		doc.newPage();
 		        	}
-		        	String id=giftid+"."+(n+1);
+		        	String id=giftid+"."+(i-1)/2+"."+(n+1);
 		            table = new PdfPTable(2);
 		            table.setWidthPercentage(pageWidth);
+		            
 		            //Left column
 		            PdfPTable table2 = new PdfPTable(200);
 		            cell = new PdfPCell(new Paragraph(abo,FontFactory.getFont(FontFactory.HELVETICA,80,Font.BOLD)));
@@ -160,13 +158,20 @@ public class PDFBloodgiftLabelGenerator extends PDFOfficialBasic {
 		            cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
 		            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 		            table2.addCell(cell);
-		            Image image = PdfBarcode.getQRCode("9"+id,docWriter,80);            
+		            Image image = PdfBarcode.getQRCode("B"+id,docWriter,80);            
 		            cell = new PdfPCell(image);
 		            cell.setBorder(PdfPCell.NO_BORDER);
 		            cell.setVerticalAlignment(PdfPCell.ALIGN_BOTTOM);
 		            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 		            cell.setColspan(200);
 		            cell.setPadding(0);
+		            table2.addCell(cell);
+		            cell = new PdfPCell(new Paragraph(getTran("web", "hospitalname"),FontFactory.getFont(FontFactory.HELVETICA,10,Font.BOLD)));
+		            cell.setColspan(200);
+		            cell.setBorder(PdfPCell.NO_BORDER);
+		            cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		            cell.setPadding(5);
 		            table2.addCell(cell);
 		            cell=new PdfPCell(table2);
 		            cell.setBorder(PdfPCell.NO_BORDER);
@@ -209,7 +214,7 @@ public class PDFBloodgiftLabelGenerator extends PDFOfficialBasic {
 		            cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 		            cell.setColspan(1);
 		            table2.addCell(cell);
-		            cell=createBoldValueCell(12, (n+1)+"", 1);
+		            cell=createBoldValueCell(12, (i-1)/2+"."+(n+1), 1);
 		            cell.setBorder(PdfPCell.NO_BORDER);
 		            cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 		            table2.addCell(cell);
@@ -222,11 +227,6 @@ public class PDFBloodgiftLabelGenerator extends PDFOfficialBasic {
 		            cell.setBorder(PdfPCell.NO_BORDER);
 		            cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 		            table2.addCell(cell);
-		            cell=new PdfPCell(table2);
-		            cell.setBorder(PdfPCell.NO_BORDER);
-		            cell.setColspan(1);
-		            cell.setPadding(0);
-		            table.addCell(cell);
 		            if(phenotype.length()>0){
 			            cell=createValueCell(ScreenHelper.getTranNoLink("web", "phenotype", sPrintLanguage));
 			            cell.setBorder(PdfPCell.NO_BORDER);
@@ -240,6 +240,11 @@ public class PDFBloodgiftLabelGenerator extends PDFOfficialBasic {
 			            cell.setPadding(0);
 			            table2.addCell(cell);
 		            }
+		            cell=new PdfPCell(table2);
+		            cell.setBorder(PdfPCell.NO_BORDER);
+		            cell.setColspan(1);
+		            cell.setPadding(0);
+		            table.addCell(cell);
 		            doc.add(table);
 	        	}
         	}

@@ -343,6 +343,7 @@ public class AdminPerson extends OC_Object{
         patient.addElement("comment3").setText(xe(comment3));
         patient.addElement("comment4").setText(xe(comment4));
         patient.addElement("comment5").setText(xe(comment5));
+        patient.addElement("sourceid").setText(xe(sourceid));
         if(getActivePrivate()!=null){
         	AdminPrivateContact pc=getActivePrivate();
         	Element priv = patient.addElement("private");
@@ -403,6 +404,9 @@ public class AdminPerson extends OC_Object{
 		nativeCountry=patient.elementText("nativecountry");
 		nativeTown=patient.elementText("nativetown");
 		sourceid=patient.elementText("sourceid");
+		setID("immatold",patient.elementText("immatold"));
+		setID("immatnew",patient.elementText("immatnew"));
+		setID("natreg",patient.elementText("natreg"));
 		if(patient.element("private")!=null){
 			privateContacts=new Vector();
 			Element pc=patient.element("private");
@@ -3683,6 +3687,16 @@ public class AdminPerson extends OC_Object{
     	int age=0;
     	try {
     		java.util.Date dob = ScreenHelper.parseDate(this.dateOfBirth);
+    		age=new Double((date.getTime()-dob.getTime())/ScreenHelper.getTimeYear()).intValue();
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return age;
+    }
+    public static int getAgeOnDate(java.util.Date dob, java.util.Date date) {
+    	int age=0;
+    	try {
     		age=new Double((date.getTime()-dob.getTime())/ScreenHelper.getTimeYear()).intValue();
     	}
     	catch(Exception e) {

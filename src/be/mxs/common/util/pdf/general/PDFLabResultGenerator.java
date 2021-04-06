@@ -5,6 +5,7 @@ import be.mxs.common.model.vo.healthrecord.TransactionVO;
 import be.mxs.common.util.pdf.PDFBasic;
 import be.mxs.common.util.pdf.official.EndPage;
 import be.mxs.common.util.pdf.official.EndPage2;
+import be.mxs.common.util.pdf.official.EndPageLabResults;
 import be.mxs.common.util.pdf.official.PDFOfficialBasic;
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.Debug;
@@ -14,6 +15,7 @@ import be.mxs.common.util.system.ScreenHelper;
 import be.openclinic.adt.Encounter;
 import be.openclinic.medical.LabRequest;
 import be.openclinic.medical.RequestedLabAnalysis;
+import be.openclinic.system.SH;
 import be.openclinic.medical.LabAnalysis;
 import net.admin.User;
 import net.admin.AdminPerson;
@@ -69,31 +71,12 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
     public void addContent(){
     }
 
-    //--- ADD FOOTER ------------------------------------------------------------------------------
-    protected void addFooter(String sId){
-        int serverid=Integer.parseInt(sId.split("\\.")[0]);
-        int transactionid=Integer.parseInt(sId.split("\\.")[1]);
-        LabRequest labRequest=new LabRequest(serverid,transactionid);
-    	Connection ad_conn = MedwanQuery.getInstance().getAdminConnection();
-        AdminPerson adminPerson=AdminPerson.getAdminPerson(ad_conn,labRequest.getPersonid()+"");
-        try {
-			ad_conn.close();
-		} 
-        catch (SQLException e) {
-			e.printStackTrace();
-		}
-        String sFooter=adminPerson.lastname.toUpperCase()+", "+adminPerson.firstname.toUpperCase()+" - "+sId+" - ";
-        String sFooter2=ScreenHelper.getTran(null,"labresult", "footer", adminPerson.language);
-        Font font = FontFactory.getFont(FontFactory.HELVETICA,7);
-        PDFFooter footer = new PDFFooter(sFooter+" - "+sFooter2);
-        docWriter.setPageEvent(footer);
-    }
-
     //--- GENERATE PDF DOCUMENT BYTES -------------------------------------------------------------
     public ByteArrayOutputStream generatePDFDocumentBytes(final HttpServletRequest req, Vector labrequestids,Date since) throws Exception {
         ByteArrayOutputStream baosPDF = new ByteArrayOutputStream();
 		docWriter = PdfWriter.getInstance(doc,baosPDF);
-        //docWriter.setPageEvent(new EndPage2());
+		EndPageLabResults ep = new EndPageLabResults("");
+        docWriter.setPageEvent(ep);
         this.req = req;
 
         String sURL = req.getRequestURL().toString();
@@ -116,9 +99,6 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
 			doc.addCreator("OpenClinic Software");
             doc.setPageSize(PageSize.A4);
             doc.setMargins(10,10,10,30);
-            if(labrequestids.size()>0){
-            	addFooter((String)labrequestids.elementAt(0));
-            }
             doc.open();
 
             // add content to document
@@ -127,6 +107,7 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
                     doc.newPage();
                 }
                 String id =(String)labrequestids.elementAt(n);
+            	ep.setsId(id);
                 printLabResult(id,since);
             }
 		}
@@ -192,22 +173,24 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
         cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
         table.addCell(cell);
 
-        cell=createLabelCourier("REV",10,5,Font.NORMAL);
-        cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
-        table.addCell(cell);
-
-        cell=createLabelCourier(MedwanQuery.getInstance().getLabel("labresult","revlegenda",user.person.language),8,90,Font.NORMAL);
-        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-        table.addCell(cell);
-        
-        for(int n=1;n<authorlist.size();n++) {
-            cell=createLabelCourier("",10,10,Font.NORMAL);
-            table.addCell(cell);
-            cell=createLabelCourier(n+" = "+MedwanQuery.getInstance().getUserName((int)authorlist.elementAt(n)),8,90,Font.NORMAL);
-            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-            table.addCell(cell);
+        if(SH.ci("enableLabrev", 1)==1) {
+	        cell=createLabelCourier("REV",10,5,Font.NORMAL);
+	        cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+	        table.addCell(cell);
+	
+	        cell=createLabelCourier(MedwanQuery.getInstance().getLabel("labresult","revlegenda",user.person.language),8,90,Font.NORMAL);
+	        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+	        table.addCell(cell);
+	        
+	        for(int n=1;n<authorlist.size();n++) {
+	            cell=createLabelCourier("",10,10,Font.NORMAL);
+	            table.addCell(cell);
+	            cell=createLabelCourier(n+" = "+MedwanQuery.getInstance().getUserName((int)authorlist.elementAt(n)),8,90,Font.NORMAL);
+	            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+	            table.addCell(cell);
+	        }
+	        cell=createLabelCourier("\n",100,5,Font.NORMAL);
         }
-        cell=createLabelCourier("\n",100,5,Font.NORMAL);
         
         // Show legenda when bacteriology results available
         if(labRequest.hasBacteriology()){
@@ -353,25 +336,33 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
 	            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 	            subTable.addCell(cell);
 	            
-	            cell=createLabelCourier(MedwanQuery.getInstance().getLabel("labresult","normal",user.person.language),10,10,Font.BOLD);
-	            cell.setBorder(PdfPCell.BOTTOM);
-	            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	            subTable.addCell(cell);
-	            
-	            cell=createLabelCourier("R",10,1,Font.BOLD);
-	            cell.setBorder(PdfPCell.BOTTOM);
-	            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	            subTable.addCell(cell);
-	            
-	            cell=createLabelCourier("E",10,1,Font.BOLD);
-	            cell.setBorder(PdfPCell.BOTTOM);
-	            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	            subTable.addCell(cell);
-	            
-	            cell=createLabelCourier("V",10,2,Font.BOLD);
-	            cell.setBorder(PdfPCell.BOTTOM);
-	            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	            subTable.addCell(cell);
+	            if(SH.ci("enableLabrev", 1)==1) {
+		            cell=createLabelCourier(MedwanQuery.getInstance().getLabel("labresult","normal",user.person.language),10,10,Font.BOLD);
+		            cell.setBorder(PdfPCell.BOTTOM);
+		            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		            subTable.addCell(cell);
+		            
+		            cell=createLabelCourier("R",10,1,Font.BOLD);
+		            cell.setBorder(PdfPCell.BOTTOM);
+		            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		            subTable.addCell(cell);
+		            
+		            cell=createLabelCourier("E",10,1,Font.BOLD);
+		            cell.setBorder(PdfPCell.BOTTOM);
+		            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		            subTable.addCell(cell);
+		            
+		            cell=createLabelCourier("V",10,2,Font.BOLD);
+		            cell.setBorder(PdfPCell.BOTTOM);
+		            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		            subTable.addCell(cell);
+	            }
+	            else {
+		            cell=createLabelCourier(MedwanQuery.getInstance().getLabel("labresult","normal",user.person.language),10,14,Font.BOLD);
+		            cell.setBorder(PdfPCell.BOTTOM);
+		            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		            subTable.addCell(cell);
+	            }
             }
             
             TreeMap analysisList = (TreeMap)groups.get(groupname);
@@ -512,46 +503,54 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
 	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
 	                subTable.addCell(cell);
 	                
-                	cell=createLabelCourier(result,labResultFontSize,52,Font.NORMAL);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-	                
-	                String sAuthor ="";
-	                if(aExecuted>0) {
-	                	if(!authorlist.contains(aExecuted)) {
-	                		authorlist.add(aExecuted);
-	                	}
-	                	sAuthor=authorlist.indexOf(aExecuted)+"";
+	                if(SH.ci("enableLabrev", 1)==1) {
+	                	cell=createLabelCourier(result,labResultFontSize,52,Font.NORMAL);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+
+		                String sAuthor ="";
+		                if(aExecuted>0) {
+		                	if(!authorlist.contains(aExecuted)) {
+		                		authorlist.add(aExecuted);
+		                	}
+		                	sAuthor=authorlist.indexOf(aExecuted)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+		                
+		                sAuthor ="";
+		                if(aRegistered>0) {
+		                	if(!authorlist.contains(aRegistered)) {
+		                		authorlist.add(aRegistered);
+		                	}
+		                	sAuthor=authorlist.indexOf(aRegistered)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+		                
+		                sAuthor ="";
+		                if(aValidated>0) {
+		                	if(!authorlist.contains(aValidated)) {
+		                		authorlist.add(aValidated);
+		                	}
+		                	sAuthor=authorlist.indexOf(aValidated)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,2,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
 	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-	                
-	                sAuthor ="";
-	                if(aRegistered>0) {
-	                	if(!authorlist.contains(aRegistered)) {
-	                		authorlist.add(aRegistered);
-	                	}
-	                	sAuthor=authorlist.indexOf(aRegistered)+"";
+	                else {
+	                	cell=createLabelCourier(result,labResultFontSize,56,Font.NORMAL);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
 	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-	                
-	                sAuthor ="";
-	                if(aValidated>0) {
-	                	if(!authorlist.contains(aValidated)) {
-	                		authorlist.add(aValidated);
-	                	}
-	                	sAuthor=authorlist.indexOf(aValidated)+"";
-	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,2,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
 	                
                 	Vector history = requestedLabAnalysis.getResultsHistory(user);
                 	for(int n=0;n<history.size();n++){
@@ -644,47 +643,56 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
 	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
 	                subTable.addCell(cell);
 	                
-                	cell=createLabelCourier(result,labResultFontSize,52,Font.NORMAL);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-	                
-	                String sAuthor ="";
-	                if(aExecuted>0) {
-	                	if(!authorlist.contains(aExecuted)) {
-	                		authorlist.add(aExecuted);
-	                	}
-	                	sAuthor=authorlist.indexOf(aExecuted)+"";
+	                if(SH.ci("enableLabrev", 1)==1) {
+	                	cell=createLabelCourier(result,labResultFontSize,52,Font.NORMAL);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+
+		                String sAuthor ="";
+		                if(aExecuted>0) {
+		                	if(!authorlist.contains(aExecuted)) {
+		                		authorlist.add(aExecuted);
+		                	}
+		                	sAuthor=authorlist.indexOf(aExecuted)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+		                
+		                sAuthor ="";
+		                if(aRegistered>0) {
+		                	if(!authorlist.contains(aRegistered)) {
+		                		authorlist.add(aRegistered);
+		                	}
+		                	sAuthor=authorlist.indexOf(aRegistered)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+		                
+		                sAuthor ="";
+		                if(aValidated>0) {
+		                	if(!authorlist.contains(aValidated)) {
+		                		authorlist.add(aValidated);
+		                	}
+		                	sAuthor=authorlist.indexOf(aValidated)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,2,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
 	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-	                
-	                sAuthor ="";
-	                if(aRegistered>0) {
-	                	if(!authorlist.contains(aRegistered)) {
-	                		authorlist.add(aRegistered);
-	                	}
-	                	sAuthor=authorlist.indexOf(aRegistered)+"";
+	                else {
+	                	cell=createLabelCourier(result,labResultFontSize,56,Font.NORMAL);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
 	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
 	                
-	                sAuthor ="";
-	                if(aValidated>0) {
-	                	if(!authorlist.contains(aValidated)) {
-	                		authorlist.add(aValidated);
-	                	}
-	                	sAuthor=authorlist.indexOf(aValidated)+"";
-	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,2,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-	                
+
 	                Vector history = requestedLabAnalysis.getResultsHistory(user);
                 	for(int n=0;n<history.size();n++){
                 		String s = (String)history.elementAt(n);
@@ -989,46 +997,54 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
                     
                 	Debug.println("normal : "+normal); 
                     
-	                cell=createLabelCourier(normal,labResultFontSize,10,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-	                
-	                String sAuthor ="";
-	                if(aExecuted>0) {
-	                	if(!authorlist.contains(aExecuted)) {
-	                		authorlist.add(aExecuted);
-	                	}
-	                	sAuthor=authorlist.indexOf(aExecuted)+"";
+	                if(SH.ci("enableLabrev", 1)==1) {
+	                	cell=createLabelCourier(result,labResultFontSize,10,Font.NORMAL);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+
+		                String sAuthor ="";
+		                if(aExecuted>0) {
+		                	if(!authorlist.contains(aExecuted)) {
+		                		authorlist.add(aExecuted);
+		                	}
+		                	sAuthor=authorlist.indexOf(aExecuted)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+		                
+		                sAuthor ="";
+		                if(aRegistered>0) {
+		                	if(!authorlist.contains(aRegistered)) {
+		                		authorlist.add(aRegistered);
+		                	}
+		                	sAuthor=authorlist.indexOf(aRegistered)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+		                
+		                sAuthor ="";
+		                if(aValidated>0) {
+		                	if(!authorlist.contains(aValidated)) {
+		                		authorlist.add(aValidated);
+		                	}
+		                	sAuthor=authorlist.indexOf(aValidated)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,2,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
 	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-	                
-	                sAuthor ="";
-	                if(aRegistered>0) {
-	                	if(!authorlist.contains(aRegistered)) {
-	                		authorlist.add(aRegistered);
-	                	}
-	                	sAuthor=authorlist.indexOf(aRegistered)+"";
+	                else {
+	                	cell=createLabelCourier(result,labResultFontSize,14,Font.NORMAL);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
 	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-	                
-	                sAuthor ="";
-	                if(aValidated>0) {
-	                	if(!authorlist.contains(aValidated)) {
-	                		authorlist.add(aValidated);
-	                	}
-	                	sAuthor=authorlist.indexOf(aValidated)+"";
-	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,2,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
 	                
 	                // comment
                 	if(ScreenHelper.checkString(requestedLabAnalysis.getResultComment()).length()>0){
@@ -1201,46 +1217,54 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
 	                }
                 }
                 else {
-                	cell=createLabelCourier(result,labResultFontSize,55,Font.NORMAL);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-                	
-	                String sAuthor ="";
-	                if(aExecuted>0) {
-	                	if(!authorlist.contains(aExecuted)) {
-	                		authorlist.add(aExecuted);
-	                	}
-	                	sAuthor=authorlist.indexOf(aExecuted)+"";
+	                if(SH.ci("enableLabrev", 1)==1) {
+	                	cell=createLabelCourier(result,labResultFontSize,55,Font.NORMAL);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+
+		                String sAuthor ="";
+		                if(aExecuted>0) {
+		                	if(!authorlist.contains(aExecuted)) {
+		                		authorlist.add(aExecuted);
+		                	}
+		                	sAuthor=authorlist.indexOf(aExecuted)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+		                
+		                sAuthor ="";
+		                if(aRegistered>0) {
+		                	if(!authorlist.contains(aRegistered)) {
+		                		authorlist.add(aRegistered);
+		                	}
+		                	sAuthor=authorlist.indexOf(aRegistered)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
+		                
+		                sAuthor ="";
+		                if(aValidated>0) {
+		                	if(!authorlist.contains(aValidated)) {
+		                		authorlist.add(aValidated);
+		                	}
+		                	sAuthor=authorlist.indexOf(aValidated)+"";
+		                }
+		                cell=createLabelCourier(sAuthor,labResultFontSize,2,fonttype);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
 	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-	                
-	                sAuthor ="";
-	                if(aRegistered>0) {
-	                	if(!authorlist.contains(aRegistered)) {
-	                		authorlist.add(aRegistered);
-	                	}
-	                	sAuthor=authorlist.indexOf(aRegistered)+"";
+	                else {
+	                	cell=createLabelCourier(result,labResultFontSize,59,Font.NORMAL);
+		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
+		                subTable.addCell(cell);
 	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,1,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
-	                
-	                sAuthor ="";
-	                if(aValidated>0) {
-	                	if(!authorlist.contains(aValidated)) {
-	                		authorlist.add(aValidated);
-	                	}
-	                	sAuthor=authorlist.indexOf(aValidated)+"";
-	                }
-	                cell=createLabelCourier(sAuthor,labResultFontSize,2,fonttype);
-	                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
-	                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
-	                subTable.addCell(cell);
 	                
 	                if(ScreenHelper.checkString(requestedLabAnalysis.getResultComment()).length()>0){
 	                	if(LabAnalysis.getLabAnalysisByLabcode(analysisCode).getEditor().equalsIgnoreCase("listbox")){

@@ -176,6 +176,14 @@ public class RestfulImagingStudyResourceProvider implements IResourceProvider {
 		if(mpiid!=null && !mpiid.isEmpty()) {
 			Hashtable<String,ImagingStudy> is = new Hashtable<String,ImagingStudy>();
 			int personid = ScreenHelper.convertFromUUID(mpiid.getValue());
+			if(personid<0) {
+				try {
+					personid = Integer.parseInt(mpiid.getValue());
+				}
+				catch(Exception e) {
+					System.out.println("Not a valid mpiid: "+mpiid.getValue());
+				}
+			}
 			if(personid>-1) {
 				MedwanQuery.getInstance().setObjectCache(new ObjectCache());
 				Vector<TransactionVO> pacstran = MedwanQuery.getInstance().getTransactionsByType(personid, "be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_PACS");

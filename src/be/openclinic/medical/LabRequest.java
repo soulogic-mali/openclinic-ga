@@ -1,5 +1,6 @@
 package be.openclinic.medical;
 
+import be.mxs.common.model.vo.healthrecord.ItemVO;
 import be.mxs.common.model.vo.healthrecord.TransactionVO;
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.io.ResetQueues;
@@ -46,6 +47,20 @@ public class LabRequest {
 
     public boolean isConfirmed() {
         return confirmed;
+    }
+    
+    public boolean isUrgent() {
+    	return isUrgent(serverid, transactionid);
+    }
+    
+    public static boolean isUrgent(int serverid, int transactionid) {
+    	ItemVO item = MedwanQuery.getInstance().getItem(serverid, transactionid, "be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_URGENCY");
+    	if(item!=null && item.getValue().equalsIgnoreCase("urgent")) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
     }
 
     public void setConfirmed(boolean confirmed) {

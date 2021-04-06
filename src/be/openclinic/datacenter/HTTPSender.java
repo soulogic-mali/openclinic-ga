@@ -63,6 +63,7 @@ public class HTTPSender extends Sender {
 					}
 					else {
 				        Debug.println("-- Message could not be sent");
+				        Debug.println("-- Received: "+method.getResponseBodyAsString());
 				        Debug.println("------------------------------------------------------------------------------------------");
 					}
 		 		}

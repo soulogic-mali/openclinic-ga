@@ -242,6 +242,7 @@ public class ScanDirectoryMonitor implements Runnable{
 	        			} catch (IOException e) {
 	        				// TODO Auto-generated catch block
 	        				e.printStackTrace();
+	        				file.delete();
 	        			}
 	        		}
 	        		else {
@@ -374,7 +375,13 @@ public class ScanDirectoryMonitor implements Runnable{
 				        	    
 				        	    // must be read by a person before overwriting the existing file
 					        	File errFile = new File(SCANDIR_BASE+"/"+SCANDIR_ERR+"/DOUBLE_"+file.getName().replaceAll(SCAN_PREFIX,""));
-				        	    moveFile(file,errFile);
+				        	    try {
+				        	    	moveFile(file,errFile);
+				        	    }
+				        	    catch(Exception r) {
+				        	    	r.printStackTrace();
+				        	    	file.delete();
+				        	    }
 						        Debug.println("--> moved file to 'scanDirectoryMonitor_dirError' : "+SCANDIR_BASE+"/"+SCANDIR_ERR);
 						        return -1; // err
 			        		}
@@ -401,7 +408,13 @@ public class ScanDirectoryMonitor implements Runnable{
 		        	    
 		        	    // an archive-document, to attach the scan to, must be created first
 			        	File errFile = new File(SCANDIR_BASE+"/"+SCANDIR_ERR+"/ORPHAN_"+file.getName().replaceAll(SCAN_PREFIX,""));
-		        	    moveFile(file,errFile);
+		        	    try{
+		        	    	moveFile(file,errFile);
+		        	    }
+		        	    catch(Exception r) {
+		        	    	r.printStackTrace();
+		        	    	file.delete();
+		        	    }
 				        Debug.println("--> moved file to 'scanDirectoryMonitor_dirError' : "+SCANDIR_BASE+"/"+SCANDIR_ERR);
 				        return -1; // err
 	        		}
@@ -411,7 +424,13 @@ public class ScanDirectoryMonitor implements Runnable{
 	        	    Debug.println("WARNING : UDI '"+sUDI+"' is not valid (~ 9 first digit MOD 97 = last 2 digits).");
 	        	    
 		        	File errFile = new File(SCANDIR_BASE+"/"+SCANDIR_ERR+"/INVUDI_"+file.getName().replaceAll(SCAN_PREFIX,""));
-	        	    moveFile(file,errFile);
+	        	    try {
+	        	    	moveFile(file,errFile);
+	        	    }
+	        	    catch(Exception r) {
+	        	    	r.printStackTrace();
+	        	    	file.delete();
+	        	    }
 			        Debug.println("--> moved file to 'scanDirectoryMonitor_dirError' : "+SCANDIR_BASE+"/"+SCANDIR_ERR);
 			        return -1; // err
 	    		}
@@ -458,7 +477,13 @@ public class ScanDirectoryMonitor implements Runnable{
 					        	    
 					        	    // must be read by a person before overwriting the existing file
 						        	File errFile = new File(SCANDIR_BASE+"/"+SCANDIR_ERR+"/DOUBLE_"+file.getName().replaceAll(SCAN_PREFIX,""));
-					        	    moveFile(file,errFile);
+					        	    try {
+					        	    	moveFile(file,errFile);
+					        	    }
+					        	    catch(Exception r) {
+					        	    	r.printStackTrace();
+					        	    	file.delete();
+					        	    }
 							        Debug.println("--> moved file to 'scanDirectoryMonitor_dirError' : "+SCANDIR_BASE+"/"+SCANDIR_ERR);
 							        return -2; // err
 				        		}
@@ -783,6 +808,7 @@ public class ScanDirectoryMonitor implements Runnable{
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				file.delete();
 			}
 		}
     	
@@ -1066,7 +1092,13 @@ public class ScanDirectoryMonitor implements Runnable{
         			if(MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_notScannableFileExtensions","").toLowerCase().indexOf(sExt.toLowerCase()) > -1){
 		        	    if(tmpFile.lastModified() < (new java.util.Date().getTime()-(600*1000))){ // millis in minute
 		            		movedFile = new File(SCANDIR_BASE+"/"+SCANDIR_ERR+"/"+tmpFile.getName().replaceAll(SCAN_PREFIX,"INVEXT_"));
-		            	    moveFile(tmpFile,movedFile);
+		            	    try{
+		            	    	moveFile(tmpFile,movedFile);
+			        	    }
+			        	    catch(Exception r) {
+			        	    	r.printStackTrace();
+			        	    	tmpFile.delete();
+			        	    }
 		            	    filesMoved++;
 		        	    }
 	        	    }

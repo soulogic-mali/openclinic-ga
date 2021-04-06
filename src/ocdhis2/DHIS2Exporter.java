@@ -2008,6 +2008,7 @@ public class DHIS2Exporter {
 	private void exportEncounterDatasetSeries(Vector items,Element dataset,String attributeOptionComboUid,String categoryOptionUid, DataValueSet dataValueSet){
 		boolean bMortality = ScreenHelper.checkString(dataset.attributeValue("mortality")).equalsIgnoreCase("true");
 		String sEncounterType = ScreenHelper.checkString(dataset.attributeValue("encountertype"));
+		String sOutcome = ScreenHelper.checkString(dataset.attributeValue("outcome"));
 		Iterator i = dataset.element("dataelements").elementIterator("dataelement");
 		while(i.hasNext()){
 			Hashtable uids = new Hashtable();
@@ -2052,6 +2053,9 @@ public class DHIS2Exporter {
 					continue;
 				}
 				else if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("0") && !Encounter.isOldCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
+					continue;
+				}
+				if(sOutcome.length()>0 && !sOutcome.equalsIgnoreCase(item.split(";")[5])){
 					continue;
 				}
 				if(!bMortality || item.split(";")[5].startsWith("dead")){
@@ -2564,6 +2568,8 @@ public class DHIS2Exporter {
 											}
 											else if(ScreenHelper.checkString(dataelement.attributeValue("unique")).equalsIgnoreCase("transactions")){
 												uids.put(item.split(";")[11],value);
+												System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> item "+item.split(";")[11]+" - "+value);
+												System.out.println(dataelement.asXML());
 											}
 											else {
 												uidcounter+=value;
@@ -2788,7 +2794,6 @@ public class DHIS2Exporter {
 				dataValueSet.getDataValues().add(new DataValue(dataelement.attributeValue("uid"),dataelement.attributeValue("categoryoptionuid")!=null?dataelement.attributeValue("categoryoptionuid"):categoryOptionUid,uidcounter+"",""));
 			}
 			else if(MedwanQuery.getInstance().getConfigInt("sendFullDHIS2DataSets",0)==1){
-				System.out.println("adding empty "+dataelement.attributeValue("uid")+" - "+dataelement.attributeValue("categoryoptionuid"));
 				dataValueSet.getDataValues().add(new DataValue(dataelement.attributeValue("uid"),dataelement.attributeValue("categoryoptionuid")!=null?dataelement.attributeValue("categoryoptionuid"):categoryOptionUid," ",""));
 			}
 		}
@@ -2818,12 +2823,16 @@ public class DHIS2Exporter {
 		int uidcounter=0;
 		boolean bMortality = ScreenHelper.checkString(dataset.attributeValue("mortality")).equalsIgnoreCase("true");
 		String sEncounterType = ScreenHelper.checkString(dataset.attributeValue("encountertype"));
+		String sOutcome = ScreenHelper.checkString(dataset.attributeValue("outcome"));
 		for(int n=0;n<items.size();n++){
 			String item = (String)items.elementAt(n);
 			if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("1") && !Encounter.isNewCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
 				continue;
 			}
 			else if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("0") && !Encounter.isOldCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
+				continue;
+			}
+			if(sOutcome.length()>0 && !sOutcome.equalsIgnoreCase(item.split(";")[5])){
 				continue;
 			}
 			if(!bMortality || item.split(";")[5].startsWith("dead")){
@@ -3742,7 +3751,6 @@ public class DHIS2Exporter {
 							+ " f.transactionid=d.transactionid and"
 							+ " f.type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID' and"
 							+ " b.oc_encounter_objectid=replace(f.value,'"+MedwanQuery.getInstance().getConfigString("serverId")+".','')";
-			System.out.println(sSql);
 			PreparedStatement ps = conn.prepareStatement(sSql);
 			ps.setDate(1, new java.sql.Date(end.getTime()));
 			if(ScreenHelper.checkString(dataset.attributeValue("exactitemtype")).equalsIgnoreCase("1")){

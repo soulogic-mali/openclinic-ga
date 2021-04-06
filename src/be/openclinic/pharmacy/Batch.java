@@ -170,6 +170,60 @@ public class Batch extends OC_Object{
         return batch;
     }
 
+    public static Vector getByBatchNumber(String batchNumber){
+    	Vector batches = new Vector();
+        Batch batch = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        Connection oc_conn=MedwanQuery.getInstance().getOpenclinicConnection();
+        try{
+            String sSelect = "SELECT * FROM OC_BATCHES"+
+                             " WHERE OC_BATCH_NUMBER = ? ";
+            ps = oc_conn.prepareStatement(sSelect);
+            ps.setString(1,batchNumber);
+            rs = ps.executeQuery();
+
+            // get data from DB
+            while(rs.next()){
+            	batch = new Batch();
+                batch.setUid(rs.getString("OC_BATCH_SERVERID")+"."+rs.getString("OC_BATCH_OBJECTID"));
+
+                batch.setProductStockUid(rs.getString("OC_BATCH_PRODUCTSTOCKUID"));
+                batch.setBatchNumber(rs.getString("OC_BATCH_NUMBER"));
+                batch.setLevel(rs.getInt("OC_BATCH_LEVEL"));
+                batch.setComment(rs.getString("OC_BATCH_COMMENT"));
+                batch.setEnd(rs.getDate("OC_BATCH_END"));
+                batch.setType(rs.getString("OC_BATCH_TYPE"));
+
+                // OBJECT variables
+                batch.setCreateDateTime(rs.getTimestamp("OC_BATCH_CREATETIME"));
+                batch.setUpdateDateTime(rs.getTimestamp("OC_BATCH_UPDATETIME"));
+                batch.setUpdateUser(ScreenHelper.checkString(rs.getString("OC_BATCH_UPDATEUID")));
+                batches.add(batch);
+            }
+        }
+        catch(Exception e){
+            if(e.getMessage().endsWith("NOT FOUND")){
+                Debug.println(e.getMessage());
+            }
+            else{
+                e.printStackTrace();
+            }
+        }
+        finally{
+            try{
+                if(rs!=null) rs.close();
+                if(ps!=null) ps.close();
+                oc_conn.close();
+            }
+            catch(SQLException se){
+                se.printStackTrace();
+            }
+        }
+        return batches;
+    }
+
     //--- STORE -----------------------------------------------------------------------------------
     public void store(){
         PreparedStatement ps = null;

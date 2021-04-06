@@ -102,7 +102,7 @@ public class MTN {
 		try {
 			paymentTransactionId=getUUID();
 			HttpClient httpclient = HttpClients.createDefault();
-			String baseurl="https://sandbox.momodeveloper.mtn.com/collection/v1_0";
+			String baseurl=SH.cs("momo.sandbox.requesttopay.baseurl","https://sandbox.momodeveloper.mtn.com/collection/v1_0");
 			if(SH.cs("momo.targetsystem","sandbox").equalsIgnoreCase("production")) {
 				baseurl=SH.cs("momo.production.requesttopay.baseurl","https://momo.mtn.com/collection/v1_0");
 			}
@@ -140,9 +140,9 @@ public class MTN {
 		try {
 			paymentTransactionId=getUUID();
 			HttpClient httpclient = HttpClients.createDefault();
-			String baseurl="https://sandbox.momodeveloper.mtn.com/disbursement/v1_0";
+			String baseurl=SH.cs("momo.sandbox.disbursement.baseurl","https://sandbox.momodeveloper.mtn.com/disbursement/v1_0");
 			if(SH.cs("momo.targetsystem","sandbox").equalsIgnoreCase("production")) {
-				baseurl=SH.cs("momo.production.requesttopay.baseurl","https://momo.mtn.com/disbursement/v1_0");
+				baseurl=SH.cs("momo.production.disbursement.baseurl","https://momo.mtn.com/disbursement/v1_0");
 			}
 			URIBuilder builder = new URIBuilder(baseurl+"/transfer");
 			URI uri = builder.build();
@@ -176,7 +176,7 @@ public class MTN {
 	public String getPaymentStatus(String paymentTransactionId) {
 		try {
 			HttpClient httpclient = HttpClients.createDefault();
-			String baseurl="https://sandbox.momodeveloper.mtn.com/collection/v1_0";
+			String baseurl=SH.cs("momo.sandbox.requesttopay.baseurl","https://sandbox.momodeveloper.mtn.com/collection/v1_0");
 			if(SH.cs("momo.targetsystem","sandbox").equalsIgnoreCase("production")) {
 				baseurl=SH.cs("momo.production.requesttopay.baseurl","https://momo.mtn.com/collection/v1_0");
 			}
@@ -211,9 +211,9 @@ public class MTN {
 	public String getDisbursementStatus(String paymentTransactionId) {
 		try {
 			HttpClient httpclient = HttpClients.createDefault();
-			String baseurl="https://sandbox.momodeveloper.mtn.com/disbursement/v1_0";
+			String baseurl=SH.cs("momo.production.disbursement.baseurl","https://sandbox.momodeveloper.mtn.com/disbursement/v1_0");
 			if(SH.cs("momo.targetsystem","sandbox").equalsIgnoreCase("production")) {
-				baseurl=SH.cs("momo.production.requesttopay.baseurl","https://momo.mtn.com/disbursement/v1_0");
+				baseurl=SH.cs("momo.production.disbursement.baseurl","https://momo.mtn.com/disbursement/v1_0");
 			}
 			URIBuilder builder = new URIBuilder(baseurl+"/transfer/"+paymentTransactionId);
 			URI uri = builder.build();
@@ -247,13 +247,14 @@ public class MTN {
 		AuthorizationToken token =null;
 		try {
 			HttpClient httpclient = HttpClients.createDefault();
-			String baseurl="https://sandbox.momodeveloper.mtn.com/collection";
+			String baseurl=SH.cs("momo.sandbox.token.baseurl","https://sandbox.momodeveloper.mtn.com/collection");
 			if(SH.cs("momo.targetsystem","sandbox").equalsIgnoreCase("production")) {
 				baseurl=SH.cs("momo.production.token.baseurl","https://momo.mtn.com/collection");
 			}
 			URIBuilder builder = new URIBuilder(baseurl+"/token/");
 			URI uri = builder.build();
 		    HttpPost req = new HttpPost(uri);
+		    System.out.println("Basic "+getBasicAuthentication());
 		    req.setHeader("Authorization", "Basic "+getBasicAuthentication());
 		    req.setHeader("Ocp-Apim-Subscription-Key", getCollectionSubscriptionKey());
 		    StringEntity reqEntity = new StringEntity("");
@@ -279,7 +280,7 @@ public class MTN {
 		AuthorizationToken token =null;
 		try {
 			HttpClient httpclient = HttpClients.createDefault();
-			String baseurl="https://sandbox.momodeveloper.mtn.com/disbursement";
+			String baseurl=SH.cs("momo.sandbox.token.baseurl","https://sandbox.momodeveloper.mtn.com/disbursement");
 			if(SH.cs("momo.targetsystem","sandbox").equalsIgnoreCase("production")) {
 				baseurl=SH.cs("momo.production.token.baseurl","https://momo.mtn.com/disbursement");
 			}
@@ -309,7 +310,7 @@ public class MTN {
 	public static boolean createSandBoxApiKey() {
 		try {
 			HttpClient httpclient = HttpClients.createDefault();
-			String baseurl="https://sandbox.momodeveloper.mtn.com/v1_0";
+			String baseurl=SH.cs("momo.sandbox.createapikey.baseurl","https://sandbox.momodeveloper.mtn.com/v1_0");
 			URIBuilder builder = new URIBuilder(baseurl+"/apiuser/"+getApiUser()+"/apikey");
 			URI uri = builder.build();
 		    HttpPost req = new HttpPost(uri);
@@ -339,7 +340,7 @@ public class MTN {
 		try {
 			String apiuser=getUUID();
 			HttpClient httpclient = HttpClients.createDefault();
-			String baseurl="https://sandbox.momodeveloper.mtn.com/v1_0";
+			String baseurl=SH.cs("momo.sandbox.createapikey.baseurl","https://sandbox.momodeveloper.mtn.com/v1_0");
 			URIBuilder builder = new URIBuilder(baseurl+"/apiuser");
 			URI uri = builder.build();
 		    HttpPost req = new HttpPost(uri);
@@ -355,10 +356,12 @@ public class MTN {
 		    HttpEntity entity = resp.getEntity();
 		    if (entity != null && resp.getStatusLine().getStatusCode()==201) 
 		    {
+		    	System.out.println("Created new API User "+apiuser);
 		    	MedwanQuery.getInstance().setConfigString("momo.apiuser", apiuser);
 		    	return createSandBoxApiKey();
 		    }
 		    else {
+		    	System.out.println("ERROR creating new API User "+apiuser);
 		    	System.out.println(resp.getStatusLine().toString());
 		    }
 		}

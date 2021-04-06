@@ -3,11 +3,14 @@ package be.mxs.common.model.vo.healthrecord;
 import be.mxs.common.model.vo.IIdentifiable;
 import be.mxs.common.util.system.Debug;
 import be.mxs.common.util.system.ScreenHelper;
+import be.openclinic.system.SH;
 
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -205,4 +208,47 @@ public class ItemVO implements Serializable, IIdentifiable, Comparable {
     	return isDateItem;
     }
     
+    public void updateValue(String value) {
+    	Connection conn = SH.getOpenClinicConnection();
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("update items set value=? where serverid=? and itemid=?");
+    		ps.setString(1, value);
+    		ps.setInt(2, getServerId());
+    		ps.setInt(3, getItemId());
+    		ps.execute();
+    		ps.close();
+    		conn.close();
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    public void store(int transactionid,int version) {
+    	Connection conn = SH.getOpenClinicConnection();
+    	try {
+            PreparedStatement ps = conn.prepareStatement("insert into ItemsHistory(itemId,type,"+SH.cs("valueColumn","value")+","+SH.cs("dateColumn","date")+",transactionId,serverid,versionserverid,version) select itemId,type,"+SH.cs("valueColumn","value")+","+SH.cs("dateColumn","date")+",transactionId,serverid,versionserverid,version from Items where serverid=? and transactionId=?");
+            ps.setInt(1, getServerId());
+            ps.setInt(2, transactionid);
+            ps.execute();
+            ps = conn.prepareStatement("delete from Transactions where serverid=? and transactionId=?");
+            ps.setInt(1, getServerId());
+            ps.setInt(2, transactionid);
+            ps.execute();
+            ps = conn.prepareStatement("insert into items(itemid,value,date,transactionid,serverid,versionserverid,version) values(?,?,?,?,?,?,?)");
+            ps.setInt(1, getItemId());
+            ps.setString(2,getValue());
+            ps.setTimestamp(3, new java.sql.Timestamp(getDate().getTime()));
+            ps.setInt(4,transactionid);
+            ps.setInt(5, getServerId());
+            ps.setInt(6, getServerId());
+            ps.setInt(7, version);
+            ps.execute();
+            ps.close();
+            conn.close();
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    }
 }

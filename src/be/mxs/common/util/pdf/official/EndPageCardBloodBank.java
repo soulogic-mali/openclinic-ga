@@ -51,18 +51,6 @@ public class EndPageCardBloodBank extends PdfPageEventHelper {
 			// these are the canvases we are going to use
             PdfContentByte under = writer.getDirectContentUnder();
             under.addImage(watermarkImg);
-            if(red>-1 && green>-1 && blue>-1){
-            	//Add colored stripes left and right 
-	            under.setRGBColorFill(red, green, blue);
-            	if(MedwanQuery.getInstance().getConfigString("userCardColorShape","").equalsIgnoreCase("rectangle")){
-		            under.rectangle(0, 0, 8, 109);
-		            under.rectangle(310*200/254-9, 0, 8, 109);
-            	}
-            	else if(MedwanQuery.getInstance().getConfigString("userCardColorShape","").equalsIgnoreCase("circle")){
-            		under.circle(MedwanQuery.getInstance().getConfigInt("userCardColorShapeX",115),MedwanQuery.getInstance().getConfigInt("userCardColorShapeY",60),MedwanQuery.getInstance().getConfigInt("userCardColorShapeSize",20));
-            	}
-            }
-            under.fill();
             
         }
         catch(Exception e) {

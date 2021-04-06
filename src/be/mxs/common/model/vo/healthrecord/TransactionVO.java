@@ -10,7 +10,10 @@ import be.openclinic.adt.Encounter;
 import be.openclinic.common.IObjectReference;
 import be.openclinic.common.ObjectReference;
 import be.openclinic.finance.Prestation;
+import be.openclinic.system.SH;
+import net.admin.AdminPerson;
 
+import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
@@ -71,6 +74,10 @@ public class TransactionVO extends IObjectReference implements Serializable, IId
         this.versionserverid = this.serverId;
         this.timestamp = new Date();
         //Debug.println("New serverId="+this.serverId);
+    }
+    
+    public AdminPerson getPatient() {
+    	return AdminPerson.getAdminPerson(MedwanQuery.getInstance().getPersonIdFromHealthrecordId(this.getHealthrecordId())+"");
     }
     
     public TransactionVO() {
@@ -494,38 +501,29 @@ public class TransactionVO extends IObjectReference implements Serializable, IId
     }
 
     //--- TO XML ----------------------------------------------------------------------------------
-    public String toXML(){
-        StringBuffer sXML=new StringBuffer();
-        sXML.append("<Transaction>");
-
-        sXML.append("<Header>")
-             .append("<TransactionId>"+transactionId+"</TransactionId>")
-             .append("<TransactionType>"+transactionType+"</TransactionType>")
-             .append("<CreationDate>"+extDateFormat.format(creationDate)+"</CreationDate>")
-             .append("<UpdateTime>"+extDateFormat.format(updateTime)+"</UpdateTime>")
-             .append("<TimeStamp>"+extDateFormat.format(timestamp)+"</TimeStamp>")
-             .append("<Status>"+status+"</Status>")
-             .append("<UserId>"+user.getUserId()+"</UserId>")
-             .append("<ServerId>"+serverId+"</ServerId>")
-             .append("<Version>"+version+"</Version>")
-             .append("<VersionServerId>").append(versionserverid).append("</VersionServerId>")
-            .append("</Header>");
-
-        sXML.append("<Items>");
-        Iterator iterator=items.iterator();
-        ItemVO itemVO;
-        while(iterator.hasNext()){
-            itemVO=(ItemVO)iterator.next();
-            sXML.append(itemVO.toXML());
-        }
-        sXML.append("</Items>");
-
-        sXML.append("</Transaction>");
-        return sXML.toString();
+    public String toXml(){
+    	return toXMLElement().asXML();
+    }
+    
+    public static boolean updateTransactionUid(String oldUid, String newUid) {
+    	return SH.updateTransactionUid(oldUid, newUid);
+    }
+    
+    public static TransactionVO fromXml(String xml) {
+    	try {
+			return fromXMLElement(DocumentHelper.parseText(xml).getRootElement());
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return null;
     }
     
     public static TransactionVO fromXMLElement(Element transaction) {
     	TransactionVO transactionVO = new TransactionVO();
+    	if(transaction.attributeValue("personid")!=null) {
+    		transactionVO.setHealthrecordId(MedwanQuery.getInstance().getHealthRecordIdFromPersonIdWithCreate(Integer.parseInt(transaction.attributeValue("personid"))));
+    	}
     	transactionVO.serverId = Integer.parseInt(transaction.element("Header").elementText("ServerId"));
     	transactionVO.transactionId = Integer.parseInt(transaction.element("Header").elementText("TransactionId"));
     	transactionVO.transactionType=transaction.element("Header").elementText("TransactionType");
@@ -556,6 +554,7 @@ public class TransactionVO extends IObjectReference implements Serializable, IId
     
     public Element toXMLElement(){
     	Element transaction = DocumentHelper.createElement("Transaction");
+    	transaction.addAttribute("personid", MedwanQuery.getInstance().getPersonIdFromHealthrecordId(getHealthrecordId())+"");
     	Element header = transaction.addElement("Header");
     	header.addElement("ServerId").setText(serverId+"");
     	header.addElement("TransactionId").setText(transactionId+"");

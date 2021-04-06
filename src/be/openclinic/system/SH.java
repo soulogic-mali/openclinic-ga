@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.text.RandomStringGenerator;
 
+import java.sql.Connection;
+
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.ScreenHelper;
 
@@ -50,4 +52,15 @@ public class SH extends ScreenHelper {
     	return new RandomStringGenerator.Builder().withinRange(pairs).build().generate(SH.ci("mpiGeneratedPatientPasswordLength", 8));
     }
 
+    public static Connection getOpenClinicConnection() {
+    	return MedwanQuery.getInstance().getOpenclinicConnection();
+    }
+    
+    public static Connection getAdminConnection() {
+    	return MedwanQuery.getInstance().getAdminConnection();
+    }
+    
+    public static int getServerId() {
+    	return MedwanQuery.getInstance().getConfigInt("serverId",1);
+    }
 }

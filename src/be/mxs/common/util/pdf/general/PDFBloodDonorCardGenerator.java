@@ -226,7 +226,7 @@ public class PDFBloodDonorCardGenerator extends PDFOfficialBasic {
             table2.addCell(cell);
             */
             
-            if(MedwanQuery.getInstance().getConfigInt("enableHMKCardModel")==1){
+            if(MedwanQuery.getInstance().getConfigInt("enableHMKCardModel",0)==1){
 	            //ID number
 	            cell=createLabel(ScreenHelper.getTranNoLink("web","ID",user.person.language)+":",6,1,Font.ITALIC);
 	            cell.setColspan(300);
@@ -351,7 +351,7 @@ public class PDFBloodDonorCardGenerator extends PDFOfficialBasic {
             table.addCell(cell);
 
             //Horizontal line
-            cell = new PdfPCell();
+            cell = new PdfPCell(new Paragraph("\n",FontFactory.getFont(FontFactory.HELVETICA,10,Font.BOLD)));
             cell.setBorder(PdfPCell.BOTTOM);
             cell.setColspan(1000);
             table.addCell(cell);
@@ -378,21 +378,21 @@ public class PDFBloodDonorCardGenerator extends PDFOfficialBasic {
             cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
             table2.addCell(cell);
 
-            //Horizontal line
             cell=new PdfPCell(table2);
             cell.setColspan(1000);
             cell.setBorder(PdfPCell.NO_BORDER);
             cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
             cell.setPadding(1);
             table.addCell(cell);
-
+            
+            /*
             cell=createLabel(ScreenHelper.getTranNoLink("web","cardfooter2",user.person.language),6,1,Font.ITALIC);
             cell.setColspan(1000);
             cell.setBorder(PdfPCell.NO_BORDER);
             cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
             cell.setPadding(0);
             table.addCell(cell);
-
+             */
             doc.add(table);
 
         }

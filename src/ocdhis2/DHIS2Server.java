@@ -3,7 +3,10 @@
  */
 package ocdhis2;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.SocketTimeoutException;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.SSLContext;
@@ -14,12 +17,17 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.IOUtils;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.glassfish.jersey.SslConfigurator;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 import be.mxs.common.util.db.MedwanQuery;
 import be.openclinic.dhis2.Util;
+import be.openclinic.system.SH;
 
 /**
  * @author loic
@@ -70,6 +78,15 @@ public class DHIS2Server
         this.baseURL = baseURL;
         this.baseAPI = baseAPI;
         this.port = port;
+    }
+    
+    public DHIS2Server(){
+        super();
+        this.baseURL = SH.cs("dhis2_server_uri","");
+        this.baseAPI = SH.cs("dhis2_server_api", "");
+        this.port = SH.cs("dhis2_server_port","");
+        this.userName = SH.cs("dhis2_server_username","");
+        this.userPassword = SH.cs("dhis2_server_pwd","");
     }
     
     public String getBaseURL()
@@ -132,6 +149,58 @@ public class DHIS2Server
         this.serverName = serverName;
     }
     
+    public Response sendToServer(String query) throws SocketTimeoutException, NoSuchAlgorithmException
+    {
+    	//Make sure we've got all the certificates on board
+    	String host = baseURL.replaceAll("https://", "").replaceAll("http://", "").split(":")[0].split("/")[0];
+    	Client client = ClientBuilder.newBuilder().build();
+    	if(baseURL.startsWith("https")) {
+	    	try {
+				Util.importCertificate(host, Integer.parseInt(port), MedwanQuery.getInstance().getConfigString("dhis2_truststore","/temp/keystore"), MedwanQuery.getInstance().getConfigString("dhis2_truststore_pass","changeme"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	     
+	        // preparing the SSL connection
+	        SslConfigurator sslConfig = SslConfigurator.newInstance();
+	        sslConfig.trustStoreFile(MedwanQuery.getInstance().getConfigString("dhis2_truststore","/temp/keystore"));
+	        sslConfig.trustStorePassword(MedwanQuery.getInstance().getConfigString("dhis2_truststore_pass","changeme"));
+	        sslConfig.keyStoreFile(MedwanQuery.getInstance().getConfigString("dhis2_truststore","/temp/keystore"));
+	        sslConfig.keyPassword(MedwanQuery.getInstance().getConfigString("dhis2_truststore_pass","changeme"));
+	     
+	        SSLContext sslContext = sslConfig.createSSLContext();
+	        client = ClientBuilder.newBuilder().sslContext(sslContext).build();
+    	}
+        client.property(ClientProperties.CONNECT_TIMEOUT, 10000);
+        client.property(ClientProperties.READ_TIMEOUT, 60000);
+        
+        // authentication
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(this.getUserName(), this.getUserPassword());
+        client.register(feature);
+        String querybase = query.split("\\?")[0];
+        WebTarget target = client.target(this.getUrl()).path(querybase);
+        if(query.split("\\?").length>0) {
+        	for(int i=0;i<query.split("\\?")[1].split("\\&").length;i++) {
+        		target = target.queryParam(query.split("\\?")[1].split("\\&")[i].split("=")[0], query.split("\\?")[1].split("\\&")[i].split("=")[1]);
+        	}
+        }
+        System.out.println("URL="+this.getUrl()+query);  // to check where it was sent
+        
+        // see stackoverflow.com/questions/27284046/
+
+        Response getResponse = target.request(MediaType.APPLICATION_XML).get();
+        
+        return getResponse;
+    }
+    
+    public Document getXml(String query) throws DocumentException, IOException, NoSuchAlgorithmException {
+    	Response response = sendToServer(query);
+		InputStream responseBody = (InputStream) response.getEntity();
+    	Document document = DocumentHelper.parseText(IOUtils.toString(responseBody));
+    	return document;
+    }
+    
+    
     // Send data to the server, and obtain a Response from the server.
     // If the server gave a useful payload in its response (not a 404 or 500 case for example),
     // then the Response.Entity is processed and deserialized into an ImportSummary, 
@@ -140,22 +209,24 @@ public class DHIS2Server
     {
     	//Make sure we've got all the certificates on board
     	String host = baseURL.replaceAll("https://", "").replaceAll("http://", "").split(":")[0].split("/")[0];
-    	try {
-			Util.importCertificate(host, Integer.parseInt(port), MedwanQuery.getInstance().getConfigString("dhis2_truststore","/temp/keystore"), MedwanQuery.getInstance().getConfigString("dhis2_truststore_pass","changeme"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-     
-        // preparing the SSL connection
-        SslConfigurator sslConfig = SslConfigurator.newInstance();
-        sslConfig.trustStoreFile(MedwanQuery.getInstance().getConfigString("dhis2_truststore","/temp/keystore"));
-        sslConfig.trustStorePassword(MedwanQuery.getInstance().getConfigString("dhis2_truststore_pass","changeme"));
-        sslConfig.keyStoreFile(MedwanQuery.getInstance().getConfigString("dhis2_truststore","/temp/keystore"));
-        sslConfig.keyPassword(MedwanQuery.getInstance().getConfigString("dhis2_truststore_pass","changeme"));
-     
-        SSLContext sslContext = sslConfig.createSSLContext();
-        
-        Client client = ClientBuilder.newBuilder().sslContext(sslContext).build();
+    	Client client = ClientBuilder.newBuilder().build();
+    	if(baseURL.startsWith("https")) {
+	    	try {
+				Util.importCertificate(host, Integer.parseInt(port), MedwanQuery.getInstance().getConfigString("dhis2_truststore","/temp/keystore"), MedwanQuery.getInstance().getConfigString("dhis2_truststore_pass","changeme"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	     
+	        // preparing the SSL connection
+	        SslConfigurator sslConfig = SslConfigurator.newInstance();
+	        sslConfig.trustStoreFile(MedwanQuery.getInstance().getConfigString("dhis2_truststore","/temp/keystore"));
+	        sslConfig.trustStorePassword(MedwanQuery.getInstance().getConfigString("dhis2_truststore_pass","changeme"));
+	        sslConfig.keyStoreFile(MedwanQuery.getInstance().getConfigString("dhis2_truststore","/temp/keystore"));
+	        sslConfig.keyPassword(MedwanQuery.getInstance().getConfigString("dhis2_truststore_pass","changeme"));
+	     
+	        SSLContext sslContext = sslConfig.createSSLContext();
+	        client = ClientBuilder.newBuilder().sslContext(sslContext).build();
+    	}
         client.property(ClientProperties.CONNECT_TIMEOUT, 10000);
         client.property(ClientProperties.READ_TIMEOUT, 60000);
         

@@ -9,6 +9,7 @@ import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.webapp.wl.exceptions.SessionContainerFactoryException;
 import be.mxs.webapp.wl.session.SessionContainerFactory;
 import be.openclinic.adt.Encounter;
+import be.openclinic.common.OC_Object;
 import be.openclinic.finance.Balance;
 import be.openclinic.finance.Insurance;
 import be.openclinic.finance.Prestation;
@@ -42,7 +43,7 @@ import java.util.zip.Inflater;
 import java.util.zip.InflaterOutputStream;
 
 public class ScreenHelper {
-    public static SimpleDateFormat hourFormat, stdDateFormat, fullDateFormat, fullDateFormatSS;
+    public static SimpleDateFormat hourFormat, stdDateFormat, fullDateFormat, fullDateFormatSS,timestampFormat=new SimpleDateFormat("yyyyMMddHHmmssSSS");
     public static SimpleDateFormat euDateFormat = new SimpleDateFormat(MedwanQuery.getInstance(false).getConfigString("euDateFormat","dd/MM/yyyy")); // used when storing dates in DB
     public static String ITEM_PREFIX = "be.mxs.common.model.vo.healthrecord.IConstants.";
     
@@ -50,6 +51,67 @@ public class ScreenHelper {
     	reloadDateFormats();
     }
     
+    public static void setSync(String name, String id) {
+    	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("select * from oc_sync where type=? and oldid=? and processed is null");
+    		ps.setString(1, name);
+    		ps.setString(2, id);
+    		ResultSet rs = ps.executeQuery();
+    		if(!rs.next()) {
+    			rs.close();
+    			ps.close();
+	    		ps = conn.prepareStatement("insert into oc_sync(type,oldid,created) values(?,?,?)");
+	    		ps.setString(1, name);
+	    		ps.setString(2, id);
+	    		ps.setTimestamp(3, getSQLTime());
+	    		ps.execute();
+    		}
+    		rs.close();
+    		ps.close();
+    		conn.close();
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    public static boolean getSyncOpen(String name, String id) {
+    	boolean bOpen=false;
+    	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("select * from oc_sync where type=? and oldid=? and processed is null");
+    		ps.setString(1, name);
+    		ps.setString(2, id);
+    		ResultSet rs = ps.executeQuery();
+    		if(rs.next()) {
+    			bOpen=true;
+    		}
+    		rs.close();
+    		ps.close();
+    		conn.close();
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	return bOpen;
+    }
+    public static void updateSync(String name, String oldid, String newid) {
+    	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("update oc_sync set newid=?,processed=? where type=? and oldid=? and processed is null");
+    		ps.setString(1, newid);
+    		ps.setTimestamp(2, getSQLTime());
+    		ps.setString(3, name);
+    		ps.setString(4, oldid);
+    		ps.execute();
+    		ps.close();
+    		conn.close();
+    		MedwanQuery.getInstance().getObjectCache().removeObject(name, oldid);
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    }
     public static long getTimeSecond() {
     	return 1000;
     }
@@ -571,6 +633,89 @@ public class ScreenHelper {
     		}
     	}
     	return defaultValue;
+    }
+    
+    public static void updateTableColumn(String table, String column, String oldValue, String newValue) {
+    	Connection conn = SH.getOpenClinicConnection();
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("update "+table+" set "+column+"=? where "+column+"=?");
+    		ps.setString(1, newValue);
+    		ps.setString(2, oldValue);
+    		ps.execute();
+    		ps.close();
+    		conn.close();
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    public static void updateTableColumn(String table, String column, int oldValue, int newValue) throws SQLException {
+    	Connection conn = SH.getOpenClinicConnection();
+		PreparedStatement ps = conn.prepareStatement("update "+table+" set "+column+"=? where "+column+"=?");
+		ps.setInt(1, newValue);
+		ps.setInt(2, oldValue);
+		ps.execute();
+		ps.close();
+		conn.close();
+    }
+    
+    public static boolean updateEncounterUid(String oldUid, String newUid) {
+    	boolean bSuccess = false;
+    	Connection conn = SH.getOpenClinicConnection();
+    	try {
+    		Encounter encounter = Encounter.get(oldUid);
+    		
+    		//Update Encounters
+    		String sSql="update oc_encounters set oc_encounter_objectid=? where oc_encounter_serverid=? and oc_encounter_objectid=?";
+    		PreparedStatement ps = conn.prepareStatement(sSql);
+    		ps.setInt(1, OC_Object.getObjectId(newUid));
+    		ps.setInt(2, OC_Object.getServerId(oldUid));
+    		ps.setInt(3, OC_Object.getObjectId(oldUid));
+    		ps.execute();
+    		
+    		//Update Transactions
+    		Vector<TransactionVO> transactions = MedwanQuery.getInstance().getTransactionsByEncounter(Integer.parseInt(encounter.getPatientUID()), encounter.getUid());
+    		for(int n=0;n<transactions.size();n++) {
+    			TransactionVO transaction = transactions.elementAt(n);
+    			ItemVO item = transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID");
+    			item.updateValue(newUid);
+    		}
+    		
+    		updateTableColumn("OC_CREDITS", "OC_CREDIT_ENCOUNTERUID", oldUid, newUid);
+    		updateTableColumn("OC_DEBETS", "OC_DEBET_ENCOUNTERUID", oldUid, newUid);
+    		updateTableColumn("OC_DIAGNOSES", "OC_DIAGNOSIS_ENCOUNTERUID", oldUid, newUid);
+    		updateTableColumn("OC_DRUGSOUTLIST", "OC_LIST_ENCOUNTERUID", oldUid, newUid);
+    		updateTableColumn("OC_IKIREZIACTIONS", "OC_ACTION_ENCOUNTERUID", oldUid, newUid);
+    		updateTableColumn("OC_IKIREZISYMPTOMS", "OC_SYMPTOM_ENCOUNTERUID", oldUid, newUid);
+    		updateTableColumn("OC_PATIENTCREDITS", "OC_PATIENTCREDIT_ENCOUNTERUID", oldUid, newUid);
+    		updateTableColumn("OC_PRESTATIONDEBETS", "OC_DEBET_ENCOUNTERUID", oldUid, newUid);
+    		updateTableColumn("OC_RFE", "OC_RFE_ENCOUNTERUID", oldUid, newUid);
+    		updateTableColumn("OC_SNOMEDCT", "OC_SNOMEDCT_ENCOUNTERUID", oldUid, newUid);
+
+    		bSuccess=true;
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return bSuccess;
+    }
+    
+    public static boolean updateTransactionUid(String oldUid, String newUid) {
+    	boolean bSuccess = false;
+    	Connection conn = SH.getOpenClinicConnection();
+    	try {
+    		updateTableColumn("Transactions", "transactionid", oldUid, newUid);
+    		updateTableColumn("Items", "transactionid", oldUid, newUid);
+    		updateTableColumn("OC_PLANNING", "OC_PLANNING_TRANSACTIONUID", oldUid, newUid);
+    		updateTableColumn("Requestedlabanalyses", "transactionid", oldUid, newUid);
+
+    		bSuccess=true;
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return bSuccess;
     }
     
     public static java.util.Date parseDate(String sDate, SimpleDateFormat dateFormat){
@@ -2245,6 +2390,21 @@ public static String removeAccents(String sTest){
     		s.append("<input "+setRightClickMini(request.getSession(), sName)+" "+sEvent+" type='checkbox' id='"+sName+"' value='1'");
 	    	s.append(" name='currentTransactionVO.items.<ItemVO[hashCode="+transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getItemId()+"]>.value'");
             if(transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getValue().equalsIgnoreCase("1")){
+                s.append(" checked");
+            }
+            s.append(">");
+            return s.toString();
+    	}
+    }
+    public static String writeDefaultCheckBox(TransactionVO transaction,HttpServletRequest request,String sValue, String sName, String sEvent){
+    	if(transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName)==null){
+    		return("Unknown item: <a href='javascript:createTransactionItem(\""+transaction.getTransactionType()+"\",\"be.mxs.common.model.vo.healthrecord.IConstants."+sName+"\");'>"+sName+"</a>");
+    	}
+    	else {
+    		StringBuffer s = new StringBuffer();
+    		s.append("<input "+setRightClickMini(request.getSession(), sName)+" "+sEvent+" type='checkbox' id='"+sName+"' value='"+sValue+"'");
+	    	s.append(" name='currentTransactionVO.items.<ItemVO[hashCode="+transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getItemId()+"]>.value'");
+            if(transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getValue().equalsIgnoreCase(sValue)){
                 s.append(" checked");
             }
             s.append(">");
@@ -4136,9 +4296,9 @@ public static String removeAccents(String sTest){
 
     //--- ALIGN BUTTONS START ---------------------------------------------------------------------
     public static String alignButtonsStart(){
-      return "<p align='center'>";
-    }
- 
+        return "<p align='center'>";
+      }
+   
     //--- ALIGN BUTTONS STOP ----------------------------------------------------------------------
     public static String alignButtonsStop(){
       return "</p>";

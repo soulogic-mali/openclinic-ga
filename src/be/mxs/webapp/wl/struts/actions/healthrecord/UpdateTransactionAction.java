@@ -29,6 +29,8 @@ import be.openclinic.knowledge.Ikirezi;
 import be.openclinic.medical.Diagnosis;
 import be.openclinic.medical.LabAnalysis;
 import be.openclinic.medical.RequestedLabAnalysis;
+import be.openclinic.reporting.LabresultsNotifier;
+import be.openclinic.system.SH;
 import net.admin.User;
 import net.admin.AdminPerson;
 import net.admin.Service;
@@ -45,6 +47,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -240,6 +243,15 @@ public class UpdateTransactionAction extends org.apache.struts.action.Action {
                         e.printStackTrace();
                     }
                 }
+                else {
+                	if(newTransactionVO.getTransactionId()<0 
+            			&& new SimpleDateFormat("HH:mm").format(newTransactionVO.getUpdateTime()).equalsIgnoreCase("00:00")
+            			&& new SimpleDateFormat("dd/MM/yyyy").format(newTransactionVO.getUpdateTime()).equalsIgnoreCase(new SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date()))
+            			) {
+                		newTransactionVO.setUpdateTime(newTransactionVO.getCreationDate());
+                	}
+                }
+
 
                 if (request.getParameter("be.mxs.healthrecord.updateTransaction.preserve")==null){
                     df.populateTransaction(oldTransaction,newTransactionVO);
@@ -307,9 +319,17 @@ public class UpdateTransactionAction extends org.apache.struts.action.Action {
                     	oldTransaction.getItems().add(privateItem);
                     }
                     privateItem.setValue(privatetransaction);
-
+                    
+                    //Voor een nieuwe lab aanvraag, controleer of er een bericht moet worden gestuurd
+                    boolean bNewLabrequest=oldTransaction.getTransactionType().equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_LAB_REQUEST") && oldTransaction.getTransactionId()<0;
                     //Sla de transactie op
                     returnedTransactionVO = MedwanQuery.getInstance().updateTransaction(sessionContainerWO.getPersonVO().personId.intValue(),oldTransaction);
+                    if(bNewLabrequest) {
+                    	if(oldTransaction.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_SMS").length()>0 && SH.cs("labsmsnotification", "").length()>0) {
+                    		String sMessage=SH.cs("labsmsnotification", "").replaceAll("#date#",SH.formatDate(returnedTransactionVO.getUpdateTime())).replaceAll("#transactionid#", returnedTransactionVO.getTransactionId()+"").replaceAll("<br>", "\n").replace("#patient#", sessionContainerWO.getPersonVO().lastname.toUpperCase()+" "+sessionContainerWO.getPersonVO().firstname);
+                    		LabresultsNotifier.SpoolMessage(returnedTransactionVO.getTransactionId(), "sms", sMessage, oldTransaction.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LAB_SMS"));
+                    	}
+                    }
                     if(returnedTransactionVO.getVersion()>1){
                     	Pointer.storePointer("TU."+returnedTransactionVO.getServerId()+"."+returnedTransactionVO.getTransactionId()+"."+returnedTransactionVO.getVersion(),sessionContainerWO.getUserVO().userId+"");
                     }

@@ -53,6 +53,24 @@ public class User extends OC_Object {
     	return userid;
     }
 
+    public java.util.Date getStop(){
+    	try {
+    		return new SimpleDateFormat("dd/MM/yyyy").parse(stop);
+    	}
+    	catch(Exception e) {
+    		return null;
+    	}
+    }
+    
+    public void setStop(java.util.Date dStop) {
+    	try {
+    		stop = new SimpleDateFormat("dd/MM/yyyy").format(dStop);
+    	}
+    	catch(Exception e) {
+    		stop="";
+    	}
+    }
+    
     public void setOtherExaminations(Vector otherExaminations){
         this.otherExaminations = otherExaminations;
     }

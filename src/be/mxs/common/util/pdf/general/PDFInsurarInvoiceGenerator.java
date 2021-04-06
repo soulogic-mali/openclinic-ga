@@ -16,6 +16,7 @@ import be.mxs.common.util.system.PdfBarcode;
 import be.mxs.common.util.system.ScreenHelper;
 import be.mxs.common.util.db.MedwanQuery;
 import be.openclinic.finance.*;
+import be.openclinic.system.SH;
 import be.openclinic.adt.Encounter;
 import net.admin.*;
 
@@ -88,6 +89,16 @@ public class PDFInsurarInvoiceGenerator extends PDFInvoiceGenerator {
         table.addCell(cell);
         table.addCell(createCell(new PdfPCell(getPrintedByInfo()),2,PdfPCell.ALIGN_LEFT,PdfPCell.NO_BORDER));
         cell = createBoldLabelCell(getTran("invoiceDirector"),1);
+        table.addCell(cell);
+        //Line 2
+        cell = createBoldLabelCell(SH.cs("financialInsurerFooter1","").replaceAll("<BR/>", "\n"),2);
+        table.addCell(cell);
+        cell = createBoldLabelCell(SH.cs("financialInsurerFooter2","").replaceAll("<BR/>", "\n"),1);
+        table.addCell(cell);
+        //Line 3
+        cell = createBoldLabelCell(SH.cs("financialInsurerFooter3","").replaceAll("<BR/>", "\n"),2);
+        table.addCell(cell);
+        cell = createBoldLabelCell(SH.cs("financialInsurerFooter4","").replaceAll("<BR/>", "\n"),1);
         table.addCell(cell);
         doc.add(table);
     }
