@@ -189,6 +189,7 @@
         <permission type="examination" id="1215">occup.chugtoutpatientfile</permission>
         <permission type="examination" id="1216">occup.ndhadmission</permission>
         <permission type="examination" id="1217">cnts.supervision</permission>
+        <permission type="examination" id="1218">cnts.hemovigilance</permission>
     </application>
     <application type="Web" id="newexaminations">
         <permission type="web" id="globalexaminations">examinations.global</permission>
@@ -349,6 +350,7 @@
         <permission type="web" id="statistics.activitystats.jasperreports">statistics.activitystats.jasperreports</permission>
         <permission type="web" id="chin.actualsituation">chin.actualsituation</permission>
         <permission type="web" id="chin.healthnet">chin.healthnet</permission>
+        <permission type="web" id="statistics.bloodbank">statistics.bloodbank</permission>
     </application>
     <application type="Web" id="medication">
         <permission type="web" id="medicationschema">medication.medicationschema</permission>

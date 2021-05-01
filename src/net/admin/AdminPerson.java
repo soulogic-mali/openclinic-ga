@@ -1363,8 +1363,8 @@ public class AdminPerson extends OC_Object{
                     }
                     if (ps!=null) ps.close();
                     if(bReturn) {
-	                    if(this.getID("immatnew").length()==0){
-	                        this.setID("immatnew",sPersonID);
+	                    if(this.getID("immatnew").length()==0 && SH.ci("autoInitializeImmatnew",1)==1){
+	                        this.setID("immatnew",(SH.ci("enableOfflineSync",0)==1?SH.cs("offlineLocalPrefix", "")+"M-":"")+ sPersonID);
 	                    }
 	
 	                    if ((this.updateuserid==null)||(this.updateuserid.trim().length()==0)) {
@@ -3464,6 +3464,108 @@ public class AdminPerson extends OC_Object{
                 else {
                     sQuery = "SELECT personid, dateofbirth, gender, lastname, firstname, immatnew"+
                               " FROM Admin"+
+                              "  WHERE "+sSelect+
+                              " ORDER BY searchname";
+                }
+                
+            	Connection lad_conn = MedwanQuery.getInstance().getAdminConnection();
+                ps = lad_conn.prepareStatement(sQuery);
+                if(sFindDOB.trim().length()>0){
+                    ps.setString(1,ScreenHelper.getSQLDate(sFindDOB).toString());
+                }
+
+                rs = ps.executeQuery();
+
+                SimpleDateFormat stdDateFormat = ScreenHelper.stdDateFormat;
+                while(rs.next()){
+                    hInfo = new Hashtable();
+                    if(bIsUser){
+                        hInfo.put("userid",ScreenHelper.checkString(rs.getString("userid")));
+                    }
+                    hInfo.put("personid",ScreenHelper.checkString(rs.getString("personid")));
+                    hInfo.put("dateofbirth",ScreenHelper.checkString(ScreenHelper.getSQLDate(rs.getDate("dateofbirth"))));
+                    hInfo.put("gender",ScreenHelper.checkString(rs.getString("gender")));
+                    hInfo.put("lastname",ScreenHelper.checkString(rs.getString("lastname")));
+                    hInfo.put("firstname",ScreenHelper.checkString(rs.getString("firstname")));
+                    hInfo.put("immatnew",ScreenHelper.checkString(rs.getString("immatnew")));
+
+                    vResults.addElement(hInfo);
+                }
+                rs.close();
+                ps.close();
+                lad_conn.close();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                if(rs!=null)rs.close();
+                if(ps!=null)ps.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return vResults;
+    }
+    
+    public boolean isVirtualInvoicingAccount() {
+    	return SH.cs("edition","openclinic").equalsIgnoreCase("bloodbank") && SH.c(adminextends.get("tracnetid")).equals("1");
+    }
+    
+    public static Vector<Hashtable> searchVirtualInvoicingAccounts(String sSelectLastname,String sSelectFirstname,String sFindGender,String sFindDOB,boolean bIsUser){
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        Vector vResults = new Vector();
+
+        Hashtable hInfo;
+
+        String sSelect = " exists (select * from adminextends x where x.personid=a.personid and labelid='tracnetid' and extendvalue='1') AND";
+
+        try{
+            if ((sSelectLastname.trim().length()>0) && (sSelectFirstname.trim().length()>0)) {
+                sSelect+= " searchname LIKE '"+sSelectLastname.toUpperCase()+"%,"+sSelectFirstname.toUpperCase()+"%' AND";
+            }
+            else if (sSelectLastname.trim().length()>0) {
+                sSelect+= " searchname LIKE '"+sSelectLastname.toUpperCase()+"%,%' AND";
+            }
+            else if (sSelectFirstname.trim().length()>0) {
+                sSelect+= " searchname LIKE '%,"+sSelectFirstname.toUpperCase()+"%' AND";
+            }
+
+            if(sFindGender.trim().length() > 0){
+                sSelect+= " gender = '"+sFindGender+"' AND";
+            }
+
+            // check if sFindDOB has a valid date format
+            if(sFindDOB.length() > 0){
+                try{
+                    sFindDOB = sFindDOB.replaceAll("-","/");
+                    ScreenHelper.parseDate(sFindDOB);
+                    sSelect+= " dateofbirth = ? AND";
+                }
+                catch(Exception e){
+                    sFindDOB = "";
+                }
+            }
+
+            // complete query
+            String sQuery;
+            if(sSelect.length()>0 || bIsUser) {
+                if (sSelect.endsWith("AND")){
+                    sSelect = sSelect.substring(0,sSelect.length()-3);
+                }
+                if(bIsUser){
+                    sQuery = "SELECT b.userid, a.personid, a.dateofbirth, a.gender, a.lastname, a.firstname, a.immatnew"+
+                              " FROM Admin a, Users b"+
+                              "  WHERE a.personid=b.personid";
+                              if(sSelect.length() > 0) sQuery+= " AND ";
+                    sQuery+= " ORDER BY searchname";
+                }
+                else {
+                    sQuery = "SELECT personid, dateofbirth, gender, lastname, firstname, immatnew"+
+                              " FROM Admin a"+
                               "  WHERE "+sSelect+
                               " ORDER BY searchname";
                 }

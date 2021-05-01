@@ -19,6 +19,7 @@
 
     String sReturnName = checkString(request.getParameter("ReturnName"));
     boolean bIsUser = checkString(request.getParameter("isUser")).equalsIgnoreCase("yes");
+    boolean bHasTracnet = checkString(request.getParameter("hasTracnetId")).equalsIgnoreCase("yes");
     
     /// DEBUG /////////////////////////////////////////////////////////////////////////////////////
     if(Debug.enabled){
@@ -112,6 +113,7 @@
 
     <%-- hidden fields --%>
     <input type="hidden" name="isUser" value="<%=checkString(request.getParameter("isUser"))%>">
+    <input type="hidden" name="hasTracnetId" value="<%=checkString(request.getParameter("hasTracnetId"))%>">
     <input type="hidden" name="displayImmatNew" value="<%=checkString(request.getParameter("displayImmatNew"))%>">
     <input type="hidden" name="ReturnPersonID" value="<%=sReturnPersonID%>">
     <input type="hidden" name="ReturnName" value="<%=sReturnName%>">

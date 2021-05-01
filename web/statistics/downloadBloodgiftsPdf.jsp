@@ -1221,7 +1221,7 @@
 		}
 		doc.add(table);
 
-		title="\nTABLEAU XVII: SEROPREVALENCE DU VHC CHEZ LES DONNEURS SELON LE SEXE\n\n";
+		title="\nTABLEAU XVIII: SEROPREVALENCE DU VHC CHEZ LES DONNEURS SELON LE SEXE\n\n";
 		table = new PdfPTable(100);
 		table.addCell(getHeaderCell(title,100));	
 		cell = getTitleCell("STATUT DES DONNEURS", 20);
@@ -1380,7 +1380,7 @@
 		}
 		doc.add(table);
 
-		title="\nTABLEAU XVII: SEROPREVALENCE DU SYPHILIS CHEZ LES DONNEURS SELON LE SEXE\n\n";
+		title="\nTABLEAU XIX: SEROPREVALENCE DU SYPHILIS CHEZ LES DONNEURS SELON LE SEXE\n\n";
 		table = new PdfPTable(100);
 		table.addCell(getHeaderCell(title,100));	
 		cell = getTitleCell("STATUT DES DONNEURS", 20);
@@ -1538,8 +1538,261 @@
 			}
 		}
 		doc.add(table);
+
+		title="\nTABLEAU XXI: DISTRIBUTION DU SANG DANS LES SERVICES DEMANDEURS\n\n";
+		nTotal=0;
+		table = new PdfPTable(100);
+		table.addCell(getHeaderCell(title,100));	
+		cell = getTitleCell("SERVICE", 20);
+		cell.setRowspan(2);
+		table.addCell(cell);
+		cell = getTitleCell("PRODUITS SANGUINS LABILES", 40);
+		table.addCell(cell);
+		cell = getTitleCell("SANG TOTAL", 20);
+		table.addCell(cell);
+		cell = getTitleCellCentered("TOTAL", 10);
+		cell.setRowspan(2);
+		table.addCell(cell);
+		cell = getTitleCellCentered("%", 10);
+		cell.setRowspan(2);
+		table.addCell(cell);
+		cell = getTitleCellCentered("Culot Globulaire", 13);
+		table.addCell(cell);
+		cell = getTitleCellCentered("Concentré Plaquettaire", 13);
+		table.addCell(cell);
+		cell = getTitleCellCentered("Plasma Frais Congelé", 14);
+		table.addCell(cell);
+		cell = getTitleCellCentered("Sang Frais <8h", 10);
+		table.addCell(cell);
+		cell = getTitleCellCentered("Sang Non Frais", 10);
+		table.addCell(cell);
+		int[][] results = new int[11][7];
+		Vector vHemovigilance = new Vector();
+		Connection conn = SH.getOpenclinicConnection();
+		PreparedStatement ps = conn.prepareStatement("select * from transactions where transactionType=? and updatetime >=? and updatetime <=?");
+		ps.setString(1,"be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST");
+		ps.setDate(2, SH.getSQLDate(request.getParameter("begin")));
+		ps.setDate(3, SH.getSQLDate(request.getParameter("end")));
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){
+			vHemovigilance.add(TransactionVO.get(rs.getInt("serverid"), rs.getInt("transactionid")));
+		}
+		rs.close();
+		ps.close();
+		for(int n=0;n<vHemovigilance.size();n++){
+			TransactionVO transactionVO = (TransactionVO)vHemovigilance.elementAt(n);
+			if(transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_SERVICE").length()>0 &&
+					transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_PRODUCTTYPE").length()>0 &&
+					transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_RECEIVEDNUMBEROFBAGS").length()>0){
+				int nService = Integer.parseInt(transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_SERVICE"));
+				int nProduct = Integer.parseInt(transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_PRODUCTTYPE"));
+				int nBags = Integer.parseInt(transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_RECEIVEDNUMBEROFBAGS"));
+				results[nService][nProduct]+=nBags;
+				results[0][nProduct]+=nBags;
+			}
+		}
+		nTotal=0;
+		for(int n=0;n<11;n++){
+			for(int c=1;c<6;c++){
+				results[n][6]+=results[n][c];	
+				if(n>0){
+					nTotal+=results[n][6];
+				}
+			}
+		}
+		for(int n=1;n<11;n++){
+			table.addCell(getValueCell(getTranNoLink("transfusion.department",n+"","fr"),20));		
+			for(int c=1;c<6;c++){
+				table.addCell(getValueCellCentered(results[n][c]+"",c<3?13:c<4?14:10));		
+			}
+			table.addCell(getValueCellCentered(results[n][6]+"",10));		
+			table.addCell(getValueCellCentered(new DecimalFormat("##0.0").format(results[n][6]*100/nTotal),10));		
+		}
+		table.addCell(getValueCellBold("Total",20));		
+		for(int c=1;c<6;c++){
+			table.addCell(getValueCellCenteredBold(results[0][c]+"",c<3?13:c<4?14:10));		
+		}
+		table.addCell(getValueCellCenteredBold(results[0][6]+"",10));		
+		table.addCell(getValueCellCenteredBold(new DecimalFormat("##0.0").format(results[0][6]*100/nTotal),10));		
+		doc.add(table);
+
+		title="\nTABLEAU XXII: MOTIFS DE TRANSFUSION SANGUINE\n\n";
+		nTotal=0;
+		table = new PdfPTable(100);
+		table.addCell(getHeaderCell(title,100));	
+		cell = getTitleCell("MOTIF DE TRANSFUSION SANGUINE", 40);
+		table.addCell(cell);
+		cell = getTitleCellCentered("EFFECTIFS", 30);
+		table.addCell(cell);
+		cell = getTitleCellCentered("%", 30);
+		table.addCell(cell);
+		results = new int[10][1];
+		for(int n=0;n<vHemovigilance.size();n++){
+			TransactionVO transactionVO = (TransactionVO)vHemovigilance.elementAt(n);
+			if(transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_BLOODREQUESTREASON").length()>0){
+				String[] reasons = transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_BLOODREQUESTREASON").split(";");
+				for(int i=0;i<reasons.length;i++){
+					results[Integer.parseInt(reasons[i])][0]++;
+				}
+			}
+		}
+		nTotal=0;
+		for(int n=1;n<10;n++){
+			nTotal+=results[n][0];
+		}
+		for(int n=1;n<10;n++){
+			table.addCell(getValueCell(getTranNoLink("bloodtransfusion.reason",n+"","fr"),40));		
+			table.addCell(getValueCellCentered(results[n][0]+"",30));		
+			table.addCell(getValueCellCentered(new DecimalFormat("##0.0").format(results[n][0]*100/nTotal),30));		
+		}
+		table.addCell(getValueCellBold("Total",40));		
+		table.addCell(getValueCellCenteredBold(nTotal+"",30));		
+		table.addCell(getValueCellCenteredBold("100.0",30));		
+		doc.add(table);
+
+		title="\nTABLEAU XXIII: REPARTITION DES PATIENTS TRANSFUSES PAR AGE ET PAR SEXE\n\n";
+		nTotal=0;
+		table = new PdfPTable(100);
+		table.addCell(getHeaderCell(title,100));	
+		cell = getTitleCell("AGE", 20);
+		cell.setRowspan(2);
+		table.addCell(cell);
+		cell = getTitleCellCentered("SEXE", 40);
+		table.addCell(cell);
+		cell = getTitleCellCentered("TOTAL", 20);
+		cell.setRowspan(2);
+		table.addCell(cell);
+		cell = getTitleCellCentered("%", 20);
+		cell.setRowspan(2);
+		table.addCell(cell);
+		cell = getTitleCellCentered("Masculin", 20);
+		table.addCell(cell);
+		cell = getTitleCellCentered("Féminin", 20);
+		table.addCell(cell);
+		results = new int[12][2];
+		for(int n=0;n<vHemovigilance.size();n++){
+			TransactionVO transactionVO = (TransactionVO)vHemovigilance.elementAt(n);
+			AdminPerson patient = transactionVO.getPatient();
+			if(patient!=null){
+				if(patient.getAge()<50){
+					if(SH.c(patient.gender).equalsIgnoreCase("m")){
+						results[patient.getAge()/5][0]++;
+						results[11][0]++;
+					}
+					else{
+						results[patient.getAge()/5][1]++;
+						results[11][1]++;
+					}
+				}
+				else{
+					if(SH.c(patient.gender).equalsIgnoreCase("m")){
+						results[10][0]++;
+						results[11][0]++;
+					}
+					else{
+						results[10][1]++;
+						results[11][1]++;
+					}
+				}
+			}
+		}
+		nTotal=results[11][0]+results[11][1];
+		for(int n=0;n<11;n++){
+			table.addCell(getValueCell((n<10?(n*5)+" - "+(n*5+4):"50+")+" ans",20));		
+			table.addCell(getValueCellCentered(results[n][0]+"",20));		
+			table.addCell(getValueCellCentered(results[n][1]+"",20));		
+			table.addCell(getValueCellCentered((results[n][0]+results[n][1])+"",20));		
+			table.addCell(getValueCellCentered(new DecimalFormat("##0.0").format((results[n][0]+results[n][1])*100/nTotal),20));		
+		}
+		table.addCell(getValueCellBold("Total",20));		
+		table.addCell(getValueCellCenteredBold(results[11][0]+"",20));		
+		table.addCell(getValueCellCenteredBold(results[11][1]+"",20));		
+		table.addCell(getValueCellCenteredBold(nTotal+"",20));		
+		table.addCell(getValueCellCenteredBold("100.0",20));		
+		doc.add(table);
+
+		title="\nTABLEAU XXIV: INCIDENTS LIES A LA TRANSFUSIONS SANGUINE\n\n";
+		nTotal=0;
+		table = new PdfPTable(100);
+		table.addCell(getHeaderCell(title,100));	
+		cell = getTitleCell("INCIDENTS LIES A LA TRANSFUSION", 40);
+		table.addCell(cell);
+		cell = getTitleCellCentered("EFFECTIFS", 30);
+		table.addCell(cell);
+		cell = getTitleCellCentered("%", 30);
+		table.addCell(cell);
+		results = new int[11][1];
+		for(int n=0;n<vHemovigilance.size();n++){
+			TransactionVO transactionVO = (TransactionVO)vHemovigilance.elementAt(n);
+			if(transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_BLOODTRANSFUSION_UNDESIREDEFFECTS").length()>0){
+				String[] reasons = transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_BLOODTRANSFUSION_UNDESIREDEFFECTS").split(";");
+				for(int i=0;i<reasons.length;i++){
+					if(Integer.parseInt(reasons[i])<11){
+						results[Integer.parseInt(reasons[i])][0]++;
+					}
+				}
+			}
+		}
+		nTotal=0;
+		for(int n=1;n<11;n++){
+			nTotal+=results[n][0];
+		}
+		for(int n=1;n<11;n++){
+			table.addCell(getValueCell(getTranNoLink("bloodtransfusion.undesiredeffects",n+"","fr"),40));		
+			table.addCell(getValueCellCentered(results[n][0]+"",30));		
+			table.addCell(getValueCellCentered(new DecimalFormat("##0.0").format(results[n][0]*100/nTotal),30));		
+		}
+		table.addCell(getValueCellBold("Total",40));		
+		table.addCell(getValueCellCenteredBold(nTotal+"",30));		
+		table.addCell(getValueCellCenteredBold("100.0",30));		
+		doc.add(table);
+
+		title="\nTABLEAU XXV: CAPACITE DE REPONDRE A LA DEMANDE\n\n";
+		nTotal=0;
+		table = new PdfPTable(100);
+		table.addCell(getHeaderCell(title,100));	
+		cell = getTitleCell("DEMANDES", 40);
+		table.addCell(cell);
+		cell = getTitleCellCentered("Nombre de poches demandées", 30);
+		table.addCell(cell);
+		cell = getTitleCellCentered("Nombre de poches servies", 30);
+		table.addCell(cell);
+		results = new int[3][2];
+		for(int n=0;n<vHemovigilance.size();n++){
+			TransactionVO transactionVO = (TransactionVO)vHemovigilance.elementAt(n);
+			if(transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_RECEIVEDNUMBEROFBAGS").length()>0 &&
+					transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_REQUESTEDNUMBEROFBAGS").length()>0){
+				int nReceived=Integer.parseInt(transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_RECEIVEDNUMBEROFBAGS"));
+				int nRequested=Integer.parseInt(transactionVO.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_REQUESTEDNUMBEROFBAGS"));
+				if(nReceived>=nRequested){
+					results[0][0]+=nRequested;
+					results[0][1]+=nReceived;
+				}
+				else if(nReceived>=0){
+					results[1][0]+=nRequested;
+					results[1][1]+=nReceived;
+				}
+				else{
+					results[2][0]+=nRequested;
+				}
+			}
+		}
+		table.addCell(getValueCell("Totalement honorées",40));		
+		table.addCell(getValueCellCentered(results[0][0]+"",30));		
+		table.addCell(getValueCellCentered(results[0][1]+"",30));		
+		table.addCell(getValueCell("Partiellement  honorées",40));		
+		table.addCell(getValueCellCentered(results[1][0]+"",30));		
+		table.addCell(getValueCellCentered(results[1][1]+"",30));		
+		table.addCell(getValueCell("Pas honorées",40));		
+		table.addCell(getValueCellCentered(results[0][0]+"",30));		
+		table.addCell(getValueCellCentered("0",30));		
+		table.addCell(getValueCellBold("Total",40));		
+		table.addCell(getValueCellCenteredBold((results[0][0]+results[1][0]+results[2][0])+"",30));		
+		table.addCell(getValueCellCenteredBold((results[0][1]+results[1][1])+"",30));		
+		doc.add(table);
     }
 	
+
 	//Write PDF report to servlet output stream
 	if(doc!=null) doc.close();
     if(docWriter!=null) docWriter.close();

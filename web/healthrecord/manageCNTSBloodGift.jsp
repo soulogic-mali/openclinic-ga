@@ -1,3 +1,4 @@
+<%@page import="be.openclinic.pharmacy.Product"%>
 <%@page import="be.mxs.common.util.system.Pointer"%>
 <%@page import="be.mxs.common.util.system.HTMLEntities"%>
 <%@ page import="be.openclinic.finance.*,be.openclinic.medical.*"%>
@@ -64,7 +65,20 @@
 	        		%>
 			            <td class="admin"><%=getTran(request,"bloodgift","sampleid",sWebLanguage)%></td>
 			            <td class="admin2">
-			                <font style="font-size:14px;font-weight:bold"><%=tran.getTransactionId() %></font>
+			                <font style="font-size:14px;font-weight:bold;vertical-align: middle"><%=tran.getTransactionId() %></font>
+			                <%
+			                	Connection conn = SH.getOpenClinicConnection();
+			                	PreparedStatement ps = conn.prepareStatement("select * from oc_hemovigilance where oc_hemovigilance_pocketnumber like ?");
+			                	ps.setString(1,tran.getTransactionId()+"%");
+			                	ResultSet rs = ps.executeQuery();
+			                	if(rs.next()){
+			                		out.println("&nbsp;&nbsp;&nbsp;&nbsp;<img height='16px' style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'> "+
+			                	"<a href='javascript:showHemovigilance();'><b>"+getTran(request,"web","hemovigilancereports",sWebLanguage)+"</b></a>");
+			                	}
+			                	rs.close();
+			                	ps.close();
+			                	conn.close();
+			                %>
 			            </td>
 	        		<%	}
 	        			else{
@@ -332,18 +346,18 @@
      	</tr>
      	<%
      		Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
-     		PreparedStatement ps = conn.prepareStatement("select * from OC_BLOODDELIVERIES where OC_BLOODDELIVERY_ID=? order by OC_BLOODDELIVERY_DATE"); 
-     		ps.setInt(1,tran.getTransactionId());
+     		PreparedStatement ps = conn.prepareStatement("select * from OC_REMOTEPATIENTBATCHDELIVERIES where OC_DELIVERY_BATCHNUMBER like ? order by OC_DELIVERY_DATE"); 
+     		ps.setString(1,tran.getTransactionId()+".%");
      		ResultSet rs = ps.executeQuery();
      		boolean bResults = false;
      		while(rs.next()){
      			bResults=true;
-     			out.println("<tr><td class='admin2'>"+ScreenHelper.formatDate(rs.getDate("OC_BLOODDELIVERY_DATE"))+
-     					"<td class='admin2'>"+rs.getString("OC_BLOODDELIVERY_LOCATION")+"</td>"+
-     					"<td class='admin2'>"+rs.getString("OC_BLOODDELIVERY_PRODUCT")+"</td>"+
-     					"<td class='admin2'>"+rs.getString("OC_BLOODDELIVERY_POCKETS")+"</td>"+
-     					"<td class='admin2'>"+rs.getString("OC_BLOODDELIVERY_PATIENTNAME")+", "+rs.getString("OC_BLOODDELIVERY_PATIENTFIRSTNAME")+" - "+ScreenHelper.formatDate(rs.getDate("OC_BLOODDELIVERY_PATIENTDATEOFBIRTH"))+" - "+rs.getString("OC_BLOODDELIVERY_PATIENTGENDER")+"</td>"+
-     					"<td class='admin2'>"+rs.getString("OC_BLOODDELIVERY_PATIENTTELEPHONE")+"</td>"+
+     			out.println("<tr><td class='admin2'>"+ScreenHelper.formatDate(rs.getDate("OC_DELIVERY_DATE"))+
+     					"<td class='admin2'><b>"+rs.getString("OC_DELIVERY_SITENAME")+"</b></td>"+
+     					"<td class='admin2'>"+Product.get(rs.getString("OC_DELIVERY_PRODUCTUID")).getName()+"</td>"+
+     					"<td class='admin2'>"+rs.getString("OC_DELIVERY_QUANTITY")+" x [<a href='javascript:readBarcode2(\"C"+rs.getString("OC_DELIVERY_BATCHNUMBER")+"\")'><b>"+rs.getString("OC_DELIVERY_BATCHNUMBER")+"</b></a>]"+"</td>"+
+     					"<td class='admin2'>"+rs.getString("OC_DELIVERY_PATIENTDATA")+"</td>"+
+     					"<td class='admin2'>"+rs.getString("OC_DELIVERY_PHONE")+"</td>"+
      					"</tr>");
      		}
      		rs.close();
@@ -360,6 +374,10 @@
 </form>
 
 <script>
+
+function showHemovigilance(){
+    openPopup("/cnts/showHemovigilance.jsp&ts=<%=getTs()%>&pocketid=<%=tran.getTransactionId()%>&PopupWidth=800&PopupHeight=300");
+}
 
 function printBloodgiftLabel(){
 	window.open("<c:url value="/healthrecord/createBloodgiftLabelPdf.jsp"/>?transactiondata="+encodeURIComponent(document.getElementById("abo").value+";"+document.getElementById("rhesus").value+";"+document.getElementById("cntsreceptiondate").value+";"+document.getElementById("cntsexpirydate").value+";<%=tran.getTransactionId()%>;"+document.getElementById("cntspockets").value));	

@@ -44,6 +44,9 @@
         else if(sPrintModel.equalsIgnoreCase("ambusa")){
         	pdfGenerator = new PDFInsurarInvoiceGeneratorAMBUSA(activeUser,sProject,sPrintLanguage,sPrintType);
         }
+        else if(sPrintModel.equalsIgnoreCase("cnts")){
+        	pdfGenerator = new PDFInsurarInvoiceGeneratorCNTS(activeUser,sProject,sPrintLanguage,sPrintType);
+        }
         else{
         	pdfGenerator = new PDFInsurarInvoiceGenerator(activeUser,sProject,sPrintLanguage,sPrintType);
         }

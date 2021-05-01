@@ -73,6 +73,7 @@
                     getTran(request,"web","to",sWebLanguage)+"&nbsp;"+writeDateField("endcnts","stats",lastdayPreviousMonth,sWebLanguage)+
                    "</td>"+
                   "</tr>");
+        out.println(writeTblChildWithCode(activeUser.getAccessRight("statistics.bloodbank.select"),"javascript:cntsHemovigilanceReport()",getTran(request,"Web","statistics.bloodbank.hemovigilance",sWebLanguage)));
 
         out.print("<tr>"+
                    "<td class='admin2' colspan='2'>"+getTran(request,"Web","site",sWebLanguage)+" "+
@@ -211,6 +212,9 @@ function downloadBloodgifts(query,db){
   }
 function cntsActivityReport(query,db){
 	window.open("<c:url value='/statistics/downloadBloodgiftsPdf.jsp'/>?query="+query+"&cntssite="+document.getElementById("cntssite").value+"&db="+db+"&begin="+document.getElementsByName('begincnts')[0].value+"&end="+document.getElementsByName('endcnts')[0].value);
+  }
+function cntsHemovigilanceReport(query,db){
+	openPopup("/cnts/showHemovigilance.jsp&begin="+document.getElementsByName('begincnts')[0].value,800,300);
   }
 function downloadStats(query,db){
     window.open("<c:url value='/util/csvStats.jsp?'/>query="+query+"&db="+db+"&begin="+document.getElementsByName('begin')[0].value+"&end="+document.getElementsByName('end')[0].value);

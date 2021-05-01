@@ -1,6 +1,7 @@
 package be.openclinic.pharmacy;
 import be.openclinic.common.OC_Object;
 import be.openclinic.common.ObjectReference;
+import be.openclinic.system.SH;
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.ScreenHelper;
 import be.mxs.common.util.tools.sendHtmlMail;
@@ -15,6 +16,10 @@ import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
+
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
 import java.util.GregorianCalendar;
 import java.util.Calendar;
 import java.sql.*;
@@ -47,6 +52,40 @@ public class ProductStock extends OC_Object implements Comparable {
 		this.location = location;
 	}
 	
+    public Element getInitElement() {
+    	int batchedQuantity=0;
+    	Element p = DocumentHelper.createElement("productstock");
+        p.addAttribute("level",SH.c(getLevel()+""));
+        p.addAttribute("minimumlevel",SH.c(getMinimumLevel()+""));
+        p.addAttribute("maximumlevel",SH.c(getMaximumLevel()+""));
+        p.addAttribute("orderlevel",SH.c(getOrderLevel()+""));
+        Element product=p.addElement("product");
+        product.addAttribute("code",SH.c(getProduct().getCode()));
+        product.addAttribute("atccode",SH.c(getProduct().getAtccode()));
+        product.addAttribute("rxnormcode",SH.c(getProduct().getRxnormcode()));
+        product.addElement("name").setText(getProduct().getName());
+        product.addElement("dose").setText(getProduct().getDose());
+        product.addElement("unit").setText(getProduct().getUnit());
+        product.addElement("unitprice").setText(getProduct().getUnitPrice()+"");
+        product.addElement("packageunits").setText(getProduct().getPackageUnits()+"");
+    	Vector<Batch> batches = getActiveBatches();
+    	for(int n=0;n<batches.size();n++) {
+    		Batch batch = batches.elementAt(n);
+    		batchedQuantity+=batch.getLevel();
+    		Element b = p.addElement("batch");
+    		b.addAttribute("level", batch.getLevel()+"");
+    		b.addAttribute("number", batch.getBatchNumber());
+    		b.addAttribute("expiry", SH.formatDate(batch.getEnd()));
+    	}
+    	if(getLevel()>batchedQuantity) {
+    		Element b = p.addElement("batch");
+    		b.addAttribute("level", (getLevel()-batchedQuantity)+"");
+    		b.addAttribute("number", "?");
+    		b.addAttribute("expiry", "");
+    	}
+    	return p;
+    }
+
 	public int getMaxNumberOfKits() {
 		int nKits=-1;
 		Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();

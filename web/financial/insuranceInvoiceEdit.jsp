@@ -294,6 +294,12 @@
 		                    <%
 		           		}
 		              	
+		              	if(SH.cs("edition","openclinic").equalsIgnoreCase("bloodbank")){
+		                    %>
+		                    	<option value="cnts" <%=defaultmodel.equalsIgnoreCase("cnts")?"selected":""%>><%=getTranNoLink("web","CNTS-BI",sWebLanguage)%></option>
+		                    <%
+		           		}
+		              	
                     	if(MedwanQuery.getInstance().getConfigInt("enableBurundi",0)==1){
 		                    %>
 	                            <option value="hmk" <%=defaultmodel.equalsIgnoreCase("hmk")?"selected":""%>><%=getTranNoLink("web","hmkmodel",sWebLanguage)%></option>

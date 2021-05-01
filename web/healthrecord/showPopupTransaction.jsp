@@ -21,5 +21,5 @@
     }
 %>
 <script>
-	window.location.href="<c:url value="/"/><%=MedwanQuery.getInstance().getForward(transactiontype).replaceAll("main.do","popup.jsp")+customexamtype%>&be.mxs.healthrecord.transaction_id=<%=transactionid%>&be.mxs.healthrecord.server_id=<%=serverid%>&PopupHeight=600&readonly=true&nobuttons=1";
+	window.location.href="<c:url value="/"/><%=MedwanQuery.getInstance().getForward(transactiontype).replaceAll("main.do","popup.jsp")+customexamtype%>&title=<%=SH.c(request.getParameter("title"))%>&be.mxs.healthrecord.transaction_id=<%=transactionid%>&be.mxs.healthrecord.server_id=<%=serverid%>&PopupHeight=600&readonly=true&nobuttons=1";
 </script>

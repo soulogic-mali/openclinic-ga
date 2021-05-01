@@ -647,6 +647,9 @@
 	    openPopup("/pacs/studyList.jsp&ts=<%=getTs()%>",800,400).focus();
 	  }
 	    
+  function downloadLastBackup(){
+	    window.open('<%=SH.cs("lastbackupfile","")%>');
+  }
   function xmlReport(fname){
 	    var URL = "<c:url value='util/createXMLReportPdf.jsp'/>?filename="+fname;
 	    window.open(URL);
@@ -722,6 +725,9 @@
     else if(barcode.substring(0,1)=="B"){
         window.location.href = "<c:url value='/main.do'/>?Page=cnts/loadBloodgift.jsp&ts=<%=ScreenHelper.getTs()%>&giftid="+barcode.substring(1);
     }
+    else if(barcode.substring(0,1)=="C"){
+        window.location.href = "<c:url value='/main.do'/>?Page=cnts/loadBloodBagHistory.jsp&ts=<%=ScreenHelper.getTs()%>&pocketid="+barcode.substring(1);
+    }
     else if(barcode.substring(0,1)=="1"){
       alert("OldBarcode = "+oldbarcode);
       alert("Barcode = "+barcode);
@@ -759,6 +765,13 @@
 	  var giftid = window.prompt("<%=getTranNoLink("web","bloodgiftid",sWebLanguage)%>");
 	  if(giftid.length>0){
 		  readBarcode2("B"+giftid);
+	  }
+  }
+
+  function findBloodBag(){
+	  var giftid = window.prompt("<%=getTranNoLink("web","bloodbagid",sWebLanguage)%>");
+	  if(giftid.length>0){
+		  readBarcode2("C"+giftid);
 	  }
   }
 

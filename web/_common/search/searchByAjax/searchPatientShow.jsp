@@ -20,6 +20,7 @@
 
     boolean bIsUser = checkString(request.getParameter("isUser")).equalsIgnoreCase("yes");
     boolean displayImmatNew = !checkString(request.getParameter("displayImmatNew")).equalsIgnoreCase("no");
+    boolean bHasTracnet = checkString(request.getParameter("hasTracnetId")).equalsIgnoreCase("yes");
 
     String sSelectLastname  = ScreenHelper.normalizeSpecialCharacters(sFindLastname),
            sSelectFirstname = ScreenHelper.normalizeSpecialCharacters(sFindFirstname);
@@ -102,6 +103,9 @@
 	                vPersons.addElement(hInfo);
     			}
     		}
+    	}
+       	else if (bHasTracnet){
+    		vPersons = AdminPerson.searchVirtualInvoicingAccounts(sSelectLastname, sSelectFirstname, sFindGender, sFindDOB, bIsUser);
     	}
        	else{
     		vPersons = AdminPerson.searchPatients(sSelectLastname, sSelectFirstname, sFindGender, sFindDOB, bIsUser);

@@ -3,7 +3,8 @@
 		<Menu labelid="administration" accessrights="patient.administration.select" url="/patientdata.do" patientselected="true"/>
         <Menu labelid="new" accessrights="patient.administration.add" url="/patientnew.do?PatientNew=true"/>
 		<Menu labelid="clear" accessrights="patient.administration.select" url="/start.do?PatientNew=true"/>
-		<Menu labelid="search_bloodgift" enableparameter="enableBloodbank" accessrights="patient.administration.add" url="javascript:findBloodGift();"/>
+		<Menu labelid="search_bloodgift" enableparameter="enableBloodbank" accessrights="patient.administration.select" url="javascript:findBloodGift();"/>
+		<Menu labelid="search_bloodbag" enableparameter="enableBloodbank" accessrights="patient.administration.select" url="javascript:findBloodBag();"/>
         <Menu labelid="printPatientCard" accessrights="patient.administration.select" url="javascript:printPatientCard();" patientselected="true"/>
         <Menu labelid="printBloodDonorCard" accessrights="patient.administration.select" url="javascript:printBloodDonorCard();" patientselected="true"/>
         <Menu labelid="loadPicture" accessrights="patient.administration.select" url="javascript:storePicture();" patientselected="true"/>

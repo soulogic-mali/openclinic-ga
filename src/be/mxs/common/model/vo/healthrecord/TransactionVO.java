@@ -228,6 +228,10 @@ public class TransactionVO extends IObjectReference implements Serializable, IId
     	return MedwanQuery.getInstance().loadTransaction(serverid,objectid);
     }
 
+    public static TransactionVO get(String uid){
+    	return MedwanQuery.getInstance().loadTransaction(Integer.parseInt(uid.split("\\.")[0]),Integer.parseInt(uid.split("\\.")[1]));
+    }
+
     public static TransactionVO get(String serverid,String objectid){
     	return MedwanQuery.getInstance().loadTransaction(Integer.parseInt(serverid),Integer.parseInt(objectid));
     }

@@ -34,6 +34,9 @@
   <%=writeTableHeader("web.manage","manageDHIS2",sWebLanguage,"doBack();")%>
   <table width="100%" class="menu" cellspacing="0" cellpadding="1">
 	<%
+		out.println("<tr>");
+		out.println("<td valign='middle'>enableDHIS2</td><td valign='middle'><input class='text' type='radio' "+(SH.cs("enableDHIS2","0").equalsIgnoreCase("0")?"checked":"")+" name='config$enableDHIS2' value='0'/>0 <input class='text' type='radio' "+(SH.cs("enableDHIS2","0").equalsIgnoreCase("1")?"checked":"")+" name='config$enableDHIS2' value='1'/>1</td></tr>");
+		out.println("<tr><td colspan='2'><hr/></td></tr>");
 		out.println(writeConfigRow("dhis2_server_uri","https://play.dhis2.org/demo"));
 		out.println(writeConfigRow("dhis2_server_api","/api"));
 		out.println(writeConfigRow("dhis2_server_port","443"));

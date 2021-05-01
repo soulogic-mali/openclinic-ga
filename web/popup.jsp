@@ -304,6 +304,11 @@
 <%-- End Floating layer -------------------------------------------------------------------------%>
 <body style="margin:2px;" onload="resizeMe();">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" id="popuptbl">
+    	<% if(SH.c(request.getParameter("title")).length()>0){ %>
+    	<tr>
+    		<td><font style='font-size: 15px'><%=request.getParameter("title") %><BR><BR></font></td>
+    	</tr>
+    	<% } %>
     <tr>
         <td colspan="3" style="vertical-align:top;" height="100%">
             <%

@@ -32,6 +32,9 @@
 		<parameter name="enableLabrev" default="1" type="radio" options="0;1">
 		    <description language="en">Wether to display the user who registered, executed and validated each lab analysis on a lab order</description>
 		</parameter>
+		<parameter name="enableDHIS2" default="0" type="radio" options="0;1">
+		    <description language="en">Wether to activate the DHIS2 interface</description>
+		</parameter>
 		<parameter name="patientLabelWidth" default="360" type="integer" unit="pixels">
 		    <description language="en"></description>
 		</parameter>
@@ -84,7 +87,7 @@
 		<parameter name="showServiceInPatientList" default="on" type="radio" options="on;off">
 		    <description language="en">Wether to show the patients' service and bed when searching patients</description>
 		</parameter>
-		<parameter name="socialServiceID" default="CNAR.SOC">
+		<parameter name="socialServiceID" default="" type="service">
 		    <description language="en">[service].[devision]; what service the social-service manager should be searched in</description>
 		</parameter>
 		<parameter name="topxadmissiondiagnosisfrequencies" default="10" type="integer">
@@ -210,7 +213,7 @@
 		<parameter name="defaultAdmissionManager" default="" type="integer">
 		    <description language="en">Userid; defines the user who is 'defaultAdmissionManager'</description>
 		</parameter>
-		<parameter name="defaultAdmissionService" default="">
+		<parameter name="defaultAdmissionService" default="" type="service">
 		    <description language="en">ServiceId; defines the service which is 'defaultAdmissionService'</description>
 		</parameter>
 		<parameter name="DefaultFromMailAddress" default="">
@@ -303,7 +306,7 @@
 		    <description language="en">The application can serve multiple projects (with specific specifications);
 		    each user can be permitted acces to all (default) or just certain projects</description>
 		</parameter>		
-		<parameter name="socialServiceID" default="CNAR.SOC"/>
+		<parameter name="socialServiceID" default="" type="service"/>
 		<parameter name="localMoney" default="RWF"/>
 		<parameter name="fillUpSearchServiceScreens" default="on" type="radio" options="on;off">
 		    <description language="en">When searching services, specifying no search-criteria will show all services</description>
@@ -466,7 +469,7 @@
 		<parameter name="adt.bed.imagewidth" default="250" type="integer" class="advanced" unit="px"/>
 		<parameter name="defaultEncounterCategory" default="A"/>
 		<parameter name="defaultEncounterOrigin" default=""/>
-		<parameter name="defaultAdmissionService" default=""/>
+		<parameter name="defaultAdmissionService" default="" type="service"/>
 		<parameter name="defaultAdmissionManager" default=""/>
 		<parameter name="defaultEncounterType" default="visit"/>
 		<parameter name="encountertypes" default="admission,visit">
@@ -914,14 +917,29 @@
 			<description language="en">The number of days drug prescriptions are being considered 'active prescriptions'
 			and therefore are shown on the 'Medical Summary' home page.</description>
 		</parameter>
-		<parameter name="centralPharmacyCode" default="">
+		<parameter name="centralPharmacyCode" default="" type="service">
 		    <description language="en">This pharmacy will be the default stock-supplier or -destination</description>
+		</parameter>
+		<parameter name="pharmaSyncServerURL" default="">
+		    <description language="en">The server to which operations will be posted to and retrieved from for service stocks that must be synchronized</description>
+		</parameter>
+		<parameter name="defaultPharmaSyncUser" default="">
+		    <description language="en">The username to link to automatded pharamcy synchronization transactions</description>
+		</parameter>
+		<parameter name="pharmaSyncServerURLUsername" default="">
+		    <description language="en">The username for connecting to the server to which operations will be posted to and retrieved from for service stocks that must be synchronized</description>
+		</parameter>
+		<parameter name="pharmaSyncServerURLPassword" default="" type="password">
+		    <description language="en">The password for connecting to server to which operations will be posted to and retrieved from for service stocks that must be synchronized</description>
 		</parameter>
 		<parameter name="defaultMedicationDeliveryType" default="medicationdelivery.typeb1"/>
 		<parameter name="forceservicestockforproductstockoperations" type="select" default="medicationdelivery.2" options="medicationdelivery.1;medicationdelivery.2;medicationdelivery.3;medicationdelivery.4"/>
 		<parameter name="forcepatientforproductstockoperations" default="medicationreceipt.2">
 		    <description language="en">1="Reception from other stock", 2="Reception from a patient", 3="Correction after inventory", 4="Reception from external provider";
 		    Destinationtype will be forced to 'patient'</description>
+		</parameter>
+		<parameter name="defaultHideZeroLevelProductStocks" default="1" type="radio" options="0;1">
+		    <description language="en">Wether to show the products without available stocks in product stock list</description>
 		</parameter>
 		<parameter name="showProductCategory" default="1" type="radio" options="0;1">
 		    <description language="en">Wether to show the products' category (subgroup) when managing products</description>
@@ -1055,7 +1073,7 @@
 		<parameter name="InsuranceAgentAcceptationNeededFor" default="" class="advanced" modus="readonly"/>
 		<parameter name="defaultInvoiceStatus" default="open"/>
 		<parameter name="multiplePatientInvoiceSeries" default=""/>
-		<parameter name="activeInsuranceServiceUID" default="INS" class="advanced">
+		<parameter name="activeInsuranceServiceUID" default="" class="advanced" type="service">
 			<description language="en">The OpenInsurance software keeps the last selected insurance company in memory
 			when coding patient encounters. The value is then used for preventing from having to re-select the same
 			insurance company as long as they code data for the same company.</description>
@@ -1534,6 +1552,12 @@
 		<parameter name="cntsDefaultLocation" default="CNTS">
 		    <description language="en">Department code (from) where blood products are stored by default</description>
 		</parameter>
+		<parameter name="virtualInvoicingDefaultEncounterServiceUID" default="" type="service">
+		    <description language="en">Service UID to be used when a new encounter is created for a virtual invoicing account</description>
+		</parameter>
+		<parameter name="bloodbankExpiryWarningPeriodInDays" default="14">
+		    <description language="en">A red color gradient is used for showing blood products that will expire within this number of days</description>
+		</parameter>
 		<parameter name="cntsDefaultBloodExpiryDays" default="90">
 		    <description language="en">Number of days a blood donation can be used to produce blood derivates</description>
 		</parameter>
@@ -1583,6 +1607,9 @@
 		    <description language="en">Password for connecting to the reference MySQL server</description>
 		</parameter>
 		<parameter name="Local MySQL server" class="title"/>
+		<parameter name="offlineLocalPrefix" default="">
+		    <description language="en">Prefix to prepend to locally generated patient identifiers</description>
+		</parameter>
 		<parameter name="offlineLocalMySQLServerIPAddress" default="127.0.0.1">
 		    <description language="en">IP address of the local MySQL server</description>
 		</parameter>

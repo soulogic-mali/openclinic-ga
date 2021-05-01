@@ -14,7 +14,7 @@
 		out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_check.png'/> Backup taken successfully<br/><br/>");
 	} 
 	else {
-		out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_error.gif'/> Could not take mysql backup<br/><br/>");
+		out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_error.gif'/> Could not take mysql backup ["+executeCmd.replaceAll(SH.cs("offlineReferenceMySQLServerPassword",""),"*****")+"]<br/><br/>");
 	}
 	out.println("<b>Loading disk file into local database...</b><br/>");
 	out.flush();
@@ -29,6 +29,6 @@
 		out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_check.png'/> Backup restored successfully<br/><br/>");
 	} 
 	else {
-		out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_error.gif'/> Could not restore mysql backup<br/><br/>");
+		out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_error.gif'/> Could not restore mysql backup ["+executeCmd.replaceAll(SH.cs("offlineLocalMySQLServerPassword",""),"*****")+"]<br/><br/>");
 	}
 %>

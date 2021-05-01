@@ -30,8 +30,17 @@ public class ServiceStock extends OC_Object{
     private int nosync=1;
     private int hidden;
     private int validateoutgoingtransactions;
+    private String virtualInvoicingAccount;
     
-    public Vector getValidationUsers() {
+    public String getVirtualInvoicingAccount() {
+		return virtualInvoicingAccount;
+	}
+
+	public void setVirtualInvoicingAccount(String virtualInvoicingAccount) {
+		this.virtualInvoicingAccount = virtualInvoicingAccount;
+	}
+
+	public Vector getValidationUsers() {
         User user;
         if(validationUserIds!=null && validationUserIds.length() > 0){
             StringTokenizer idTokenizer = new StringTokenizer(validationUserIds,"$");
@@ -492,6 +501,7 @@ public class ServiceStock extends OC_Object{
                 stock.setVersion(rs.getInt("OC_STOCK_VERSION"));
                 stock.setHidden(rs.getInt("OC_STOCK_HIDDEN"));
                 stock.setValidateoutgoingtransactions(rs.getInt("OC_STOCK_VALIDATEOUTGOING"));
+                stock.setVirtualInvoicingAccount(rs.getString("OC_STOCK_VIRTUALINVOICINGACCOUNT"));
             } 
             else{
                 throw new Exception("ERROR : SERVICESTOCK "+stockUid+" NOT FOUND");
@@ -589,8 +599,9 @@ public class ServiceStock extends OC_Object{
                           "  OC_STOCK_NAME, OC_STOCK_SERVICEUID, OC_STOCK_BEGIN, OC_STOCK_END,"+
                           "  OC_STOCK_STOCKMANAGERUID, OC_STOCK_AUTHORIZEDUSERS, OC_STOCK_DEFAULTSUPPLIERUID,"+
                           "  OC_STOCK_ORDERPERIODINMONTHS, OC_STOCK_CREATETIME, OC_STOCK_UPDATETIME,"+
-                          "  OC_STOCK_UPDATEUID, OC_STOCK_VERSION, OC_STOCK_NOSYNC, OC_STOCK_HIDDEN,OC_STOCK_DISPENSINGUSERS,OC_STOCK_VALIDATEOUTGOING,OC_STOCK_VALIDATIONUSERS,OC_STOCK_RECEIVINGUSERS)"+
-                          " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,?,?,?,?,?)";
+                          "  OC_STOCK_UPDATEUID, OC_STOCK_VERSION, OC_STOCK_NOSYNC, OC_STOCK_HIDDEN,OC_STOCK_DISPENSINGUSERS,"
+                          + "OC_STOCK_VALIDATEOUTGOING,OC_STOCK_VALIDATIONUSERS,OC_STOCK_RECEIVINGUSERS,OC_STOCK_VIRTUALINVOICINGACCOUNT)"+
+                          " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,?,?,?,?,?,?)";
                 ps = oc_conn.prepareStatement(sSelect);
 
                 // set new servicestockuid
@@ -671,6 +682,9 @@ public class ServiceStock extends OC_Object{
                 if(receivingUserIds.length() > 0) ps.setString(19,receivingUserIds.toString());
                 else                               ps.setNull(19,Types.VARCHAR);
 
+                if(virtualInvoicingAccount.length() > 0) ps.setString(20,virtualInvoicingAccount.toString());
+                else                               ps.setNull(20,Types.VARCHAR);
+
                 ps.executeUpdate();
             }
             else{
@@ -680,7 +694,9 @@ public class ServiceStock extends OC_Object{
                 sSelect = "UPDATE OC_SERVICESTOCKS SET OC_STOCK_NAME=?, OC_STOCK_SERVICEUID=?,"+
                           "  OC_STOCK_BEGIN=?, OC_STOCK_END=?, OC_STOCK_STOCKMANAGERUID=?,"+
                           "  OC_STOCK_AUTHORIZEDUSERS=?, OC_STOCK_DEFAULTSUPPLIERUID=?, OC_STOCK_ORDERPERIODINMONTHS=?,"+
-                          "  OC_STOCK_UPDATETIME=?, OC_STOCK_UPDATEUID=?, OC_STOCK_VERSION=(OC_STOCK_VERSION+1), OC_STOCK_NOSYNC=?, OC_STOCK_HIDDEN=?, OC_STOCK_DISPENSINGUSERS=?, OC_STOCK_VALIDATEOUTGOING=?, OC_STOCK_VALIDATIONUSERS=?, OC_STOCK_RECEIVINGUSERS=?"+
+                          "  OC_STOCK_UPDATETIME=?, OC_STOCK_UPDATEUID=?, OC_STOCK_VERSION=(OC_STOCK_VERSION+1), OC_STOCK_NOSYNC=?, OC_STOCK_HIDDEN=?, "
+                          + "OC_STOCK_DISPENSINGUSERS=?, OC_STOCK_VALIDATEOUTGOING=?, OC_STOCK_VALIDATIONUSERS=?, OC_STOCK_RECEIVINGUSERS=?,"
+                          + "OC_STOCK_VIRTUALINVOICINGACCOUNT=?"+
                           " WHERE OC_STOCK_SERVERID=? AND OC_STOCK_OBJECTID=?";
                 ps = oc_conn.prepareStatement(sSelect);
                 ps.setString(1,this.getName());
@@ -743,7 +759,7 @@ public class ServiceStock extends OC_Object{
                 
                 if(validationUserIds.length() > 0) ps.setString(15,validationUserIds.toString());
                 else                               ps.setNull(15,Types.VARCHAR);
-                // where
+
                 // receiving users
                 StringBuffer receivingUserIds = new StringBuffer();
                 for(int i=0; i<this.getReceivingUsers().size(); i++){
@@ -753,8 +769,11 @@ public class ServiceStock extends OC_Object{
                 if(receivingUserIds.length() > 0) ps.setString(16,receivingUserIds.toString());
                 else                               ps.setNull(16,Types.VARCHAR);
                 
-                ps.setInt(17,Integer.parseInt(this.getUid().substring(0,this.getUid().indexOf("."))));
-                ps.setInt(18,Integer.parseInt(this.getUid().substring(this.getUid().indexOf(".")+1)));
+                if(virtualInvoicingAccount.length() > 0) ps.setString(17,virtualInvoicingAccount.toString());
+                else                               ps.setNull(17,Types.VARCHAR);
+                
+                ps.setInt(18,Integer.parseInt(this.getUid().substring(0,this.getUid().indexOf("."))));
+                ps.setInt(19,Integer.parseInt(this.getUid().substring(this.getUid().indexOf(".")+1)));
                 ps.executeUpdate();
             }
         }
@@ -1301,18 +1320,7 @@ public class ServiceStock extends OC_Object{
             // execute
             rs = ps.executeQuery();
             while(rs.next()){
-                ServiceStock stock = new ServiceStock();
-                
-                stock.setUid(rs.getString("OC_STOCK_SERVERID")+"."+rs.getString("OC_STOCK_OBJECTID"));
-                stock.setName(rs.getString("OC_STOCK_NAME"));
-                stock.setServiceUid(rs.getString("OC_STOCK_SERVICEUID"));
-                stock.setAuthorizedUserIds(rs.getString("OC_STOCK_AUTHORIZEDUSERS"));
-                stock.setReceivingUserIds(rs.getString("OC_STOCK_RECEIVINGUSERS"));
-                stock.setDispensingUserIds(rs.getString("OC_STOCK_DISPENSINGUSERS"));
-                stock.setValidationUserIds(rs.getString("OC_STOCK_VALIDATIONUSERS"));
-                stock.setValidateoutgoingtransactions(rs.getInt("OC_STOCK_VALIDATEOUTGOING"));
-                
-                foundObjects.add(stock);
+                foundObjects.add(ServiceStock.get(rs.getString("OC_STOCK_SERVERID")+"."+rs.getString("OC_STOCK_OBJECTID")));
             }
         }
         catch(Exception e){

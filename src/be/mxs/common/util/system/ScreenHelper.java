@@ -3126,6 +3126,10 @@ public static String removeAccents(String sTest){
     	return array;
     }
     
+    public static double dateDiffInDays(java.util.Date begin, java.util.Date end) {
+    	return (end.getTime()-begin.getTime())/SH.getTimeDay();
+    }
+    
     public static boolean arrayContains(String array,String value,String separator){
     	String[] options = array.split(separator);
     	for(int n=0;n<options.length;n++){
@@ -4036,6 +4040,10 @@ public static String removeAccents(String sTest){
     //--- GET SQL TIME ----------------------------------------------------------------------------
     public static java.sql.Timestamp getSQLTime(){
         return new java.sql.Timestamp(new java.util.Date().getTime()); // now
+    }
+
+    public static java.sql.Timestamp getSQLTimestamp(String sTime){
+        return new java.sql.Timestamp(parseDate(sTime).getTime()); // now
     }
 
     //--- GET SQL TIME STAMP ----------------------------------------------------------------------

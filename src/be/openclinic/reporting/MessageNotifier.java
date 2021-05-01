@@ -29,6 +29,8 @@ import be.mxs.common.util.tools.ProcessFiles;
 import be.mxs.common.util.tools.SendSMS;
 import be.openclinic.adt.Planning;
 import be.openclinic.medical.*;
+import be.openclinic.pharmacy.ProductStockOperation;
+import be.openclinic.pharmacy.RemotePharmacy;
 import be.openclinic.system.SH;
 import be.openclinic.system.SystemInfo;
 import be.mxs.common.model.vo.healthrecord.*;
@@ -180,6 +182,28 @@ public class MessageNotifier {
 						Debug.println("Error sending SMPP with messageid "+messageId+" to "+sentto);
 					}
 				}
+				else if(transport.equalsIgnoreCase("http")){
+					if(messageType.equalsIgnoreCase("pharmasync")) {
+						try {
+							if(ProductStockOperation.postOperationToSyncServer(data)) {
+								setSpoolMessageSent(messageId,transport);
+							}
+						}
+						catch(Exception f) {
+							f.printStackTrace();
+						}
+					}
+					else if(messageType.equalsIgnoreCase("pharmainit")) {
+						try {
+							if(RemotePharmacy.initializeRemoteStock(data)) {
+								setSpoolMessageSent(messageId,transport);
+							}
+						}
+						catch(Exception f) {
+							f.printStackTrace();
+						}
+					}
+				}
 			}
 		}
 		catch(Exception e){
@@ -219,6 +243,9 @@ public class MessageNotifier {
 		}
 	}
 	
+	public static void SpoolMessage(String transport,String data, String sentto, String type, String language) {
+		SpoolMessage(MedwanQuery.getInstance().getOpenclinicCounter("OC_MESSAGES"),transport, data, sentto, type, language);
+	}
 	public static void SpoolMessage(int messageId, String transport, String data, String sentto, String type, String language){
 		SpoolMessage(messageId, transport, data, sentto, type, language, new java.util.Date());
 	}

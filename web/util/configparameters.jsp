@@ -241,6 +241,15 @@
 									out.print("<input type='password' class='text' size='60' name='par_"+sName+"' id='par_"+sName+"' value='"+sStoredValue+"' "+(sStoredValue.length()==0&&sDefaultValue.length()>0?"style='background:#ff9999'":"")+" "+(sModus.equalsIgnoreCase("readonly")?"readonly":"")+"/>");
 									if(sUnit.length() > 0) out.print(" "+sUnit);
 								}
+								else if(sType.equalsIgnoreCase("service")){
+									%>
+		                            <input type="hidden" name="par_<%=sName %>" id="par_<%=sName %>" value="<%=sStoredValue%>">
+		                            <input class="text" type="text" name="par_<%=sName %>Name" id="par_<%=sName %>Name" readonly size="60" value="<%=getTranNoLink("service",sStoredValue,sWebLanguage)%>" <%=sStoredValue.length()==0&&sDefaultValue.length()>0?"style='background:#ff9999'":""%>>
+		                           
+		                            <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("Web","select",sWebLanguage)%>" onclick="searchService('par_<%=sName %>','par_<%=sName %>Name');">
+		                            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="transactionForm.par_<%=sName %>.value='';transactionForm.par_<%=sName %>Name.value='';">
+									<%
+								}
 								else{
 									out.print("<input type='text' class='text' size='60' name='par_"+sName+"' id='par_"+sName+"' value='"+sStoredValue+"' "+(sStoredValue.length()==0&&sDefaultValue.length()>0?"style='background:#ff9999'":"")+" "+(sModus.equalsIgnoreCase("readonly")?"readonly":"")+"/>");
 									if(sUnit.length() > 0) out.print(" "+sUnit);
@@ -284,6 +293,10 @@
 <a name="bottom">&nbsp;</a>
 
 <script>
+function searchService(serviceUidField,serviceNameField){
+    openPopup("/_common/search/searchService.jsp&ts=<%=getTs()%>&VarSelectDefaultStay=true&VarCode="+serviceUidField+"&VarText="+serviceNameField);
+    document.getElementById(serviceNameField).focus();
+}
 function expandAll(){
   for(n=0; n<document.all.length; n++){
     if((document.all[n].id+"").indexOf('gr_')==0){

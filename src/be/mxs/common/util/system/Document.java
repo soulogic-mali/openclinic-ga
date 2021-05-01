@@ -19,7 +19,7 @@ public class Document {
     public static String toXML(Integer personId,TransactionVO transactionVO){
         StringBuffer sXML=new StringBuffer();
         sXML.append("<Document personId='"+personId+"'>");
-        sXML.append(transactionVO.toXML());
+        sXML.append(transactionVO.toXml());
         sXML.append("</Document>");
         return sXML.toString();
     }

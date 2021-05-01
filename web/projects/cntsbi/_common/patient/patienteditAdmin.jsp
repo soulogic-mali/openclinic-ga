@@ -136,10 +136,9 @@
  	      		MedwanQuery.getInstance().getConfigInt("showAdminGender",1)==0?"<input type='hidden' name='Gender' value='"+checkString(activePatient.gender)+"'/>":
     		  	normalRow(request,"Web","gender","Gender","Admin",sWebLanguage)+sGender+"</select> "+sBioGender+"</td></tr>"
     	  )
-   	      // Tracnet ID
+   	      // Virtual invoicing account
           +(
-          		MedwanQuery.getInstance().getConfigInt("showAdminTracnetID",1)==0?"<input type='hidden' name='TracnetID' value='"+checkString(activePatient.getID("tracnetid"))+"'/>":
-        		inputRow(request,"Web","tracnetid","TracnetID","Admin",checkString((String)activePatient.adminextends.get("tracnetid")),"N",true,false,sWebLanguage)
+        		normalRow(request,"Web","virtualinvoicingaccount","TracnetID","Admin",sWebLanguage)+"<input type='checkbox' name='TracnetID' id='TracnetID' value='1' "+("1".equalsIgnoreCase((String)activePatient.adminextends.get("tracnetid"))?"checked":"")+"></td></tr>"
            )
    	      // Comment1
           +(

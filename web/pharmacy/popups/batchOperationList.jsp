@@ -58,7 +58,7 @@ String productStockUid=checkString(request.getParameter("productStockUid"));
 						thirdparty=	productStockOperation.getSourceDestination().getObjectUid();
 						AdminPerson person=AdminPerson.getAdminPerson(thirdparty);
 						if(person!=null){
-							thirdparty=person.lastname.toUpperCase()+", "+person.firstname.toUpperCase();
+							thirdparty="[<b>"+person.personid+"</b>] "+person.lastname.toUpperCase()+", "+person.firstname.toUpperCase();
 						}
 					}
 					out.println("<tr><td class='admin2'>&lt;- "+getTranNoLink("productstockoperation.medicationreceipt",productStockOperation.getDescription(),sWebLanguage)+"</td>");
@@ -80,7 +80,7 @@ String productStockUid=checkString(request.getParameter("productStockUid"));
 					if (productStockOperation.getSourceDestination()!=null && productStockOperation.getSourceDestination().getObjectType()!=null && productStockOperation.getSourceDestination().getObjectType().equalsIgnoreCase("patient")){
 						AdminPerson person=AdminPerson.getAdminPerson(thirdparty);
 						if(person!=null){
-							thirdparty=person.lastname.toUpperCase()+", "+person.firstname.toUpperCase();
+							thirdparty="[<b>"+person.personid+"</b>] "+person.lastname.toUpperCase()+", "+person.firstname.toUpperCase();
 						}
 						out.println("<tr><td class='admin2'>-&gt; "+getTranNoLink("productstockoperation.medicationdelivery",productStockOperation.getDescription(),sWebLanguage)+"</td>");
 					}

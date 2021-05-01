@@ -52,6 +52,11 @@ public class SH extends ScreenHelper {
     	return new RandomStringGenerator.Builder().withinRange(pairs).build().generate(SH.ci("mpiGeneratedPatientPasswordLength", 8));
     }
 
+    public static String getRandomPassword(int length) {
+		char [][] pairs = {{'a','z'},{'0','9'}};
+    	return new RandomStringGenerator.Builder().withinRange(pairs).build().generate(length);
+    }
+
     public static Connection getOpenClinicConnection() {
     	return MedwanQuery.getInstance().getOpenclinicConnection();
     }

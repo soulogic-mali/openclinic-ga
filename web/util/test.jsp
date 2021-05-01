@@ -1,16 +1,19 @@
-<%@page import="be.openclinic.medical.*"%>
+<%@page import="be.openclinic.pharmacy.RemotePharmacy"%>
+<%@page import="be.openclinic.medical.*,be.openclinic.pharmacy.*"%>
 <%@page import="java.util.*"%>
 <%@page import="org.apache.http.client.utils.URIBuilder"%>
 <%@page import="org.apache.commons.httpclient.*,org.apache.commons.httpclient.methods.*,be.openclinic.system.*"%>
+<%@page errorPage="/includes/error.jsp"%>
+<%@include file="/includes/validateUser.jsp"%>
 <%
-	response.setContentType("application/octet-stream; charset=windows-1252");
-	response.setHeader("Content-Disposition","Attachment;Filename=\"OpenClinicStatistic"+new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".csv\"");
-	
-	ServletOutputStream os = response.getOutputStream();
-	byte[] b = BloodGift.getCsvReport(request.getParameter("begin"), request.getParameter("end")).toString().getBytes("ISO-8859-1");
-	for(int n=0; n<b.length; n++){
-	    os.write(b[n]);
+
+RemotePharmacy.getPharmacyOperations(ServiceStock.get("1.10"),activeUser.userid);
+/*
+System.out.println(r.asXML());
+Iterator<Element> messages = r.elementIterator("message");
+	while(messages.hasNext()){
+		RemotePharmacy.processPharmacyOperation("1.10", messages.next(), activeUser.userid);
 	}
-	os.flush();
-	os.close();
+*/
+
 %>

@@ -432,6 +432,11 @@
 	    openPopup("/util/uploadDocuments.jsp&ts=<%=getTs()%>",400,400).focus();
 	  }
 	    
+  function downloadLastBackup(){
+	    window.open('<%=MedwanQuery.getInstance().getConfigString("lastbackupfile","")%>');
+	  }
+
+
   function readBarcode2(barcode){
     var transform = "<%=MedwanQuery.getInstance().getConfigString("CCDKeyboardTransformString","à&é\\\"'(§è!ç")%>";
     var oldbarcode = barcode;

@@ -4,16 +4,29 @@ import be.openclinic.adt.Encounter;
 import be.openclinic.common.OC_Object;
 import be.openclinic.common.ObjectReference;
 import be.openclinic.medical.Prescription;
+import be.openclinic.reporting.MessageNotifier;
+import be.openclinic.system.SH;
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.Pointer;
 import be.mxs.common.util.system.ScreenHelper;
 import be.mxs.common.util.system.Debug;
 import be.openclinic.finance.*;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Vector;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
+import java.io.IOException;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -456,7 +469,7 @@ public class ProductStockOperation extends OC_Object{
     }
 
     public String store(){
-    	return store(true);
+    	return store(true,true);
     }
     
     public static int getProducedQuantity(int nProductionOrderId,String sProductStockUid){
@@ -643,8 +656,150 @@ public class ProductStockOperation extends OC_Object{
         return null;
 
     }
-    //--- STORE -----------------------------------------------------------------------------------
+    
+    public boolean postOperationToSyncServer() {
+		//Send data to destination server
+		HttpClient client = new HttpClient();
+		PostMethod method = new PostMethod(SH.cs("pharmaSyncServerURL",""));
+
+		Element message = DocumentHelper.createElement("message");
+		message.addAttribute("objecttype", "operation");
+		message.addAttribute("quantity", getUnitsChanged()+"");
+        if(this.getDescription().indexOf("delivery") > -1 || this.getDescription().indexOf("correctionout")>-1){
+        	message.addAttribute("type", "remove");
+        }
+        else if(this.getDescription().indexOf("receipt") > -1 || this.getDescription().indexOf("correctionin")>-1){
+        	message.addAttribute("type", "add");
+        }
+        message.addElement("reference").addAttribute("localoperationid",getProductStock().getUid());
+        Element product=message.addElement("product");
+        product.addAttribute("code",SH.c(getProductStock().getProduct().getCode()));
+        product.addAttribute("atccode",SH.c(getProductStock().getProduct().getAtccode()));
+        product.addAttribute("rxnormcode",SH.c(getProductStock().getProduct().getRxnormcode()));
+        product.addElement("name").setText(getProductStock().getProduct().getName());
+        product.addElement("dose").setText(getProductStock().getProduct().getDose());
+        product.addElement("unit").setText(getProductStock().getProduct().getUnit());
+        product.addElement("unitprice").setText(getProductStock().getProduct().getUnitPrice()+"");
+        product.addElement("packageunits").setText(getProductStock().getProduct().getPackageUnits()+"");
+        
+        Element batch=message.addElement("batch");
+        batch.addAttribute("number",SH.c(getBatchNumber()));
+        batch.addAttribute("expiry",SH.formatDate(getBatchEnd()));
+        
+        if(this.getDescription().indexOf("delivery") > -1 && getSourceDestination().getObjectType().equalsIgnoreCase("patient") && getSourceDestination().getObjectUid().length()>0) {
+        	//This is a delivery to a patient, also register the patient information
+        	AdminPerson patient = AdminPerson.getAdminPerson(getSourceDestination().getObjectUid());
+        	if(patient!=null && patient.hasValidUid()) {
+        		Element person = message.addElement("patient");
+        		person.addAttribute("localid", patient.personid);
+        		person.addElement("dateofbirth").setText(patient.dateOfBirth);
+        		person.addElement("gender").setText(patient.gender);
+        		person.addElement("lastname").setText(patient.lastname);
+        		person.addElement("firstname").setText(patient.firstname);
+        	}
+        }
+        
+		NameValuePair[] nvp = new NameValuePair[3];
+		nvp[0]= new NameValuePair("uid",SH.cs("serviceStockUID."+this.getProductStock().getServiceStock().getUid(),""));
+		nvp[1]= new NameValuePair("xml",message.asXML());
+		nvp[2]= new NameValuePair("operation","store");
+		method.setQueryString(nvp);
+		String authStr = SH.cs("pharmaSyncServerURLUsername", "nil") + ":" + SH.cs("pharmaSyncServerURLPassword", "nil");
+		String authEncoded = Base64.getEncoder().encodeToString(authStr.getBytes());
+	    method.setRequestHeader("Authorization", "Basic "+authEncoded);
+		try{
+			int statusCode = client.executeMethod(method);
+			String sResponse=method.getResponseBodyAsString();
+			Document doc = org.dom4j.DocumentHelper.parseText(sResponse);
+			Element eResponse = doc.getRootElement();
+			if(eResponse.attributeValue("type").equalsIgnoreCase("pharmasync")){
+				//Operation was succesful
+			}
+			else if(eResponse.attributeValue("type").equalsIgnoreCase("error")){
+				//Operation was NOT succesful
+				return false;
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return true;
+    }
+    
+    public static boolean postOperationToSyncServer(String productStockOperationUid) throws Exception {
+    	ProductStockOperation operation = ProductStockOperation.get(productStockOperationUid);
+		//Send data to destination server
+		HttpClient client = new HttpClient();
+		PostMethod method = new PostMethod(SH.cs("pharmaSyncServerURL",""));
+
+		Element message = DocumentHelper.createElement("message");
+		message.addAttribute("objecttype", "operation");
+		message.addAttribute("quantity", operation.getUnitsChanged()+"");
+        if(operation.getDescription().indexOf("delivery") > -1 || operation.getDescription().indexOf("correctionout")>-1){
+        	message.addAttribute("type", "remove");
+        }
+        else if(operation.getDescription().indexOf("receipt") > -1 || operation.getDescription().indexOf("correctionin")>-1){
+        	message.addAttribute("type", "add");
+        }
+        message.addElement("reference").addAttribute("localoperationid",operation.getUid());
+        Element product=message.addElement("product");
+        product.addAttribute("code",SH.c(operation.getProductStock().getProduct().getCode()));
+        product.addAttribute("atccode",SH.c(operation.getProductStock().getProduct().getAtccode()));
+        product.addAttribute("rxnormcode",SH.c(operation.getProductStock().getProduct().getRxnormcode()));
+        product.addElement("name").setText(operation.getProductStock().getProduct().getName());
+        product.addElement("dose").setText(operation.getProductStock().getProduct().getDose());
+        product.addElement("unit").setText(operation.getProductStock().getProduct().getUnit());
+        product.addElement("unitprice").setText(operation.getProductStock().getProduct().getUnitPrice()+"");
+        product.addElement("packageunits").setText(operation.getProductStock().getProduct().getPackageUnits()+"");
+        
+        Element batch=message.addElement("batch");
+        batch.addAttribute("number",SH.c(operation.getBatchNumber()));
+        batch.addAttribute("expiry",SH.formatDate(operation.getBatchEnd()));
+        batch.addAttribute("date",SH.formatDate(operation.getDate()));
+        Debug.println("Posting for operation "+operation.getUid());
+        Debug.println("Operation description = "+operation.getDescription());
+        Debug.println("Operation objecttype = "+operation.getSourceDestination().getObjectType());
+        if(operation.getDescription().indexOf("delivery") > -1 && operation.getSourceDestination().getObjectType().equalsIgnoreCase("patient") && operation.getSourceDestination().getObjectUid().length()>0) {
+        	//This is a delivery to a patient, also register the patient information
+        	AdminPerson patient = AdminPerson.getAdminPerson(operation.getSourceDestination().getObjectUid());
+        	System.out.println("Adding patient "+patient.personid);
+        	if(patient!=null && SH.c(patient.personid).length()>0) {
+        		Element person = message.addElement("patient");
+        		person.addAttribute("localid", patient.personid);
+        		person.addElement("dateofbirth").setText(patient.dateOfBirth);
+        		person.addElement("gender").setText(patient.gender);
+        		person.addElement("lastname").setText(patient.lastname);
+        		person.addElement("firstname").setText(patient.firstname);
+        		person.addElement("telephone").setText(patient.getActivePrivate().telephone+" "+patient.getActivePrivate().mobile);
+        	}
+        }
+        Debug.println("XML = "+message.asXML());
+        
+		NameValuePair[] nvp = new NameValuePair[3];
+		nvp[0]= new NameValuePair("uid",SH.cs("serviceStockUID."+operation.getProductStock().getServiceStock().getUid(),""));
+		nvp[1]= new NameValuePair("xml",message.asXML());
+		nvp[2]= new NameValuePair("operation","store");
+		method.setQueryString(nvp);
+		String authStr = SH.cs("pharmaSyncServerURLUsername", "nil") + ":" + SH.cs("pharmaSyncServerURLPassword", "nil");
+		String authEncoded = Base64.getEncoder().encodeToString(authStr.getBytes());
+	    method.setRequestHeader("Authorization", "Basic "+authEncoded);
+		client.executeMethod(method);
+		String sResponse=method.getResponseBodyAsString();
+		Document doc = org.dom4j.DocumentHelper.parseText(sResponse);
+		Element eResponse = doc.getRootElement();
+		if(eResponse.attributeValue("type").equalsIgnoreCase("error")){
+			//Operation was NOT succesful
+			return false;
+		}
+		return true;
+    }
+
     public String store(boolean bStorePrestation){
+    	return store(bStorePrestation,true);
+    }
+
+    //--- STORE -----------------------------------------------------------------------------------
+    public String store(boolean bStorePrestation,boolean bStoreRemote){
         //First we will check if this operation is acceptable
     	boolean isnew=false;
         ProductStock productStock = this.getProductStock();
@@ -829,7 +984,7 @@ public class ProductStockOperation extends OC_Object{
             else if(this.getDescription().indexOf("receipt") > -1 || this.getDescription().indexOf("correctionin")>-1){
             	destinationBatchUid=this.getBatchUid();
             }
-
+            
             Debug.println("@@@ updated ProductStockLevel = "+productStock.getLevel());
             if(productStock.getSupplierUid()==null){
                 productStock.setSupplierUid("");
@@ -838,6 +993,11 @@ public class ProductStockOperation extends OC_Object{
             
            	BatchOperation.storeOperation(this.getUid(), sourceBatchUid, destinationBatchUid, this.getUnitsChanged(),new java.util.Date());
             
+            if(bStoreRemote && productStock.getServiceStock().getNosync()==0 && SH.cs("pharmaSyncServerURL","").length()>0) {
+            	//Put the operation in a processing queue
+            	MessageNotifier.SpoolMessage("http",this.getUid(),SH.cs("pharmaSyncServerURL",""),"pharmasync","en");
+            }
+
             //Generate prestation if indicated in product
             Product product = getProductStock().getProduct();
             if(bStorePrestation && getSourceDestination().getObjectType().equalsIgnoreCase("patient") && getSourceDestination().getObjectUid().length()>0 && product!=null && product.isAutomaticInvoicing() && product.getPrestationcode()!=null && product.getPrestationcode().length()>0){

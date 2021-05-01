@@ -79,6 +79,7 @@
 		catch(Exception e){
 			out.println("<tr><td><img src='"+sCONTEXTPATH+"/_img/icons/icon_error.gif'/></td><td class='adminred'>Error detected: <b>Could not connect to "+SH.cs("offlineSyncServerAPI","http://localhost/openclinic/api/postOfflineData.jsp")+"</b>. Process stopped. Please check URL and API credentials.</td></tr>");	
 			bComplete=false;
+			break;
 		}
 	}
 	ps.close();

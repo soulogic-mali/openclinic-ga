@@ -112,7 +112,7 @@
                 <%-- CHOOSE PERSON B --%>
                 <tr>
                     <td class="admin2" width="80">&nbsp;<%=getTran(request,"web","person",sWebLanguage)%> B</td>
-                    <td class="admin2" width="300">
+                    <td class="admin2" width='1%' nowrap>
                         <input type="text" class="text" name="personB" size="40" READONLY>
                         <input class="button" type="button" value="<%=getTranNoLink("Web","select",sWebLanguage)%>" onclick="showSearchPatientPopup('pid2','personB');">&nbsp;
                     </td>

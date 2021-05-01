@@ -111,6 +111,7 @@
                batchesTran = getTranNoLink("web","batches",sWebLanguage),
                inTran = getTranNoLink("Web.manage","changeLevel.in",sWebLanguage),
                outTran = getTranNoLink("Web.manage","changeLevel.out",sWebLanguage),
+               transferTran = getTranNoLink("Web.manage","changeLevel.transfer",sWebLanguage),
                orderThisProductTran = getTranNoLink("Web.manage","orderthisproduct",sWebLanguage),
                changeLevelInTran = getTranNoLink("Web.manage","changeLevelIn",sWebLanguage),
                ficheTran = getTranNoLink("Web","productfiche",sWebLanguage),
@@ -213,6 +214,9 @@
                         html.append("<img src='"+sCONTEXTPATH+"/_img/icons/icon_warning.gif'>&nbsp;");
                 	}
                     html.append("<input type='button' title='"+changeLevelOutTran+"' class='button' style='width:30px;' value=\""+outTran+"\" onclick=\"deliverProduct('"+sStockUid+"','"+sProductName+"','"+stockLevel+"');\">&nbsp;");
+                    if(SH.cs("edition","openclinic").equalsIgnoreCase("bloodbank")){
+                    	html.append("<input type='button' class='button' style='width:40px;' value=\""+transferTran+"\" onclick=\"transferProduct('"+sStockUid+"','"+sProductName+"','"+stockLevel+"');\">&nbsp;");
+                    }
                 }
                 if(productStock.getServiceStock().isReceivingUser(activeUser.userid)){
                 	html.append("<input type='button' title='"+changeLevelInTran+"' class='button' style='width:30px;' value=\""+inTran+"\" onclick=\"receiveProduct('"+sStockUid+"','"+sProductName+"');\">&nbsp;");
@@ -585,7 +589,7 @@
         sFindEnd               = checkString(request.getParameter("FindEnd"));
         sFindDefaultImportance = checkString(request.getParameter("FindDefaultImportance"));
         sFindSupplierUid       = checkString(request.getParameter("FindSupplierUid"));
-        if(request.getParameter("hideZeroLevel")!=null){
+        if(SH.c(request.getParameter("hideZeroLevel")).equalsIgnoreCase("1")){
         	sFindLevel="1";
         }
         // get supplier name
@@ -755,7 +759,7 @@
 			                        <% if(activeUser.getAccessRight("pharmacy.updateinventory.select")){%>
 			                        	<input class="text" type="checkbox" name="updateInventory" id="updateInventory" value='1' <%=request.getParameter("updateInventory")!=null?"checked":"" %> onclick="document.getElementById('Action').value='findShowOverview';transactionForm.submit();"><%=getTran(request,"Web","updateinventory",sWebLanguage)%>
 			                        <% }%>
-			                        	<input class="text" type="checkbox" name="hideZeroLevel" id="hideZeroLevel" value='1' <%=request.getParameter("hideZeroLevel")!=null?"checked":"" %> onclick="document.getElementById('Action').value='findShowOverview';transactionForm.submit();"><%=getTran(request,"Web","hideZeroLevelstocks",sWebLanguage)%>
+			                        	<input class="text" type="checkbox" name="hideZeroLevel" id="hideZeroLevel" value='1' <%=SH.c(request.getParameter("hideZeroLevel")).equalsIgnoreCase("1")?"checked":"" %> onclick="document.getElementById('Action').value='findShowOverview';transactionForm.submit();"><%=getTran(request,"Web","hideZeroLevelstocks",sWebLanguage)%>
 			                        </td>
 		                        </tr>
 	                        <%
@@ -1576,6 +1580,16 @@
     }
     else{
       openPopup("pharmacy/medication/popups/deliverMedicationPopup.jsp&EditProductStockUid="+productStockUid+"&EditProductName="+encodeURIComponent(productName)+"&ts=<%=getTs()%>",750,400);
+    }
+  }
+
+  <%-- popup : transfer product --%>
+  function transferProduct(productStockUid,productName,stockLevel){
+    if(stockLevel <= 0){
+      alertDialog("web.manage","insufficientStock");
+    }
+    else{
+      openPopup("pharmacy/medication/popups/deliverMedicationPopupCNTS.jsp&EditProductStockUid="+productStockUid+"&EditProductName="+encodeURIComponent(productName)+"&ts=<%=getTs()%>",1000,500);
     }
   }
 

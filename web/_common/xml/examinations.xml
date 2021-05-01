@@ -2109,4 +2109,11 @@
 		<en>Supervision during blood donation</en>
 		<es>Supervisión durante la donación de sangre</es>
 	</Row>
+	<Row>
+		<id>1218</id>
+		<class>cnts</class>
+		<transactiontype>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_HEMOVIGILANCE</transactiontype>
+		<fr>Fiche de hémovigilance</fr>
+		<en>Hemovigilance record</en>
+	</Row>
 </Examinations>

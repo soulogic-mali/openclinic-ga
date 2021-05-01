@@ -13,39 +13,39 @@
 			<column name="SIS_ACREDITACION_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_ACREDITACION_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_ACREDITACION_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_ACREDITACION_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_8" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_9" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_10" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_11" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_12" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_13" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_14" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_15" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_16" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_17" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_18" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_19" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_20" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_21" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_22" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_23" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_24" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_25" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_26" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_27" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_28" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_29" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_30" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_31" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_32" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_33" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_ACREDITACION_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_8" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_9" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_10" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_11" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_12" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_13" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_14" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_15" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_16" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_17" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_18" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_19" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_20" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_21" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_22" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_23" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_24" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_25" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_26" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_27" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_28" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_29" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_30" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_31" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_32" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_33" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_ACREDITACION_OBJECTID">
@@ -65,39 +65,39 @@
 			<column name="SIS_ACREDITACION_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_ACREDITACION_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_ACREDITACION_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_ACREDITACION_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_8" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_9" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_10" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_11" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_12" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_13" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_14" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_15" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_16" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_17" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_18" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_19" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_20" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_21" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_22" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_23" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_24" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_25" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_26" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_27" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_28" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_29" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_30" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_31" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_32" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ACREDITACION_33" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_ACREDITACION_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_8" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_9" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_10" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_11" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_12" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_13" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_14" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_15" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_16" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_17" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_18" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_19" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_20" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_21" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_22" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_23" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_24" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_25" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_26" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_27" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_28" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_29" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_30" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_31" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_32" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ACREDITACION_33" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_ACREDITACION_OBJECTID">
@@ -111,8 +111,8 @@
 			<column name="SIS_SERVICIOSADICIONALES_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_SERVICIOSADICIONALES_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_SERVICIOSADICIONALES_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_SERVICIOSADICIONALES_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_SERVICIOSADICIONALES_2" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_SERVICIOSADICIONALES_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_SERVICIOSADICIONALES_2" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_SERVICIOSADICIONALES_OBJECTID">
@@ -129,8 +129,8 @@
 			<column name="SIS_SERVICIOSADICIONALES_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_SERVICIOSADICIONALES_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_SERVICIOSADICIONALES_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_SERVICIOSADICIONALES_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_SERVICIOSADICIONALES_2" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_SERVICIOSADICIONALES_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_SERVICIOSADICIONALES_2" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_SERVICIOSADICIONALES_OBJECTID">
@@ -144,20 +144,20 @@
 			<column name="SIS_RECIENNACIDO_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_RECIENNACIDO_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_RECIENNACIDO_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_RECIENNACIDO_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_8" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_9" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_10" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_11" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_12" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_13" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_14" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_RECIENNACIDO_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_8" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_9" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_10" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_11" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_12" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_13" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_14" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_RECIENNACIDO_OBJECTID">
@@ -174,20 +174,20 @@
 			<column name="SIS_RECIENNACIDO_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_RECIENNACIDO_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_RECIENNACIDO_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_RECIENNACIDO_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_8" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_9" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_10" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_11" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_12" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_13" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_RECIENNACIDO_14" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_RECIENNACIDO_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_8" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_9" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_10" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_11" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_12" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_13" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_RECIENNACIDO_14" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_RECIENNACIDO_OBJECTID">
@@ -201,17 +201,17 @@
 			<column name="SIS_PROCEDIMIENTOS_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_PROCEDIMIENTOS_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_PROCEDIMIENTOS_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_PROCEDIMIENTOS_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_8" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_9" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_10" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_11" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_PROCEDIMIENTOS_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_8" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_9" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_10" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_11" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_PROCEDIMIENTOS_OBJECTID">
@@ -231,17 +231,17 @@
 			<column name="SIS_PROCEDIMIENTOS_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_PROCEDIMIENTOS_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_PROCEDIMIENTOS_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_PROCEDIMIENTOS_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_8" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_9" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_10" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_PROCEDIMIENTOS_11" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_PROCEDIMIENTOS_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_8" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_9" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_10" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_PROCEDIMIENTOS_11" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_PROCEDIMIENTOS_OBJECTID">
@@ -255,14 +255,14 @@
 			<column name="SIS_INSUMOS_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_INSUMOS_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_INSUMOS_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_INSUMOS_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_8" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_INSUMOS_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_8" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_INSUMOS_OBJECTID">
@@ -282,14 +282,14 @@
 			<column name="SIS_INSUMOS_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_INSUMOS_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_INSUMOS_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_INSUMOS_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_INSUMOS_8" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_INSUMOS_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_INSUMOS_8" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_INSUMOS_OBJECTID">
@@ -303,9 +303,9 @@
 			<column name="SIS_SMI_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_SMI_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_SMI_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_SMI_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_SMI_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_SMI_3" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_SMI_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_SMI_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_SMI_3" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_SMI_OBJECTID">
@@ -322,9 +322,9 @@
 			<column name="SIS_SMI_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_SMI_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_SMI_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_SMI_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_SMI_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_SMI_3" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_SMI_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_SMI_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_SMI_3" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_SMI_OBJECTID">
@@ -338,14 +338,14 @@
 			<column name="SIS_MEDICAMENTOS_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_MEDICAMENTOS_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_MEDICAMENTOS_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_MEDICAMENTOS_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_8" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_MEDICAMENTOS_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_8" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_MEDICAMENTOS_OBJECTID">
@@ -365,14 +365,14 @@
 			<column name="SIS_MEDICAMENTOS_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_MEDICAMENTOS_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_MEDICAMENTOS_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_MEDICAMENTOS_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_MEDICAMENTOS_8" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_MEDICAMENTOS_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_MEDICAMENTOS_8" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_MEDICAMENTOS_OBJECTID">
@@ -386,11 +386,11 @@
 			<column name="SIS_DIAGNOSTICOS_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_DIAGNOSTICOS_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_DIAGNOSTICOS_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_DIAGNOSTICOS_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_DIAGNOSTICOS_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_DIAGNOSTICOS_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_DIAGNOSTICOS_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_DIAGNOSTICOS_5" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_DIAGNOSTICOS_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_DIAGNOSTICOS_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_DIAGNOSTICOS_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_DIAGNOSTICOS_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_DIAGNOSTICOS_5" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_DIAGNOSTICOS_OBJECTID">
@@ -407,11 +407,11 @@
 			<column name="SIS_DIAGNOSTICOS_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_DIAGNOSTICOS_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_DIAGNOSTICOS_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_DIAGNOSTICOS_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_DIAGNOSTICOS_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_DIAGNOSTICOS_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_DIAGNOSTICOS_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_DIAGNOSTICOS_5" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_DIAGNOSTICOS_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_DIAGNOSTICOS_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_DIAGNOSTICOS_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_DIAGNOSTICOS_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_DIAGNOSTICOS_5" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_DIAGNOSTICOS_OBJECTID">
@@ -425,91 +425,91 @@
 			<column name="SIS_ATENCION_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_ATENCION_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_ATENCION_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_ATENCION_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_8" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_9" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_10" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_11" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_12" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_13" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_14" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_15" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_16" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_17" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_18" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_19" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_20" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_21" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_22" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_23" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_24" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_25" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_26" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_27" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_28" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_29" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_30" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_31" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_32" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_33" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_34" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_35" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_36" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_37" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_38" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_39" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_40" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_41" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_42" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_43" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_44" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_45" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_46" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_47" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_48" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_49" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_50" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_51" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_52" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_53" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_54" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_55" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_56" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_57" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_58" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_59" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_60" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_61" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_62" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_63" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_64" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_65" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_66" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_67" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_68" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_69" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_70" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_71" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_72" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_73" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_74" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_75" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_76" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_77" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_78" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_79" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_80" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_81" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_82" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_83" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_84" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_85" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_ATENCION_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_8" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_9" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_10" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_11" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_12" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_13" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_14" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_15" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_16" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_17" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_18" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_19" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_20" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_21" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_22" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_23" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_24" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_25" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_26" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_27" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_28" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_29" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_30" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_31" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_32" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_33" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_34" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_35" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_36" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_37" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_38" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_39" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_40" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_41" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_42" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_43" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_44" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_45" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_46" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_47" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_48" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_49" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_50" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_51" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_52" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_53" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_54" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_55" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_56" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_57" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_58" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_59" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_60" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_61" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_62" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_63" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_64" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_65" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_66" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_67" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_68" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_69" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_70" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_71" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_72" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_73" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_74" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_75" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_76" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_77" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_78" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_79" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_80" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_81" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_82" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_83" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_84" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_85" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_ATENCION_OBJECTID">
@@ -526,91 +526,91 @@
 			<column name="SIS_ATENCION_SERVERID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_ATENCION_OBJECTID" dbtype="int" javatype="integer"/>		
 			<column name="SIS_ATENCION_VERSION" dbtype="int" javatype="integer"/>		
-			<column name="SIS_ATENCION_1" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_2" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_3" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_4" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_5" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_6" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_7" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_8" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_9" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_10" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_11" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_12" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_13" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_14" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_15" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_16" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_17" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_18" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_19" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_20" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_21" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_22" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_23" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_24" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_25" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_26" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_27" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_28" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_29" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_30" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_31" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_32" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_33" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_34" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_35" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_36" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_37" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_38" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_39" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_40" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_41" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_42" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_43" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_44" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_45" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_46" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_47" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_48" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_49" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_50" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_51" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_52" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_53" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_54" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_55" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_56" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_57" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_58" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_59" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_60" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_61" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_62" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_63" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_64" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_65" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_66" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_67" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_68" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_69" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_70" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_71" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_72" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_73" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_74" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_75" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_76" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_77" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_78" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_79" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_80" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_81" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_82" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_83" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_84" dbtype="varchar" javatype="string" size="255"/>		
-			<column name="SIS_ATENCION_85" dbtype="varchar" javatype="string" size="255"/>		
+			<column name="SIS_ATENCION_1" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_2" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_3" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_4" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_5" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_6" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_7" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_8" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_9" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_10" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_11" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_12" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_13" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_14" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_15" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_16" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_17" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_18" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_19" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_20" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_21" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_22" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_23" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_24" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_25" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_26" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_27" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_28" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_29" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_30" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_31" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_32" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_33" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_34" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_35" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_36" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_37" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_38" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_39" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_40" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_41" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_42" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_43" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_44" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_45" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_46" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_47" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_48" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_49" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_50" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_51" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_52" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_53" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_54" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_55" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_56" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_57" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_58" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_59" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_60" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_61" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_62" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_63" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_64" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_65" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_66" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_67" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_68" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_69" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_70" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_71" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_72" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_73" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_74" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_75" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_76" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_77" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_78" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_79" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_80" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_81" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_82" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_83" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_84" dbtype="varchar" javatype="string" size="50"/>		
+			<column name="SIS_ATENCION_85" dbtype="varchar" javatype="string" size="50"/>		
 		</columns>
 		<indexes>
 	    	<index name="SIS_ATENCION_OBJECTID">
@@ -754,11 +754,11 @@
 
 	<table name='OC_MPIDOCUMENTS' db='openclinic'>
 		<columns>
-			<column name="OC_MPIDOCUMENT_ID" dbtype="varchar" javatype="string" size="255"/>
+			<column name="OC_MPIDOCUMENT_ID" dbtype="varchar" javatype="string" size="50"/>
 			<column name="OC_MPIDOCUMENT_DIRECTION" dbtype="varchar" javatype="string" size="50"/>
 			<column name="OC_MPIDOCUMENT_UPDATETIME" dbtype="datetime" javatype="date"/>
 			<column name="OC_MPIDOCUMENT_SENTDATETIME" dbtype="datetime" javatype="date"/>
-			<column name="OC_MPIDOCUMENT_URL" dbtype="varchar" javatype="string" size="255"/>
+			<column name="OC_MPIDOCUMENT_URL" dbtype="varchar" javatype="string" size="50"/>
 		</columns>
     	<indexes>
 	    	<index name="OC_MPIDOCUMENT_ID">
@@ -4342,6 +4342,7 @@
 			<column name="OC_STOCK_DISPENSINGUSERS" dbtype="varchar" javatype="string" size="255"/>
 			<column name="OC_STOCK_VALIDATEOUTGOING" dbtype="int" javatype="integer"/>
 			<column name="OC_STOCK_VALIDATIONUSERS" dbtype="varchar" javatype="string" size="255"/>
+			<column name="OC_STOCK_VIRTUALINVOICINGACCOUNT" dbtype="varchar" javatype="string" size="50"/>
 		</columns>
 		<indexes>
 			<index name="OC_S_STOCK_OBJECTID">
@@ -4375,9 +4376,65 @@
 			<column name="OC_STOCK_DISPENSINGUSERS" dbtype="varchar" javatype="string" size="255"/>
 			<column name="OC_STOCK_VALIDATEOUTGOING" dbtype="int" javatype="integer"/>
 			<column name="OC_STOCK_VALIDATIONUSERS" dbtype="varchar" javatype="string" size="255"/>
+			<column name="OC_STOCK_VIRTUALINVOICINGACCOUNT" dbtype="varchar" javatype="string" size="50"/>
 		</columns>
 	</table>
 
+    <table name="OC_PHARMASYNC" db="openclinic" sync="NONE">
+    	<columns>
+			<column name="OC_PHARMASYNC_ID" dbtype="int" javatype="integer" primary="1" nulls="0"/>
+			<column name="OC_PHARMASYNC_UID" dbtype="varchar" javatype="string" size="20"/>
+			<column name="OC_PHARMASYNC_XML" dbtype="text" javatype="string"/>
+			<column name="OC_PHARMASYNC_UPDATETIME" dbtype="datetime" javatype="date"/>
+    	</columns>
+		<indexes>
+			<index name="OC_PHARMASYNC_ID">
+				<indexcolumn order="ASC" name="OC_PHARMASYNC_ID"/>
+			</index>
+			<index name="OC_PHARMASYNC_UID">
+				<indexcolumn order="ASC" name="OC_PHARMASYNC_UID"/>
+			</index>
+		</indexes>
+    </table>
+    <table name="OC_REMOTEPATIENTBATCHDELIVERIES" db="openclinic" sync="NONE">
+    	<columns>
+			<column name="OC_DELIVERY_SERVERID" dbtype="int" javatype="integer"/>
+			<column name="OC_DELIVERY_OBJECTID" dbtype="int" javatype="integer"/>
+			<column name="OC_DELIVERY_BATCHNUMBER" dbtype="varchar" javatype="string" size="50"/>
+			<column name="OC_DELIVERY_BATCHEXPIRY" dbtype="datetime" javatype="date"/>
+			<column name="OC_DELIVERY_SITENAME" dbtype="varchar" javatype="string" size="50"/>
+			<column name="OC_DELIVERY_PRODUCTUID" dbtype="varchar" javatype="string" size="50"/>
+			<column name="OC_DELIVERY_PATIENTDATA" dbtype="text" javatype="string"/>
+			<column name="OC_DELIVERY_PHONE" dbtype="varchar" javatype="string" size="50"/>
+			<column name="OC_DELIVERY_OPERATIONUID" dbtype="varchar" javatype="string" size="50"/>
+			<column name="OC_DELIVERY_DATE" dbtype="datetime" javatype="date"/>
+			<column name="OC_DELIVERY_QUANTITY" dbtype="int" javatype="integer"/>
+    	</columns>
+		<indexes>
+			<index name="OC_DELIVERY_OBJECTID">
+				<indexcolumn order="ASC" name="OC_DELIVERY_OBJECTID"/>
+			</index>
+			<index name="OC_DELIVERY_BATCHNUMBER">
+				<indexcolumn order="ASC" name="OC_DELIVERY_BATCHNUMBER"/>
+			</index>
+		</indexes>
+    </table>
+    <table name="OC_HEMOVIGILANCE" db="openclinic" sync="NONE">
+    	<columns>
+			<column name="OC_HEMOVIGILANCE_TRANSACTIONUID" dbtype="varchar" javatype="string" size="50"/>
+			<column name="OC_HEMOVIGILANCE_TIMESTAMP" dbtype="datetime" javatype="date"/>
+			<column name="OC_HEMOVIGILANCE_POCKETNUMBER" dbtype="varchar" javatype="string" size="50"/>
+			<column name="OC_HEMOVIGILANCE_PROCESSED" dbtype="datetime" javatype="date"/>
+    	</columns>
+		<indexes>
+			<index name="OC_HEMOVIGILANCE_TRANSACTIONUID">
+				<indexcolumn order="ASC" name="OC_HEMOVIGILANCE_TRANSACTIONUID"/>
+			</index>
+			<index name="OC_HEMOVIGILANCE_POCKETNUMBER">
+				<indexcolumn order="ASC" name="OC_HEMOVIGILANCE_POCKETNUMBER"/>
+			</index>
+		</indexes>
+    </table>
     <table name="OC_REFERENCES" db="openclinic" sync="NONE">
 		<columns>
 			<column name="OC_REFERENCE_SERVERID" dbtype="int" javatype="integer" primary="1" nulls="0"/>

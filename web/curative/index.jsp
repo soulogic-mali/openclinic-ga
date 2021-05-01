@@ -127,7 +127,7 @@
 <div style="height:2px;"></div>
 
 <%-- 2 : MEDICAL DATA --%>
-<% if(activeUser.getAccessRight("curative.select")){%>
+<% if(activeUser.getAccessRight("curative.select") && !activePatient.isVirtualInvoicingAccount()){%>
     <table width="100%" class="list" cellpadding="1" cellspacing="0">
         <tr><td colspan="6" class="titleadmin"><%=getTran(request,"web","medical.data",sWebLanguage)%></td></tr>
         <tr>

@@ -96,7 +96,7 @@
 %>
 
 <%
-	if(activePatient!=null && SH.ci("enableBloodbank",0)==1){
+	if(activePatient!=null && activePatient.personid.length()>0 && SH.ci("enableBloodbank",0)==1){
 		String bloodgroup="";
 		RequestedLabAnalysis analysis = RequestedLabAnalysis.getByPersonid(Integer.parseInt(activePatient.personid), MedwanQuery.getInstance().getConfigString("cntsBloodgroupCode","ABO"));
 		if(analysis!=null) bloodgroup+=analysis.getResultValue().toUpperCase();
@@ -146,7 +146,7 @@
        	}
         ///////////////////////////////////////////////////////////////////////
        	*/
-       	
+
        	// for links containing a regular url, add an open command
        	if(!sIconOnClick.toLowerCase().startsWith("javascript")){
       		sIconOnClick = "javascript:clickMenuItem('"+sCONTEXTPATH+"/"+sIconOnClick+"&ts="+getTs()+"');";
@@ -252,7 +252,7 @@
                 %> <img style='cursor:pointer;padding: 0px 2px 0px;vertical-align: top' onclick="storePicture();"  border='0' height='16px' src="<c:url value='/_img/icons/mobile/camera.png'/>" title="<%=getTranNoLink("web","loadPicture",sWebLanguage)%>"/><%
             }
         }
-        
+
         if(activePatient!=null && activePatient.personid!=null && activePatient.personid.length()>0 && activeUser.getAccessRight("pharmacy.fastdispensing.select")){
             %><img style='cursor:pointer;padding: 0px 2px 0px;vertical-align: top' onclick="showdrugsoutbarcode();"  height='16px' border='0' src="<c:url value='/_img/icons/icon_pharma.png'/>" title="<%=getTranNoLink("web","drugsoutbarcode",sWebLanguage)%>"/><%
         }

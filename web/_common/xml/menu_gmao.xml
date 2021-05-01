@@ -16,6 +16,7 @@
 		<Menu labelid="permissions" accessrights="system.permissions.select" url="/main.do?Page=permissions/index.jsp"/>
 		<Menu labelid="toggleeditmode" accessrights="system.management.select" url="javascript:toggleEditMode(true);"/>
 		<Menu labelid="assetsynchronization" accessrights="gmao.synchronisation.select" url="/main.do?Page=assets/manageAssetSynchronization.jsp"/>
+		<Menu labelid="downloadlastbackup" accessrights="system.management.select" url="javascript:downloadLastBackup()"/>
 	</Menu>
 	<Menu labelid="info">
 		<Menu labelid="help" url="javascript:showmanualgmao();"/>

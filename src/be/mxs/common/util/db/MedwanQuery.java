@@ -6970,6 +6970,36 @@ public class MedwanQuery {
                     ps.setInt(9, (itemVO.getType()+itemVO.getValue()).hashCode());
                     ps.execute();
                     ps.close();
+                    
+                    //Hanble special items here
+                    if(SH.ci("enableBloodbank",0)==1) {
+                    	if(transactionVO.getTransactionType().equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST") &&
+                    			(itemVO.getType().equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_BLOODPOCKET_NUMBER1") ||
+                    					itemVO.getType().equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_BLOODPOCKET_NUMBER2") ||
+                    					itemVO.getType().equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_BLOODPOCKET_NUMBER3") ||
+                    					itemVO.getType().equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_BLOODPOCKET_NUMBER4") ||
+                    					itemVO.getType().equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_BLOODPOCKET_NUMBER5"))
+                    					) {
+                    		//Store this item in the hemovigilance table
+                    		ps=oc_conn.prepareStatement("select * from OC_HEMOVIGILANCE where OC_HEMOVIGILANCE_TRANSACTIONUID=?");
+                    		ps.setString(1, transactionVO.getUid());
+                    		rs=ps.executeQuery();
+                    		if(!rs.next()) {
+                    			rs.close();
+	                    		ps.close();
+	                    		ps=oc_conn.prepareStatement("insert into OC_HEMOVIGILANCE(OC_HEMOVIGILANCE_TRANSACTIONUID,OC_HEMOVIGILANCE_TIMESTAMP,OC_HEMOVIGILANCE_POCKETNUMBER) values (?,?,?)");
+	                    		ps.setString(1, transactionVO.getUid());
+	                    		ps.setTimestamp(2, SH.getSQLTime());
+	                    		ps.setString(3, itemVO.getValue());
+	                    		ps.execute();
+	                    		ps.close();
+                    		}
+                    		else {
+                    			rs.close();
+                    			ps.close();
+                    		}
+                    	}
+                    }
                 }
             }
             oc_conn.close();

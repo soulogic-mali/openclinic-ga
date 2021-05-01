@@ -16,7 +16,11 @@ import be.mxs.common.util.io.OrangeVaccinations;
 import be.mxs.common.util.system.Debug;
 import be.mxs.common.util.system.ScreenHelper;
 import be.openclinic.adt.Queue;
+import be.openclinic.pharmacy.RemotePharmacy;
+import be.openclinic.pharmacy.ServiceStock;
+import be.openclinic.system.SH;
 import be.openclinic.system.SystemInfo;
+import java.util.Vector;
 
 public class Scheduler implements Runnable{
 	Thread thread;
@@ -125,6 +129,8 @@ public class Scheduler implements Runnable{
         catch (Exception e) {
             e.printStackTrace();
         }
+        
+        
         Debug.println("Starting scheduler Executing importer");
         Importer.execute();
         Debug.println("Starting scheduler Stopped executing importer");

@@ -157,8 +157,13 @@
     }
     
     private double dbl(String s){
-    	s=s.replaceAll(MedwanQuery.getInstance().getConfigString("thousandsSeparator",","),"").replaceAll(" ","");
-    	return Double.parseDouble(s);
+    	try{
+    		return new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormat","#,##0.00")).parse(s).doubleValue();
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	return 0;
     }
     
     //--- GET GROUP INFO --------------------------------------------------------------------------

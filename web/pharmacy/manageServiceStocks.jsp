@@ -5,6 +5,7 @@
 <%@page errorPage="/includes/error.jsp"%>
 <%=checkPermission(out,"pharmacy.manageservicestocks","select",activeUser)%>
 <%=sJSSORTTABLE%>
+<%=sJSPROTOTYPE %>
 
 <%!
 //--- ADD AUTHORIZED USER ---------------------------------------------------------------------
@@ -178,15 +179,14 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
            sEditBegin              = checkString(request.getParameter("EditBegin")),
            sEditEnd                = checkString(request.getParameter("EditEnd")),
            sEditManagerUid         = checkString(request.getParameter("EditManagerUid")),
+           sEditVirtualInvoicingAccountUid         = checkString(request.getParameter("EditVirtualInvoicingAccountUid")),
            sEditDefaultSupplierUid = checkString(request.getParameter("EditDefaultSupplierUid")),
            sEditOrderPeriod        = checkString(request.getParameter("EditOrderPeriodInMonths")),
            sEditHidden        	   = checkString(request.getParameter("EditHidden")),
            sEditValidateOutgoing   = checkString(request.getParameter("EditValidateOutgoing")),
+           sEditRemoteSyncId   	   = checkString(request.getParameter("EditRemoteSyncId")),
     	   sEditNosync        	   = checkString(request.getParameter("EditNosync"));
     
-	   if(sEditNosync.equalsIgnoreCase("")){
-		   sEditNosync = "0";
-	   }
 
 	   if(sEditHidden.equalsIgnoreCase("")){
 		   sEditHidden = "0";
@@ -199,6 +199,7 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
     // afgeleide data
     String sEditServiceName         = checkString(request.getParameter("EditServiceName")),
            sEditManagerName         = checkString(request.getParameter("EditManagerName")),
+           sEditVirtualInvoicingAccountName         = checkString(request.getParameter("EditVirtualInvoicingAccountName")),
            sEditDefaultSupplierName = checkString(request.getParameter("EditDefaultSupplierName"));
 
     /// DEBUG /////////////////////////////////////////////////////////////////////////////////////
@@ -222,7 +223,7 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
 
     String msg = "", sFindStockName = "", sFindServiceUid = "", sFindServiceName = "",
            sFindBegin = "", sFindEnd = "", sFindManagerUid = "", sSelectedStockName = "",
-           sSelectedServiceUid = "", sSelectedBegin = "", sSelectedEnd = "", sSelectedManagerUid = "",
+           sSelectedServiceUid = "", sSelectedBegin = "", sSelectedEnd = "", sSelectedManagerUid = "", sSelectedVirtualInvoicingAccountUid="",sSelectedVirtualInvoicingAccountName="",
            sSelectedServiceName = "", sSelectedManagerName = "", authorizedUserId = "", receivingUserId = "", dispensingUserId = "", validationUserId="",
            authorizedUserName = "", receivingUserName = "", dispensingUserName = "", validationUserName="", sFindDefaultSupplierUid = "", sFindDefaultSupplierName = "",
            sSelectedDefaultSupplierUid = "", sSelectedDefaultSupplierName = "", sSelectedOrderPeriod = "",
@@ -273,10 +274,11 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
         if(sEditBegin.length() > 0)       stock.setBegin(ScreenHelper.parseDate(sEditBegin));
         if(sEditEnd.length() > 0)         stock.setEnd(ScreenHelper.parseDate(sEditEnd));
         if(sEditOrderPeriod.length() > 0) stock.setOrderPeriodInMonths(Integer.parseInt(sEditOrderPeriod));
-        if(sEditNosync.length() > 0) stock.setNosync(Integer.parseInt(sEditNosync));
+        stock.setNosync(Integer.parseInt(SH.c(sEditNosync).length()==0?"0":sEditNosync));
         if(sEditHidden.length() > 0) stock.setHidden(Integer.parseInt(sEditHidden));
         if(sEditValidateOutgoing.length() > 0) stock.setValidateoutgoingtransactions(Integer.parseInt(sEditValidateOutgoing));
         stock.setStockManagerUid(sEditManagerUid);
+        stock.setVirtualInvoicingAccount(sEditVirtualInvoicingAccountUid);
         stock.setDefaultSupplierUid(sEditDefaultSupplierUid);
 
         // authorized users
@@ -382,6 +384,7 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
         }
 
         sEditStockUid = stock.getUid();
+        MedwanQuery.getInstance().setConfigString("remoteSyncId."+stock.getUid(),sEditRemoteSyncId);
     }
     //--- DELETE ----------------------------------------------------------------------------------
     else if(sAction.equals("delete") && sEditStockUid.length()>0){
@@ -395,6 +398,9 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
         msg = " | "+getTran(request,"web","dataisdeleted",sWebLanguage);
         sAction = "findShowOverview"; // display overview even if only one record remains
     }
+   if(SH.c(sEditNosync).length()==0){
+	   sEditNosync = "1";
+   }
 
     //--- FIND ------------------------------------------------------------------------------------
     if(sAction.startsWith("find")){
@@ -433,6 +439,7 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
                 sSelectedStockName          = checkString(serviceStock.getName());
                 sSelectedServiceUid         = checkString(serviceStock.getServiceUid());
                 sSelectedManagerUid         = checkString(serviceStock.getStockManagerUid());
+                sSelectedVirtualInvoicingAccountUid         = checkString(serviceStock.getVirtualInvoicingAccount());
                 sSelectedDefaultSupplierUid = checkString(serviceStock.getDefaultSupplierUid());
                 sSelectedOrderPeriod        = (serviceStock.getOrderPeriodInMonths()<0?"":serviceStock.getOrderPeriodInMonths()+"");
 				sSelectedNosync				= serviceStock.getNosync()+"";
@@ -518,6 +525,9 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
                 if(sSelectedManagerUid.length() > 0){
                     sSelectedManagerName = ScreenHelper.getFullUserName(sSelectedManagerUid);
                 }
+                if(sSelectedVirtualInvoicingAccountUid.length() > 0){
+                    sSelectedVirtualInvoicingAccountName = AdminPerson.getFullName(sSelectedVirtualInvoicingAccountUid);
+                }
                 if(sSelectedDefaultSupplierUid.length() > 0){
                     sSelectedDefaultSupplierName = getTranNoLink("service",sSelectedDefaultSupplierUid,sWebLanguage);
                 }
@@ -530,15 +540,18 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
             sSelectedBegin              = sEditBegin;
             sSelectedEnd                = sEditEnd;
             sSelectedManagerUid         = sEditManagerUid;
+            sSelectedVirtualInvoicingAccountUid         = sEditVirtualInvoicingAccountUid;
             sSelectedDefaultSupplierUid = sEditDefaultSupplierUid;
             sSelectedOrderPeriod        = sEditOrderPeriod;
             sSelectedNosync				= sEditNosync;
+
             sSelectedHidden				= sEditHidden;
             sSelectedValidateOutgoing	= sEditValidateOutgoing;
 
             // afgeleide data
             sSelectedServiceName         = sEditServiceName;
             sSelectedManagerName         = sEditManagerName;
+            sSelectedVirtualInvoicingAccountName         = sEditManagerName;
             sSelectedDefaultSupplierName = sEditDefaultSupplierName;
         }
         else if(sAction.equals("showDetailsNew")){
@@ -549,7 +562,8 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
             if(sEditOrderPeriod.length()==0) sEditOrderPeriod = "12"; // todo : needed ?
 
             // default Nosync
-            if(sEditNosync.length()==0) sEditNosync = "1"; // todo : needed ?
+            if(SH.c(sEditNosync).length()==0) sEditNosync = "1"; // todo : needed ?
+            sSelectedNosync				= sEditNosync;
             if(sEditHidden.length()==0) sEditHidden = "0"; // todo : needed ?
             if(sEditValidateOutgoing.length()==0) sEditValidateOutgoing = "0"; // todo : needed ?
 
@@ -755,6 +769,27 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
                         <td class="admin" width="<%=sTDAdminWidth%>" nowrap><%=getTran(request,"Web","ID",sWebLanguage)%></td>
                         <td class="admin2"><%=sEditStockUid%></td>
                     </tr>
+                   	<%
+                   		if(SH.c(sEditStockUid).length()>0 && !sSelectedNosync.equalsIgnoreCase("1")){
+                			//This stock must be synchronised, if no UID exists, generate one
+                			if(SH.cs("serviceStockUID."+sEditStockUid,"").length()==0){
+                				MedwanQuery.getInstance().setConfigString("serviceStockUID."+sEditStockUid, SH.getRandomPassword(4)+"-"+SH.getRandomPassword(4)+"-"+SH.getRandomPassword(4)+"-"+SH.getRandomPassword(4));
+                			}
+                   	%>
+	                    <tr>
+	                        <td class="admin" width="<%=sTDAdminWidth%>" nowrap><%=getTran(request,"Web","syncid",sWebLanguage)%></td>
+	                        <td class="admin2"><b><%=SH.cs("serviceStockUID."+sEditStockUid,"")%></b></td>
+	                    </tr>
+	                    <tr>
+	                        <td class="admin" width="<%=sTDAdminWidth%>" nowrap><%=getTran(request,"Web","remotesyncid",sWebLanguage)%></td>
+	                        <td class="admin2">
+	                            <input class="text" type="text" name="EditRemoteSyncId" size="<%=sTextWidth%>" maxLength="255" value="<%=SH.cs("remoteSyncId."+sEditStockUid,"")%>">
+								<input type="button" class="button" name="initializeButton" value="<%=getTranNoLink("web","initializeremote",sWebLanguage) %>" onclick="initializeRemote();"/><div id='divInitializeRemote'/>
+	                        </td>
+	                    </tr>
+                   	<%
+                   		}
+                   	%>
                     <tr>
                         <td class="admin" width="<%=sTDAdminWidth%>" nowrap><%=getTran(request,"Web","Name",sWebLanguage)%>&nbsp;*</td>
                         <td class="admin2">
@@ -899,6 +934,20 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
                         </td>
                     </tr>
                     
+					<% if(SH.cs("edition","openclinic").equalsIgnoreCase("bloodbank")){ %>                    
+	                    <%-- Virtual invoicing account --%>
+	                    <tr>
+	                        <td class="admin" nowrap><%=getTran(request,"Web","virtualinvoicingaccount",sWebLanguage)%>&nbsp;</td>
+	                        <td class="admin2">
+	                            <input type="hidden" name="EditVirtualInvoicingAccountUid" value="<%=sSelectedVirtualInvoicingAccountUid%>">
+	                            <input class="text" type="text" name="EditVirtualInvoicingAccountName" readonly size="<%=sTextWidth%>" value="<%=sSelectedVirtualInvoicingAccountName%>">
+	                           
+	                            <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("Web","select",sWebLanguage)%>" onclick="searchPerson('EditVirtualInvoicingAccountUid','EditVirtualInvoicingAccountName');">
+	                            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="transactionForm.EditVirtualInvoicingAccountUid.value='';transactionForm.EditVirtualInvoicingAccountName.value='';">
+	                        </td>
+	                        </td>
+	                    </tr>
+					<% } %>
                     <%-- orderPeriodInMonths --%>
                     <tr>
                         <td class="admin" nowrap><%=getTran(request,"Web.manage","orderPeriodInMonths",sWebLanguage)%> *</td>
@@ -1148,6 +1197,18 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
   var iValidationUsersIdx = <%=validationUsersIdx%>;
   var sValidationUsers = "<%=validationUsersJS%>";
  
+	function searchPerson(pid,personName){
+	  	var url = "<c:url value="/popup.jsp?Page=_common/search/searchPatient.jsp"/>&ts=<%=getTs()%>&PopupWidth=600&PopupHeight=400"+
+	            "&ReturnPersonID="+pid+
+	            "&ReturnName="+personName+
+	            "&displayImmatNew=no"+
+	            "&hasTracnetId=yes"+
+	            "&isUser=false"+
+	            "&IncludedDossiersSelectable=false";
+	
+	  	window.open(url,"searchPatientPopup","height=1,width=1,toolbar=no,status=no,scrollbars=no,resizable=no,menubar=no");
+	}
+
   <%-- ADD VALIDATION USER --%>
   function addValidationUser(){
     if(transactionForm.ValidationUserIdAdd.value.length > 0){
@@ -1740,6 +1801,24 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
   function printFiche(serviceStockUid,serviceStockName){
 	openPopup("pharmacy/viewServiceStockFiches.jsp&ts=<%=getTs()%>&Action=find&FindServiceStockUid="+serviceStockUid+"&GetYear=<%=new SimpleDateFormat("yyyy").format(new java.util.Date())%>&FindServiceStockName="+serviceStockName,800,500);
   }
+
+  function initializeRemote(){
+	    document.getElementById('divInitializeRemote').innerHTML = "<img src='<c:url value="/_img/themes/default/ajax-loader.gif"/>'/><br/>Loading";
+	    var params = 'serviceStockUid=<%=sEditStockUid%>';
+	    var url= '<c:url value="/pharmacy/ajax/initializeRemoteStock.jsp"/>';
+		new Ajax.Request(url,{
+		  method: "POST",
+	      parameters: params,
+	      onSuccess: function(resp){
+	    	  document.getElementById('divInitializeRemote').innerHTML = '';
+	    	  alert('<%=getTranNoLink("web","initializeremote.successful",sWebLanguage)%>');
+	      },
+	      onError: function(resp){
+	    	  document.getElementById('divInitializeRemote').innerHTML = '';
+	    	  alert('<%=getTranNoLink("web","initializeremote.failed",sWebLanguage)%>');
+	      }
+		});
+	  }
 
   <%-- close "search in progress"-popup that might still be open --%>
   var popup = window.open("","Searching","width=1,height=1");
