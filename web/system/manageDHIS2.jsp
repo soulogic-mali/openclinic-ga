@@ -10,9 +10,15 @@
 		sOut+="<tr><td colspan='2'><hr/></td></tr>";
 		return sOut;
 	}
+	private String writeConfigRowLink(String labtype,String defaultValue,String link){
+		String sOut="<tr class='admin2'>";
+		sOut+="<td valign='middle'>"+labtype+" <img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_search.png' onclick='"+link+"'/></td><td><textarea onKeyup='resizeTextarea(this,10);' class='text' cols='100', rows='1' name='config$"+labtype+"'id='config$"+labtype+"'>"+MedwanQuery.getInstance().getConfigString(labtype,defaultValue)+"</textarea></td></tr>";
+		sOut+="<tr><td colspan='2'><hr/></td></tr>";
+		return sOut;
+	}
 	private String writeConfigRowPassword(String labtype,String defaultValue){
 		String sOut="<tr class='admin2'>";
-		sOut+="<td valign='top'>"+labtype+"</td><td><input class='text' size='100', rows='1' type='password' name='config$"+labtype+"' value='"+MedwanQuery.getInstance().getConfigString(labtype,defaultValue)+"'/></td></tr>";
+		sOut+="<td valign='top'>"+labtype+"</td><td><input class='text' size='100', rows='1' type='password' name='config$"+labtype+"' id='config$"+labtype+"' value='"+MedwanQuery.getInstance().getConfigString(labtype,defaultValue)+"'/></td></tr>";
 		sOut+="<tr><td colspan='2'><hr/></td></tr>";
 		return sOut;
 	}
@@ -42,7 +48,7 @@
 		out.println(writeConfigRow("dhis2_server_port","443"));
 		out.println(writeConfigRow("dhis2_server_username","demo"));
 		out.println(writeConfigRowPassword("dhis2_server_pwd","demo"));
-		out.println(writeConfigRow("dhis2_orgunit",""));
+		out.println(writeConfigRowLink("dhis2_orgunit","","javascript:exploreDHIS2()"));
 		out.println(writeConfigRow("dhis2document","dhis2.bi.xml"));
 		out.println(writeConfigRow("dhis2_truststore","/temp/keystore"));
 		out.println(writeConfigRowPassword("dhis2_truststore_pass","changeme"));
@@ -52,3 +58,13 @@
   <input type='submit' name='save' value='<%=getTranNoLink("web","save",sWebLanguage)%>'/>
 </form>
 	
+<script>
+	function exploreDHIS2(){
+		if(document.getElementById('config$dhis2_orgunit').value.length>0){
+			openPopup("dhis2/analyzeDHIS2.jsp&updatefield=config$dhis2_orgunit&getOrganisationunitsButton=1&organisationunitname="+document.getElementById('config$dhis2_orgunit').value,800,600);
+		}
+		else{
+			openPopup("dhis2/analyzeDHIS2.jsp&updatefield=config$dhis2_orgunit",800,600);
+		}
+	}
+</script>
