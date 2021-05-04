@@ -46,6 +46,48 @@
 		</labels>
 		<project>bf</project>
 	</country>
+	<country code="bj">
+		<config key="currency" value="XOF"/>
+		<config key="currencyPdf" value="XOF"/>
+		<config key="countrycode" value="BJ"/>
+		<config key="DefaultCountry" value="BJ"/>
+		<config key="defaultSearchCountry" value="BENIN"/>
+		<config key="zipcodetable" value="BeninZipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,nl,de,en,es,pt"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="229"/>
+		<config key="mxsref" value="BE"/>
+		<config key="priceFormat" value="#0"/>
+		<config key="priceFormatInsurar" value="#0"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>bj</project>
+	</country>
+	<country code="ne">
+		<config key="currency" value="XOF"/>
+		<config key="currencyPdf" value="XOF"/>
+		<config key="countrycode" value="NE"/>
+		<config key="DefaultCountry" value="NE"/>
+		<config key="defaultSearchCountry" value="NIGER"/>
+		<config key="zipcodetable" value="NigerZipcodes"/>
+		<config key="DefaultLanguage" value="fr"/>
+		<config key="PatientLanguages" value="fr,nl,de,en,es,pt"/>
+		<config key="supportedLanguages" value="fr,en"/>
+		<config key="cellPhoneCountryPrefix" value="227"/>
+		<config key="mxsref" value="BE"/>
+		<config key="priceFormat" value="#0"/>
+		<config key="priceFormatInsurar" value="#0"/>
+		<config key="currencyDecimals" value="0"/>
+		<labels type="professional.council.url">
+		</labels>
+		<labels type="professional.councils">
+		</labels>
+		<project>ne</project>
+	</country>
 	<country code="cd">
 		<config key="currency" value="CDF"/>
 		<config key="currencyPdf" value="CDF"/>

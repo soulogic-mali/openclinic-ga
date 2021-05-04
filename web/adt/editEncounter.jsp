@@ -729,7 +729,7 @@
 	        
 	        <%=ScreenHelper.setFormButtonsStart()%>
 	        <%
-	        	if(SH.ci("enableOfflineSync",0)==1 && SH.c(tmpEncounter.getUid()).split("\\.").length==2 && !SH.getSyncOpen("encounter", tmpEncounter.getObjectId()+"")){
+	        	if(tmpEncounter!=null && SH.ci("enableOfflineSync",0)==1 && SH.c(tmpEncounter.getUid()).split("\\.").length==2 && !SH.getSyncOpen("encounter", tmpEncounter.getObjectId()+"")){
 	        		sReadOnly="yes";
 	        	}
 
@@ -797,7 +797,6 @@
 	        }
 	    }
 	%>
-	    
 	<script>  
 	  dateFormat = "<%=ScreenHelper.stdDateFormat.toPattern()%>";
 	  
@@ -835,7 +834,6 @@
 	      EditEncounterForm.SearchBedButton.disabled = false;
 	    }
 	  }
-	
 	  <%-- SEARCH SERVICE --%>
 	  function searchService(serviceUidField,serviceNameField){
 	    var sNeedsBeds = "";
