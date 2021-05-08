@@ -78,7 +78,7 @@
 	        		<tr>
 			            <td class='admin'><%=getTran(request,"web","reason",sWebLanguage)%>&nbsp;</td>
 			            <td class="admin2">
-			            	<%=SH.writeDefaultCheckBoxes((TransactionVO)transaction, request, "bloodtransfusion.reason", "ITEM_TYPE_CNTS_BLOODREQUESTREASON", sWebLanguage, true) %>
+			            	<%=SH.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_CNTS_BLOODREQUESTREASON", "bloodtransfusion.reason", sWebLanguage, "") %>
 			            </td>
 	        		</tr>
 				    <%-- DIAGNOSIS --%>
@@ -139,7 +139,23 @@
 	        		<tr>
 			            <td class='admin'><%=getTran(request,"web","complications",sWebLanguage)%>&nbsp;</td>
 			            <td class="admin2" colspan="3">
-			            	<%=SH.writeDefaultCheckBoxes((TransactionVO)transaction, request, "bloodtransfusion.undesiredeffects", "ITEM_TYPE_BLOODTRANSFUSION_UNDESIREDEFFECTS", sWebLanguage, true) %>
+			            	<table><tr><td>
+							<input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_CHILLS" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_CHILLS;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"web","chills",sWebLanguage) %>&nbsp;			            
+							</td><td><input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_FEVER" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_FEVER;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"web","fever",sWebLanguage) %>&nbsp;			            
+							</td><td><input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_PAIN" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_PAIN;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"cnts","pain",sWebLanguage) %>&nbsp;			            
+							</td></tr><tr><td>
+							<input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_DYSPNOE" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_DYSPNOE;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"web","dyspnoe",sWebLanguage) %>&nbsp;			            
+							</td><td><input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_NAUSEA" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_NAUSEA;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"web","nausea",sWebLanguage) %>&nbsp;			            
+							</td><td><input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_VOMITING" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_VOMITING;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"web","vomiting",sWebLanguage) %>&nbsp;			            
+							</td></tr><tr><td>
+							<input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_FAINTING" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_FAINTING;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"web","fainting",sWebLanguage) %>&nbsp;			            
+							</td><td><input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_CONVULSIONS" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_CONVULSIONS;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"web","convulsions",sWebLanguage) %>&nbsp;			            
+							</td><td><input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_URTICARIA" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_URTICARIA;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"web","urticaria",sWebLanguage) %>&nbsp;			            
+							</td></tr><tr><td>
+							<input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_DEAD_TRANSFUSIONACCIDENT" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_DEAD_TRANSFUSIONACCIDENT;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"web","dead_transfusion_accident",sWebLanguage) %>&nbsp;			            
+							</td><td><input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_DEAD_DURINGTRANSFUSION" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_DEAD_DURINGTRANSFUSION;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"web","dead_during_transfusion",sWebLanguage) %>&nbsp;			            
+							</td><td><input type="checkbox" class="hand" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_DEAD_NOTENOUGHBLOOD" property="itemId"/>]>.value" <mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CNTS_COMPLICATION_DEAD_NOTENOUGHBLOOD;value=medwan.common.true" property="value" outputString="checked"/> value="medwan.common.true"/><%=getTran(request,"web","dead_not_enough_blood",sWebLanguage) %>&nbsp;
+							</td></tr></table>			            
 						</td>			            
 	        		</tr>
 			        <tr>
@@ -163,9 +179,25 @@
 </form>
 <script>
   function submitForm(){
-    document.getElementById("buttonsDiv").style.visibility = "hidden";
-    var temp = Form.findFirstElement(transactionForm);//for ff compatibility
-    document.transactionForm.submit();
+	    if(document.getElementById('encounteruid').value.length==0){
+	  	  alertDialogDirectText('<%=getTranNoLink("web","no.encounter.linked",sWebLanguage)%>');
+	        searchEncounter();
+	  	}	
+	    else{
+		    document.getElementById("buttonsDiv").style.visibility = "hidden";
+		    var temp = Form.findFirstElement(transactionForm);//for ff compatibility
+		    document.transactionForm.submit();
+	    }
   }
+  
+  function searchEncounter(){
+	  openPopup("/_common/search/searchEncounter.jsp&ts=<%=getTs()%>&Varcode=encounteruid&VarText=&FindEncounterPatient=<%=activePatient.personid%>");
+	}
+  
+  if(<%=((TransactionVO)transaction).getServerId()%>==1 && document.getElementById('encounteruid').value=='' <%=request.getParameter("nobuttons")==null?"":" && 1==0"%>){
+		alertDialogDirectText('<%=getTranNoLink("web","no.encounter.linked",sWebLanguage)%>');
+		searchEncounter();
+	  }  
+
 </script>
 <%=writeJSButtons("transactionForm","saveButton")%>

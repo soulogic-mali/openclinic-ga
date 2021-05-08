@@ -1,10 +1,12 @@
 package be.openclinic.finance;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -19,7 +21,7 @@ import be.mxs.common.util.system.ScreenHelper;
 import com.itextpdf.text.pdf.PdfPTable;
 
 public class CsvInvoiceCplr {
-    static DecimalFormat priceFormatInsurar = new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormatInsurar","#,##0.00"));
+    static DecimalFormat priceFormatInsurar = new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormatInsurarCsv","#,##0.00"),new DecimalFormatSymbols(Locale.getDefault()));
 
 	public static String getOutput(javax.servlet.http.HttpServletRequest request){
 		double pageTotalAmount=0,pageTotalAmount85=0,pageTotalAmount100=0;

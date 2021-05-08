@@ -12,6 +12,7 @@
     <input type="hidden" readonly name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_DEPARTMENT" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_DEPARTMENT" translate="false" property="value"/>"/>
     <input type="hidden" readonly name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_CONTEXT" translate="false" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_CONTEXT" translate="false" property="value"/>"/>
 
+
 <%=contextHeader(request,sWebLanguage)%>
 <table class="list" width="100%" cellspacing="1">
     <%-- DATE --%>
@@ -38,6 +39,11 @@
             <textarea onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_NEUROLOGY_FOLLOWUP_THERAPEUTICAL_MODIFICATIONS")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_NEUROLOGY_FOLLOWUP_THERAPEUTICAL_MODIFICATIONS" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_NEUROLOGY_FOLLOWUP_THERAPEUTICAL_MODIFICATIONS" property="value"/></textarea>
         </td>
     </tr>
+    <tr>
+    	<td colspan='2'>
+       	   	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/diagnosesEncoding.jsp"),pageContext);%>
+    	</td>
+    </tr>
 </table>
     
 <%-- BUTTONS --%>
@@ -50,11 +56,17 @@
 
   <%-- SUBMIT FORM --%>
   function submitForm(){
-    transactionForm.saveButton.disabled = true;
-    <%
-        SessionContainerWO sessionContainerWO = (SessionContainerWO)SessionContainerFactory.getInstance().getSessionContainerWO(request,SessionContainerWO.class.getName());
-        out.print(takeOverTransaction(sessionContainerWO, activeUser,"document.transactionForm.submit();"));
-    %>
+	    if(document.getElementById('encounteruid').value.length==0){
+	  	  alertDialogDirectText('<%=getTranNoLink("web","no.encounter.linked",sWebLanguage)%>');
+	        searchEncounter();
+	  	}	
+	      else{
+		    transactionForm.saveButton.disabled = true;
+		    <%
+		        SessionContainerWO sessionContainerWO = (SessionContainerWO)SessionContainerFactory.getInstance().getSessionContainerWO(request,SessionContainerWO.class.getName());
+		        out.print(takeOverTransaction(sessionContainerWO, activeUser,"document.transactionForm.submit();"));
+		    %>
+	      }
   }
 
   <%-- DO BACK --%>
@@ -63,7 +75,17 @@
       window.location.href='<c:url value="/main.do?Page=curative/index.jsp&ts="/><%=getTs()%>';
     }
   }
-</script>
+  
+  function searchEncounter(){
+	  openPopup("/_common/search/searchEncounter.jsp&ts=<%=getTs()%>&Varcode=encounteruid&VarText=&FindEncounterPatient=<%=activePatient.personid%>");
+	}
+  
+  if(<%=((TransactionVO)transaction).getServerId()%>==1 && document.getElementById('encounteruid').value=='' <%=request.getParameter("nobuttons")==null?"":" && 1==0"%>){
+		alertDialogDirectText('<%=getTranNoLink("web","no.encounter.linked",sWebLanguage)%>');
+		searchEncounter();
+	  }  
+
+  </script>
 <%=ScreenHelper.contextFooter(request)%>
 </form>
 <%=writeJSButtons("transactionForm","saveButton")%>

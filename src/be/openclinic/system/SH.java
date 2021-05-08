@@ -5,6 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.text.RandomStringGenerator;
 
 import java.sql.Connection;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.ScreenHelper;
@@ -67,5 +70,9 @@ public class SH extends ScreenHelper {
     
     public static int getServerId() {
     	return MedwanQuery.getInstance().getConfigInt("serverId",1);
+    }
+    
+    public static String formatDouble(double d) {
+    	return new DecimalFormat("#0.00",new DecimalFormatSymbols(Locale.getDefault())).format(d);
     }
 }

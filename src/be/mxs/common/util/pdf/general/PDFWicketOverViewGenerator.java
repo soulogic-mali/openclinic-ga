@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.awt.*;
 
@@ -573,7 +574,7 @@ public class PDFWicketOverViewGenerator extends PDFBasic {
 	            		if(sCreditUser.length()>0){
 	            			sCreditUser+="\n";
 	            		}
-	            		sCreditUser+=ins+": "+new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormatInsurar","#")).format(insurarAmounts.get(ins));
+	            		sCreditUser+=ins+": "+new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormatInsurar","#"),new DecimalFormatSymbols(Locale.getDefault())).format(insurarAmounts.get(ins));
 	            		ti+=(Double)insurarAmounts.get(ins);
             		}
             		if(sCreditUser.length()==0){

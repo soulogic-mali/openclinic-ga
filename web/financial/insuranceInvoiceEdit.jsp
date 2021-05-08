@@ -194,7 +194,7 @@
         <tr>
             <td class="admin"><%=getTran(request,"web.finance","balance",sWebLanguage)%></td>
             <td class="admin2">
-                <input class="text" readonly type='text' id='EditBalance' name='EditBalance' value='<%=new DecimalFormat("#.#").format(insurarInvoice.getBalance())%>' size='20'> <%=MedwanQuery.getInstance().getConfigParam("currency","€")%>
+                <input class="text" readonly type='text' id='EditBalance' name='EditBalance' value='<%=SH.formatDouble(insurarInvoice.getBalance()) %>' size='20'> <%=MedwanQuery.getInstance().getConfigParam("currency","€")%>
             </td>
         </tr>
         

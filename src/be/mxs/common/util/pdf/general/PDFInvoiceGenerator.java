@@ -7,7 +7,9 @@ import com.itextpdf.text.*;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,7 +37,7 @@ public abstract class PDFInvoiceGenerator extends PDFBasic {
 
     protected String sCurrency = MedwanQuery.getInstance().getConfigParam("currency","€");
     DecimalFormat priceFormat = new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormat","#,##0.00"));
-    DecimalFormat priceFormatInsurar = new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormatInsurar","#,##0.00"));
+    DecimalFormat priceFormatInsurar = new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormatInsurar","#,##0.00"),new DecimalFormatSymbols(Locale.getDefault()));
 
 
     //--- ABSTRACT METHODS ------------------------------------------------------------------------

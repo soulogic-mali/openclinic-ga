@@ -6,6 +6,7 @@ import com.itextpdf.text.*;
 import java.util.*;
 import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -251,7 +252,7 @@ public class PDFExtraInsurarInvoiceGeneratorCTAMS2 extends PDFInvoiceGenerator {
 		    table.setWidthPercentage(pageWidth);
 		    table.addCell(createLabelCell(insurar.getOfficialName()+" "+MedwanQuery.getInstance().getLabel("report.monthly","district",user.person.language)+" "+report_identification.getItem("OC_HC_DISTRICT")+" "+
 		    		MedwanQuery.getInstance().getLabel("web","owes",user.person.language)+" "+report_identification.getItem("OC_HC_FOSA")+" "+MedwanQuery.getInstance().getLabel("web","thesumof",user.person.language)+
-		    		" "+new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormatInsurar","#")).format(invoice.getBalance())+" "+MedwanQuery.getInstance().getConfigString("currency","RWF"),1));
+		    		" "+new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormatInsurar","#"),new DecimalFormatSymbols(Locale.getDefault())).format(invoice.getBalance())+" "+MedwanQuery.getInstance().getConfigString("currency","RWF"),1));
 		
 		    table.addCell(createLabelCell(MedwanQuery.getInstance().getLabel("web","for.health.services.during",user.person.language)+" "+month+" "+MedwanQuery.getInstance().getLabel("web","of.which",user.person.language),1));
 		    doc.add(table);

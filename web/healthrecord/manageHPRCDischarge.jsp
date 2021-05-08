@@ -39,6 +39,19 @@
 				    </tr>
 
 				    
+				    <%--  RAPPORTAGE --%>
+				    <tr>
+				        <td width ="<%=sTDAdminWidth%>" class='admin'><%=getTran(request,"web","rapportage",sWebLanguage)%>&nbsp;</td>
+				        <td class='admin2'>
+				        	<table width='100%'>
+				        		<tr>
+				        			<td><%=SH.writeDefaultCheckBox((TransactionVO)transaction, request, "1", "ITEM_TYPE_MATERNALDEATH", activePatient.gender.equalsIgnoreCase("m")?"disabled":"") %><%=getTran(request,"web","maternaldeath",sWebLanguage) %></td>
+				        			<td><%=SH.writeDefaultCheckBox((TransactionVO)transaction, request, "1", "ITEM_TYPE_PERINATALDEATH", "") %><%=getTran(request,"web","perinataldeath",sWebLanguage) %></td>
+				        			<td><%=SH.writeDefaultCheckBox((TransactionVO)transaction, request, "1", "ITEM_TYPE_POSTACTINFECTION", "") %><%=getTran(request,"web","postactinfection",sWebLanguage) %></td>
+				        		</tr>
+				        	</table>
+				        </td>
+				    </tr>
 				    <%--  DONNEES CLINIQUES --%>
 				    <tr>
 				        <td width ="<%=sTDAdminWidth%>" class='admin'><%=getTran(request,"web","dischargesummary",sWebLanguage)%>&nbsp;</td>
@@ -83,7 +96,7 @@
 		    </td>
    
 	        <%-- DIAGNOSIS --%>
-	    	<td class="admin">
+	    	<td class="admin" style='vertical-align: top'>
 		      	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/diagnosesEncoding.jsp"),pageContext);%>
 	    	</td>
 	    </tr>
