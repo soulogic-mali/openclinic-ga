@@ -49,8 +49,11 @@
 		<parameter name="noShowExaminationsGenderM" default="">
 		    <description language="en">Semicolon-separated code-matic name of examinations which will not be shown</description>
 		</parameter>
-		<parameter name="noShowExaminationsGenderF" default="">
+		<parameter name="noShowExaminationsGenderM" default="">
 		    <description language="en">Semicolon-separated code-matic name of examinations which will not be shown</description>
+		</parameter>
+		<parameter name="clinicalPathwayFiles" default="pathways.bi.xml">
+		    <description language="en">File that contains the clinical pathway xml-scripts to be used as a knowledge base</description>
 		</parameter>
 		<parameter name="minValueY_glycemy" default="" type="integer">
 		    <description language="en"></description>
