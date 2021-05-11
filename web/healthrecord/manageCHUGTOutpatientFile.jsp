@@ -441,6 +441,7 @@
 			            	<a href='javascript:openEncounter()'><%=getTran(request,"web","editencounter",sWebLanguage) %></a>
 			            </td>
 			        </tr>
+                	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/sptField.jsp"),pageContext);%>
          		</table>
          	</td>
          	

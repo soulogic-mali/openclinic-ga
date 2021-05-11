@@ -23,7 +23,7 @@
 	}
 	else{
 %>
-	<iframe id='ocframe' style='display: ; padding: 0;width: 100%; height: 5000px' src="<%=request.getParameter("page")==null?"loginPage.jsp?searchpersonid="+checkString(request.getParameter("searchpersonid"))+"&logoff="+checkString(request.getParameter("logoff")):request.getParameter("page")+"?searchpersonid="+checkString(request.getParameter("searchpersonid"))%>" frameborder="0">
+	<iframe id='ocframe' style='display: ; padding: 0;width: 100%; height: 5000px' src="<%=request.getParameter("page")==null?"loginPage.jsp?searchpersonid="+checkString(request.getParameter("searchpersonid"))+"&logoff="+checkString(request.getParameter("logoff")):request.getParameter("page")+"?init="+checkString(request.getParameter("init"))+"&autoload="+checkString(request.getParameter("autoload"))+"&sptaction="+checkString(request.getParameter("sptaction"))+"&nohome="+checkString(request.getParameter("nohome"))+"&searchpersonid="+checkString(request.getParameter("searchpersonid"))%>" frameborder="0">
 <%
 	}
 %>

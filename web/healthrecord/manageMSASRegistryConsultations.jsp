@@ -50,6 +50,7 @@
 			                <textarea rows="2" onKeyup="resizeTextarea(this,10);" class="text" cols="50" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CONS_COMPLAINTS" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CONS_COMPLAINTS" property="value"/></textarea>
 			            </td>
 			        </tr>
+                	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/sptField.jsp"),pageContext);%>
 		        	<tr>
 			            <td class="admin"><%=getTran(request,"web","tdr",sWebLanguage)%>&nbsp;</td>
 			            <td class="admin2">

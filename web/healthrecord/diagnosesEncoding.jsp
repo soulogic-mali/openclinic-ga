@@ -44,11 +44,17 @@
             <%if(activeEncounterUid.length()>0){ %>
 				<table class="list" width="100%" cellspacing="0" cellpadding="2">
 			      <tr class="admin">
-				    <td align="center"><%=getTran(request,"web","ikirezi",sWebLanguage)%>
-		            	<a href="javascript:doPanorama('<%=activeEncounterUid%>');"><img src="<c:url value='/_img/icons/icon_panorama.gif'/>" class="link" title="<%=getTranNoLink("ikirezi","panorama",sWebLanguage)%>" style="vertical-align:-4px;"></a>
+				    <td align="center">
+				    	<%=getTran(request,"web","ikirezi",sWebLanguage)%>
+		            	<a href="javascript:doPanorama('<%=activeEncounterUid%>');"><img src="<c:url value='/_img/icons/icon_panorama.gif'/>" class="link" title="<%=getTranNoLink("ikirezi","panorama",sWebLanguage)%>" style="vertical-align:-4px;"></a>&nbsp;
+				    	<%if(SH.ci("enableSPT",0)==1){ %>
+				    	<%=getTran(request,"web","spt",sWebLanguage)%>
+		            	<a href="javascript:doSPT();"><img height='16px' src="<c:url value='/_img/icons/mobile/icon_brain.png'/>" class="link" title="<%=getTranNoLink("web","spt",sWebLanguage)%>" style="vertical-align:-4px;"></a>&nbsp;
+		            	<%} %>
 				    </td>
 				  </tr>
 				  <tr id='ikirezi'>
+				  <tr id='spt'>
 				  </tr>
 				</table>
 			<%} %>
@@ -339,6 +345,22 @@
           document.getElementById('ikirezi').innerHTML=resp.responseText;
         }
       });
+  }
+
+  function loadSPT(){
+      var params = 'encounteruid=<%=activeEncounterUid%>';
+	  var url= '<c:url value="/healthrecord/ajax/loadSPT.jsp"/>?ts='+new Date();
+      new Ajax.Request(url,{
+        method: "POST",
+        parameters: params,
+        onSuccess: function(resp){
+          document.getElementById('spt').innerHTML=resp.responseText;
+          window.setTimeout("loadSPT();",2000);
+        }
+      });
+  }
+  if(<%=SH.ci("enableSPT",0)%>==1){
+	  window.setTimeout("loadSPT();",500);
   }
 
   function deleteRFE(serverid,objectid){

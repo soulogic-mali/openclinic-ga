@@ -193,7 +193,9 @@
 				</td>
 				<td style='font-size:8vw;text-align: right' nowrap>
 					<img onclick="window.location.reload()" src='<%=sCONTEXTPATH%>/_img/icons/mobile/refresh.png'/>
-					<img onclick="window.location.href='../html5/welcome.jsp'" src='<%=sCONTEXTPATH%>/_img/icons/mobile/home.png'/>
+					<%if(!checkString(request.getParameter("nohome")).equalsIgnoreCase("1")){%>
+						<img onclick="window.location.href='../html5/welcome.jsp'" src='<%=sCONTEXTPATH%>/_img/icons/mobile/home.png'/>
+					<%} %>
 				</td>
 			</tr>
 		<%
@@ -205,7 +207,12 @@
 				sptSigns=new Hashtable();
 				if(sptPointer.length()>0){
 					out.println("<script>");
-					out.println("window.location.href='sptcomplaintsExisting.jsp';");
+					if(checkString(request.getParameter("autoload")).equalsIgnoreCase("1")){
+						out.println("window.location.href='sptcomplaints.jsp?sptaction=loadspt';");
+					}
+					else{
+						out.println("window.location.href='sptcomplaintsExisting.jsp?autoload="+checkString(request.getParameter("autoload"))+"';");
+					}
 					out.println("</script>");
 					out.flush();
 				}
@@ -261,14 +268,13 @@
 		}
 		signs.put("patient",patientSigns);
 		session.setAttribute("sptpatient",patientSigns);
-	
 		if(checkString(request.getParameter("sptaction")).equalsIgnoreCase("loadspt")){
 			if(sptPointer.length()>0){
 				sptSigns=unSerializeSigns(sptPointer);
 			}
 			//Store spt concepts in session
 			session.setAttribute("sptconcepts", sptSigns);
-			out.println("<script>window.location.href='"+sCONTEXTPATH+"/html5/spt.jsp';</script>");
+			out.println("<script>window.location.href='"+sCONTEXTPATH+"/html5/spt.jsp?doreset="+SH.c(request.getParameter("doreset"))+"&nohome="+SH.c(request.getParameter("nohome"))+"';</script>");
 			out.flush();
 		}
 		else if(checkString(request.getParameter("sptaction")).equalsIgnoreCase("spt")){
@@ -300,7 +306,7 @@
 			}
 			//Store spt concepts in session
 			session.setAttribute("sptconcepts", sptSigns);
-			out.println("<script>window.location.href='"+sCONTEXTPATH+"/html5/spt.jsp';</script>");
+			out.println("<script>window.location.href='"+sCONTEXTPATH+"/html5/spt.jsp?nohome="+SH.c(request.getParameter("nohome"))+"';</script>");
 			out.flush();
 		}
 		else if(checkString(request.getParameter("sptaction")).equalsIgnoreCase("patient")){

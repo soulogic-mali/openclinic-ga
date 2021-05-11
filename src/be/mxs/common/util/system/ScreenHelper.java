@@ -2804,7 +2804,7 @@ public static String removeAccents(String sTest){
 	    	StringBuffer s = new StringBuffer();
 	    	s.append("<input type='hidden' id='"+sName+"' ");
 	    	s.append(" name='currentTransactionVO.items.<ItemVO[hashCode="+transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getItemId()+"]>.value'");
-	    	s.append(" value='"+transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getValue()+"'/>");
+	    	s.append(" value='"+transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getValue().replaceAll("'", "´")+"'/>");
 	    	return s.toString();
     	}
     }
@@ -3863,7 +3863,7 @@ public static String removeAccents(String sTest){
     public static String setRightClick(String itemType, String onChange){
         return "onclick='this.className=\"selected\"' "+
                //"onchange='"+onChange+"this.className=\"selected\";setPopup(\"be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"\",this.value)' "+
-               "onkeyup='"+onChange+"this.className=\"selected\";setPopup(\"be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"\",this.value)' "+
+               "onkeydown='"+onChange+"this.className=\"selected\";setPopup(\"be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"\",this.value)' "+
                "onmouseover=\"if(document.getElementById('clipboard')) document.getElementById('clipboard').innerHTML='"+itemType+"';this.style.cursor='help';setPopup('be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"',this.value);activeItem=true;setItemsMenu(true);\" "+
                "onmouseout=\"this.style.cursor='default';activeItem=false;\" ";
     }
@@ -3874,7 +3874,7 @@ public static String removeAccents(String sTest){
     public static String setRightClick(HttpSession session,String itemType, String onChange){
         return "onclick='this.className=\"selected\"' "+
                //"onchange='"+onChange+"this.className=\"selected\";setPopup(\"be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"\",this.value)' "+
-               "onkeyup='"+onChange+"this.className=\"selected\";setPopup(\"be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"\",this.value)' "+
+               "onkeydown='"+onChange+"this.className=\"selected\";setPopup(\"be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"\",this.value)' "+
                "onmouseover=\"if(document.getElementById('clipboard')) document.getElementById('clipboard').innerHTML='"+itemType+"';this.style.cursor='help';setPopup('be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"',this.value);activeItem=true;setItemsMenu(true);\" "+
                "onmouseout=\"this.style.cursor='default';activeItem=false;\" "+
                (checkString((String)session.getAttribute("editmode")).equals("1")?"title='"+itemType+"' ":"");
@@ -3884,7 +3884,7 @@ public static String removeAccents(String sTest){
     	return setRightClickNoClass(session,itemType, "");
     }
     public static String setRightClickNoClass(HttpSession session,String itemType, String onChange){
-        return "onkeyup='setPopup(\"be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"\",this.value)' "+
+        return "onkeydown='setPopup(\"be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"\",this.value)' "+
                "onmouseover=\"if(document.getElementById('clipboard')) document.getElementById('clipboard').innerHTML='"+itemType+"';this.style.cursor='help';setPopup('be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"',this.value);activeItem=true;setItemsMenu(true);\" "+
                "onmouseout=\"this.style.cursor='default';activeItem=false;\" "+
                (checkString((String)session.getAttribute("editmode")).equals("1")?"title='"+itemType+"' ":"");
@@ -3896,7 +3896,7 @@ public static String removeAccents(String sTest){
     public static String setRightClickCenter(HttpSession session,String itemType, String onChange){
         return "onclick='this.className=\"selectedcenter\"' "+
                //"onchange='"+onChange+"this.className=\"selectedcenter\";setPopup(\"be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"\",this.value)' "+
-               "onkeyup='"+onChange+"this.className=\"selectedcenter\";setPopup(\"be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"\",this.value)' "+
+               "onkeydown='"+onChange+"this.className=\"selectedcenter\";setPopup(\"be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"\",this.value)' "+
                "onmouseover=\"if(document.getElementById('clipboard')) document.getElementById('clipboard').innerHTML='"+itemType+"';this.style.cursor='help';setPopup('be.mxs.common.model.vo.healthrecord.IConstants."+itemType+"',this.value);activeItem=true;setItemsMenu(true);\" "+
                "onmouseout=\"this.style.cursor='default';activeItem=false;\" "+
                (checkString((String)session.getAttribute("editmode")).equals("1")?"title='"+itemType+"' ":"");

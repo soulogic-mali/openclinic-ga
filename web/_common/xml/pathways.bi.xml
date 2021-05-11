@@ -1816,7 +1816,7 @@
 					</node>
 					<node>
 						<!-- Pas d'épidémie virale -->
-						<label language="fr"><![CDATA[Epidémie virale]]></label>
+						<label language="fr"><![CDATA[Pas d'épidémie virale]]></label>
 						<argument type="spt" id="dpn.6.3" value="no"/>
 						<node>
 							<!-- Expectoration mousseuse -->

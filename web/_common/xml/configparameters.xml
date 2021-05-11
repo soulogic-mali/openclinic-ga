@@ -35,6 +35,9 @@
 		<parameter name="enableDHIS2" default="0" type="radio" options="0;1">
 		    <description language="en">Wether to activate the DHIS2 interface</description>
 		</parameter>
+		<parameter name="enableSPT" default="0" type="radio" options="0;1">
+		    <description language="en">Wether to activate the SPT integration with consultation screens</description>
+		</parameter>
 		<parameter name="patientLabelWidth" default="360" type="integer" unit="pixels">
 		    <description language="en"></description>
 		</parameter>

@@ -128,7 +128,7 @@
             	<table width='100%'>
             		<tr>
             			<td class="admin2">
-			                <select id="examination" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE" property="itemId"/>]>.value">
+			                <select onchange='selectDHIS2("examination","ITEM_TYPE_DHIS2CODE1");' id="examination" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE" property="itemId"/>]>.value">
 			                    <option/>
 			                    <%
 			                        String sType = checkString(request.getParameter("type"));
@@ -146,10 +146,11 @@
 				  <%-- DHIS2 CODE --%>
 				  <%	if(MedwanQuery.getInstance().getConfigInt("enableDHIS2",0)==1){ %>
 				          	<%	if(MedwanQuery.getInstance().getConfigInt("enableBurundi",0)==1){ %>
-				           	<tr><td class='admin2'><select class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE1" property="itemId"/>]>.value">
-				           		<option value=''></option>
-				           		<%=ScreenHelper.writeSelect(request,"dhis2examcodesimaging",checkString(sessionContainerWO.getCurrentTransactionVO().getItemValue(sPREFIX+"ITEM_TYPE_DHIS2CODE1")),sWebLanguage) %>
-				           	</select></td></tr>
+					           	<tr>
+					           		<td class='admin2'>
+					           			<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_DHIS2CODE1", "dhis2examcodesimaging", sWebLanguage, "") %>
+					           		</td>
+					           	</tr>
 				           <%	}
 				          		else {
 				          	%>
@@ -305,7 +306,7 @@
             	<table width='100%'>
             		<tr>
             			<td class="admin2">
-			                <select id="examination2" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE2" property="itemId"/>]>.value">
+			                <select onchange='selectDHIS2("examination2","ITEM_TYPE_DHIS2CODE2");' id="examination2" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE2" property="itemId"/>]>.value">
 			                    <option/>
 			                    <%=ScreenHelper.writeSelect(request,"mir_type",((TransactionVO)transaction).getItemValue(sPREFIX+"ITEM_TYPE_MIR2_TYPE2"),sWebLanguage,false,true)%>
 			                </select>
@@ -450,7 +451,7 @@
             	<table width='100%'>
             		<tr>
             			<td class="admin2">
-			                <select id="examination3" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE3" property="itemId"/>]>.value">
+			                <select onchange='selectDHIS2("examination3","ITEM_TYPE_DHIS2CODE3");' id="examination3" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE3" property="itemId"/>]>.value">
 			                    <option/>
 			                    <%=ScreenHelper.writeSelect(request,"mir_type",((TransactionVO)transaction).getItemValue(sPREFIX+"ITEM_TYPE_MIR2_TYPE3"),sWebLanguage,false,true)%>
 			                </select>
@@ -590,7 +591,7 @@
             	<table width='100%'>
             		<tr>
             			<td class="admin2">
-			                <select id="examination4" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE4" property="itemId"/>]>.value">
+			                <select onchange='selectDHIS2("examination4","ITEM_TYPE_DHIS2CODE4");' id="examination4" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE4" property="itemId"/>]>.value">
 			                    <option/>
 			                    <%=ScreenHelper.writeSelect(request,"mir_type",((TransactionVO)transaction).getItemValue(sPREFIX+"ITEM_TYPE_MIR2_TYPE4"),sWebLanguage,false,true)%>
 			                </select>
@@ -736,7 +737,7 @@
             	<table width='100%'>
             		<tr>
             			<td class="admin2">
-			                <select id="examination5" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE5" property="itemId"/>]>.value">
+			                <select onchange='selectDHIS2("examination5","ITEM_TYPE_DHIS2CODE5");' id="examination5" class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE5" property="itemId"/>]>.value">
 			                    <option/>
 			                    <%=ScreenHelper.writeSelect(request,"mir_type",((TransactionVO)transaction).getItemValue(sPREFIX+"ITEM_TYPE_MIR2_TYPE5"),sWebLanguage,false,true)%>
 			                </select>
@@ -866,6 +867,14 @@
 
 <script>
   document.getElementById("trandate").focus();
+  
+  function selectDHIS2(examid,dhis2id){
+	  document.getElementById(dhis2id).value='';
+	  dhis2code=document.getElementById(examid).options[document.getElementById(examid).selectedIndex].text.split("|");
+	  if(dhis2code.length>1){
+		  document.getElementById(dhis2id).value=dhis2code[1].trim();
+	  }
+  }
 
   <%-- PRINT LABELS --%>
   function printLabels(){

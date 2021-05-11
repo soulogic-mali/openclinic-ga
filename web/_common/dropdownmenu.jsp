@@ -665,6 +665,13 @@
 	  }
   }
 	    
+  function doSPT(){
+	  newwin=window.open("<%=sCONTEXTPATH%>/html5/login.jsp?page=startSpt.jsp&nohome=1&init=1&autoload=1&sptaction=spt&doreset=reset&ts=<%=getTs()%>");
+	  newwin.width=800;
+	  newwin.height=600;
+	  newwin.focus();
+  }
+	    
   function doClinicalPathways(uid){
 	  if(uid){
 		  openPopup("/ikirezi/clinicalPathways.jsp&encounteruid="+uid+"&ts=<%=getTs()%>",1024,600).focus();

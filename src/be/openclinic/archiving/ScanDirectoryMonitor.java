@@ -816,7 +816,7 @@ public class ScanDirectoryMonitor implements Runnable{
     }
     
     //--- ACCEPT INCOMING FILE --------------------------------------------------------------------
-    private static void acceptIncomingFile(String sUDI, File file) throws Exception {
+    public static void acceptIncomingFile(String sUDI, File file) throws Exception {
     	if(Debug.enabled){
 	        Debug.println("\n********************** acceptIncomingFile **********************");	
 	        Debug.println("file : "+file.getName()+" ("+(file.length()/1024)+"kb)"); 	

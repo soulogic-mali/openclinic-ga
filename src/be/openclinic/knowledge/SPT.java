@@ -652,6 +652,17 @@ public class SPT {
 		return st;
 	}
 	
+	public static String getSPTPath(String pointer,String sWebLanguage,String pathwayFile) {
+		String path="";
+		try {
+			Connection conn = SH.getOpenClinicConnection();
+			path = getSPTPath(pointer,sWebLanguage,pathwayFile,conn);
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return path;
+	}
 	public static String getSPTPath(String pointer,String sWebLanguage,String pathwayFile,Connection conn) {
 		String path="";
 		try {
@@ -857,6 +868,437 @@ public class SPT {
 													sTreatment="@"+treatment.text;
 												}
 												path+=formatTitle(title)+sTreatment;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return path;
+	}
+	public static String getSPTPathForced(String pointer,String sWebLanguage,String pathwayFile) {
+		String path="";
+		try {
+			Connection conn = SH.getOpenClinicConnection();
+			path = getSPTPathForced(pointer,sWebLanguage,pathwayFile,conn);
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return path;
+	}
+	public static String getSPTPathForced(String pointer,String sWebLanguage,String pathwayFile,Connection conn) {
+		String path="";
+		try {
+			String sptPointer = Pointer.getPointer(pointer,conn);
+			if(sptPointer.length()>0){
+				Hashtable sptSigns=unSerializeSigns(sptPointer);
+				Hashtable cleanedSptSigns = new Hashtable();
+				Enumeration eSigns = sptSigns.keys();
+				while(eSigns.hasMoreElements()){
+					String key = (String)eSigns.nextElement();
+					String value = (String)sptSigns.get(key);
+					cleanedSptSigns.put(key,value.split(";")[0]);
+				}
+				Hashtable signs = new Hashtable();
+				Hashtable ikireziSigns = new Hashtable();
+				signs.put("ikirezi",ikireziSigns);
+				Hashtable patientSigns = new Hashtable();
+				int age=0;
+				String gender="M";
+				PreparedStatement ps = conn.prepareStatement("select * from adminview where personid=?");
+				ps.setString(1,pointer.split("\\.")[1]);
+				ResultSet rs = ps.executeQuery();
+				if(rs.next()) {
+					gender=rs.getString("gender");
+					java.util.Date dateOfBirth = rs.getDate("dateofbirth");
+			    	try{
+				    	Calendar startCalendar = new GregorianCalendar();
+				    	startCalendar.setTime(dateOfBirth);
+				    	Calendar endCalendar = new GregorianCalendar();
+				    	endCalendar.setTime(new java.util.Date());
+				    	int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+				    	int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+				    	age= diffMonth;
+			    	}
+			    	catch(Exception e){
+			    		age= -1;
+			    	}
+				}
+				rs.close();
+				ps.close();
+				patientSigns.put("ageinmonths",age);
+				patientSigns.put("gender",gender);
+				signs.put("patient",patientSigns);
+				if(cleanedSptSigns.get("drh.3")!=null && cleanedSptSigns.get("drhe.3")==null){
+					cleanedSptSigns.put("drhe.3",sptSigns.get("drh.3"));
+				}
+				if(cleanedSptSigns.get("drhe.3")!=null && cleanedSptSigns.get("drh.3")==null){
+					cleanedSptSigns.put("drh.3",cleanedSptSigns.get("drhe.3"));
+				}
+				signs.put("spt",cleanedSptSigns);
+				String sDoc = pathwayFile;
+				SAXReader reader = new SAXReader(false);
+				Document document = reader.read(new URL(sDoc));
+				Element root = document.getRootElement();
+				//Load documents, concepts and treatments
+				Hashtable sheets = new Hashtable();
+				if(root.element("documents")!=null){
+					Iterator iSheets = root.element("documents").elementIterator("document");
+					while(iSheets.hasNext()){
+						Element sheet = (Element)iSheets.next();
+						Sheet c = new Sheet();
+						c.id = checkString(sheet.attributeValue("id"));
+						c.href = checkString(sheet.attributeValue("href"));
+						c.text = getLabel(sheet,sWebLanguage);
+						sheets.put(c.id,c);
+					}
+				}
+				Hashtable concepts = new Hashtable();
+				if(root.element("concepts")!=null){
+					Iterator iConcepts = root.element("concepts").elementIterator("concept");
+					while(iConcepts.hasNext()){
+						Element concept = (Element)iConcepts.next();
+						Concept c = new Concept();
+						c.values = checkString(concept.attributeValue("values")).split(",");
+						c.text = getLabel(concept,sWebLanguage);
+						concepts.put(concept.attributeValue("id"),c);
+					}
+				}
+				Hashtable treatments = new Hashtable();
+				if(root.element("treatments")!=null){
+					Iterator iTreatments = root.element("treatments").elementIterator("treatment");
+					while(iTreatments.hasNext()){
+						Element treatment = (Element)iTreatments.next();
+						Treatment t = new Treatment();
+						if(treatment.element("document")!=null){
+							t.document = checkString(treatment.element("document").attributeValue("href"));
+						}
+						t.text = getLabel(treatment,sWebLanguage);
+						t.id = treatment.attributeValue("id");
+						treatments.put(t.id,t);
+						t.sheets = new Vector();
+						Iterator iSheets = treatment.elementIterator("document");
+						while(iSheets.hasNext()){
+							t.sheets.add(checkString(((Element)iSheets.next()).attributeValue("id")));
+						}
+					}
+				}
+				Iterator pathways = root.elementIterator("pathway");
+				while(pathways.hasNext()){
+					Element pathway = (Element)pathways.next();
+					if(isPathwayApplicable(pathway,signs)){
+						sptSigns.put(pathway.attributeValue("complaint"), pathway.attributeValue("value"));
+						boolean bSignsToExclude=false;
+						boolean bCanceled=false;
+						String sExcludeReason="";
+						StringBuffer sExcludes = new StringBuffer();
+						if(pathway.element("excludes")!=null){
+							Iterator excludes = pathway.element("excludes").elementIterator("exclude");
+							while(excludes.hasNext()){
+								Element exclude=(Element)excludes.next();
+								String excludeSpt=exclude.attributeValue("spt");
+								if(sptSigns.get(excludeSpt)==null){
+									String excludeSign=exclude.getText();
+									boolean bMatch=true;
+									//Check gender and age
+									if(checkString(exclude.attributeValue("minage")).length()>0){
+										if(age<Integer.parseInt(exclude.attributeValue("minage"))){
+											bMatch=false;
+										}
+									}
+									if(checkString(exclude.attributeValue("maxage")).length()>0){
+										if(age>Integer.parseInt(exclude.attributeValue("maxage"))){
+											bMatch=false;
+										}
+									}
+									if(checkString(exclude.attributeValue("gender")).length()>0){
+										if(!exclude.attributeValue("gender").toUpperCase().contains(gender.toUpperCase())){
+											bMatch=false;
+										}
+									}
+									if(bMatch){
+										bSignsToExclude=true;
+									}
+								}
+								else if(((String)sptSigns.get(excludeSpt)).equalsIgnoreCase("yes")){
+									sExcludeReason=excludeSpt;
+									bCanceled=true;
+									break;
+								}
+							}
+						}
+						if(bCanceled){
+							continue;
+						}
+						if(bSignsToExclude){
+						}
+						else{
+							Iterator childNodes = pathway.elementIterator("node");
+							while(childNodes.hasNext()){
+								Element childNode = (Element)childNodes.next();
+								SortedMap hPaths = new TreeMap();
+								Vector paths = getNodePath(childNode, signs, sWebLanguage);
+								for(int i=0;i<paths.size();i++){
+									String title = ((String)paths.elementAt(i)).split("\\|")[0];
+									if(hPaths.get(title)==null){
+										hPaths.put(title,new TreeSet());
+									}
+									if(((String)paths.elementAt(i)).split("\\|").length>1){
+										String[] missing = ((String)paths.elementAt(i)).split("\\|")[1].split(";");
+										SortedSet hMissing = (SortedSet)hPaths.get(title);
+										for(int j=0;j<1;j++){
+											hMissing.add(missing[j]);
+										}
+										if(hMissing.size()>0){
+											break;
+										}
+									}
+								}
+								boolean bHasTreatments = false;
+								Iterator iPaths = hPaths.keySet().iterator();
+								boolean bTitlePrinted=false;
+								StringBuffer sPrintSigns = new StringBuffer();
+								while(iPaths.hasNext()){
+									String title = (String)iPaths.next();
+									if(title.split("\\$").length>1){
+										bHasTreatments=true;
+									}
+								}
+								iPaths = hPaths.keySet().iterator();
+								while(iPaths.hasNext()){
+									String title = (String)iPaths.next();
+									String lastpart=title.split(">")[title.split(">").length-1];
+									path=formatTitle(title);
+									if(bHasTreatments && lastpart.split("\\$").length>1){
+										String sTreatment="";
+										Treatment treatment = (Treatment)treatments.get(lastpart.split("\\$")[1]);
+										if(treatment!=null){
+											path+="><b>"+treatment.text+"</b>";
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return path;
+	}
+	public static String getSPTPathOpen(String pointer,String sWebLanguage,String pathwayFile) {
+		String path="";
+		try {
+			Connection conn = SH.getOpenClinicConnection();
+			path = getSPTPathOpen(pointer,sWebLanguage,pathwayFile,conn);
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return path;
+	}
+	public static String getSPTPathOpen(String pointer,String sWebLanguage,String pathwayFile,Connection conn) {
+		String path="";
+		try {
+			String sptp = Pointer.getPointerWithDate(pointer,conn);
+			String sptPointer =sptp.split("\\|")[0];
+			String pointerupdate = sptp.split("\\|")[1];
+			if(sptPointer.length()>0){
+				Hashtable sptSigns=unSerializeSigns(sptPointer);
+				Hashtable cleanedSptSigns = new Hashtable();
+				Enumeration eSigns = sptSigns.keys();
+				while(eSigns.hasMoreElements()){
+					String key = (String)eSigns.nextElement();
+					String value = (String)sptSigns.get(key);
+					cleanedSptSigns.put(key,value.split(";")[0]);
+				}
+				Hashtable signs = new Hashtable();
+				Hashtable ikireziSigns = new Hashtable();
+				signs.put("ikirezi",ikireziSigns);
+				Hashtable patientSigns = new Hashtable();
+				int age=0;
+				String gender="M";
+				PreparedStatement ps = conn.prepareStatement("select * from adminview where personid=?");
+				ps.setString(1,pointer.split("\\.")[1]);
+				ResultSet rs = ps.executeQuery();
+				if(rs.next()) {
+					gender=rs.getString("gender");
+					java.util.Date dateOfBirth = rs.getDate("dateofbirth");
+			    	try{
+				    	Calendar startCalendar = new GregorianCalendar();
+				    	startCalendar.setTime(dateOfBirth);
+				    	Calendar endCalendar = new GregorianCalendar();
+				    	endCalendar.setTime(new java.util.Date());
+				    	int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+				    	int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+				    	age= diffMonth;
+			    	}
+			    	catch(Exception e){
+			    		age= -1;
+			    	}
+				}
+				rs.close();
+				ps.close();
+				patientSigns.put("ageinmonths",age);
+				patientSigns.put("gender",gender);
+				signs.put("patient",patientSigns);
+				if(cleanedSptSigns.get("drh.3")!=null && cleanedSptSigns.get("drhe.3")==null){
+					cleanedSptSigns.put("drhe.3",sptSigns.get("drh.3"));
+				}
+				if(cleanedSptSigns.get("drhe.3")!=null && cleanedSptSigns.get("drh.3")==null){
+					cleanedSptSigns.put("drh.3",cleanedSptSigns.get("drhe.3"));
+				}
+				signs.put("spt",cleanedSptSigns);
+				String sDoc = pathwayFile;
+				SAXReader reader = new SAXReader(false);
+				Document document = reader.read(new URL(sDoc));
+				Element root = document.getRootElement();
+				//Load documents, concepts and treatments
+				Hashtable sheets = new Hashtable();
+				if(root.element("documents")!=null){
+					Iterator iSheets = root.element("documents").elementIterator("document");
+					while(iSheets.hasNext()){
+						Element sheet = (Element)iSheets.next();
+						Sheet c = new Sheet();
+						c.id = checkString(sheet.attributeValue("id"));
+						c.href = checkString(sheet.attributeValue("href"));
+						c.text = getLabel(sheet,sWebLanguage);
+						sheets.put(c.id,c);
+					}
+				}
+				Hashtable concepts = new Hashtable();
+				if(root.element("concepts")!=null){
+					Iterator iConcepts = root.element("concepts").elementIterator("concept");
+					while(iConcepts.hasNext()){
+						Element concept = (Element)iConcepts.next();
+						Concept c = new Concept();
+						c.values = checkString(concept.attributeValue("values")).split(",");
+						c.text = getLabel(concept,sWebLanguage);
+						concepts.put(concept.attributeValue("id"),c);
+					}
+				}
+				Hashtable treatments = new Hashtable();
+				if(root.element("treatments")!=null){
+					Iterator iTreatments = root.element("treatments").elementIterator("treatment");
+					while(iTreatments.hasNext()){
+						Element treatment = (Element)iTreatments.next();
+						Treatment t = new Treatment();
+						if(treatment.element("document")!=null){
+							t.document = checkString(treatment.element("document").attributeValue("href"));
+						}
+						t.text = getLabel(treatment,sWebLanguage);
+						t.id = treatment.attributeValue("id");
+						treatments.put(t.id,t);
+						t.sheets = new Vector();
+						Iterator iSheets = treatment.elementIterator("document");
+						while(iSheets.hasNext()){
+							t.sheets.add(checkString(((Element)iSheets.next()).attributeValue("id")));
+						}
+					}
+				}
+				Iterator pathways = root.elementIterator("pathway");
+				while(pathways.hasNext()){
+					Element pathway = (Element)pathways.next();
+					if(isPathwayApplicable(pathway,signs)){
+						sptSigns.put(pathway.attributeValue("complaint"), pathway.attributeValue("value"));
+						boolean bSignsToExclude=false;
+						boolean bCanceled=false;
+						String sExcludeReason="";
+						StringBuffer sExcludes = new StringBuffer();
+						if(pathway.element("excludes")!=null){
+							Iterator excludes = pathway.element("excludes").elementIterator("exclude");
+							while(excludes.hasNext()){
+								Element exclude=(Element)excludes.next();
+								String excludeSpt=exclude.attributeValue("spt");
+								if(sptSigns.get(excludeSpt)==null){
+									String excludeSign=exclude.getText();
+									boolean bMatch=true;
+									//Check gender and age
+									if(checkString(exclude.attributeValue("minage")).length()>0){
+										if(age<Integer.parseInt(exclude.attributeValue("minage"))){
+											bMatch=false;
+										}
+									}
+									if(checkString(exclude.attributeValue("maxage")).length()>0){
+										if(age>Integer.parseInt(exclude.attributeValue("maxage"))){
+											bMatch=false;
+										}
+									}
+									if(checkString(exclude.attributeValue("gender")).length()>0){
+										if(!exclude.attributeValue("gender").toUpperCase().contains(gender.toUpperCase())){
+											bMatch=false;
+										}
+									}
+									if(bMatch){
+										bSignsToExclude=true;
+									}
+								}
+								else if(((String)sptSigns.get(excludeSpt)).equalsIgnoreCase("yes")){
+									sExcludeReason=excludeSpt;
+									bCanceled=true;
+									break;
+								}
+							}
+						}
+						if(bCanceled){
+							continue;
+						}
+						if(bSignsToExclude){
+						}
+						else{
+							Iterator childNodes = pathway.elementIterator("node");
+							while(childNodes.hasNext()){
+								Element childNode = (Element)childNodes.next();
+								SortedMap hPaths = new TreeMap();
+								Vector paths = getNodePath(childNode, signs, sWebLanguage);
+								for(int i=0;i<paths.size();i++){
+									String title = ((String)paths.elementAt(i)).split("\\|")[0];
+									if(hPaths.get(title)==null){
+										hPaths.put(title,new TreeSet());
+									}
+									if(((String)paths.elementAt(i)).split("\\|").length>1){
+										String[] missing = ((String)paths.elementAt(i)).split("\\|")[1].split(";");
+										SortedSet hMissing = (SortedSet)hPaths.get(title);
+										for(int j=0;j<1;j++){
+											hMissing.add(missing[j]);
+										}
+										if(hMissing.size()>0){
+											break;
+										}
+									}
+								}
+								boolean bHasTreatments = false;
+								Iterator iPaths = hPaths.keySet().iterator();
+								boolean bTitlePrinted=false;
+								StringBuffer sPrintSigns = new StringBuffer();
+								while(iPaths.hasNext()){
+									String title = (String)iPaths.next();
+									if(title.split("\\$").length>1){
+										bHasTreatments=true;
+									}
+								}
+								iPaths = hPaths.keySet().iterator();
+								while(iPaths.hasNext()){
+									String title = (String)iPaths.next();
+									String lastpart=title.split(">")[title.split(">").length-1];
+									path="<b>["+SH.formatDate(SH.parseDate(pointerupdate, new SimpleDateFormat("dd/MM/yyyy HH:mm")))+"]</b> <b style='color: red'>"+pathway.attributeValue("complaint").split("\\.")[0].toUpperCase()+"</b> - "+formatTitle(title);
+									if(bHasTreatments && lastpart.split("\\$").length>1){
+										String sTreatment="";
+										Treatment treatment = (Treatment)treatments.get(lastpart.split("\\$")[1]);
+										if(treatment!=null){
+											path+="><b>"+treatment.text+"</b>";
+											if(!treatment.id.contains(".")){
+												path+="><b style='color: red'>["+treatment.id.toUpperCase()+"]</b>";
 											}
 										}
 									}

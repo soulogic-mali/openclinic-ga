@@ -1,4 +1,4 @@
-<%@ page import="be.openclinic.medical.*" %>
+	<%@ page import="be.openclinic.medical.*" %>
 <%@include file="/includes/validateUser.jsp"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%=checkPermission(out,"occup.gitegaoutpatientfile","select",activeUser)%>
@@ -315,6 +315,7 @@
 							</table>
 			            </td>
 			        </tr>
+                	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/sptField.jsp"),pageContext);%>
 			        <tr>
 			            <td class="admin"><%=getTran(request,"Web.Occup","rmh.followup",sWebLanguage)%>&nbsp;</td>
 			            <td>
@@ -724,6 +725,7 @@ function openEncounter(){
 	  function searchEncounter(){
 	      openPopup("/_common/search/searchEncounter.jsp&ts=<%=getTs()%>&Varcode=encounteruid&VarText=&FindEncounterPatient=<%=activePatient.personid%>");
 	  }
+	  
 	  calculateBMI();
 	  if(<%=((TransactionVO)transaction).getServerId()%>==1 && document.getElementById('encounteruid').value=='' <%=request.getParameter("nobuttons")==null?"":" && 1==0"%>){
 			alertDialogDirectText('<%=getTranNoLink("web","no.encounter.linked",sWebLanguage)%>');

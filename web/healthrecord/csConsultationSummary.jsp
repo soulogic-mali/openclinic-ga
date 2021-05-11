@@ -343,6 +343,7 @@
                         <input type="hidden" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.[GENERAL.ANAMNESE]ITEM_TYPE_PLANNING7" property="itemId"/>]>.value">
                     </td>
                 </tr>
+               	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/sptField.jsp"),pageContext);%>
                 <tr>
                     <td class="admin"><%=getTran(request,"Web.Occup","medwan.healthrecord.cardial.frequence-cardiaque",sWebLanguage)%></td>
                     <td class="admin2" colspan="3"><input <%=setRightClick(session,"ITEM_TYPE_CARDIAL_CLINICAL_EXAMINATION_HEARTH_FREQUENCY")%> type="text" class="text" size="3" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CARDIAL_CLINICAL_EXAMINATION_HEARTH_FREQUENCY" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CARDIAL_CLINICAL_EXAMINATION_HEARTH_FREQUENCY" property="value"/>" onblur="setHF(this);"> /min
@@ -620,7 +621,7 @@
 
   <%
       if(encounter!=null && rfe.length()==0){
-	      %>window.setTimeout("openPopup('healthrecord/findRFE.jsp&field=rfe&trandate="+document.getElementById("trandate")+"&encounterUid=<%=encounter.getUid()%>&ts=<%=getTs()%>',700,400)",200);<%
+	      %>window.setTimeout("openPopup('healthrecord/findRFE.jsp&field=rfe&trandate="+document.getElementById("trandate").value+"&encounterUid=<%=encounter.getUid()%>&ts=<%=getTs()%>',700,400)",200);<%
       }
   %>
 </script>

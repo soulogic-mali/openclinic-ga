@@ -218,7 +218,9 @@
 				</td>
 				<td style='font-size:8vw;text-align: right' nowrap>
 					<img onclick="window.location.reload()" src='<%=sCONTEXTPATH%>/_img/icons/mobile/refresh.png'/>
-					<img onclick="window.location.href='../html5/welcome.jsp'" src='<%=sCONTEXTPATH%>/_img/icons/mobile/home.png'/>
+					<%if(!checkString(request.getParameter("nohome")).equalsIgnoreCase("1")){ %>
+						<img onclick="window.location.href='../html5/welcome.jsp'" src='<%=sCONTEXTPATH%>/_img/icons/mobile/home.png'/>
+					<%} %>
 				</td>
 			</tr>
 			<tr>

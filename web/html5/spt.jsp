@@ -490,7 +490,9 @@
 				</td>
 				<td style='font-size:8vw;text-align: right' nowrap>
 					<img onclick="window.location.reload()" src='<%=sCONTEXTPATH%>/_img/icons/mobile/refresh.png'/>
-					<img onclick="window.location.href='../html5/welcome.jsp'" src='<%=sCONTEXTPATH%>/_img/icons/mobile/home.png'/>
+					<%if(!checkString(request.getParameter("nohome")).equalsIgnoreCase("1")){%>
+						<img onclick="window.location.href='../html5/welcome.jsp'" src='<%=sCONTEXTPATH%>/_img/icons/mobile/home.png'/>
+					<%} %>
 				</td>
 			</tr>
 		</table>
@@ -814,7 +816,11 @@
 													sTreatment=treatment.text;
 													if(!treatment.id.contains(".")){
 														sTreatment+="<br/><span style='font-size:4vw;color: red;font-weight: bolder'>"+getTranNoLink("web","spt.result",sWebLanguage)+": ["+treatment.id.toUpperCase()+"]</span> ";
+														//Set SPT exit point in session memory
+														session.setAttribute("sptexit",treatment.id.toUpperCase()+";"+title);
 														if(activePatient!=null){
+															//Remove active spt from database (because not active anymore in case of an endnode)
+															Pointer.deletePointers("activespt."+activePatient.personid);
 															SPT.logTreatment(activePatient.getPersonId(), treatment.id);
 														}
 													}

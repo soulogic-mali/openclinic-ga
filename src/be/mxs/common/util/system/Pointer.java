@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import be.mxs.common.util.db.MedwanQuery;
+import be.openclinic.system.SH;
 
 public class Pointer {
 	
@@ -124,6 +125,25 @@ public class Pointer {
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()){
 				pointer=rs.getString("OC_POINTER_VALUE");
+			}
+			rs.close();
+			ps.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return pointer;
+	}
+	
+	public static String getPointerWithDate(String key, Connection conn){
+		String pointer = "";
+		PreparedStatement ps = null;
+		try{
+			ps=conn.prepareStatement("select * from OC_POINTERS where OC_POINTER_KEY=?");
+			ps.setString(1, key);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()){
+				pointer=rs.getString("OC_POINTER_VALUE")+"|"+SH.formatDate(rs.getTimestamp("OC_POINTER_UPDATETIME"), SH.fullDateFormat);
 			}
 			rs.close();
 			ps.close();

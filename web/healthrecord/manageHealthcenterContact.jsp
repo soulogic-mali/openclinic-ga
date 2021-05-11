@@ -134,20 +134,20 @@
          			<%-- Functional signs --%>
          			<tr height="40">
          				<td class='admin' width='20%'>
-         					<div id="title1"><%=getTran(request,"web","functional.signs",sWebLanguage)%></div>
+         					<div id="title1"><%=getTran(request,"web.hc","functional.signs",sWebLanguage)%></div>
          				</td>
          				<td>
          					<table width='100%'>
          						<tr onclick='selectKeywords("functional.signs.ids","functional.signs.text","functional.signs","keywords")'>
-			         				<td class='admin2' width='50%' style="vertical-align:top;">
-			         					<div id='functional.signs.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_FUNCTIONALSIGNS_IDS","functional.signs.text","functional.signs.ids",sWebLanguage)%></div>
-			         					<input type='hidden' id='functional.signs.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_FUNCTIONALSIGNS_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_FUNCTIONALSIGNS_IDS" property="value"/>"/>
-			         				</td>
 			         				<td class='admin2'>
 			         					<textarea class="text" onkeyup="resizeTextarea(this,10)" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_FUNCTIONALSIGNS_COMMENT" property="itemId"/>]>.value" id='functional.signs.comment' cols='45' ><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_FUNCTIONALSIGNS_COMMENT" property="value"/></textarea>
 			         				</td>
 			         				<td class='admin2' width='40' nowrap style="text-align:center">
 			         				    <img width='16' id='key1' class="link" src='<c:url value="/_img/themes/default/keywords.jpg"/>'/>
+			         				</td>
+			         				<td class='admin2' width='50%' style="vertical-align:top;">
+			         					<div id='functional.signs.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_FUNCTIONALSIGNS_IDS","functional.signs.text","functional.signs.ids",sWebLanguage)%></div>
+			         					<input type='hidden' id='functional.signs.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_FUNCTIONALSIGNS_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_FUNCTIONALSIGNS_IDS" property="value"/>"/>
 			         				</td>
 			         			</tr>
          					</table>
@@ -157,20 +157,20 @@
          			<%-- Inspection --%>
          			<tr height="40">
          				<td class='admin' width='20%'>
-         					<div id="title2"><%=getTran(request,"web","inspection",sWebLanguage)%></div>
+         					<div id="title2"><%=getTran(request,"web.hc","inspection",sWebLanguage)%></div>
          				</td>
          				<td>
          					<table width='100%'>
          						<tr onclick='selectKeywords("inspection.ids","inspection.text","inspection","keywords")'>
-			         				<td class='admin2' width='50%' style="vertical-align:top;">
-			         					<div id='inspection.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_INSPECTION_IDS","inspection.text","inspection.ids",sWebLanguage)%></div>
-			         					<input type='hidden' id='inspection.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_INSPECTION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_INSPECTION_IDS" property="value"/>"/>
-			         				</td>
 			         				<td class='admin2'>
 			         					<textarea class="text" onkeyup="resizeTextarea(this,10)" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_INSPECTION_COMMENT" property="itemId"/>]>.value" id='inspection.comment' cols='45'><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_INSPECTION_COMMENT" property="value"/></textarea> 
 			         				</td>
 			         				<td class='admin2' width='40' style="text-align:center">
 			         				    <img width='16' id='key2' class="link" src='<c:url value="/_img/themes/default/keywords.jpg"/>'/>
+			         				</td>
+			         				<td class='admin2' width='50%' style="vertical-align:top;">
+			         					<div id='inspection.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_INSPECTION_IDS","inspection.text","inspection.ids",sWebLanguage)%></div>
+			         					<input type='hidden' id='inspection.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_INSPECTION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_INSPECTION_IDS" property="value"/>"/>
 			         				</td>
 			         			</tr>
          					</table>
@@ -180,20 +180,20 @@
          			<%-- Palpation --%>
          			<tr height="40">
          				<td class='admin' width='20%'>
-         					<div id="title3"><%=getTran(request,"web","palpation",sWebLanguage)%></div>
+         					<div id="title3"><%=getTran(request,"web.hc","palpation",sWebLanguage)%></div>
          				</td>
          				<td>
          					<table width='100%'>
          						<tr onclick='selectKeywords("palpation.ids","palpation.text","palpation","keywords")'>
-			         				<td class='admin2' width='50%' style="vertical-align:top;">
-			         					<div id='palpation.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_PALPATION_IDS","palpation.text","palpation.ids",sWebLanguage)%></div>
-			         					<input type='hidden' id='palpation.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PALPATION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PALPATION_IDS" property="value"/>"/>
-			         				</td>
 			         				<td class='admin2'>
 			         					<textarea class="text" onkeyup="resizeTextarea(this,10)" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PALPATION_COMMENT" property="itemId"/>]>.value" id='palpation.comment' cols='45'><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PALPATION_COMMENT" property="value"/></textarea> 
 			         				</td>
 			         				<td class='admin2' width='40' style="text-align:center">
 			         				    <img width='16' id='key3' class="link" src='<c:url value="/_img/themes/default/keywords.jpg"/>'/>
+			         				</td>
+			         				<td class='admin2' width='50%' style="vertical-align:top;">
+			         					<div id='palpation.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_PALPATION_IDS","palpation.text","palpation.ids",sWebLanguage)%></div>
+			         					<input type='hidden' id='palpation.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PALPATION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PALPATION_IDS" property="value"/>"/>
 			         				</td>
 			         			</tr>
          					</table>
@@ -203,20 +203,20 @@
          			<%-- Heart ausculation --%>
          			<tr height="40">
          				<td class='admin' width='20%'>
-         					<div id="title4"><%=getTran(request,"web","heart.auscultation",sWebLanguage)%></div>
+         					<div id="title4"><%=getTran(request,"web.hc","heart.auscultation",sWebLanguage)%></div>
          				</td>
          				<td>
          					<table width='100%'>
          						<tr onclick='selectKeywords("heart.auscultation.ids","heart.auscultation.text","heart.auscultation","keywords")'>
-			         				<td class='admin2' width='50%' style="vertical-align:top;">
-			         					<div id='heart.auscultation.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_HEARTAUSCULTATION_IDS","heart.auscultation.text","heart.auscultation.ids",sWebLanguage)%></div>
-			         					<input type='hidden' id='heart.auscultation.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_HEARTAUSCULTATION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_HEARTAUSCULTATION_IDS" property="value"/>"/>
-			         				</td>
 			         				<td class='admin2'>
 			         					<textarea class="text" onkeyup="resizeTextarea(this,10)" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_HEARTAUSCULTATION_COMMENT" property="itemId"/>]>.value" id='heart.auscultation.comment' cols='45'><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_HEARTAUSCULTATION_COMMENT" property="value"/></textarea> 
 			         				</td>
 			         				<td class='admin2' width='40' style="text-align:center">
 			         				    <img width='16' id='key4' class="link" src='<c:url value="/_img/themes/default/keywords.jpg"/>'/>
+			         				</td>
+			         				<td class='admin2' width='50%' style="vertical-align:top;">
+			         					<div id='heart.auscultation.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_HEARTAUSCULTATION_IDS","heart.auscultation.text","heart.auscultation.ids",sWebLanguage)%></div>
+			         					<input type='hidden' id='heart.auscultation.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_HEARTAUSCULTATION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_HEARTAUSCULTATION_IDS" property="value"/>"/>
 			         				</td>
 			         			</tr>
          					</table>
@@ -226,20 +226,20 @@
          			<%-- Lung ausculation --%>
          			<tr height="40">
          				<td class='admin' width='20%'>
-         					<div id="title5"><%=getTran(request,"web","lung.auscultation",sWebLanguage)%></div>
+         					<div id="title5"><%=getTran(request,"web.hc","lung.auscultation",sWebLanguage)%></div>
          				</td>
          				<td>
          					<table width='100%'>
          						<tr onclick='selectKeywords("lung.auscultation.ids","lung.auscultation.text","lung.auscultation","keywords")'>
-			         				<td class='admin2' width='50%' style="vertical-align:top;">
-			         					<div id='lung.auscultation.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_LUNGAUSCULTATION_IDS","lung.auscultation.text","lung.auscultation.ids",sWebLanguage)%></div>
-			         					<input type='hidden' id='lung.auscultation.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LUNGAUSCULTATION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LUNGAUSCULTATION_IDS" property="value"/>"/>
-			         				</td>
 			         				<td class='admin2'>
 			         					<textarea class="text" onkeyup="resizeTextarea(this,10)" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LUNGAUSCULTATION_COMMENT" property="itemId"/>]>.value" id='lung.auscultation.comment' cols='45'><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LUNGAUSCULTATION_COMMENT" property="value"/></textarea> 
 			         				</td>
 			         				<td class='admin2' width='40' style="text-align:center">
 			         				    <img width='16' id='key5' class="link" src='<c:url value="/_img/themes/default/keywords.jpg"/>'/>
+			         				</td>
+			         				<td class='admin2' width='50%' style="vertical-align:top;">
+			         					<div id='lung.auscultation.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_LUNGAUSCULTATION_IDS","lung.auscultation.text","lung.auscultation.ids",sWebLanguage)%></div>
+			         					<input type='hidden' id='lung.auscultation.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LUNGAUSCULTATION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_LUNGAUSCULTATION_IDS" property="value"/>"/>
 			         				</td>
 			         			</tr>
          					</table>
@@ -249,20 +249,20 @@
          			<%-- Reference --%>
          			<tr height="40">
          				<td class='admin' width='20%'>
-         					<div id="title6"><%=getTran(request,"web","reference",sWebLanguage)%></div>
+         					<div id="title6"><%=getTran(request,"web.hc","reference",sWebLanguage)%></div>
          				</td>
          				<td>
          					<table width='100%'>
          						<tr onclick='selectKeywords("reference.ids","reference.text","reference","keywords")'>
-			         				<td class='admin2' width='50%' style="vertical-align:top;">
-			         					<div id='reference.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_REFERENCE_IDS","reference.text","reference.ids",sWebLanguage)%></div>
-			         					<input type='hidden' id='reference.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_REFERENCE_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_REFERENCE_IDS" property="value"/>"/>
-			         				</td>
 			         				<td class='admin2'>
 			         					<textarea class="text" onkeyup="resizeTextarea(this,10)" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_REFERENCE_COMMENT" property="itemId"/>]>.value" id='reference.comment' cols='45'><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_REFERENCE_COMMENT" property="value"/></textarea> 
 			         				</td>
 			         				<td class='admin2' width='40' style="text-align:center">
 			         				    <img width='16' id='key6' class="link" src='<c:url value="/_img/themes/default/keywords.jpg"/>'/>
+			         				</td>
+			         				<td class='admin2' width='50%' style="vertical-align:top;">
+			         					<div id='reference.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_REFERENCE_IDS","reference.text","reference.ids",sWebLanguage)%></div>
+			         					<input type='hidden' id='reference.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_REFERENCE_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_REFERENCE_IDS" property="value"/>"/>
 			         				</td>
 			         			</tr>
          					</table>
@@ -272,25 +272,26 @@
          			<%-- Evacuation --%>
          			<tr height="40">
          				<td class='admin' width='20%'>
-         					<div id="title7"><%=getTran(request,"web","evacuation",sWebLanguage)%></div>
+         					<div id="title7"><%=getTran(request,"web.hc","evacuation",sWebLanguage)%></div>
          				</td>
          				<td>
          					<table width='100%'>
          						<tr onclick='selectKeywords("evacuation.ids","evacuation.text","evacuation","keywords")'>
-			         				<td class='admin2' width='50%' style="vertical-align:top;">
-			         					<div id='evacuation.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_EVACUATION_IDS","evacuation.text","evacuation.ids",sWebLanguage)%></div>
-			         					<input type='hidden' id='evacuation.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_EVACUATION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_EVACUATION_IDS" property="value"/>"/>
-			         				</td>
 			         				<td class='admin2'>
 			         					<textarea class="text" onkeyup="resizeTextarea(this,10);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_EVACUATION_COMMENT" property="itemId"/>]>.value" id='evacuation.comment' cols='45'><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_EVACUATION_COMMENT" property="value"/></textarea> 
 			         				</td>
 			         				<td class='admin2' width='40' style="text-align:center">
 			         				    <img width='16' id='key7' class="link" src='<c:url value="/_img/themes/default/keywords.jpg"/>'/>
 			         				</td>
+			         				<td class='admin2' width='50%' style="vertical-align:top;">
+			         					<div id='evacuation.text'><%=getKeywordsHTML(tran,ScreenHelper.ITEM_PREFIX+"ITEM_TYPE_EVACUATION_IDS","evacuation.text","evacuation.ids",sWebLanguage)%></div>
+			         					<input type='hidden' id='evacuation.ids' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_EVACUATION_IDS" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_EVACUATION_IDS" property="value"/>"/>
+			         				</td>
 			         			</tr>
          					</table>
          				</td>
          			</tr>
+                	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/sptField.jsp"),pageContext);%>
          		</table>
          	</td>
          	

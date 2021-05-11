@@ -78,7 +78,7 @@
   <tr>
       <td class="admin"><%=getTran(null,"Web.Translations","labelid",sWebLanguage)%></td>
       <td class="admin2">
-          <input type="text" class="text" id="FindLabelID" value="<%=findLabelID%>" size="50">
+          <input type="text" class="text" name="FindLabelID" id="FindLabelID" value="<%=findLabelID%>" size="50">
           <input type='checkbox' class='text' id='FindExactID'/> <%=getTran(request,"web","exactmatch",sWebLanguage) %>
       </td>
   </tr>
@@ -306,7 +306,7 @@
 	    tokenizer = new StringTokenizer(supportedLanguages,",");
 	    while(tokenizer.hasMoreTokens()){
 	        tmpLang = tokenizer.nextToken();
-	        out.print("textCounter(transactionForm.EditLabelValue"+tmpLang.toUpperCase()+",transactionForm.remLen,5000);");
+	        out.print("transactionForm.EditLabelValue"+tmpLang.toUpperCase()+".value='';textCounter(transactionForm.EditLabelValue"+tmpLang.toUpperCase()+",transactionForm.remLen"+tmpLang.toUpperCase()+",5000);");
 	    }
     %>
     transactionForm.EditLabelType.focus();
@@ -357,9 +357,9 @@
                     '&EditLabelType='+$('EditLabelType').value,
           onSuccess: function(resp){
             $('divMessage').innerHTML = resp.responseText;
-            doNew();
-            updateTypeSelect();
-            clearSearchResults();
+            transactionForm.FindLabelID.value = '';
+            doFind();
+            clearEditFields();
           },
           onFailure: function(){
             $('divMessage').innerHTML = "Error in function askDelete() => AJAX";
