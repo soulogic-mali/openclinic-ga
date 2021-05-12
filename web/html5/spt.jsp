@@ -492,6 +492,8 @@
 					<img onclick="window.location.reload()" src='<%=sCONTEXTPATH%>/_img/icons/mobile/refresh.png'/>
 					<%if(!checkString(request.getParameter("nohome")).equalsIgnoreCase("1")){%>
 						<img onclick="window.location.href='../html5/welcome.jsp'" src='<%=sCONTEXTPATH%>/_img/icons/mobile/home.png'/>
+					<%}else{ %>
+						<img onclick="parent.window.close();" src='<%=sCONTEXTPATH%>/_img/icons/mobile/logout.png'/>
 					<%} %>
 				</td>
 			</tr>

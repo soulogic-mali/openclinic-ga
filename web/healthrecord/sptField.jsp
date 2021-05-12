@@ -35,7 +35,7 @@
 						if(label.sptexit && label.sptexit.length>0){
 							document.getElementById("ITEM_TYPE_SPTEXIT").value=label.sptexit;
 							document.getElementById("ITEM_TYPE_SPTPATH").value=label.sptpath;
-							document.getElementById("sptpath").innerHTML=document.getElementById("ITEM_TYPE_SPTPATH").value.split("$")[0];
+							document.getElementById("sptpath").innerHTML="<b><i>"+document.getElementById("ITEM_TYPE_SPTPATH").value.split("$")[0]+"</i></b>";
 						}
 				     },
 				     onFailure: function(){

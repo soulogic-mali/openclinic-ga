@@ -7,5 +7,5 @@
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
 <%
-	out.println(SPT.getSPTPathForced("activespt.0", sWebLanguage, "http://localhost/openclinic/_common/xml/pathways.bi.xml", SH.getOpenClinicConnection()));
+	out.println(new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormatInsurarCsv","#,##0.00"),new DecimalFormatSymbols(Locale.getDefault())).format(1234.56));
 %>

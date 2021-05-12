@@ -18,8 +18,6 @@ import be.openclinic.system.SH;
 import com.itextpdf.text.pdf.PdfPTable;
 
 public class CsvInvoiceRSSB {
-    static DecimalFormat priceFormatInsurar = new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormatInsurarCsv","#,##0.00"),new DecimalFormatSymbols(Locale.getDefault()));
-
 	public static String getOutput(javax.servlet.http.HttpServletRequest request){
 		double pageTotalAmount=0,pageTotalAmount85=0,pageTotalAmount100=0;
 		String invoiceuid=request.getParameter("invoiceuid");
@@ -215,6 +213,7 @@ public class CsvInvoiceRSSB {
         sOutput+=otherprice+";";
         amount = (String)categories.get(MedwanQuery.getInstance().getConfigString("RAMAdrugsCategory","M"));
         sOutput+=amount==null?"0;":amount+";";
+        DecimalFormat priceFormatInsurar = new DecimalFormat(SH.cs("priceFormatInsurarCsv", "#0.00"),new DecimalFormatSymbols(Locale.getDefault()));
         sOutput+=priceFormatInsurar.format(total100pct)+";";
         sOutput+=priceFormatInsurar.format(total100pct-total85pct)+";";
         sOutput+=priceFormatInsurar.format(total85pct)+"\r\n";

@@ -283,12 +283,7 @@
 				</table>
             </td>
         </tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"mspls", "sptresult", sWebLanguage)%></td>
-            <td class="admin2">
-				<%=ScreenHelper.writeDefaultTextInput(session, (TransactionVO)transaction, "ITEM_TYPE_SPT", 10)%>
-            </td>
-        </tr>
+       	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/sptField.jsp"),pageContext);%>
         <tr>
             <td class="admin"><%=getTran(request,"mspls", "nutritioninformation", sWebLanguage)%></td>
             <td class="admin2">
