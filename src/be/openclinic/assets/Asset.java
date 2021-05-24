@@ -43,6 +43,7 @@ import org.dom4j.io.SAXReader;
 
 
 public class Asset extends OC_Object {
+	public static final int INFRASTRUCTURE=0,EQUIPMENT=1;
     public int serverId;
     public int objectId;    
 

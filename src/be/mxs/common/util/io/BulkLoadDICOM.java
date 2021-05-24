@@ -22,12 +22,12 @@ public class BulkLoadDICOM {
 			System.out.println("------------------------------ Scanning directory");
 			//DicomInputStream din = new DicomInputStream(new File("test"));
 			mon.bulkLoadDICOM();
+	    	Thread.sleep(10000);
 		}
     	catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.exit(0);
-
 	}
 
 }

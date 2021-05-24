@@ -7,5 +7,5 @@
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
 <%
-	out.println(new DecimalFormat(MedwanQuery.getInstance().getConfigString("priceFormatInsurarCsv","#,##0.00"),new DecimalFormatSymbols(Locale.getDefault())).format(1234.56));
+out.println(Long.parseLong("9000113182"));
 %>

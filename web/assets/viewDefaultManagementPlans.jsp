@@ -5,10 +5,14 @@
 <table width='100%'>
 <%
 	StringBuffer sResult = new StringBuffer();
+	String sNomenclature=SH.c(request.getParameter("nomenclature"));
 	Asset asset = Asset.get(request.getParameter("assetUID"));
+	if(asset!=null && asset.hasValidUid()){
+		sNomenclature=asset.getNomenclature();
+	}
 	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
 	PreparedStatement ps = conn.prepareStatement("select * from oc_defaultmaintenanceplans where oc_maintenanceplan_nomenclature=?");
-	ps.setString(1, asset.getNomenclature());
+	ps.setString(1, sNomenclature);
 	ResultSet rs = ps.executeQuery();
 	while(rs.next()){
 		String uid=rs.getString("oc_maintenanceplan_uid");
@@ -26,7 +30,7 @@
 	}
 %>
 	<tr class='admin'>
-		<td colspan='3'><%=getTran(request,"web","defaultplansfornomenclaturecode",sWebLanguage)+": "+asset.getNomenclature() %></td>
+		<td colspan='3'><%=getTran(request,"web","defaultplansfornomenclaturecode",sWebLanguage)+": "+sNomenclature %></td>
 		<%= sResult %>
 	</tr>
 </table>

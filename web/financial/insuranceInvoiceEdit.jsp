@@ -505,7 +505,7 @@ function doPrintPdf(invoiceUid) {
     }
     else if(EditForm.PrintModel.value=='rssbcsv'){
 		var url = "<c:url value='/util/csvDocs.jsp'/>?invoiceuid=" + invoiceUid + "&ts=<%=getTs()%>&docid=invoice.rssb";
-	    window.open(url, "InsurarInvoicePdf<%=new java.util.Date().getTime()%>", "height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
+		location.href=url;
     }
     else if(EditForm.PrintModel.value=='cplrcsv'){
 		var url = "<c:url value='/util/csvDocs.jsp'/>?invoiceuid=" + invoiceUid + "&ts=<%=getTs()%>&docid=invoice.cplr";

@@ -268,7 +268,7 @@
 		            <td class="admin" width="<%=sTDAdminWidth%>"><%=getTran(request,"web.assets","maintenancePlan",sWebLanguage)%>&nbsp;*&nbsp;</td>
 		            <td class="admin2" colspan='3'>
 		                <input type="hidden" name="maintenancePlanUID" id="maintenancePlanUID" value="<%=operation.getMaintenanceplanUID()%>">
-		                <input type="text" class="text" id="maintenancePlanName" name="maintenancePlanName" size="50" readonly value="<%=operation.getMaintenancePlan().getName()%>">
+		                <input type="text" class="text" id="maintenancePlanName" name="maintenancePlanName" size="50" readonly value="<%=operation.getMaintenancePlan().getName()%>" onchange="getNextOperationDate()">
 		                                   
 		                <%-- buttons --%>
 		                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("web","select",sWebLanguage)%>" onclick="selectMaintenancePlan('maintenancePlanUID','maintenancePlanName');">
@@ -281,7 +281,7 @@
 		        <tr>
 		            <td class="admin"><%=getTran(request,"web.assets","dateintervention",sWebLanguage)%>&nbsp;*&nbsp;</td>
 		            <td class="admin2" colspan='3'>
-		                <%=writeDateField("date","EditForm",ScreenHelper.formatDate(operation.getDate()),sWebLanguage)%>
+		                <%=writeDateField("date","EditForm",ScreenHelper.formatDate(operation.getDate()),sWebLanguage,"getNextOperationDate();")%>
 		            </td>
 		        </tr> 
 		        <tr>
@@ -304,23 +304,6 @@
 		            <td class="admin"><%=getTran(request,"web.assets","externalsupplier",sWebLanguage)%>&nbsp;</td>
 		            <td class="admin2" colspan="3">
 		                <input type="text" class="text" id="supplier" name="supplier" size="40" maxLength="50" value="<%=operation.getSupplier()%>">
-		            	<!-- Structured field
-		                <input type="hidden" name="supplier" id="supplier" value="<%=checkString(operation.getSupplier())%>">
-		                <%
-		                	String supplier="";
-		                	if(checkString(operation.getSupplier()).length()>0){
-			                	Supplier supplier2 = Supplier.get(operation.getSupplier());
-			                	if(supplier2!=null){
-			                		supplier=supplier2.getName();
-			                	}
-		                	}
-		                %>
-		                <input type="text" class="text" name="searchSupplierName" id="searchSupplierName" readonly size="60" value="<%=supplier%>">
-		                   
-		                <%-- buttons --%>
-		                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("web","select",sWebLanguage)%>" onclick="selectSupplier('supplier','searchSupplierName');">
-		                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("web","clear",sWebLanguage)%>" onclick="EditForm.supplier.value='';EditForm.searchSupplierName.value='';">
-						-->
 		            </td>
 		        </tr>  
 		       
@@ -350,7 +333,6 @@
 		            </td>
 		        </tr>                    
 		            
-		        
 		        <tr class="admin"><td colspan="4"><%=getTran(request,"web","costs",sWebLanguage) %></td></tr>       
 		        <tr>
 		            <td class="admin"><%=getTran(request,"web.assets","transportcost",sWebLanguage)%></td>
@@ -384,7 +366,6 @@
 		        	}
 		        	calculateCosts();
 		        </script>
-		               
 		        <tr>
 		            <td class="admin" nowrap>
 		            	<%=getTran(request,"web","lastmodificationby",sWebLanguage)%>&nbsp;
@@ -566,6 +547,21 @@
         }  
       });
     }
+  }
+
+  function getNextOperationDate(){
+      var url = "<c:url value='/assets/ajax/maintenanceOperation/getNextOperationDate.jsp'/>?ts="+new Date().getTime();
+      new Ajax.Request(url,{
+        method: "GET",
+        parameters: "MaintenancePlanUID="+document.getElementById("maintenancePlanUID").value+
+        			"&date="+document.getElementById("date").value,
+        onSuccess: function(resp){
+          var data = eval("("+resp.responseText+")");
+          $("nextDate").value = data.nextdate;
+        },
+        onFailure: function(resp){
+        }  
+      });
   }
 
   <%-- NEW MAINTENANCE OPERATION --%>

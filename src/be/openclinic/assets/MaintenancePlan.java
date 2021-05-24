@@ -51,9 +51,18 @@ public class MaintenancePlan extends OC_Object {
     public String comment8;
     public String comment9;
     public String comment10;
+    public String nomenclature;
     public int lockedBy;
     
-    public int getLockedBy() {
+    public String getNomenclature() {
+		return nomenclature;
+	}
+
+	public void setNomenclature(String nomenclature) {
+		this.nomenclature = nomenclature;
+	}
+
+	public int getLockedBy() {
 		return lockedBy;
 	}
 
@@ -934,6 +943,65 @@ public class MaintenancePlan extends OC_Object {
         return plan;
     }
         
+    public static MaintenancePlan getFromDefault(String splanUid){
+    	MaintenancePlan plan = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        
+        try{
+            String sSql = "SELECT * FROM OC_DEFAULTMAINTENANCEPLANS"+
+                          " WHERE (OC_MAINTENANCEPLAN_UID = ?)";
+            ps = oc_conn.prepareStatement(sSql);
+            ps.setString(1,splanUid);
+
+            // execute
+            rs = ps.executeQuery();
+            if(rs.next()){
+                plan = new MaintenancePlan();
+                plan.setUid("-1");
+                plan.name         = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_NAME"));
+                plan.nomenclature = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_NOMENCLATURE"));
+                plan.frequency    = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_FREQUENCY"));
+                plan.operator     = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_OPERATOR"));
+                plan.planManager  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_PLANMANAGER"));
+                plan.instructions = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_INSTRUCTIONS"));
+                plan.type 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_TYPE"));
+                plan.comment1 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT1"));
+                plan.comment2 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT2"));
+                plan.comment3 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT3"));
+                plan.comment4 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT4"));
+                plan.comment5 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT5"));
+                plan.comment6 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT6"));
+                plan.comment7 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT7"));
+                plan.comment8 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT8"));
+                plan.comment9 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT9"));
+                plan.comment10 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT10"));
+                
+                // update-info
+                plan.setUpdateDateTime(rs.getTimestamp("OC_MAINTENANCEPLAN_UPDATETIME"));
+                plan.setUpdateUser(rs.getString("OC_MAINTENANCEPLAN_UPDATEID"));
+            }
+        }
+        catch(Exception e){
+        	if(Debug.enabled) e.printStackTrace();
+            Debug.printProjectErr(e,Thread.currentThread().getStackTrace());
+        }
+        finally{
+            try{
+                if(rs!=null) rs.close();
+                if(ps!=null) ps.close();
+                oc_conn.close();
+            }
+            catch(SQLException se){
+                Debug.printProjectErr(se,Thread.currentThread().getStackTrace());
+            }
+        }
+        
+        return plan;
+    }
+        
     //--- GET LIST --------------------------------------------------------------------------------
     public static List<MaintenancePlan> getList(){
     	return getList(new MaintenancePlan());     	
@@ -1130,11 +1198,17 @@ public class MaintenancePlan extends OC_Object {
         }
     }
     
-    public void copyToDefault(){
+    public void copyToDefault(String nomenclaturecode){
         PreparedStatement ps = null;
         Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
         
         try{
+        	ps = oc_conn.prepareStatement("delete from oc_defaultmaintenanceplans where oc_maintenanceplan_nomenclature=? and oc_maintenanceplan_name=? and oc_maintenanceplan_frequency=?");
+        	ps.setString(1, nomenclaturecode);
+        	ps.setString(2, getName());
+        	ps.setString(3, getFrequency());
+        	ps.execute();
+        	ps.close();
         	ps = oc_conn.prepareStatement("insert into oc_defaultmaintenanceplans ("
         			+ " OC_MAINTENANCEPLAN_NAME,"
         			+ " OC_MAINTENANCEPLAN_UID,"
@@ -1159,7 +1233,7 @@ public class MaintenancePlan extends OC_Object {
         			+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         	ps.setString(1, getName());
         	ps.setInt(2, MedwanQuery.getInstance().getOpenclinicCounter("DEFAULTMAINTENANCEPLANUID"));
-        	ps.setString(3, this.getAssetNomenclature());
+        	ps.setString(3, nomenclaturecode);
         	ps.setDate(4, getStartDate()==null?null:new java.sql.Date(getStartDate().getTime()));
         	ps.setDate(5, getEndDate()==null?null:new java.sql.Date(getEndDate().getTime()));
         	ps.setString(6, getFrequency());

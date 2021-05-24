@@ -165,6 +165,7 @@ try{
 								}
 								rs2.close();
 								ps2.close();
+								conn.close();
 							} 
 							else{
 								%>

@@ -71,12 +71,8 @@ public class CsvInvoiceRama {
 	                	beneficiarysex="";
 	                	affiliatecompany="";
 	                }
-	                if(debet.getEncounter()!=null && debet.getEncounter().getPatient()!=null){
-	                	beneficiarysex=debet.getEncounter().getPatient().gender;
-	                	if(debet.getEncounter().getPatient().dateOfBirth!=null){
-	                		beneficiaryage=debet.getEncounter().getPatient().dateOfBirth;
-	                	}
-	                }
+                	beneficiarysex=debet.getPatientgender();
+               		beneficiaryage=debet.getPatientbirthdate();
 	                if(debet.getPatientInvoiceUid()!=null && debet.getPatientInvoiceUid().indexOf(".")>=0 && invoiceid.indexOf(debet.getPatientInvoiceUid().split("\\.")[1])<0){
 	                	if(invoiceid.length()>0){
 	                		invoiceid+="\n";

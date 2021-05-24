@@ -24,7 +24,7 @@
 			sOutput+="INVOICE DATE:;"+ScreenHelper.stdDateFormat.format(invoice.getDate())+"\r\n";
 			sOutput+="INSURER:;"+invoice.getInsurar().getName()+"\r\n";
 			sOutput+="\r\n";
-			sOutput+=CsvInvoiceRSSB.getOutput(request);
+			sOutput+=CsvInvoiceRSSB.getOutput(request,os);
 		}
 	}
 	if("invoice.cmck".equalsIgnoreCase(request.getParameter("docid"))){

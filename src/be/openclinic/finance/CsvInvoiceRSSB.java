@@ -11,14 +11,19 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import javax.servlet.ServletOutputStream;
+
 import be.mxs.common.util.db.MedwanQuery;
+import be.mxs.common.util.system.Debug;
 import be.mxs.common.util.system.ScreenHelper;
+import be.openclinic.adt.Encounter;
 import be.openclinic.system.SH;
+import net.admin.AdminPerson;
 
 import com.itextpdf.text.pdf.PdfPTable;
 
 public class CsvInvoiceRSSB {
-	public static String getOutput(javax.servlet.http.HttpServletRequest request){
+	public static String getOutput(javax.servlet.http.HttpServletRequest request, ServletOutputStream os){
 		double pageTotalAmount=0,pageTotalAmount85=0,pageTotalAmount100=0;
 		String invoiceuid=request.getParameter("invoiceuid");
         int coverage=85;
@@ -34,9 +39,12 @@ public class CsvInvoiceRSSB {
 	        	}
 	        }
 		}
-		String sOutput="#;DATE;VOUCHER_ID;INVOICE_ID;BENEFICIARY_CATEGORY;BENEFICIARY_NR;BENEFICIARY_AGE;BENEFICIARY_SEX;BENEFICIARY_NAME;AFFILIATE_NAME;FAMILY_CODE;AFFILIATE_AFFECT;CONS;LAB;IMA;HOS;PRO;AMB;OTH;MED;TOT 100%;TOT PATIENT;TOT "+coverage+"%\r\n";
+		StringBuffer sOutput = new StringBuffer();
+		sOutput.append("#;DATE;VOUCHER_ID;INVOICE_ID;BENEFICIARY_CATEGORY;BENEFICIARY_NR;BENEFICIARY_AGE;BENEFICIARY_SEX;BENEFICIARY_NAME;AFFILIATE_NAME;FAMILY_CODE;AFFILIATE_AFFECT;CONS;LAB;IMA;HOS;PRO;AMB;OTH;MED;TOT 100%;TOT PATIENT;TOT "+coverage+"%\r\n");
 		if(invoiceuid!=null){
+			Debug.println("Getting debets...");
 	        Vector debets = InsurarInvoice.getDebetsForInvoiceSortByDate(invoiceuid);
+			Debug.println("Found "+debets.size()+" debets");
 	        if(debets.size() > 0){
 	            // print debets
 	            Debet debet;
@@ -46,15 +54,16 @@ public class CsvInvoiceRSSB {
 	            SortedMap categories = new TreeMap(), totalcategories = new TreeMap();
 	            double total100pct=0,total85pct=0,generaltotal100pct=0,generaltotal85pct=0,daytotal100pct=0,daytotal85pct=0;
 	            String invoiceid="",adherent="",recordnumber="",insurarreference="";
-	            int linecounter=1;
+	            int linecounter=1,counter=1;
 	            for(int i=0; i<debets.size(); i++){
+	            	Debug.println(i);
 	                debet = (Debet)debets.get(i);
-	                date = ScreenHelper.parseDate(ScreenHelper.stdDateFormat.format(debet.getDate()));
+	                date = ScreenHelper.parseDate(SH.formatDate(debet.getDate()));
 	                displayDate = !date.equals(prevdate);
 	                sPatientName = debet.getPatientName()+";"+debet.getEncounter().getPatientUID();
 	                displayPatientName = displayDate || !sPatientName.equals(sPrevPatientName) || (debet.getPatientInvoiceUid()!=null && debet.getPatientInvoiceUid().indexOf(".")>=0 && invoiceid.indexOf(debet.getPatientInvoiceUid().split("\\.")[1])<0 && invoiceid.length()>0);
 	                if(i>0 && (displayDate || displayPatientName)){
-	                    sOutput+=printDebet2(categories,displayDate,prevdate!=null?prevdate:date,invoiceid,adherent,sPrevPatientName.split(";")[0],total100pct,total85pct,recordnumber,linecounter++,insurarreference,beneficiarynr,beneficiaryage,beneficiarysex,affiliatecompany,beneficiarycategory,familycode);
+	                    sOutput.append(printDebet2(categories,displayDate,prevdate!=null?prevdate:date,invoiceid,adherent,sPrevPatientName.split(";")[0],total100pct,total85pct,recordnumber,linecounter++,insurarreference,beneficiarynr,beneficiaryage,beneficiarysex,affiliatecompany,beneficiarycategory,familycode));
 	                	categories = new TreeMap();
 	                	total100pct=0;
 	                	total85pct=0;
@@ -73,12 +82,8 @@ public class CsvInvoiceRSSB {
 	                	familycode="";
 	                	affiliatecompany="";
 	                }
-	                if(debet.getEncounter()!=null && debet.getEncounter().getPatient()!=null){
-	                	beneficiarysex=debet.getEncounter().getPatient().gender;
-	                	if(debet.getEncounter().getPatient().dateOfBirth!=null){
-	                		beneficiaryage=debet.getEncounter().getPatient().dateOfBirth;
-	                	}
-	                }
+                	beneficiarysex=debet.getPatientgender();
+               		beneficiaryage=debet.getPatientbirthdate();
 	                if(debet.getPatientInvoiceUid()!=null && debet.getPatientInvoiceUid().indexOf(".")>=0 && invoiceid.indexOf(debet.getPatientInvoiceUid().split("\\.")[1])<0){
 	                	if(invoiceid.length()>0){
 	                		invoiceid+="\n";
@@ -150,37 +155,49 @@ public class CsvInvoiceRSSB {
 	                total85pct+=rInsurarAmount;
 	                prevdate = date;
 	                sPrevPatientName = sPatientName;
+	                if(i%1000==0) {
+	                	try {
+		                    byte[] b = sOutput.toString().getBytes("ISO-8859-1");
+		                    for (int n=0;n<b.length;n++) {
+		                        os.write(b[n]);
+		                    }
+		                    os.flush();
+		                    sOutput=new StringBuffer("");
+	                	}
+	                	catch(Exception e) {
+	                		e.printStackTrace();
+	                	}
+	                }
 	            }
-                sOutput+=printDebet2(categories,displayDate,prevdate!=null?prevdate:date,invoiceid,adherent,sPrevPatientName.split(";")[0],total100pct,total85pct,recordnumber,linecounter++,insurarreference,beneficiarynr,beneficiaryage,beneficiarysex,affiliatecompany,beneficiarycategory,familycode);
-
+                sOutput.append(printDebet2(categories,displayDate,prevdate!=null?prevdate:date,invoiceid,adherent,sPrevPatientName.split(";")[0],total100pct,total85pct,recordnumber,linecounter++,insurarreference,beneficiarynr,beneficiaryage,beneficiarysex,affiliatecompany,beneficiarycategory,familycode));
 	        }
 		}
-		return sOutput;
+		return sOutput.toString();
 	}
 	
     //--- PRINT DEBET (prestation) ----------------------------------------------------------------
     private static String printDebet2(SortedMap categories, boolean displayDate, Date date, String invoiceid,String adherent,String beneficiary,double total100pct,double total85pct,String recordnumber,int linecounter,String insurarreference,String beneficiarynr,String beneficiaryage,String beneficiarysex,String affiliatecompany,String beneficiarycategory, String familycode){
-    	String sOutput="";
-        sOutput+=linecounter+";";
-        sOutput+=ScreenHelper.stdDateFormat.format(date)+";";
-        sOutput+=insurarreference+";";
-        sOutput+=invoiceid+";";
-        sOutput+=beneficiarycategory+";";
-        sOutput+="Nr "+beneficiarynr+";";
-        sOutput+=beneficiaryage+";";
-        sOutput+=beneficiarysex+";";
-        sOutput+=beneficiary+";";
-        sOutput+=adherent+";";
-        sOutput+=familycode+";";
-        sOutput+=affiliatecompany+";";
+    	StringBuffer sOutput=new StringBuffer("");
+        sOutput.append(linecounter+";");
+        sOutput.append(SH.formatDate(date)+";");
+        sOutput.append(insurarreference+";");
+        sOutput.append(invoiceid+";");
+        sOutput.append(beneficiarycategory+";");
+        sOutput.append("Nr "+beneficiarynr+";");
+        sOutput.append(beneficiaryage+";");
+        sOutput.append(beneficiarysex+";");
+        sOutput.append(beneficiary+";");
+        sOutput.append(adherent+";");
+        sOutput.append(familycode+";");
+        sOutput.append(affiliatecompany+";");
         String amount = (String)categories.get(MedwanQuery.getInstance().getConfigString("RAMAconsultationCategory","Co"));
-        sOutput+=amount==null?"0;":amount+";";
+        sOutput.append(amount==null?"0;":amount+";");
         amount = (String)categories.get(MedwanQuery.getInstance().getConfigString("RAMAlabCategory","L"));
-        sOutput+=amount==null?"0;":amount+";";
+        sOutput.append(amount==null?"0;":amount+";");
         amount = (String)categories.get(MedwanQuery.getInstance().getConfigString("RAMAimagingCategory","R"));
-        sOutput+=amount==null?"0;":amount+";";
+        sOutput.append(amount==null?"0;":amount+";");
         amount = (String)categories.get(MedwanQuery.getInstance().getConfigString("RAMAadmissionCategory","S"));
-        sOutput+=amount==null?"0;":amount+";";
+        sOutput.append(amount==null?"0;":amount+";");
         //Acts and consumables go together
         String acts_cons ="+0";
         amount = (String)categories.get(MedwanQuery.getInstance().getConfigString("RAMAactsCategory","A"));
@@ -191,9 +208,9 @@ public class CsvInvoiceRSSB {
        	if(amount!=null){
        		acts_cons+="+"+amount;
        	}
-        sOutput+=acts_cons+";";
+        sOutput.append(acts_cons+";");
         amount = (String)categories.get(MedwanQuery.getInstance().getConfigString("RAMAambulanceCategory","Amb"));
-        sOutput+=amount==null?"0;":amount+";";
+        sOutput.append(amount==null?"0;":amount+";");
         String otherprice="+0";
         String allcats=	"*"+MedwanQuery.getInstance().getConfigString("RAMAconsultationCategory","Co")+
 						"*"+MedwanQuery.getInstance().getConfigString("RAMAlabCategory","L")+
@@ -210,14 +227,14 @@ public class CsvInvoiceRSSB {
         		otherprice+="+"+(String)categories.get(cat);
         	}
         }
-        sOutput+=otherprice+";";
+        sOutput.append(otherprice+";");
         amount = (String)categories.get(MedwanQuery.getInstance().getConfigString("RAMAdrugsCategory","M"));
-        sOutput+=amount==null?"0;":amount+";";
+        sOutput.append(amount==null?"0;":amount+";");
         DecimalFormat priceFormatInsurar = new DecimalFormat(SH.cs("priceFormatInsurarCsv", "#0.00"),new DecimalFormatSymbols(Locale.getDefault()));
-        sOutput+=priceFormatInsurar.format(total100pct)+";";
-        sOutput+=priceFormatInsurar.format(total100pct-total85pct)+";";
-        sOutput+=priceFormatInsurar.format(total85pct)+"\r\n";
-        return sOutput;
+        sOutput.append(priceFormatInsurar.format(total100pct)+";");
+        sOutput.append(priceFormatInsurar.format(total100pct-total85pct)+";");
+        sOutput.append(priceFormatInsurar.format(total85pct)+"\r\n");
+        return sOutput.toString();
     }
 
 }

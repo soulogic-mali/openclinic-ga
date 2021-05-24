@@ -338,7 +338,7 @@
             		  doRedirect(out,"payroll/index.jsp?ts="+getTs());
             	  }
             	  else if(user.getParameter("DefaultPage").equalsIgnoreCase("maintenance")){
-            		  doRedirect(out,"main.do?Page=assets/manage_assets.jsp?ts="+getTs());
+            		  doRedirect(out,"main.do?Page=assets/home.jsp?ts="+getTs());
             	  }
             	  else{
             		  doRedirect(out,"main.do?CheckService=true&CheckMedicalCenter=true&ts="+getTs());

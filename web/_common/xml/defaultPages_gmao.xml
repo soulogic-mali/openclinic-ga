@@ -6,7 +6,7 @@
     </defaultPage>
      <defaultPage type='maintenance'>
         <page>
-            main.do?Page=assets/manage_assets.jsp
+            main.do?Page=assets/home.jsp
         </page>
     </defaultPage>
 </defaultPages>

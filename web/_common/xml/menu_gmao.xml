@@ -1,5 +1,8 @@
 <Menus>
 	<Menu labelid="applications">
+		<Menu labelid="find.user" accessrights="patient.administration.select" url="/main.jsp?Page=assets/home.jsp&amp;forcePatientHeader=1"/>
+		<Menu labelid="user.administration" accessrights="patient.administration.select" url="/patientdata.do?forcePatientHeader=1" patientselected="true"/>
+		<Menu labelid="new.user" accessrights="patient.administration.add" url="/patientnew.do?PatientNew=true&amp;forcePatientHeader=1"/>
 		<Menu labelid="assets" accessrights="assets.select" url="/main.do?Page=assets/manage_assets.jsp"/>
 		<Menu labelid="maintenancePlans" accessrights="maintenanceplans.select" url="/main.do?Page=assets/manage_maintenancePlans.jsp"/>
 		<Menu labelid="maintenanceOperations" accessrights="maintenanceoperations.select" url="/main.do?Page=assets/manage_maintenanceOperations.jsp"/>

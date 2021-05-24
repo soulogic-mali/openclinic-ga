@@ -4,10 +4,10 @@
 <%@include file="/includes/validateUser.jsp"%>
 <%
 	String name = checkString(request.getParameter("name"));
-	String assetUID = checkString(request.getParameter("assetUID"));
 	String startDate = checkString(request.getParameter("startDate"));
 	String endDate = checkString(request.getParameter("endDate"));
 	String frequency = checkString(request.getParameter("frequency"));
+	String nomenclaturecode = checkString(request.getParameter("nomenclaturecode"));
 	String operator = checkString(request.getParameter("operator"));
 	String planManager = checkString(request.getParameter("planManager"));
 	String type = checkString(request.getParameter("type"));
@@ -23,40 +23,49 @@
 	String comment10 = checkString(request.getParameter("comment10"));
 	String instructions = checkString(request.getParameter("instructions"));
 	
-	if(assetUID.length()>0){
+	if(nomenclaturecode.length()>0){
 		try{
-			MaintenancePlan plan = new MaintenancePlan();
-			out.println("1");
-			plan.setName(name);
-			plan.setAssetUID(assetUID);
-			try{
-				plan.setStartDate(ScreenHelper.parseDate(startDate));
+			Connection conn = SH.getOpenClinicConnection();
+			PreparedStatement ps = conn.prepareStatement("select * from oc_defaultmaintenanceplans where oc_maintenanceplan_nomenclature=? and oc_maintenanceplan_name=? and oc_maintenanceplan_frequency=?");
+			ps.setString(1,nomenclaturecode);
+			ps.setString(2,name);
+			ps.setString(3,frequency);
+			ResultSet rs = ps.executeQuery();
+			if(!SH.c(request.getParameter("overwrite")).equalsIgnoreCase("1") && rs.next()){
+				out.println("NOK-400");
 			}
-			catch(Exception e){};
-			try{
-				plan.setEndDate(ScreenHelper.parseDate(endDate));
+			else{
+				MaintenancePlan plan = new MaintenancePlan();
+				plan.setName(name);
+				try{
+					plan.setStartDate(ScreenHelper.parseDate(startDate));
+				}
+				catch(Exception e){};
+				try{
+					plan.setEndDate(ScreenHelper.parseDate(endDate));
+				}
+				catch(Exception e){};
+				plan.setFrequency(frequency);
+				plan.setOperator(operator);
+				plan.setPlanManager(planManager);
+				plan.setType(type);
+				plan.setInstructions(instructions);
+				plan.setComment1(comment1);
+				plan.setComment2(comment2);
+				plan.setComment3(comment3);
+				plan.setComment4(comment4);
+				plan.setComment5(comment5);
+				plan.setComment6(comment6);
+				plan.setComment7(comment7);
+				plan.setComment8(comment8);
+				plan.setComment9(comment9);
+				plan.setComment10(comment10);
+				plan.copyToDefault(nomenclaturecode);
+				out.println("OK-200");
 			}
-			catch(Exception e){};
-			out.println("2");
-			plan.setFrequency(frequency);
-			plan.setOperator(operator);
-			plan.setPlanManager(planManager);
-			plan.setType(type);
-			plan.setInstructions(instructions);
-			out.println("3");
-			plan.setComment1(comment1);
-			plan.setComment2(comment2);
-			plan.setComment3(comment3);
-			plan.setComment4(comment4);
-			plan.setComment5(comment5);
-			plan.setComment6(comment6);
-			plan.setComment7(comment7);
-			plan.setComment8(comment8);
-			plan.setComment9(comment9);
-			plan.setComment10(comment10);
-			out.println("4");
-			plan.copyToDefault();
-			out.println("OK-200");
+			rs.close();
+			ps.close();
+			conn.close();
 		}
 		catch(Exception i){
 			i.printStackTrace();

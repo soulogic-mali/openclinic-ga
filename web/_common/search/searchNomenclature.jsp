@@ -8,6 +8,7 @@
            sNoClose = checkString(request.getParameter("noclose")),
            sNoActive = checkString(request.getParameter("NoActive")),
            sFindType = checkString(request.getParameter("FindType")),
+           sFindCode = checkString(request.getParameter("FindCode")),
            sFindText = checkString(request.getParameter("FindText")).toUpperCase();
 %>
 <form name="SearchForm" method="POST" onSubmit="doFind();return false;" onkeydown="if(enterEvent(event,13)){doFind();}">
@@ -91,4 +92,7 @@
         SearchForm.ViewCode.value = "";
         ajaxChangeSearchResults('_common/search/searchByAjax/searchNomenclatureShow.jsp', SearchForm);
     }
+    <%if(sFindCode.length()>0){%>
+    	populateCategory('<%=sFindType%>','<%=sFindCode%>');
+    <%}%>
 </script>

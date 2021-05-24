@@ -49,13 +49,13 @@ public class PaxmlReader {
 					SAXReader reader = new SAXReader(false);
 					Document document = reader.read(file);
 					Element root = document.getRootElement();
-					String personid = root.attributeValue("personid");
-					String filename = root.attributeValue("file");
-					String orderid = root.elementText("orderid");
-					String documentname = root.elementText("name");
-					String documentdate = root.elementText("date");
-					String status = root.elementText("status");
-					String summary = root.elementText("summary");
+					String personid = SH.c(root.attributeValue("personid")).trim();
+					String filename = SH.c(root.attributeValue("file")).trim();
+					String orderid = SH.c(root.elementText("orderid")).trim();
+					String documentname = SH.c(root.elementText("name")).trim();
+					String documentdate = SH.c(root.elementText("date")).trim();
+					String status = SH.c(root.elementText("status")).trim();
+					String summary = SH.c(root.elementText("summary")).trim();
 					String absolutefilename=file.getParentFile().getAbsolutePath()+"/"+filename;
 					System.out.println("Check "+absolutefilename);
 					File docfile=new File(absolutefilename);
@@ -72,6 +72,7 @@ public class PaxmlReader {
 		    				transaction.setUpdateTime(new SimpleDateFormat("yyyyMMddHHmmss").parse(documentdate));
 		    			}
 		    			catch(Exception i) {
+		    				i.printStackTrace();
 		    				transaction.setUpdateTime(new java.util.Date());
 		    			}
 		    			UserVO user = MedwanQuery.getInstance().getUser(MedwanQuery.getInstance().getConfigString("defaultPACSuser","4"));

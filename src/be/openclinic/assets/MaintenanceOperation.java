@@ -429,13 +429,17 @@ public class MaintenanceOperation extends OC_Object {
     }
     
     public java.util.Date getNextOperationDate(){
+    	java.util.Date date = getDate();
+    	if(date==null) {
+    		date=new java.util.Date();
+    	}
 		MaintenancePlan plan = getMaintenancePlan();
 		if(plan!=null){
 			if(ScreenHelper.checkString(plan.getFrequency()).length()>0){
 				String frequency = plan.getFrequency();
 				if(frequency.length()>0){
 					GregorianCalendar calendar = new GregorianCalendar();
-					calendar.setTime(new java.util.Date());
+					calendar.setTime(date);
 					if(frequency.equalsIgnoreCase("1")){
 						//Daily
 						calendar.add(GregorianCalendar.HOUR, 24);
@@ -478,7 +482,93 @@ public class MaintenanceOperation extends OC_Object {
 					}
 					if(frequency.length()>0){
 						GregorianCalendar calendar = new GregorianCalendar();
-						calendar.setTime(new java.util.Date());
+						calendar.setTime(date);
+						if(frequency.equalsIgnoreCase("1")){
+							//Daily
+							calendar.add(GregorianCalendar.HOUR, 24);
+						}
+						else if(frequency.equalsIgnoreCase("2")){
+							//Weekly
+							calendar.add(GregorianCalendar.HOUR, 24*7);
+						}
+						else if(frequency.equalsIgnoreCase("3")){
+							//Monthly
+							calendar.add(GregorianCalendar.MONTH, 1);
+						}
+						else if(frequency.equalsIgnoreCase("4")){
+							//Quarterly
+							calendar.add(GregorianCalendar.MONTH, 3);
+						}
+						else if(frequency.equalsIgnoreCase("5")){
+							//Half-yearly
+							calendar.add(GregorianCalendar.MONTH, 6);
+						}
+						else if(frequency.equalsIgnoreCase("6")){
+							//Yearly
+							calendar.add(GregorianCalendar.MONTH, 12);
+						}
+						else{
+							return null;
+						}
+						return calendar.getTime();
+					}
+				}
+			}
+		}
+		return null;
+	}
+    
+    public java.util.Date getNextOperationDate(java.util.Date date){
+		MaintenancePlan plan = getMaintenancePlan();
+		if(plan!=null){
+			if(ScreenHelper.checkString(plan.getFrequency()).length()>0){
+				String frequency = plan.getFrequency();
+				if(frequency.length()>0){
+					GregorianCalendar calendar = new GregorianCalendar();
+					calendar.setTime(date);
+					if(frequency.equalsIgnoreCase("1")){
+						//Daily
+						calendar.add(GregorianCalendar.HOUR, 24);
+					}
+					else if(frequency.equalsIgnoreCase("2")){
+						//Weekly
+						calendar.add(GregorianCalendar.HOUR, 24*7);
+					}
+					else if(frequency.equalsIgnoreCase("3")){
+						//Monthly
+						calendar.add(GregorianCalendar.MONTH, 1);
+					}
+					else if(frequency.equalsIgnoreCase("4")){
+						//Quarterly
+						calendar.add(GregorianCalendar.MONTH, 3);
+					}
+					else if(frequency.equalsIgnoreCase("5")){
+						//Half-yearly
+						calendar.add(GregorianCalendar.MONTH, 6);
+					}
+					else if(frequency.equalsIgnoreCase("6")){
+						//Yearly
+						calendar.add(GregorianCalendar.MONTH, 12);
+					}
+					else{
+						return null;
+					}
+					return calendar.getTime();
+				}
+			}
+			else{
+				Nomenclature nomenclature = Nomenclature.get("asset", plan.getAssetNomenclature());
+				if(nomenclature!=null){
+					String frequency="";
+					if(plan.getType().equalsIgnoreCase("1")){
+						frequency = nomenclature.getParameter("controlfrequency");
+					}
+					else if(plan.getType().equalsIgnoreCase("2")){
+						frequency = nomenclature.getParameter("maintenancefrequency");
+					}
+					if(frequency.length()>0){
+						GregorianCalendar calendar = new GregorianCalendar();
+						calendar.setTime(date);
 						if(frequency.equalsIgnoreCase("1")){
 							//Daily
 							calendar.add(GregorianCalendar.HOUR, 24);

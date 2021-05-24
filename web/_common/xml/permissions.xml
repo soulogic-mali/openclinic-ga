@@ -445,6 +445,9 @@
         <permission type="web" id="assets.defaultmaintenanceplans">assets.defaultmaintenanceplans</permission>
         <permission type="web" id="remoteassets">remoteassets</permission>
         <permission type="web" id="assetsynchronization">gmao.synchronisation</permission>
+        <permission type="web" id="gmao.homepage.reporting">gmao.homepage.reporting</permission>
+        <permission type="web" id="gmao.homepage.maintenance">gmao.homepage.maintenance</permission>
+        <permission type="web" id="gmao.homepage.administration">gmao.homepage.administration</permission>
     </application>
     <application type="Web" id="system">
         <permission type="web" id="system.os">system.os</permission>

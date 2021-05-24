@@ -152,60 +152,62 @@
                 e.printStackTrace();
             }
             try{
-            	labrequestid=lr;
-                if(labrequestid.length() > 0 ){
-                    if(labrequestid.indexOf(".") == -1 && labrequestid.length()<10){
-                   		labrequestid=MedwanQuery.getInstance().getServerId()+"."+labrequestid;
-                    }
-                    serverid = Integer.parseInt(labrequestid.split("\\.")[0]);
-	                transactionid = Integer.parseInt(labrequestid.split("\\.")[1]);
-                }
-                
-                LabRequest labRequest = LabRequest.getUnsampledRequest(serverid, Integer.toString(transactionid), sWebLanguage);
-                if(labRequest != null && labRequest.getTransactionid()==transactionid){
-                    out.print("<tr>");
-                     out.print("<td colspan='2'>"+(labRequest.getRequestdate()!=null?ScreenHelper.formatDate(labRequest.getRequestdate(),ScreenHelper.fullDateFormat):"")+"<BR/><a href='javascript:showRequest("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'><b><font style='background-color: yellow'>"+labRequest.getTransactionid()+" </font></b></a>"+" "+(labRequest.isUrgent()?" <img height='14px' title='"+getTranNoLink("labrequest.urgency","urgent",sWebLanguage)+"' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>":"")+"</td>");
-                     out.print("<td><a href='javascript:readBarcode3(\"0"+labRequest.getPersonid()+"\");'><b>"+labRequest.getPatientname()+"</b></a> (°"+(labRequest.getPatientdateofbirth()!=null?ScreenHelper.formatDate(labRequest.getPatientdateofbirth()):"")+" - "+labRequest.getPatientgender()+")<br/><i>"+labRequest.getServicename()+" - "+MedwanQuery.getInstance().getUserName(labRequest.getUserid())+"</i></td>");
-                    out.print("</tr>");
-                    
-                    Hashtable allsamples=labRequest.findAllSamples(sWebLanguage);
-                    Hashtable unreceived = labRequest.findUnreceivedSamples(sWebLanguage);
-                    Enumeration enumeration = allsamples.elements();
-                    while (enumeration.hasMoreElements()){
-                        LabSample labSample = (LabSample)enumeration.nextElement();
-                        out.print("<tr><td><center>");
-                        
-                        if(MedwanQuery.getInstance().getConfigInt("forceExternalLabBarcodes",0)==1){
-    						String specimenid=serverid+"."+transactionid+"."+labSample.type;
-                            String barcodeid=checkString(Labo.getLabBarcode(specimenid));
-                            if(unreceived.get(labSample.type)!=null){
-                            	if(barcodeid.length()>0){
-                            		out.print("<input type='checkbox' name='receive."+serverid+"."+transactionid+"." +labSample.type+"'/>");
-                            	}
-                            	else{
-                            		out.print("<input disabled type='checkbox' name='receive."+serverid+"."+transactionid+"." +labSample.type+"'/>");
-                            	}
-                                bInitialized = true;
-                            }
-                            else{
-                                %><img src="<c:url value='/_img/themes/default/check.gif'/>"/><%
-                            }
-                        	out.print("</center></td><td colspan='2'>"+MedwanQuery.getInstance().getLabel("labanalysis.monster",labSample.type,sWebLanguage)+"</td><td>"+(barcodeid.length()>0?"[ "+barcodeid+" ] <img src='"+sCONTEXTPATH+"/_img/icons/icon_print.png' onclick='printLabel(\""+specimenid+"\")'/></td>":"")+"<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:setSampleId(\""+specimenid+"\")'>"+getTran(request,"web","setbarcode",sWebLanguage)+"</a></td></tr>");
-                        }
-                        else{
-                            if(unreceived.get(labSample.type)!=null){
-                                out.print("<input type='checkbox' name='receive."+serverid+"."+transactionid+"." +labSample.type+"'/>");
-                                bInitialized = true;
-                            }
-                            else{
-                                %><img src="<c:url value='/_img/themes/default/check.gif'/>"/><%
-                            }
-    						String specimenid=serverid+"."+transactionid+"."+labSample.type;
-                            String barcodeid=checkString(Labo.getLabBarcode(specimenid));
-                        	out.print("</center></td><td colspan='2'>"+MedwanQuery.getInstance().getLabel("labanalysis.monster",labSample.type,sWebLanguage)+"</td><td>"+(barcodeid.length()>0?"[ "+barcodeid+" ] <img src='"+sCONTEXTPATH+"/_img/icons/icon_print.png' onclick='printLabel(\""+specimenid+"\")'/></td>":"")+"<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:setSampleId(\""+specimenid+"\")'>"+getTran(request,"web","setbarcode",sWebLanguage)+"</a></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:createSampleId(\""+specimenid+"\")'>"+getTran(request,"web","generatebarcode",sWebLanguage)+"</a></td></tr>");
-                        }
-                    }
-                }
+            	if(labrequestid.length()<10){ //We must make sure this is no barcodeid but a transactionid
+	            	labrequestid=lr;
+	                if(labrequestid.length() > 0 ){
+	                    if(labrequestid.indexOf(".") == -1){
+	                   		labrequestid=MedwanQuery.getInstance().getServerId()+"."+labrequestid;
+	                    }
+	                    serverid = Integer.parseInt(labrequestid.split("\\.")[0]);
+		                transactionid = Integer.parseInt(labrequestid.split("\\.")[1]);
+	                }
+	                
+	                LabRequest labRequest = LabRequest.getUnsampledRequest(serverid, Integer.toString(transactionid), sWebLanguage);
+	                if(labRequest != null && labRequest.getTransactionid()==transactionid){
+	                    out.print("<tr>");
+	                     out.print("<td colspan='2'>"+(labRequest.getRequestdate()!=null?ScreenHelper.formatDate(labRequest.getRequestdate(),ScreenHelper.fullDateFormat):"")+"<BR/><a href='javascript:showRequest("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'><b><font style='background-color: yellow'>"+labRequest.getTransactionid()+" </font></b></a>"+" "+(labRequest.isUrgent()?" <img height='14px' title='"+getTranNoLink("labrequest.urgency","urgent",sWebLanguage)+"' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>":"")+"</td>");
+	                     out.print("<td><a href='javascript:readBarcode3(\"0"+labRequest.getPersonid()+"\");'><b>"+labRequest.getPatientname()+"</b></a> (°"+(labRequest.getPatientdateofbirth()!=null?ScreenHelper.formatDate(labRequest.getPatientdateofbirth()):"")+" - "+labRequest.getPatientgender()+")<br/><i>"+labRequest.getServicename()+" - "+MedwanQuery.getInstance().getUserName(labRequest.getUserid())+"</i></td>");
+	                    out.print("</tr>");
+	                    
+	                    Hashtable allsamples=labRequest.findAllSamples(sWebLanguage);
+	                    Hashtable unreceived = labRequest.findUnreceivedSamples(sWebLanguage);
+	                    Enumeration enumeration = allsamples.elements();
+	                    while (enumeration.hasMoreElements()){
+	                        LabSample labSample = (LabSample)enumeration.nextElement();
+	                        out.print("<tr><td><center>");
+	                        
+	                        if(MedwanQuery.getInstance().getConfigInt("forceExternalLabBarcodes",0)==1){
+	    						String specimenid=serverid+"."+transactionid+"."+labSample.type;
+	                            String barcodeid=checkString(Labo.getLabBarcode(specimenid));
+	                            if(unreceived.get(labSample.type)!=null){
+	                            	if(barcodeid.length()>0){
+	                            		out.print("<input type='checkbox' name='receive."+serverid+"."+transactionid+"." +labSample.type+"'/>");
+	                            	}
+	                            	else{
+	                            		out.print("<input disabled type='checkbox' name='receive."+serverid+"."+transactionid+"." +labSample.type+"'/>");
+	                            	}
+	                                bInitialized = true;
+	                            }
+	                            else{
+	                                %><img src="<c:url value='/_img/themes/default/check.gif'/>"/><%
+	                            }
+	                        	out.print("</center></td><td colspan='2'>"+MedwanQuery.getInstance().getLabel("labanalysis.monster",labSample.type,sWebLanguage)+"</td><td>"+(barcodeid.length()>0?"[ "+barcodeid+" ] <img src='"+sCONTEXTPATH+"/_img/icons/icon_print.png' onclick='printLabel(\""+specimenid+"\")'/></td>":"")+"<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:setSampleId(\""+specimenid+"\")'>"+getTran(request,"web","setbarcode",sWebLanguage)+"</a></td></tr>");
+	                        }
+	                        else{
+	                            if(unreceived.get(labSample.type)!=null){
+	                                out.print("<input type='checkbox' name='receive."+serverid+"."+transactionid+"." +labSample.type+"'/>");
+	                                bInitialized = true;
+	                            }
+	                            else{
+	                                %><img src="<c:url value='/_img/themes/default/check.gif'/>"/><%
+	                            }
+	    						String specimenid=serverid+"."+transactionid+"."+labSample.type;
+	                            String barcodeid=checkString(Labo.getLabBarcode(specimenid));
+	                        	out.print("</center></td><td colspan='2'>"+MedwanQuery.getInstance().getLabel("labanalysis.monster",labSample.type,sWebLanguage)+"</td><td>"+(barcodeid.length()>0?"[ "+barcodeid+" ] <img src='"+sCONTEXTPATH+"/_img/icons/icon_print.png' onclick='printLabel(\""+specimenid+"\")'/></td>":"")+"<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:setSampleId(\""+specimenid+"\")'>"+getTran(request,"web","setbarcode",sWebLanguage)+"</a></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:createSampleId(\""+specimenid+"\")'>"+getTran(request,"web","generatebarcode",sWebLanguage)+"</a></td></tr>");
+	                        }
+	                    }
+	                }
+            	}
             }
             catch(Exception e){
                 e.printStackTrace();
