@@ -54,8 +54,12 @@
 								out.println("<td class='admin2'><select class='text' name='fieldname_"+field.elementText("name")+"'>"+ScreenHelper.writeSelect(request,field.elementText("modifier"), "", sWebLanguage)+"</select></td>");
 							}
 							else if(field.elementText("type").equalsIgnoreCase("service")){
-			                    out.println("<td class='admin2'><input type='hidden' name='fieldname_"+field.elementText("name")+"'>");
-			                    out.println("<input class='text' type='text' name='servicename_"+field.elementText("name")+"' id='servicename_"+field.elementText("name")+"' readonly size='40'>&nbsp;");
+				            	String sServiceUid = checkString((String)session.getAttribute("activeservice"));
+				            	if(sServiceUid.length()==0){   	
+				            		sServiceUid=activeUser.getParameter("defaultserviceid");
+				            	}
+			                    out.println("<td class='admin2'><input type='hidden' name='fieldname_"+field.elementText("name")+"' value='"+sServiceUid+"'>");
+			                    out.println("<input class='text' type='text' name='servicename_"+field.elementText("name")+"' id='servicename_"+field.elementText("name")+"' readonly size='40' value='"+getTranNoLink("service",sServiceUid,sWebLanguage)+"'>&nbsp;");
 			                    out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_search.png' class='link' alt='"+getTranNoLink("Web","select",sWebLanguage)+"' onclick='searchService(\"fieldname_"+field.elementText("name")+"\",\"servicename_"+field.elementText("name")+"\");'>&nbsp;");
 			                    out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' class='link' alt='"+getTranNoLink("Web","clear",sWebLanguage)+"' onclick='fieldname_"+field.elementText("name")+".value=\"\";servicename_"+field.elementText("name")+".value=\"\";'></td>");
 							}

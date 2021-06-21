@@ -245,7 +245,6 @@ function composeCallbackURL(field,item){
   }
   return url;
 }
-
 new Ajax.Autocompleter('ac2','ac2update','_common/search/searchByAjax/patientslistShow.jsp',{
   minChars:1,
   method:'post',

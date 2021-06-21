@@ -63,6 +63,7 @@
                     hMenu.put(getTran(request,"web.manage","MonitorAccess",sWebLanguage),"main.do?Page=system/monitorAccess.jsp");
                     hMenu.put(getTran(request,"web.manage","ViewErrors",sWebLanguage),"main.do?Page=system/monitorErrors.jsp");
                     hMenu.put(getTran(request,"web.manage","processUpdateQueries",sWebLanguage),"main.do?Page=system/processUpdateQueries.jsp");
+                    hMenu.put(getTran(request,"web.manage","importinventoryexcel",sWebLanguage),"main.do?Page=system/importAssetInventoryCSV.jsp");
 
                     out.print(ScreenHelper.writeTblHeader(getTran(request,"web.manage","Database",sWebLanguage),sCONTEXTPATH)+
                     		  sortMenu(hMenu)+

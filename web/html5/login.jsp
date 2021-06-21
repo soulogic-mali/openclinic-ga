@@ -17,9 +17,9 @@
             session.setAttribute("WebLanguage",activeUser.person.language);
 		}
 
-%>
+	%>
 		<iframe id='ocframe' style='display: ; padding: 0;width: 100%; height: 5000px' src="welcomespt.jsp" frameborder="0">
-<%
+	<%
 	}
 	else{
 %>

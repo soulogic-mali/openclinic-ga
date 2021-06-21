@@ -1,11 +1,6 @@
-<%@page import="java.util.*,java.io.*,
-                javazoom.upload.UploadFile,
-                javazoom.upload.MultipartFormDataRequest"%>
-<jsp:useBean id="upBean" scope="page" class="javazoom.upload.UploadBean">
-    <jsp:setProperty name="upBean" property="folderstore" value='/tmp'/>
-    <jsp:setProperty name="upBean" property="parsertmpdir" value='/tmp'/>
-    <jsp:setProperty name="upBean" property="parser" value="<%=MultipartFormDataRequest.CFUPARSER%>"/>
-</jsp:useBean>
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
+<%@page import="org.apache.commons.fileupload.*"%>
+<%@page import="org.apache.commons.fileupload.servlet.*,java.util.*,java.io.*"%>
 <%!
 	class Node {
 		String label="";
@@ -43,54 +38,69 @@
 	}
 	SortedMap<String,Node> nodes = (SortedMap)session.getAttribute("nodes");
 	SortedSet<String> newlyInfectedNodes = new TreeSet<String>();
-	if(MultipartFormDataRequest.isMultipartFormData(request)){
+	if(ServletFileUpload.isMultipartContent(request)){
 		try{
-	        MultipartFormDataRequest mrequest = new MultipartFormDataRequest(request);
-            Hashtable<String,UploadFile> files = mrequest.getFiles();
-            if(files!=null && !files.isEmpty()){
-            	nodes = new TreeMap<String,Node>();
-                UploadFile file = files.get("filename");
-                InputStream is = new ByteArrayInputStream(file.getData());
-                BufferedReader bfReader = new BufferedReader(new InputStreamReader(is));
-                String line = null;
-                bfReader.readLine();
-                while((line = bfReader.readLine()) != null){
-                    String[] fields = line.split(",");
-                    String source = fields[0];
-                    String target = fields[1];
-                    String label = fields[4];
-                    if(nodes.get(source)==null){
-                    	nodes.put(source,new Node());
-                    }
-                    Node node = nodes.get(source);
-                    node.links.add(target);
-                    if(nodes.get(target)==null){
-                    	nodes.put(target,new Node());
-                    }
-                    node = nodes.get(target);
-                    node.links.add(source);
-                }
-    			iterationCounter=0;
-    			session.setAttribute("iterationCounter", 0);
-    			immuneArray="";
-    			session.setAttribute("immuneArray", "");
-    			immuneArray="";
-    			if(nodes!=null){
-    				try{
-    					Iterator<String> inodes = nodes.keySet().iterator();
-    					while(inodes.hasNext()){
-    						String id = inodes.next();
-    						Node node = nodes.get(id);
-    						node.label="";
-    						node.immunityIterations=0;
-    						node.infectedIterations=0;
-    					}
-    				}
-    				catch(Exception e){
-    					e.printStackTrace();
-    				}
-    			}
-            }
+		    FileItemFactory factory = new DiskFileItemFactory();
+		    ServletFileUpload upload = new ServletFileUpload(factory);
+		    List items = null;
+		    try {
+		        items = upload.parseRequest((HttpServletRequest)request);
+	        } catch (FileUploadException e) {
+	             e.printStackTrace();
+	        }
+		    Iterator itr = items.iterator();
+		    while (itr.hasNext()) {
+		        FileItem item = (FileItem) itr.next();
+		        if (!item.isFormField()) {
+		        	try {
+		        		if(item.getFieldName().equalsIgnoreCase("filename")){
+			            	nodes = new TreeMap<String,Node>();
+		                    InputStream is = new ByteArrayInputStream(item.get());
+		                    BufferedReader bfReader = new BufferedReader(new InputStreamReader(is));
+		                    String line = null;
+		                    bfReader.readLine();
+		                    while((line = bfReader.readLine()) != null){
+		                        String[] fields = line.split(",");
+		                        String source = fields[0];
+		                        String target = fields[1];
+		                        String label = fields[4];
+		                        if(nodes.get(source)==null){
+		                        	nodes.put(source,new Node());
+		                        }
+		                        Node node = nodes.get(source);
+		                        node.links.add(target);
+		                        if(nodes.get(target)==null){
+		                        	nodes.put(target,new Node());
+		                        }
+		                        node = nodes.get(target);
+		                        node.links.add(source);
+		                    }
+		        			iterationCounter=0;
+		        			session.setAttribute("iterationCounter", 0);
+		        			immuneArray="";
+		        			session.setAttribute("immuneArray", "");
+		        			immuneArray="";
+		        			if(nodes!=null){
+		        				try{
+		        					Iterator<String> inodes = nodes.keySet().iterator();
+		        					while(inodes.hasNext()){
+		        						String id = inodes.next();
+		        						Node node = nodes.get(id);
+		        						node.label="";
+		        						node.immunityIterations=0;
+		        						node.infectedIterations=0;
+		        					}
+		        				}
+		        				catch(Exception e){
+		        					e.printStackTrace();
+		        				}
+		        			}
+		           		}
+		            } catch (Exception e) {
+		                 e.printStackTrace();
+		            }
+		        }
+		    }
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -264,7 +274,7 @@
 		session.setAttribute("nodes", nodes);
 	}
 %>
-<h2>SIRS propagation model</h2>
+<img width='450px' src="../_img/sirs.png"/><p/>
 <form name='fileForm' method='post' enctype="multipart/form-data">
 	<input size='50' style='border: solid' id='fileupload' name="filename" type="file" title=""/>
 	<input type='submit' name='submitFile' value='Read model'/>

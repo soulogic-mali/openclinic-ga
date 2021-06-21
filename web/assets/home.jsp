@@ -56,6 +56,17 @@
 					<center>
 						<table style='padding: 5px;background-color: #004228' width='40%'>
 							<tr>
+								<td style='text-align: center' nowrap><a style='font-size: 14px;color: white;text-decoration: none' href='main.jsp?Page=assets/showUserActivity.jsp'><%=getTran(request,"web","gmao.useractivity",sWebLanguage) %></a></td>
+							</tr>
+						</table>
+					</center>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<center>
+						<table style='padding: 5px;background-color: #004228' width='40%'>
+							<tr>
 								<td style='text-align: center' nowrap><a style='font-size: 14px; color: white;text-decoration: none' href='main.jsp?Page=assets/dashboard.jsp'><%=getTran(request,"web","gmao.dashboard",sWebLanguage) %></a></td>
 							</tr>
 						</table>
@@ -67,31 +78,7 @@
 					<center>
 						<table style='padding: 5px;background-color: #004228' width='40%'>
 							<tr>
-								<td style='text-align: center' nowrap><a style='font-size: 14px; color: white;text-decoration: none' href='main.jsp?Page=assets/home.jsp&forcePatientHeader=1'><%=getTran(request,"web","gmao.searchuser",sWebLanguage) %></a></td>
-							</tr>
-						</table>
-					</center>
-				</td>
-			</tr>
-			<% 	if(activePatient!=null && activePatient.isNotEmpty()){ %>
-				<tr>
-					<td>
-						<center>
-							<table style='padding: 5px;background-color: #004228' width='40%'>
-								<tr>
-									<td style='text-align: center' nowrap><a style='font-size: 14px; color: white;text-decoration: none' href='patientedit.do?forcePatientHeader=1'><%=getTran(request,"web","gmao.edituser",sWebLanguage) %> [<%=activePatient.getFullName() %>]</a></td>
-								</tr>
-							</table>
-						</center>
-					</td>
-				</tr>
-			<%	} %>
-			<tr>
-				<td>
-					<center>
-						<table style='padding: 5px;background-color: #004228' width='40%'>
-							<tr>
-								<td style='text-align: center' nowrap><a style='font-size: 14px; color: white;text-decoration: none' href='patientnew.do?PatientNew=true&forcePatientHeader=1'><%=getTran(request,"web","gmao.createuser",sWebLanguage) %></a></td>
+								<td style='text-align: center' nowrap><a style='font-size: 14px; color: white;text-decoration: none' href='javascript:requestNewUser();'><%=getTran(request,"web","gmao.requestcreateuser",sWebLanguage) %></a></td>
 							</tr>
 						</table>
 					</center>
@@ -151,6 +138,17 @@
 				<center>
 					<table style='padding: 5px;background-color: #004288' width='40%'>
 						<tr>
+							<td style='text-align: center' nowrap><a style='font-size: 14px; color: white;text-decoration: none' href='main.jsp?Page=assets/manageSpareParts.jsp'><%=getTran(request,"web","gmao.spareparts",sWebLanguage) %></a></td>
+						</tr>
+					</table>
+				</center>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<center>
+					<table style='padding: 5px;background-color: #004288' width='40%'>
+						<tr>
 							<td style='text-align: center' nowrap><a style='font-size: 14px; color: white;text-decoration: none' href='main.jsp?Page=assets/manage_maintenancePlansDefault.jsp'><%=getTran(request,"web","gmao.defaultmanagementplans",sWebLanguage) %></a></td>
 						</tr>
 					</table>
@@ -171,3 +169,8 @@
 		<tr><td><hr/></td></tr>
 	<%	} %>
 </table>
+<script>
+	function requestNewUser(){
+		window.open('<%=SH.cs("createUserRequestURL","http://helpdesk.mspls.org/helpdesk/")%>');
+	}
+</script>

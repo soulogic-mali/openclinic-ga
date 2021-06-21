@@ -1,6 +1,6 @@
 <%@page import="java.util.Iterator,org.apache.commons.httpclient.*,org.apache.commons.httpclient.methods.*,org.apache.http.client.methods.*,
 org.apache.http.impl.client.*,org.apache.http.message.*,org.apache.http.client.entity.*,org.apache.commons.io.*"%>
-<%@page import="org.dom4j.*,java.net.*"%>
+<%@page import="org.dom4j.*,java.net.*,java.io.*"%>
 <%@page import="org.dom4j.io.SAXReader"%>
 <%@page import="java.io.File,java.util.*"%>
 <%@page import="be.mxs.common.util.db.MedwanQuery,java.sql.*,be.openclinic.assets.*"%>
@@ -9,7 +9,7 @@ org.apache.http.impl.client.*,org.apache.http.message.*,org.apache.http.client.e
 <%
 	String service=checkString(request.getParameter("serviceuid"));
 	//****************************************
-	//Test checkin procedure
+	//Test checkout procedure
 	//****************************************
 	String sResult="done";
 	int nGmaoServerId = MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",100);
@@ -39,7 +39,8 @@ org.apache.http.impl.client.*,org.apache.http.message.*,org.apache.http.client.e
 	if(!new java.io.File(MedwanQuery.getInstance().getConfigString("tempDirectrory","/tmp")).exists()){
 		new java.io.File(MedwanQuery.getInstance().getConfigString("tempDirectrory","/tmp")).mkdirs();
 	}
-	FileUtils.writeStringToFile(new File(MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")+"/inventory.xml"), sb.toString());
+	File file = new File(MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")+"/inventory.xml");
+	FileUtils.writeStringToFile(file, sb.toString());
 	if(Asset.storeXml(sb)){
 		sResult="done";
 	}
@@ -50,7 +51,19 @@ org.apache.http.impl.client.*,org.apache.http.message.*,org.apache.http.client.e
 		out.println(getTran(request,"gmao",sResult,sWebLanguage).toUpperCase());
 	}
 	else{
-		out.println(getTran(request,"gmao",sResult,sWebLanguage).toUpperCase()+"</br>"+getTran(request,"gmao","checkoutassetsoncentralserver",sWebLanguage)+"...");
+		int nAssets=0;
+	    try{
+			SAXReader reader = new SAXReader(false);
+		    Document document = reader.read(new StringReader(sb.toString()));
+		    Element rootElement = document.getRootElement();
+		    nAssets = rootElement.elements("asset").size();
+		    String s = "<gmao datetime='"+new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new java.util.Date())+"' user='"+activeUser.getFullName()+"' "+sb.toString().substring(5);
+			FileUtils.writeStringToFile(file, s);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		out.println(getTran(request,"gmao",sResult,sWebLanguage).toUpperCase()+", <b>"+nAssets+"</b> "+getTran(request,"gmao","unlockedassetsreceived",sWebLanguage)+"</br>"+getTran(request,"gmao","checkoutassetsoncentralserver",sWebLanguage)+"...");
 		out.flush();
 		String url = MedwanQuery.getInstance().getConfigString("GMAOCentralServer","http://localhost/openclinic")+"/assets/checkOutAssetsForServiceUid.jsp";
 		CloseableHttpClient client = HttpClients.createDefault();
@@ -88,4 +101,12 @@ org.apache.http.impl.client.*,org.apache.http.message.*,org.apache.http.client.e
 <p/>
 <center>
 	<input type='button' class='button' name='closeButton' value='<%=getTranNoLink("web","close",sWebLanguage)%>' onclick='window.close();'/>
+	<input type='button' class='button' name='closeButton' value='<%=getTranNoLink("web","view",sWebLanguage)%>' onclick='viewContent();'/>
 </center>
+
+<script>
+	function viewContent(){
+		openPopup("assets/viewXmlDetails.jsp&filename=<%=MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")+"/inventory.xml"%>&filter=all",800,600);
+	}
+	window.opener.location.reload();
+</script>

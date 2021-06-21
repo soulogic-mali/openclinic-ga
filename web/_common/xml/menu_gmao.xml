@@ -6,6 +6,7 @@
 		<Menu labelid="assets" accessrights="assets.select" url="/main.do?Page=assets/manage_assets.jsp"/>
 		<Menu labelid="maintenancePlans" accessrights="maintenanceplans.select" url="/main.do?Page=assets/manage_maintenancePlans.jsp"/>
 		<Menu labelid="maintenanceOperations" accessrights="maintenanceoperations.select" url="/main.do?Page=assets/manage_maintenanceOperations.jsp"/>
+		<Menu labelid="gmao.spareparts" accessrights="spareparts.select" url="/main.do?Page=assets/manageSpareParts	.jsp"/>
 	</Menu>
 	<Menu labelid="reports">
 		<Menu labelid="statistics.activitystats.jasperReports" accessrights="printableDocuments.select" url="javascript:jasperReportsGMAO();"/>

@@ -87,7 +87,7 @@
                 <tr>
                     <td class="admin"><%=getTran(request,"web","description",sWebLanguage)%></td>
                     <td class="admin2">
-                        <textarea class="text" name="searchDescription" id="searchDescription" cols="40" rows="1" onKeyup="resizeTextarea(this,8);"><%=sDescription%></textarea>
+                        <input type="text" class="text" id="searchDescription" name="searchDescription" size="40" maxLength="150" value="<%=sDescription%>">
                     </td>
                 </tr>
                 

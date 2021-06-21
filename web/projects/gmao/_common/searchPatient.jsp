@@ -210,14 +210,12 @@
 	  }
 	  return url;
 	}
-	
 	new Ajax.Autocompleter('ac2','ac2update','_common/search/searchByAjax/patientslistShow.jsp',{
 	  minChars:1,
 	  method:'post',
 	  afterUpdateElement:afterAutoComplete,
 	  callback:composeCallbackURL
 	});
-	
 	new Ajax.Autocompleter('ac1','ac1update','_common/search/searchByAjax/patientslistShow.jsp',{
 	  minChars:1,
 	  method:'post',

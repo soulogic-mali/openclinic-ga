@@ -35,6 +35,7 @@ import be.mxs.common.util.system.Debug;
 import be.mxs.common.util.system.Miscelaneous;
 import be.mxs.common.util.system.ScreenHelper;
 import be.mxs.common.util.tools.sendHtmlMail;
+import be.openclinic.system.SH;
 import uk.org.primrose.pool.PoolException;
 import uk.org.primrose.vendor.standalone.PrimroseLoader;
 
@@ -55,6 +56,7 @@ public class TimeFilterReportGenerator {
 			props.put("mail.smtp.port", MedwanQuery.getInstance(false).getConfigString("mailbot.port","587"));
 	        props.put("mail.smtp.user", username);
 	        props.put("mail.smtp.password", password);
+	        props.put("mail.smtp.ssl.trust", MedwanQuery.getInstance(false).getConfigString("mailbot.server","smtp.gmail.com"));        
 
 	        Session mailSession = Session.getInstance(props);
 
@@ -80,7 +82,7 @@ public class TimeFilterReportGenerator {
 	        // add it
 	        multipart.addBodyPart(messageBodyPart);
 	        
-	        if(new java.io.File(sImage).exists()){
+	        if(SH.c(sImage).length()>0 && new java.io.File(sImage).exists()){
 		        // second part (the image)
 		        messageBodyPart = new MimeBodyPart();
 		        DataSource fds = new FileDataSource(sImage);
@@ -101,7 +103,7 @@ public class TimeFilterReportGenerator {
 	        bSuccess=true;
 	    }
 	    catch(Exception e){
-	    	Debug.print(e.getMessage());
+	    	Debug.println(e.getMessage());
 	    }
 		return bSuccess;
 	}

@@ -5,7 +5,6 @@
 <%@include file="../assets/includes/commonFunctions.jsp"%>
 <%=checkPermission(out,"maintenanceplans","select",activeUser)%>
 
-<%=sJSPROTOTYPE%>
 <%=sJSNUMBER%> 
 <%=sJSSTRINGFUNCTIONS%>
 <%=sJSSORTTABLE%>
@@ -35,6 +34,7 @@
     
     MaintenancePlan plan = null;
     boolean bLocked=false;
+
     if(sAction.length()==0){
 %>            
 		
@@ -57,9 +57,9 @@
 		                <img src="<c:url value="/_img/icons/icon_view.png"/>" class="link" alt="<%=getTranNoLink("web","view",sWebLanguage)%>" onclick="viewAsset();">
 		            </td>
 		            <td class="admin" width="<%=sTDAdminWidth%>"><%=getTran(request,"web","name",sWebLanguage)%>&nbsp;</td>
-		            <td class="admin2">
+		            <td class="admin2" nowrap>
 		                <input type="text" class="text" id="searchName" name="searchName" size="40" maxLength="50" value="">
-	                <input type="checkbox" class="text" name="showinactive" id="showinactive"/><%=getTran(request,"web.maintenance","showinactive",sWebLanguage) %>
+	                	<input type="checkbox" class="text" name="showinactive" id="showinactive"/><%=getTran(request,"web.maintenance","showinactive",sWebLanguage) %>
 		            </td>
 		        </tr>  
 		        
@@ -87,11 +87,12 @@
 	            %>
 		        <tr>     
 		            <td class="admin"><%=getTran(request,"web","service",sWebLanguage)%>&nbsp;</td>
-		           	<td class="admin2">
+		           	<td class="admin2" nowrap>
 		                <input type="hidden" name="serviceuid" id="serviceuid" value="<%=serviceuid%>">
-		                <input class="text" type="text" name="servicename" id="servicename" readonly size="60" value="<%=getTranNoLink("service",serviceuid,sWebLanguage)%>" >
+		                <input onblur="if(document.getElementById('serviceuid').value.length==0){this.value='';}" class="text" type="text" name="servicename" id="servicename" size="50" value="<%=getTranNoLink("service",serviceuid,sWebLanguage) %>" >
 		                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTran(null,"Web","select",sWebLanguage)%>" onclick="searchService('serviceuid','servicename');">
-		                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="SearchForm.serviceuid.value='';SearchForm.servicename.value='';">
+			            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTran(null,"Web","delete",sWebLanguage)%>" onclick="document.getElementById('serviceuid').value='';document.getElementById('servicename').value='';document.getElementById('servicename').focus();">
+						<div id="autocomplete_service" class="autocomple"></div>
 					</td>
 		            <td class="admin"/>
 		            <td class="admin2">
@@ -105,7 +106,31 @@
 		    </table>
 		</form>
 <script>
-	<%
+	new Ajax.Autocompleter('servicename','autocomplete_service','assets/findService.jsp',{
+	  minChars:1,
+	  method:'post',
+	  afterUpdateElement: afterAutoCompleteService,
+	  callback: composeCallbackURLService
+	});
+
+	function afterAutoCompleteService(field,item){
+	  var regex = new RegExp('[-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.]*-idcache','i');
+	  var nomimage = regex.exec(item.innerHTML);
+	  var id = nomimage[0].replace('-idcache','');
+	  document.getElementById("serviceuid").value = id;
+	  document.getElementById("servicename").value=item.innerHTML.split("$")[1];
+	}
+	
+	function composeCallbackURLService(field,item){
+	  document.getElementById('serviceuid').value
+	  var url = "";
+	  if(field.id=="servicename"){
+		url = "text="+field.value;
+	  }
+	  return url;
+	}
+
+<%
 		if(sAssetUID.length()>0){
 			out.println("window.setTimeout('searchMaintenancePlans()',500);");
 		}
@@ -197,6 +222,9 @@
     	plan.setPlanManager(checkString(request.getParameter("planManager")));
     	plan.setComment10(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()));
     }
+    else if(sAction.equalsIgnoreCase("history")){
+    	plan = MaintenancePlan.getHistory(sEditPlanUID,SH.parseDate(SH.p(request,"timestamp"), "yyyyMMddHHmmssSSS"));
+    }
     if(plan!=null){
 		bLocked = plan.getObjectId()>-1 && ((plan.getLockedBy()>-1 && plan.getLockedBy()!=MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)) || (plan.getLockedBy()==-1 && MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)!=0));
 %>
@@ -205,7 +233,7 @@
 		    <input type="hidden" id="action" name="action" value="">
 			<input type='hidden' name='lockedby' id='lockedby' value='<%=plan.getLockedBy()%>'/>
 		    <input type="hidden" id="EditPlanUID" name="EditPlanUID" value="<%=plan.getUid()%>">
-		    <%=writeTableHeader("web.assets","maintenancePlans",sWebLanguage,"")%>
+		    <%=writeTableHeaderButton(getTran(request,"web.assets","maintenancePlans",sWebLanguage),!plan.hasHistory()?"":"<img title='"+getTranNoLink("web","history",sWebLanguage)+"' src='"+sCONTEXTPATH+"/_img/icons/icon_history2.gif' onclick='showHistory();'/>&nbsp;")%>
 		                
 		    <table class="list" border="0" width="100%" cellspacing="1">
 		        <%-- name (*) --%>
@@ -216,9 +244,9 @@
 		                <input type="text" class="text" id="assetCode" name="assetCode" size="20" value="<%=checkString(plan.getAssetCode())%>" readonly>
 		                
 		                <%-- BUTTONS --%>
-		                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("web","select",sWebLanguage)%>" onclick="selectAsset('assetUID','assetCode');">
-		                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("web","clear",sWebLanguage)%>" onclick="clearAssetFields();">
-		                <img src="<c:url value="/_img/icons/icon_view.png"/>" class="link" alt="<%=getTranNoLink("web","view",sWebLanguage)%>" onclick="viewAsset();">
+		                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" title="<%=getTranNoLink("web","select",sWebLanguage)%>" onclick="selectAsset('assetUID','assetCode');">
+		                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" title="<%=getTranNoLink("web","clear",sWebLanguage)%>" onclick="clearAssetFields();">
+		                <img src="<c:url value="/_img/icons/icon_view.png"/>" class="link" title="<%=getTranNoLink("web","view",sWebLanguage)%>" onclick="viewAsset();">
 		            </td>
 		            <td class="admin"><%=getTran(request,"web.assets","type",sWebLanguage)%>&nbsp;</td>
 		            <td class="admin2">
@@ -236,7 +264,7 @@
 		            	<input type="hidden" name="nomenclaturecode" id="nomenclaturecode" value="<%=checkString(plan.getAssetNomenclature())%>"/>
 		            	<input type="text" readonly name="nomenclature" id="nomenclature" size="50" value="<%=checkString(plan.getAssetNomenclature())+" - "+getTranNoLink("admin.nomenclature.asset",plan.getAssetNomenclature(),sWebLanguage) %>"/>
 		            </td>
-		            <td class="admin" width="<%=sTDAdminWidth%>"><%=getTran(request,"web.assets","planname",sWebLanguage)%>&nbsp;*&nbsp;</td>
+		            <td class="admin" width="<%=sTDAdminWidth%>"><%=getTran(request,"web.assets","planname",sWebLanguage)%>&nbsp;*&nbsp;<img style='vertical-align: middle' src="<c:url value="/_img/icons/icon_search.png"/>" class="link" title="<%=getTranNoLink("web","search",sWebLanguage)%>" onclick="viewDefault();"> <img style='vertical-align: middle' height='14px' src="<c:url value="/_img/icons/icon_upload.gif"/>" class="link" title="<%=getTranNoLink("web","adddefaultplan",sWebLanguage)%>" onclick="addDefault();"></td>
 		            <td class="admin2">
 		                <input type="text" class="text" id="name" name="name" size="50" maxLength="50" value="<%=checkString(plan.getName())%>">
 		            </td>
@@ -250,7 +278,7 @@
 		            </td>
 		            <td class="admin"><%=getTran(request,"web.assets","frequency",sWebLanguage)%>&nbsp;</td>
 		            <td class="admin2">
-		            	<select class='text' name='frequency' id='frequency'>
+		            	<select class='text' name='frequency' id='frequency' onchange='checkFrequency()'>
 		            		<option/>
 		            		<%=ScreenHelper.writeSelect(request, "maintenanceplan.frequency", checkString(plan.getFrequency()), sWebLanguage) %>
 		            	</select>
@@ -261,7 +289,7 @@
 		        <tr>
 		            <td class="admin"><%=getTran(request,"web.assets","endDate",sWebLanguage)%>&nbsp;</td>
 		            <td class="admin2">
-		                <%=writeDateField("endDate","EditForm",ScreenHelper.formatDate(plan.getEndDate()),sWebLanguage)%>
+		                <%=SH.writeDateField("endDate","EditForm",ScreenHelper.formatDate(plan.getEndDate()),true,true,sWebLanguage,sCONTEXTPATH,"")%>
 		            </td>
 		            <td class="admin">ID&nbsp;</td>
 		            <td class="admin2">
@@ -386,6 +414,7 @@
 		        <tr>     
 		            <td class="admin"/>
 		            <td class="admin2" colspan="3">
+		            	<%if(!sAction.equalsIgnoreCase("history") && !SH.p(request,"readonly").equalsIgnoreCase("true")){ %>
 						<%if(!bLocked && activeUser.getAccessRight("maintenanceplans.edit")){ %>
 		                <input class="button" type="button" name="buttonSave" id="buttonSave" value="<%=getTranNoLink("web","save",sWebLanguage)%>" onclick="saveMaintenancePlan();">&nbsp;
 						<%} %>
@@ -398,28 +427,44 @@
 						<%
 							if(activeUser.getAccessRight("assets.defaultmaintenanceplans.add")){
 						%>
-		                <input class="button" type="button" name="buttonAddDefault" id="buttonAddDefault" value="<%=getTranNoLink("web","adddefault",sWebLanguage)%>" onclick="addDefault();">&nbsp;
+		                <input class="button" type="button" name="buttonAddDefault" id="buttonAddDefault" value="<%=getTranNoLink("web","adddefaultplan",sWebLanguage)%>" onclick="addDefault();">&nbsp;
 						<%
 							}
 							if(activeUser.getAccessRight("assets.defaultmaintenanceplans.select")){
 						%>
-		                <input class="button" type="button" name="buttonViewDefault" id="buttonViewDefault" value="<%=getTranNoLink("web","viewdefault",sWebLanguage)%>" onclick="viewDefault();">&nbsp;
+		                <input class="button" type="button" name="buttonViewDefault" id="buttonViewDefault" value="<%=getTranNoLink("web","loaddefaultplan",sWebLanguage)%>" onclick="viewDefault();">&nbsp;
 						<%
 							}
+            			}
 						%>
 		            </td>
 		        </tr>
 		    </table>
 		    <i><%=getTran(request,"web","colored_fields_are_obligate",sWebLanguage)%></i>
 		    
+		    <%if(sAction.equalsIgnoreCase("history")|| SH.p(request,"readonly").equalsIgnoreCase("true")){%>
+		    	<center><input class="button" type="button" name="buttonClose" id="buttonClose" value="<%=getTranNoLink("web","close",sWebLanguage)%>" onclick="window.close();"></center>
+			<%}%>
+		
 		    <div id="divMessage" style="padding-top:10px;"></div>
 		</form>
+
 <%
 		session.setAttribute("activeAsset", plan.getAsset());
 		session.setAttribute("activeMaintenancePlan", plan);
     }
 %>
 <script>
+	function checkFrequency(){
+		if(document.getElementById("frequency").value.length>0){
+			document.getElementById("endDate").setAttribute("readonly", true);
+			document.getElementById("endDate").style.backgroundColor='lightgrey';
+		}
+		else{
+			document.getElementById("endDate").removeAttribute("readonly");
+			document.getElementById("endDate").style.backgroundColor='white';
+		}
+	}
 	function addDocument(uid){
   		openPopup("/assets/addDocument.jsp&ts=<%=getTs()%>&PopupHeight=200&PopupWidth=500&maintenanceplanuid="+uid);
   	}
@@ -455,7 +500,7 @@
 	}
 	
 	function viewDefault(){
-  		openPopup("/assets/viewDefaultManagementPlans.jsp&ts=<%=getTs()%>&PopupHeight=200&PopupWidth=500&assetUID="+EditForm.assetUID.value);
+  		openPopup("/assets/viewDefaultManagementPlans.jsp&ts=<%=getTs()%>&PopupHeight=200&PopupWidth=500&assetUID="+encodeURI(EditForm.assetUID.value));
 	}
 	
 	function addDefault(){
@@ -463,41 +508,49 @@
 			alert('<%=getTranNoLink("web","assetnotspecified",sWebLanguage)%>');
 		}
 		else if(window.confirm('<%=getTranNoLink("web","areyousure",sWebLanguage)%>')){
-	        var sParams = "EditPlanUID="+document.getElementById('EditPlanUID').value+
-            "&name="+document.getElementById('name').value+
-            "&assetUID="+document.getElementById('assetUID').value+
-            "&startDate="+document.getElementById('startDate').value+
-            "&endDate="+document.getElementById('endDate').value+
-            "&frequency="+document.getElementById('frequency').value+
-            "&operator="+document.getElementById('operator').value+
-            "&planManager="+document.getElementById('planManager').value+
-            "&type="+document.getElementById('type').value+
-            "&comment1="+document.getElementById('comment1').value+
-            "&comment2="+document.getElementById('comment2').value+
-            "&comment3="+document.getElementById('comment3').value+
-            "&comment4="+document.getElementById('comment4').value+
-            "&comment5="+document.getElementById('comment5').value+
-            /*
-            "&comment6="+EditForm.comment6.value+
-            "&comment7="+EditForm.comment7.value+
-            "&comment8="+EditForm.comment8.value+
-            "&comment9="+EditForm.comment9.value+
-            */
-            "&comment10="+EditForm.comment10.value+
-            "&instructions="+document.getElementById('instructions').value.replace(new RegExp("'", 'g'), '´').replace(new RegExp('"', 'g'), '´');
-		    var url = "<c:url value='/assets/ajax/maintenancePlan/addDefault.jsp'/>?ts="+new Date().getTime();
-		    new Ajax.Request(url,{
-		      method: "POST",
-		      parameters: sParams,
-		      onSuccess: function(resp){
-		    	  if(resp.responseText.indexOf("OK-200")>0){
-		        	  viewDefault();
-		    	  }
-		    	  else if(resp.responseText.indexOf("NOK-300")>0){
-		    		  alert('NOK-300 <%=getTranNoLink("web","assetnotspecified",sWebLanguage)%>');
-		    	  }
-		      },
-		    });
+			var name = window.prompt("<%=getTranNoLink("web","name",sWebLanguage)%>",document.getElementById('name').value);
+			if(name.length>0){
+		        var sParams = "EditPlanUID="+document.getElementById('EditPlanUID').value+
+	            "&name="+name+
+	            "&assetUID="+document.getElementById('assetUID').value+
+	            "&startDate="+document.getElementById('startDate').value+
+	            "&endDate="+document.getElementById('endDate').value+
+	            "&frequency="+document.getElementById('frequency').value+
+	            "&operator="+document.getElementById('operator').value+
+	            "&planManager="+document.getElementById('planManager').value+
+	            "&type="+document.getElementById('type').value+
+	            "&nomenclaturecode="+document.getElementById('nomenclaturecode').value+
+	            "&comment1="+document.getElementById('comment1').value+
+	            "&comment2="+document.getElementById('comment2').value+
+	            "&comment3="+document.getElementById('comment3').value+
+	            "&comment4="+document.getElementById('comment4').value+
+	            "&comment5="+document.getElementById('comment5').value+
+	            /*
+	            "&comment6="+EditForm.comment6.value+
+	            "&comment7="+EditForm.comment7.value+
+	            "&comment8="+EditForm.comment8.value+
+	            "&comment9="+EditForm.comment9.value+
+	            */
+	            "&comment10="+EditForm.comment10.value+
+	            "&instructions="+document.getElementById('instructions').value.replace(new RegExp("'", 'g'), '´').replace(new RegExp('"', 'g'), '´');
+			    var url = "<c:url value='/assets/ajax/maintenancePlan/addDefault.jsp'/>?ts="+new Date().getTime();
+			    new Ajax.Request(url,{
+			      method: "POST",
+			      parameters: sParams,
+			      onSuccess: function(resp){
+			    	  if(resp.responseText.indexOf("OK-200")>0){
+			        	  viewDefault();
+			    	  }
+			    	  else if(resp.responseText.indexOf("NOK-300")>0){
+			    		  alert('NOK-300 <%=getTranNoLink("web","nomenclaturenotspecified",sWebLanguage)%>');
+			    	  }
+			    	  else if(resp.responseText.indexOf("NOK-400")>0){
+			    		  alert('NOK-400 <%=getTranNoLink("web","maintenanceplanalreadyexists",sWebLanguage)%>');
+			        	  viewDefault();
+			    	  }
+			      },
+			    });
+			}
 		}
 	}
 	
@@ -620,6 +673,10 @@
     }
   }
   
+  function showHistory(){
+	  openPopup("assets/showHistory.jsp&type=maintenanceplan&uid=<%=plan==null?"":plan.getUid()%>",800,500);
+  }
+
   <%-- REQUIRED FIELDS PROVIDED --%>
   function requiredFieldsProvided(){
 	  if(document.getElementById("startDate").value.length == 0 ){
@@ -823,6 +880,6 @@
   //EditForm.code.focus();
   //loadMaintenancePlan();
   resizeAllTextareas(8);
-  
+  checkFrequency();
 </script>
 <%=sJSBUTTONS%>

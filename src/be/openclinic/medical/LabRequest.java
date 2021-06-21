@@ -161,6 +161,10 @@ public class LabRequest {
         this.comment = comment;
     }
     
+    public TransactionVO getTransaction() {
+    	return MedwanQuery.getInstance().loadTransaction(getServerid()+"."+getTransactionid());
+    }
+    
     public static ServiceRequest getFHIRLabOrder(String transactionUid) {
     	TransactionVO labTransaction =MedwanQuery.getInstance().loadTransaction(transactionUid);
     	if(labTransaction==null) {

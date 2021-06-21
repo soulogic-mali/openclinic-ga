@@ -320,7 +320,6 @@
         sSelectedProductName     = sEditProductName;
     }
 %>
-
 <script>
   var setMaxQuantity = <%=sEditReferenceOperationUid.length()>0?sEditUnitsChanged:"1"%>;
 
@@ -340,10 +339,20 @@
     }
     return true;
   }
-
-  <%-- SHOW BATCH INFO --%>
+</script>
+<script>
+<%	
+	boolean bBloodProduct=false;
+  	ProductStock productStock = ProductStock.get(sEditProductStockUid);
+  	if(productStock!=null){
+  		Product product = productStock.getProduct();
+  		if(product!=null && product.getAtccode()!=null){
+  			bBloodProduct=productStock.getProduct().getAtccode().length()>0;
+  		}
+  	}
+%>
 	function showBatchInfo(){
-		if(document.getElementById("EditSrcDestType")[document.getElementById("EditSrcDestType").selectedIndex].value=="servicestock"){
+		if(document.getElementById("EditSrcDestType") && document.getElementById("EditSrcDestType")[document.getElementById("EditSrcDestType").selectedIndex].value=="servicestock"){
 			if(transactionForm.EditSrcDestUid.value.length > 0){
 	    		var params = "";
 	    		var url= '<c:url value="/pharmacy/medication/ajax/getProductStockBatches.jsp"/>?destinationproductstockuid=<%=sEditProductStockUid%>&sourceservicestockuid='+transactionForm.EditSrcDestUid.value+'&ts=<%=getTs()%>';
@@ -364,7 +373,7 @@
 			}
 			setTimeout("updateMaxVal();",500);
 	  	}
-	  	else if(document.getElementById("EditSrcDestType")[document.getElementById("EditSrcDestType").selectedIndex].value=="supplier"){
+	  	else if(document.getElementById("EditSrcDestType") && document.getElementById("EditSrcDestType")[document.getElementById("EditSrcDestType").selectedIndex].value=="supplier"){
 	    	document.getElementById("batch").innerHTML = "<table>"+
 	                                                  "<tr><td><%=getTran(request,"web","batch.number",sWebLanguage)%> *</td><td><input type='text' name='EditBatchNumber' id='EditBatchNumber' value='' size='40'/> <img class='link' src='<c:url value="/_img/icons/icon_search.png"/>' onclick='findbatch();'/></td></tr>"+
 	                                                  "<tr><td><%=getTran(request,"web","batch.expiration",sWebLanguage)%> *</td><td><%=writeDateField("EditBatchEnd","transactionForm","",sWebLanguage)%></td></tr>"+
@@ -372,16 +381,8 @@
 	                                                 "</table>";
 	    	setMaxQuantityValue(999999);
 		}		
-		else if(document.getElementById("EditSrcDestType")[document.getElementById("EditSrcDestType").selectedIndex].value=="patient"){
+		else if(document.getElementById("EditSrcDestType") && document.getElementById("EditSrcDestType")[document.getElementById("EditSrcDestType").selectedIndex].value=="patient"){
 			<%	
-				boolean bBloodProduct=false;
-		        ProductStock productStock = ProductStock.get(sEditProductStockUid);
-		        if(productStock!=null){
-		        	Product product = productStock.getProduct();
-		        	if(product!=null && product.getAtccode()!=null){
-		        		bBloodProduct=productStock.getProduct().getAtccode().length()>0;
-		        	}
-		        }
 				if( bBloodProduct && MedwanQuery.getInstance().getConfigString("edition").equalsIgnoreCase("bloodbank")){ %>
 		  			document.getElementById("batch").innerHTML = "<table>"+
 		            "<tr><td><%=getTran(request,"web","bloodgiftnumber",sWebLanguage)%> *</td><td><input type='text' name='EditBatchNumber' id='EditBatchNumber' value='' size='40'/> <img class='link' src='<c:url value="/_img/icons/icon_search.png"/>' onclick='findbloodgifts();'/></td></tr>"+
@@ -416,6 +417,8 @@
 		}
   	}
 
+</script>
+<script>
   function setMaxQuantityValue(mq){
     setMaxQuantity = mq;
     if(document.getElementById("EditUnitsChanged").value*1>setMaxQuantity*1){
@@ -481,7 +484,7 @@
 		//*****************************************************************************************
 		//*** process display options *************************************************************
 		//*****************************************************************************************
-		
+
 		//--- EDIT FIELDS -------------------------------------------------------------------------
         if(displayEditFields){
             %>

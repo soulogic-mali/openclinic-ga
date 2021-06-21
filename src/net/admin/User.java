@@ -1361,6 +1361,10 @@ public class User extends OC_Object {
     	}
     }        
     
+    public String getFullName() {
+    	return person.getFullName();
+    }
+    
     //--- GET USERNAME ----------------------------------------------------------------------------
     public static Hashtable getUserName(String sUserId){
         PreparedStatement ps = null;

@@ -1,39 +1,54 @@
 <%@page import="org.dcm4che2.data.VR"%>
 <%@page import="org.dcm4che2.data.Tag"%>
 <%@page import="org.dcm4che2.data.DicomObject"%>
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
+<%@page import="org.apache.commons.fileupload.*"%>
+<%@page import="org.apache.commons.fileupload.servlet.*"%>
 <%@page import="be.openclinic.archiving.*"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
-<%@page import="javazoom.upload.*,
-                 java.util.*,
+<%@page import="java.util.*,
                  be.mxs.common.util.db.MedwanQuery,
                  java.io.File,java.io.*,be.mxs.common.util.system.Picture"%>
-<jsp:useBean id="upBean" scope="page" class="javazoom.upload.UploadBean" >
-    <jsp:setProperty name="upBean" property="storemodel" value="<%=UploadBean.MEMORYSTORE %>" />
-</jsp:useBean>
+
 <%
 	String patientid="0";
 	String aetitle="OCPX";
 	String host="localhost";
 	int port=10555;
-	
-	if (MultipartFormDataRequest.isMultipartFormData(request)) {
-	    // Uses MultipartFormDataRequest to parse the HTTP request.
-	    MultipartFormDataRequest mrequest = new MultipartFormDataRequest(request);
-	    if (mrequest !=null) {
-	        Hashtable files = mrequest.getFiles();
-	        if ( (files != null) && (!files.isEmpty()) ) {
-		       	UploadFile file = (UploadFile)files.get("filename");
-		        patientid = checkString(mrequest.getParameter("patientid"));
-		        aetitle = checkString(mrequest.getParameter("aetitle"));
-				host = checkString(mrequest.getParameter("host"));
-				port = 10555;
-				try{
-					port=Integer.parseInt(checkString(mrequest.getParameter("port")));
-				}
-				catch(Exception e){}
-		       	if(file!=null && file.getFileName()!=null){
-					String fullFileName = MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")+"/"+file.getFileName();
+	if(ServletFileUpload.isMultipartContent(request)){
+		try{
+		    FileItemFactory factory = new DiskFileItemFactory();
+		    ServletFileUpload upload = new ServletFileUpload(factory);
+		    List items = null;
+		    try {
+		        items = upload.parseRequest((HttpServletRequest)request);
+	        } catch (FileUploadException e) {
+	             e.printStackTrace();
+	        }
+		    Iterator itr = items.iterator();
+		    while (itr.hasNext()) {
+		        FileItem item = (FileItem) itr.next();
+		        if (item.isFormField()) {
+		        	if(item.getFieldName().equalsIgnoreCase("patientid")){
+		        		patientid = item.getString();
+		        	}
+		        	else if(item.getFieldName().equalsIgnoreCase("aetitle")){
+		        		aetitle = item.getString();
+		        	}
+		        	else if(item.getFieldName().equalsIgnoreCase("host")){
+		        		host = item.getString();
+		        	}
+		        	else if(item.getFieldName().equalsIgnoreCase("port")){
+		        		port = Integer.parseInt(item.getString());
+		        	}
+		        } 
+		    }
+		    itr = items.iterator();
+		    while (itr.hasNext()) {
+		        FileItem item = (FileItem) itr.next();
+		        if (!item.isFormField() && item.getFieldName().equalsIgnoreCase("filename")) {
+					String fullFileName = MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")+"/"+item.getName();
 	                if(SH.isAcceptableUploadFileExtension(fullFileName)){
 						File dcmFile = new File(fullFileName);
 						if(dcmFile.exists()){
@@ -41,10 +56,8 @@
 							dcmFile = new File(fullFileName);
 						}
 						new File(MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")).mkdirs();
-		                upBean.setFolderstore(MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp"));
-		                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
-		                upBean.store(mrequest, "filename");
-		                //Now we have the DICOM file in a local directory and should change the PatientID
+						item.write(dcmFile);
+						//Now we have the DICOM file in a local directory and should change the PatientID
 						DicomObject obj = Dicom.getDicomObject(fullFileName);
 						obj.putString(Tag.PatientID, VR.LO, patientid);
 						obj.putString(Tag.StudyInstanceUID, VR.LO, new java.util.Date().getTime()+"");
@@ -60,9 +73,12 @@
 	                	</script>
 	                	<%
 	                }
-		       	}
-	        }
+		        }
+		    }
 	    }
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 %>
 <form name='transactionForm' id='transactionForm' method='post' enctype="multipart/form-data">

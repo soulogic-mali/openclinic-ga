@@ -18,13 +18,13 @@
 		parameters.put("oc_asset_service","like;'"+serviceUid+"%'");
 		parameters.put("oc_asset_nomenclature","like;'I.%'");
 		count=Util.countAssets(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalingoodstate",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+count+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalingoodstate",sWebLanguage)+"</td><td class='admin2'><span id='infragoodstate'>"+count+"</span></td><td class='admin2' rowspan='7'><table><tr><td width='200px'><canvas id='infraStateChart' width='200px' height='200px'></canvas></td><td width='200px'><canvas id='infraOperationChart' width='200px' height='200px'></canvas></td><td width='200px'><canvas id='infraSuccessChart' width='200px' height='200px'></canvas></td><td></td></tr></table></td></tr>");
 		parameters = new Hashtable();
 		parameters.put("oc_asset_nomenclature","like;'I.%'");
 		parameters.put("oc_asset_service","like;'"+serviceUid+"%'");
 		total=Util.countAssets(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalinfrastructure",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+total+"</td></tr>");
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","fractioningoodstate",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+new DecimalFormat("#0.00").format(new Double(count)*100/new Double(total))+"%</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalinfrastructure",sWebLanguage)+"</td><td class='admin2'><span id='infratotalstate'>"+total+"</span></td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","fractioningoodstate",sWebLanguage)+"</td><td class='admin2'><b style='font-size: 14px'>"+new DecimalFormat("#0.00").format(new Double(count)*100/new Double(total))+"%</b></td></tr>");
 		parameters = new Hashtable();
 		parameters.put("oc_asset_nomenclature","like;'I.%'");
 		parameters.put("oc_asset_service","like;'"+serviceUid+"%'");
@@ -32,7 +32,7 @@
 		parameters.put("oc_maintenanceoperation_date","copy;>='"+new SimpleDateFormat("yyyy-MM-dd").format(dBegin)+"'");
 		parameters.put(" oc_maintenanceoperation_date","copy;<'"+new SimpleDateFormat("yyyy-MM-dd").format(dEnd)+"'");
 		count=Util.countMaintenanceOperations(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalpreventiveoperations",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+count+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalpreventiveoperations",sWebLanguage)+"</td><td class='admin2'><span id='infrapreventative'>"+count+"</span></td></tr>");
 		parameters = new Hashtable();
 		parameters.put("oc_asset_nomenclature","like;'I.%'");
 		parameters.put("oc_asset_service","like;'"+serviceUid+"%'");
@@ -40,17 +40,17 @@
 		parameters.put("oc_maintenanceoperation_date","copy;>='"+new SimpleDateFormat("yyyy-MM-dd").format(dBegin)+"'");
 		parameters.put(" oc_maintenanceoperation_date","copy;<'"+new SimpleDateFormat("yyyy-MM-dd").format(dEnd)+"'");
 		count=Util.countMaintenanceOperations(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalcorrectiveoperations",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+count+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalcorrectiveoperations",sWebLanguage)+"</td><td class='admin2'><span id='infracorrective'>"+count+"</span></td></tr>");
 		parameters.put("oc_maintenanceoperation_result","equals;'ok'");
 		count=Util.countMaintenanceOperations(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalsuccesfulcorrectiveoperations",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+count+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalsuccesfulcorrectiveoperations",sWebLanguage)+"</td><td class='admin2'><span id='infracorrectivesuccess'>"+count+"</span></td></tr>");
 		parameters = new Hashtable();
 		parameters.put("oc_asset_nomenclature","like;'I.%'");
 		parameters.put("oc_asset_service","like;'"+serviceUid+"%'");
 		parameters.put("oc_asset_comment13 like '%/%/%' and str_to_date(oc_asset_comment13,'%d/%m/%Y')","copy;>='"+new SimpleDateFormat("yyyy-MM-dd").format(dBegin)+"'");
 		parameters.put(" oc_asset_comment13 like '%/%/%' and str_to_date(oc_asset_comment13,'%d/%m/%Y')","copy;<'"+new SimpleDateFormat("yyyy-MM-dd").format(dEnd)+"'");
 		count=Util.countAssets(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalupdates",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+count+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalupdates",sWebLanguage)+"</td><td class='admin2'>"+count+"</td></tr>");
 	%>
 	<!-- EQUIPMENT -->
 	<tr class='admin'><td colspan='3'><%=getTran(request,"web","equipment",sWebLanguage) %></td></tr>
@@ -60,13 +60,13 @@
 		parameters.put("oc_asset_service","like;'"+serviceUid+"%'");
 		parameters.put("oc_asset_nomenclature","like;'E.%'");
 		count=Util.countAssets(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totaloperational",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+count+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totaloperational",sWebLanguage)+"</td><td class='admin2'><span id='matgoodstate'>"+count+"</span></td><td class='admin2' rowspan='7'><table><tr><td width='200px'><canvas id='matStateChart' width='200px' height='200px'></canvas></td><td width='200px'><canvas id='matOperationChart' width='200px' height='200px'></canvas></td><td width='200px'><canvas id='matSuccessChart' width='200px' height='200px'></canvas></td><td></td></tr></table></td></tr>");
 		parameters = new Hashtable();
 		parameters.put("oc_asset_service","like;'"+serviceUid+"%'");
 		parameters.put("oc_asset_nomenclature","like;'E.%'");
 		total=Util.countAssets(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalequipment",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+total+"</td></tr>");
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","fractionoperational",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+new DecimalFormat("#0.00").format(new Double(count)*100/new Double(total))+"%</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalequipment",sWebLanguage)+"</td><td class='admin2'><span id='mattotalstate'>"+total+"</span></td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","fractionoperational",sWebLanguage)+"</td><td class='admin2'><b style='font-size: 14px'>"+new DecimalFormat("#0.00").format(new Double(count)*100/new Double(total))+"%</b></td></tr>");
 		parameters = new Hashtable();
 		parameters.put("oc_asset_nomenclature","like;'E.%'");
 		parameters.put("oc_asset_service","like;'"+serviceUid+"%'");
@@ -74,7 +74,7 @@
 		parameters.put("oc_maintenanceoperation_date","copy;>='"+new SimpleDateFormat("yyyy-MM-dd").format(dBegin)+"'");
 		parameters.put(" oc_maintenanceoperation_date","copy;<'"+new SimpleDateFormat("yyyy-MM-dd").format(dEnd)+"'");
 		int preventativeoperations=Util.countMaintenanceOperations(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalpreventiveoperations",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+preventativeoperations+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalpreventiveoperations",sWebLanguage)+"</td><td class='admin2'><span id='matpreventative'>"+preventativeoperations+"</span></td></tr>");
 		parameters = new Hashtable();
 		parameters.put("oc_asset_nomenclature","like;'E.%'");
 		parameters.put("oc_asset_service","like;'"+serviceUid+"%'");
@@ -82,17 +82,17 @@
 		parameters.put("oc_maintenanceoperation_date","copy;>='"+new SimpleDateFormat("yyyy-MM-dd").format(dBegin)+"'");
 		parameters.put(" oc_maintenanceoperation_date","copy;<'"+new SimpleDateFormat("yyyy-MM-dd").format(dEnd)+"'");
 		count=Util.countMaintenanceOperations(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalcorrectiveoperations",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+count+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalcorrectiveoperations",sWebLanguage)+"</td><td class='admin2'><span id='matcorrective'>"+count+"</span></td></tr>");
 		parameters.put("oc_maintenanceoperation_result","equals;'ok'");
 		count=Util.countMaintenanceOperations(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalsuccesfulcorrectiveoperations",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+count+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalsuccesfulcorrectiveoperations",sWebLanguage)+"</td><td class='admin2'><span id='matcorrectivesuccess'>"+count+"</span></td></tr>");
 		parameters = new Hashtable();
 		parameters.put("oc_asset_nomenclature","like;'E.%'");
 		parameters.put("oc_asset_service","like;'"+serviceUid+"%'");
 		parameters.put("oc_asset_comment13 like '%/%/%' and str_to_date(oc_asset_comment13,'%d/%m/%Y')","copy;>='"+new SimpleDateFormat("yyyy-MM-dd").format(dBegin)+"'");
 		parameters.put(" oc_asset_comment13 like '%/%/%' and str_to_date(oc_asset_comment13,'%d/%m/%Y')","copy;<'"+new SimpleDateFormat("yyyy-MM-dd").format(dEnd)+"'");
 		count=Util.countAssets(parameters);
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalnewequipment",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+count+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalnewequipment",sWebLanguage)+"</td><td class='admin2'>"+count+"</td></tr>");
 		parameters = new Hashtable();
 		parameters.put("oc_asset_nomenclature","like;'E.%'");
 		parameters.put("oc_asset_service","like;'"+serviceUid+"%'");
@@ -215,8 +215,11 @@
 		}
 		rs.close();
 		ps.close();
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalpreventativeforeseen",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+plans.size()+"</td></tr>");
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalpreventativefraction",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+new DecimalFormat("#0.00").format(new Double(preventativeoperations)*100/new Double(plans.size()))+"%</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalpreventativeforeseen",sWebLanguage)+"</td><td class='admin2'><span id='perftotal'>"+plans.size()+"</span></td><td class='admin2' rowspan='4'><table><tr><td width='200px'><canvas id='performanceChart' width='200px' height='200px'></canvas></td><td></td></tr></table></td></tr>");
+		if(preventativeoperations>plans.size()){
+			preventativeoperations=plans.size();
+		}
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","totalpreventativefraction",sWebLanguage)+"</td><td class='admin2'><b><span  style='font-size: 14px' id='perfseen'>"+new DecimalFormat("#0.00").format(new Double(preventativeoperations)*100/new Double(plans.size()))+"</span>%</b></td></tr>");
 		plans = new HashSet();
 		sSql = 	"select * from oc_assets a,oc_maintenanceplans p where oc_asset_objectid=replace(oc_maintenanceplan_assetuid,'"+sid+".','') and"+
 				" oc_maintenanceplan_type=3 and oc_asset_service like '"+serviceUid+"%' and oc_maintenanceplan_startdate<'"+new SimpleDateFormat("yyyy-MM-dd").format(dEnd)+"' and (oc_maintenanceplan_enddate is null or oc_maintenanceplan_enddate>'"+new SimpleDateFormat("yyyy-MM-dd").format(dBegin)+"')";
@@ -259,7 +262,7 @@
 		rs.close();
 		ps.close();
 		conn.close();
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","meanresponsetime",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+new DecimalFormat("#0.00").format((new Double(days)/+new Double(c))/ScreenHelper.getTimeDay())+" "+getTran(request,"web","days",sWebLanguage)+"</td></tr>");
-		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","meansuccessresponsetime",sWebLanguage)+"</td><td class='admin2' colspan='2'>"+new DecimalFormat("#0.00").format((new Double(successdays)/+new Double(c))/ScreenHelper.getTimeDay())+" "+getTran(request,"web","days",sWebLanguage)+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","meanresponsetime",sWebLanguage)+"</td><td class='admin2'>"+new DecimalFormat("#0.00").format((new Double(days)/+new Double(c))/ScreenHelper.getTimeDay())+" "+getTran(request,"web","days",sWebLanguage)+"</td></tr>");
+		out.println("<tr><td class='admin' width='30%'>"+getTran(request,"asset","meansuccessresponsetime",sWebLanguage)+"</td><td class='admin2'>"+new DecimalFormat("#0.00").format((new Double(successdays)/+new Double(c))/ScreenHelper.getTimeDay())+" "+getTran(request,"web","days",sWebLanguage)+"</td></tr>");
 	%>
 </table>

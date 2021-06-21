@@ -1,10 +1,10 @@
+<%@page import="be.openclinic.util.Nomenclature"%>
 <%@page import="be.openclinic.assets.Asset,
                java.text.*"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
 <%@include file="../assets/includes/commonFunctions.jsp"%>
 <%=checkPermission(out,"assets","select",activeUser)%>
-<%=sJSPROTOTYPE%>
 <%=sJSNUMBER%> 
 <%=sJSSTRINGFUNCTIONS%>
 <%=sJSSORTTABLE%>
@@ -23,7 +23,17 @@
     String sEditAssetUID = checkString(request.getParameter("EditAssetUID"));
     String sEditServiceUid = checkString(request.getParameter("serviceuid"));
     String sAssetType = checkString(request.getParameter("newtype"));
-    
+    String nomenclaturecode="",nomenclaturetext="";
+	
+    if(checkString(request.getParameter("assetType")).equalsIgnoreCase("equipment")){
+    	nomenclaturecode="e";
+    	nomenclaturetext=getTranNoLink("admin.nomenclature.asset", "e", sWebLanguage);
+    }
+    else if(checkString(request.getParameter("assetType")).equalsIgnoreCase("infrastructure")){
+    	nomenclaturecode="i";
+    	nomenclaturetext=getTranNoLink("admin.nomenclature.asset", "i", sWebLanguage);
+    }
+
     if(sAction.length()==0){
 %> 
 	
@@ -38,10 +48,11 @@
 	        <tr>
 	            <td class="admin"><%=getTran(request,"web","nomenclature",sWebLanguage)%></td>
 	            <td class="admin2" nowrap>
-	                <input type="text" class="text" readonly id="nomenclature" name="nomenclature" size="50" maxLength="80" value="">
+	                <input onblur="if(document.getElementById('FindNomenclatureCode').value.length==0){this.value='';}" type="text" class="text" id="nomenclature" name="nomenclature" size="50" maxLength="80" value="<%=nomenclaturetext%>">
 	                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("Web","select",sWebLanguage)%>" onclick="searchNomenclature('FindNomenclatureCode','nomenclature');">
 	                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="SearchForm.FindNomenclatureCode.value='';SearchForm.nomenclature.value='';">
-	                <input type="hidden" name="FindNomenclatureCode" id="FindNomenclatureCode" value="">&nbsp;
+	                <input type="hidden" name="FindNomenclatureCode" id="FindNomenclatureCode" value="<%=nomenclaturecode%>">&nbsp;
+					<div id="autocomplete_nomenclature" class="autocomple"></div>
 	            </td>
 	            <td class="admin" ><%=getTran(request,"web","code",sWebLanguage)%></td>
 	            <td class="admin2">
@@ -110,10 +121,12 @@
 	            	}
 	            %>
 	            <td class="admin"><%=getTran(request,"web","service",sWebLanguage)%></td>
-	            <td class="admin2">
+	            <td class="admin2" nowrap>
 	                <input type="hidden" name="serviceuid" id="serviceuid" value="<%=sServiceUid%>">
-	                <input class="text" type="text" name="servicename" id="servicename" readonly size="60" value="<%=getTranNoLink("service",sServiceUid,sWebLanguage) %>" >
+	                <input onblur="if(document.getElementById('serviceuid').value.length==0){this.value='';}" class="text" type="text" name="servicename" id="servicename" size="50" value="<%=getTranNoLink("service",sServiceUid,sWebLanguage) %>" >
 	                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTran(null,"Web","select",sWebLanguage)%>" onclick="searchService('serviceuid','servicename');">
+		            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTran(null,"Web","delete",sWebLanguage)%>" onclick="document.getElementById('serviceuid').value='';document.getElementById('servicename').value='';document.getElementById('servicename').focus();">
+					<div id="autocomplete_service" class="autocomple"></div>
 	            </td>                        
 	        </tr>
 	        <tr>
@@ -155,7 +168,56 @@
 %>
 
 <script>
-  SearchForm.searchCode.focus();
+	new Ajax.Autocompleter('nomenclature','autocomplete_nomenclature','assets/findNomenclature.jsp',{
+	  minChars:1,
+	  method:'post',
+	  afterUpdateElement: afterAutoCompleteNomenclature,
+	  callback: composeCallbackURLNomenclature
+	});
+
+	function afterAutoCompleteNomenclature(field,item){
+	  var regex = new RegExp('[-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.]*-idcache','i');
+	  var nomimage = regex.exec(item.innerHTML);
+	  var id = nomimage[0].replace('-idcache','');
+	  document.getElementById("FindNomenclatureCode").value = id;
+	  document.getElementById("nomenclature").value=item.innerHTML.split("$")[1];
+	}
+	
+	function composeCallbackURLNomenclature(field,item){
+	  document.getElementById('FindNomenclatureCode').value='';
+	  var url = "";
+	  if(field.id=="nomenclature"){
+		url = "code=<%=SH.c(request.getParameter("assetType")).equalsIgnoreCase("infrastructure")?"I":SH.c(request.getParameter("assetType")).equalsIgnoreCase("equipment")?"E":""%>&text="+field.value;
+	  }
+	  return url;
+	}
+
+	new Ajax.Autocompleter('servicename','autocomplete_service','assets/findService.jsp',{
+	  minChars:1,
+	  method:'post',
+	  afterUpdateElement: afterAutoCompleteService,
+	  callback: composeCallbackURLService
+	});
+
+	function afterAutoCompleteService(field,item){
+	  var regex = new RegExp('[-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.]*-idcache','i');
+	  var nomimage = regex.exec(item.innerHTML);
+	  var id = nomimage[0].replace('-idcache','');
+	  document.getElementById("serviceuid").value = id;
+	  document.getElementById("servicename").value=item.innerHTML.split("$")[1];
+	}
+	
+	function composeCallbackURLService(field,item){
+	  document.getElementById('serviceuid').value
+	  var url = "";
+	  if(field.id=="servicename"){
+		url = "text="+field.value;
+	  }
+	  return url;
+	}
+
+
+	SearchForm.searchCode.focus();
   <% if(SH.c(request.getParameter("assetType")).equalsIgnoreCase("equipment")){%>
   	document.getElementById('trcomponents').style.display='none';
   <%}%>
@@ -214,6 +276,27 @@
     }
   }
   
+  function getRemainingValue(){
+      var url = "<c:url value='/assets/ajax/asset/getRemainingValue.jsp'/>?ts="+new Date().getTime();
+      var params = 	"purchasedate="+document.getElementById("purchaseDate").value+
+			      	"&purchaseprice="+document.getElementById("purchasePrice").value+
+			      	"&writeoffmethod="+document.getElementById("writeOffMethod").value+
+			      	"&writeoffperiod="+document.getElementById("writeOffPeriod").value+
+			      	"&comment12="+document.getElementById("comment12").value+
+			      	"&annuity="+document.getElementById("annuity").value;
+      new Ajax.Request(url,{
+          method: "POST",
+          parameters: params,
+          onSuccess: function(resp){
+            	var data = eval("("+resp.responseText+")");
+            	$("remainingvalue").innerHTML = "<b>"+data.remainingvalue+"</b> <%=SH.cs("currency","EUR")%> ("+Math.round(data.remainingvalue*100/document.getElementById("purchasePrice").value)+"%)";
+          },
+          onFailure: function(resp){
+        	  alert('error');
+          }
+        }); 
+  }
+  
   <%-- CLEAR SEARCH FIELDS --%>
   function clearSearchFields(){
     document.getElementById("searchCode").value = "";
@@ -240,7 +323,6 @@
 
 <%
 	boolean bNewAsset = false;
-	boolean bLocked=false;
 	Asset asset = null;
 	int assetType=-1;
 	if(sAction.equalsIgnoreCase("new")){
@@ -273,8 +355,17 @@
     		assetType=Asset.INFRASTRUCTURE;
     	}
 	}
+	else if(sAction.equalsIgnoreCase("history")){
+		asset=Asset.getHistory(sEditAssetUID,SH.parseDate(SH.p(request,"timestamp"), "yyyyMMddHHmmssSSS"));
+		sEditServiceUid=asset.getServiceuid();
+    	if(asset.getNomenclature().toUpperCase().startsWith("E")){
+    		assetType=Asset.EQUIPMENT;
+    	}
+    	else if(asset.getNomenclature().toUpperCase().startsWith("I")){
+    		assetType=Asset.INFRASTRUCTURE;
+    	}
+	}
 	if(asset!=null){
-		bLocked = asset.getObjectId()>-1 && ((asset.getLockedBy()>-1 && asset.getLockedBy()!=MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)) || (asset.getLockedBy()==-1 && MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)!=0));
 %>
     <%
     	if(assetType==Asset.EQUIPMENT){
@@ -316,14 +407,97 @@
 		  	});
 		}
 	}
-  function listMaintenancePlans(){
+	
+	function viewDefault(){
+  		openPopup("/assets/viewDefaultAssets.jsp&ts=<%=getTs()%>&PopupHeight=200&PopupWidth=500&nomenclature="+encodeURI(document.getElementById("FindNomenclatureCode").value));
+	}
+
+	function addDefault(){
+		if(document.getElementById('nomenclature').value==''){
+			alert('<%=getTranNoLink("web","nomenclaturenotspecified",sWebLanguage)%>');
+		}
+		else if(window.confirm('<%=getTranNoLink("web","areyousure",sWebLanguage)%>')){
+			var name = window.prompt("<%=getTranNoLink("web","name",sWebLanguage)%>",document.getElementById('description').value);
+			if(name.length>0){
+		        var sParams = "EditAssetUID="+EditForm.EditAssetUID.value+
+		        "&code="+document.getElementById("code").value+
+		        "&serviceuid="+document.getElementById("serviceuid").value+
+		        "&nomenclature="+document.getElementById("FindNomenclatureCode").value+
+                "&description="+name+
+                "&serialnumber="+document.getElementById("serialnumber").value+
+                "&quantity="+document.getElementById("quantity").value+
+                "&assetType="+document.getElementById("assetType").value+
+                "&supplierUID="+document.getElementById("supplierUID").value+
+                "&purchaseDate="+document.getElementById("purchaseDate").value+
+                "&purchasePrice="+document.getElementById("purchasePrice").value+
+                "&receiptBy="+document.getElementById("receiptBy").value+
+                "&writeOffMethod="+document.getElementById("writeOffMethod").value+
+                "&writeOffPeriod="+document.getElementById("writeOffPeriod").value+
+                "&annuity="+document.getElementById("annuity").value+
+                "&characteristics="+document.getElementById("characteristics").value+
+                "&gains="+document.getElementById("gains").value+
+                "&losses="+document.getElementById("losses").value+
+                "&lockedby="+document.getElementById("lockedby").value+
+              
+                //*** loan ***
+                "&loanDate="+document.getElementById("loanDate").value+
+                "&loanAmount="+document.getElementById("loanAmount").value+
+                "&loanInterestRate="+replaceAll(document.getElementById("loanInterestRate").value,"%","[percent]")+
+                "&loanReimbursementPlan="+document.getElementById("loanReimbursementPlan").value+
+                "&loanComment="+document.getElementById("loanComment").value+
+                "&loanDocuments="+document.getElementById("loanDocuments").value+
+
+                "&comment1="+document.getElementById("comment1").value+
+                "&comment2="+document.getElementById("comment2").value+
+                "&comment3="+document.getElementById("comment3").value+
+                "&comment4="+document.getElementById("comment4").value+
+                "&comment5="+document.getElementById("comment5").value+
+                "&comment6="+document.getElementById("comment6").value+
+                "&comment7="+document.getElementById("comment7").value+
+                "&comment8="+document.getElementById("comment8").value+
+                "&comment9="+document.getElementById("comment9").value+
+                "&comment10="+document.getElementById("comment10").value+
+                "&comment11="+document.getElementById("comment11").value+
+                "&comment12="+document.getElementById("comment12").value+
+                "&comment13="+document.getElementById("comment13").value+
+                "&comment14="+document.getElementById("comment14").value+
+                "&comment15="+document.getElementById("comment15").value+
+                "&comment16="+document.getElementById("comment16").value+
+                "&comment17="+document.getElementById("comment17").value+
+                /*
+                "&comment18="+document.getElementById("comment18").value+
+                "&comment19="+document.getElementById("comment19").value+
+                "&comment20="+document.getElementById("comment20").value+
+				  */
+                "&saleDate="+document.getElementById("saleDate").value+
+                "&saleValue="+document.getElementById("saleValue").value+
+                "&saleClient="+document.getElementById("saleClient").value;
+		        var url = "<c:url value='/assets/ajax/asset/addDefault.jsp'/>?ts="+new Date().getTime();
+			    new Ajax.Request(url,{
+			      method: "POST",
+			      parameters: sParams,
+			      onSuccess: function(resp){
+			    	  if(resp.responseText.indexOf("OK-200")>0){
+			        	  viewDefault();
+			    	  }
+			    	  else if(resp.responseText.indexOf("NOK-400")>0){
+			    		  alert('NOK-400 <%=getTranNoLink("web","assetalreadyexists",sWebLanguage)%>');
+			        	  viewDefault();
+			    	  }
+			      },
+			    });
+			}
+		}
+	}
+
+	function listMaintenancePlans(){
 	  window.location.href='<c:url value="/main.do?Page=assets/manage_maintenancePlans.jsp&assetUID="/>'+document.getElementById("EditAssetUID").value+"&assetCode="+document.getElementById("code").value;
   }
   function listMaintenanceOperations(){
 	  window.location.href='<c:url value="/main.do?Page=assets/manage_maintenanceOperations.jsp&AssetUID="/>'+document.getElementById("EditAssetUID").value+"&AssetCode="+document.getElementById("code").value;
   }
-  function listAssets(){
-	  window.location.href='<c:url value="/main.do?Page=assets/manage_assets.jsp&forcedsearch=1"/>';
+  function listAssets(assetType){
+	  window.location.href='<c:url value="/main.do?Page=assets/manage_assets.jsp&forcedsearch=1"/>&assetType='+assetType;
   }
   
   <%-- CALCULATE RP TOTAL --%>
@@ -481,7 +655,7 @@
           onSuccess:function(resp){
             var data = eval("("+resp.responseText+")");
             $("divMessage").innerHTML = data.message;
-            listAssets();
+            listAssets('<%=request.getParameter("assetType")%>');
           },
           onFailure:function(resp){
             $("divMessage").innerHTML = "Error in 'assets/ajax/asset/saveAsset.jsp' : "+resp.responseText.trim();
@@ -503,11 +677,7 @@
   
   <%-- REQUIRED FIELDS PROVIDED --%>
   function requiredFieldsProvided(){
-	  if(document.getElementById("comment12").value.length == 0 ){
-		  document.getElementById("comment12").focus();
-		  return false;
-	  }
-	  else if(document.getElementById("code").value.length == 0 ){
+	  if(document.getElementById("code").value.length == 0 ){
 		  document.getElementById("code").focus();
 		  return false;
 	  }
@@ -519,14 +689,28 @@
 		  document.getElementById("nomenclature").focus();
 		  return false;
 	  }
-	  /*
-	  else if(document.getElementById("quantity").value.length == 0 ){
-		  document.getElementById("quantity").focus();
+	  else if(document.getElementById("comment7").value.length == 0 ){
+		  document.getElementById("comment7").focus();
 		  return false;
 	  }
-	  */
+	  else if(document.getElementById("comment6").value.length == 0 ){
+		  document.getElementById("comment6").focus();
+		  return false;
+	  }
+	  else if(document.getElementById("comment12").value.length == 0 ){
+		  document.getElementById("comment12").focus();
+		  return false;
+	  }
 	  else if(document.getElementById("serviceuid").value.length == 0 ){
 		  document.getElementById("serviceuid").focus();
+		  return false;
+	  }
+	  else if('<%=SH.c(request.getParameter("assetType"))%>'=='equipment' && (document.getElementById("purchasePrice").value.length == 0 || isNaN(document.getElementById("purchasePrice").value) || document.getElementById("purchasePrice").value*1<=0)){
+		  document.getElementById("purchasePrice").focus();
+		  return false;
+	  }
+	  else if('<%=SH.c(request.getParameter("assetType"))%>'=='infrastructure' && document.getElementById('comment9').value.length == 0){
+		  document.getElementById("comment9").focus();
 		  return false;
 	  }
     return true;           
@@ -706,7 +890,7 @@
           $("divMessage").innerHTML = data.message;
 
           enableButtons();
-          listAssets();
+          listAssets('<%=request.getParameter("assetType")%>');
         },
         onFailure: function(resp){
           $("divMessage").innerHTML = "Error in 'assets/ajax/asset/deleteAsset.jsp' : "+resp.responseText.trim();
@@ -715,6 +899,9 @@
     }
   }
   
+  function showHistory(){
+	  openPopup("assets/showHistory.jsp&type=asset&uid=<%=asset==null?"":asset.getUid()%>&assetType=<%=request.getParameter("assetType")%>",800,500);
+  }
   <%-- NEW ASSET --%>
   function newAsset(){ 
     displayReimbursementTotals(0,0,0);
@@ -2065,6 +2252,9 @@
   	document.getElementById(serviceNameField).focus();
     }
 
+  function showSpareParts(uid){
+	  	openPopup("/assets/manageSpareParts.jsp&ts=<%=getTs()%>&s_assetuid="+uid+"&s_brand="+document.getElementById("comment2").value+"&s_model="+document.getElementById("comment10").value+"&s_type="+document.getElementById("assetType").value+"&s_action=search&PopupHeight=600&PopupWidth=1000");
+  }
   function addDocument(uid){
   	openPopup("/assets/addDocument.jsp&ts=<%=getTs()%>&PopupHeight=200&PopupWidth=500&assetuid="+uid);
   }
@@ -2083,7 +2273,6 @@
   function validateLabels(){
 	  if(document.getElementById("FindNomenclatureCode").value.startsWith("E")){
 		  document.getElementById("serialnumber_label").innerHTML='<%=getTranNoLink("gmao","serialnumber",sWebLanguage)%>';
-		  document.getElementById("quantity_label").innerHTML='<%=getTranNoLink("gmao","quantity",sWebLanguage)%>';
 		  document.getElementById("supplier_label").innerHTML='<%=getTranNoLink("gmao","supplier",sWebLanguage)%>';
 	  }
 	  else if(document.getElementById("FindNomenclatureCode").value.startsWith("I")){
@@ -2092,10 +2281,55 @@
 		  document.getElementById("supplier_label").innerHTML='<%=getTranNoLink("gmao","enterprise",sWebLanguage)%>';
 	  }
   }
-  
+  function loadDefaultAsset(uid){
+	    var url = "<c:url value='/assets/ajax/asset/loadDefaultAsset.jsp'/>?ts="+new Date().getTime();
+	    new Ajax.Request(url,{
+	      method: "GET",
+	      parameters: "uid="+uid,
+	      onSuccess: function(resp){
+	          var data = eval("("+resp.responseText+")");
+	          if($("assettype")) EditForm.assettype.value=data.assettype;
+	          if($("characteristics")) EditForm.characteristics.value=data.characteristics.replace(new RegExp('<br>', 'g'), '\n');
+		          resizeTextarea(EditForm.characteristics,10);
+	          if($("code")) EditForm.code.value=data.code;
+	          if($("comment1")) EditForm.comment1.value=data.comment1;
+	          if($("comment2")) EditForm.comment2.value=data.comment2;
+	          if($("comment3")) EditForm.comment3.value=data.comment3;
+	          if($("comment4")) EditForm.comment4.value=data.comment4;
+	          if($("comment5")) EditForm.comment5.value=data.comment5;
+	          if($("comment6")) EditForm.comment6.value=data.comment6;
+	          if($("comment7")) EditForm.comment7.value=data.comment7;
+	          if($("comment8")) EditForm.comment8.value=data.comment8;
+	          if($("comment9")) EditForm.comment9.value=data.comment9;
+	          if($("comment10")) EditForm.comment10.value=data.comment10;
+	          if($("comment11")) EditForm.comment11.value=data.comment11;
+	          if($("comment12")) EditForm.comment12.value=data.comment12;
+	          if($("comment13")) EditForm.comment13.value=data.comment13;
+	          if($("comment14")) EditForm.comment14.value=data.comment14;
+	          if($("comment15")) EditForm.comment15.value=data.comment15;
+	          if($("comment16")) EditForm.comment16.value=data.comment16;
+	          if($("comment17")) EditForm.comment17.value=data.comment17;
+	          if($("comment18")) EditForm.comment18.value=data.comment18;
+	          if($("comment19")) EditForm.comment19.value=data.comment19;
+	          if($("comment20")) EditForm.comment20.value=data.comment20;
+	          if($("description")) EditForm.description.value=data.description;
+	          if($("nomenclature")) EditForm.nomenclature.value=data.nomenclature;
+	          if($("purchasePrice")) EditForm.purchasePrice.value=data.purchaseprice;
+	          if($("quantity")) EditForm.quantity.value=data.quantity;
+	          if($("saleClient")) EditForm.saleClient.value=data.saleclient;
+	          if($("saleValue")) EditForm.saleValue.value=data.salevalue;
+	          if($("serialnumber")) EditForm.serialnumber.value=data.serialnumber;
+	          if($("supplierUID")) EditForm.supplierUID.value=data.supplieruid;
+	      },
+	      onFailure: function(resp){
+	        $("divMessage").innerHTML = "Error in 'assets/ajax/maintenancePlan/loadDefaultMaintenancePlan.jsp' : "+resp.responseText.trim();
+	      }
+	    });
+	}
+
   validateLabels();
   
   resizeAllTextareas(8);
-  //checkDefaultMaintenancePlans();
+  getRemainingValue();
 </script>
 <%=sJSBUTTONS%>

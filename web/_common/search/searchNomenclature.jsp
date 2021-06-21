@@ -59,10 +59,9 @@
         	window.opener.document.getElementsByName('<%=sVarText%>')[0].value = sText;
             window.opener.document.getElementsByName('<%=sVarText%>')[0].title = sText;
         }
-
-        if ('<%=sVarCode%>'.length>0 && window.opener.document.getElementsByName('<%=sVarCode%>')[0] != null) {
+        if ('<%=sVarCode%>'.length>0 && window.opener.document.getElementsByName('<%=sVarCode%>')[0]) {
             window.opener.document.getElementsByName('<%=sVarCode%>')[0].value = sCode;
-            if (window.opener.document.getElementsByName('<%=sVarCode%>')[0].onchange != null) {
+            if (window.opener.document.getElementsByName('<%=sVarCode%>')[0].onchange) {
                 window.opener.document.getElementsByName('<%=sVarCode%>')[0].onchange();
             }
         }

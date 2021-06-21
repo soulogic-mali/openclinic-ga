@@ -61,6 +61,7 @@
 
     List plans = MaintenancePlan.getList(findObject);
     String sReturn = "";
+    int nAccessible=0,nActive=0;
     
     if(plans.size() > 0){
         Hashtable hSort = new Hashtable();
@@ -70,17 +71,29 @@
         for(int i=0; i<plans.size(); i++){
             plan = (MaintenancePlan)plans.get(i);
             Asset asset=plan.getAsset();
+            boolean bCanContinue=true;
             if(sShowInactive.equalsIgnoreCase("false") && plan.isInactive()){
-            	continue;
+            	bCanContinue=false;
+            }
+            if(!plan.isInactive()){
+            	nActive++;
             }
     		boolean bLocked = plan.getObjectId()>-1 && ((plan.getLockedBy()>-1 && plan.getLockedBy()!=MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)) || (plan.getLockedBy()==-1 && MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)!=0));
             boolean bAuthorized=true;
             if(asset!=null){
 	            bAuthorized=asset.isAuthorizedUser(activeUser.userid);
 	            if(!bAuthorized && !activeUser.isAdmin()){
-	            	continue;
+	            	bCanContinue=false;
+	            }
+	            else{
+	            	nAccessible++;
 	            }
             }
+            
+            if(!bCanContinue){
+            	continue;
+            }
+            
             String sOverdue="";
             if(plan.isOverdue()){
             	sOverdue=" <img height='14' src='"+sCONTEXTPATH+"/_img/icons/icon_warning.gif'/>";
@@ -146,8 +159,10 @@
     
     <tbody class="hand"><%=sReturn%></tbody>
 </table> 
-
-&nbsp;<i><%=plans.size()+" "+getTran(request,"web","recordsFound",sWebLanguage)%></i>
+<table width='100%'>
+    <tr><td><hr/></td></tr>
+</table>
+&nbsp;<i><b><%=plans.size()+"</b> "+getTran(request,"web","recordsFound",sWebLanguage)%>, <b><%=nActive %></b> <%=getTran(request,"web","active",sWebLanguage)%>, <b><%=nAccessible%></b> <%=getTran(request,"web","accessiblefor",sWebLanguage)+" "+activeUser.person.getFullName()%></i>
         <%
     }
     else{

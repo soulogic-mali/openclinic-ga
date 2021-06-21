@@ -936,7 +936,7 @@ public void setUsers(String users) {
 
     //--- GET PARENT IDS --------------------------------------------------------------------------
     public static Vector getParentIds(String childId){
-        HashSet parentIds = new HashSet();
+        SortedSet parentIds = new TreeSet();
         String parentId = "";
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -962,8 +962,6 @@ public void setUsers(String users) {
             ids.add(iter.next());
         }
 
-        Collections.reverse(ids);
-
         return ids;
     }
 
@@ -975,6 +973,19 @@ public void setUsers(String users) {
     			childids+=",";
     		}
     		childids+="'"+children.elementAt(n)+"'";
+    	}
+    	return childids;
+    }
+    public static String getChildIdsAsString(String parentId,int maxchildren){
+    	String childids="'"+parentId+"'";
+    	Vector children = getChildIds(parentId);
+    	int counter=0;
+    	for(int n=0;n<children.size()&&counter<maxchildren;n++){
+    		if(childids.length()>0){
+    			childids+=",";
+    		}
+    		childids+="'"+children.elementAt(n)+"'";
+    		counter++;
     	}
     	return childids;
     }

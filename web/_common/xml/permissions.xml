@@ -442,6 +442,7 @@
         <permission type="web" id="maintenanceoperations">maintenanceoperations</permission>
         <permission type="web" id="assets">assets</permission>
         <permission type="web" id="maintenanceplans">maintenanceplans</permission>
+        <permission type="web" id="spareparts">spareparts</permission>
         <permission type="web" id="assets.defaultmaintenanceplans">assets.defaultmaintenanceplans</permission>
         <permission type="web" id="remoteassets">remoteassets</permission>
         <permission type="web" id="assetsynchronization">gmao.synchronisation</permission>

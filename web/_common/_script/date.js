@@ -1,6 +1,9 @@
-function isFutureDate(dateObj,allowFutureDate){
-  if(allowFutureDate==null) allowFutureDate = true;
+function isForbiddenFutureDate(dateObj,allowFutureDate){
+  if(allowFutureDate==null || allowFutureDate == true){
+  	return false;
+  }
 
+  
   var sDate = dateObj.value;
   sDate = sDate.replace("-","/");
   sDate = sDate.replace(".","/");
@@ -15,11 +18,35 @@ function isFutureDate(dateObj,allowFutureDate){
   }
   
   if(dDate > new Date()){
-	if(!allowFutureDate){
-      alertDialog("web","futureDatesNotAllowed");
-	  dateObj.select();
-	}
-    
+  	alertDialog("web.occup","futuredatenotallowed");
+    dateObj.value='';
+	dateObj.select();
+    return true;
+  }
+  
+  return false;
+}
+
+function isForbiddenPastDate(dateObj,allowPastDate){
+  if(allowPastDate==null || allowPastDate == true){
+  	return false;
+  }
+  var sDate = dateObj.value;
+  sDate = sDate.replace("-","/");
+  sDate = sDate.replace(".","/");
+  
+  var dateParts = sDate.split("/");
+  var dDate;
+  if(dateFormat=="dd/MM/yyyy"){
+	  dDate = new Date(dateParts[2],(dateParts[1]-1),dateParts[0]);
+  }
+  else{
+	  dDate = new Date(dateParts[2],(dateParts[0]-1),dateParts[1]);
+  }
+  if(dDate < new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate())){
+  	alertDialog("web.occup","pastdatenotallowed");
+    dateObj.value='';
+	dateObj.select();
     return true;
   }
   
@@ -166,8 +193,20 @@ function checkDate(dateObj){
     if(dateFormat=="dd/MM/yyyy"){
       sDay = sDate.substring(0,sDate.indexOf("/"));
       if(sDay.length < 2) sDay = "0"+sDay;
+      if(isNaN(sDay)){
+        alertDialog("web","invalidDate");
+        dateObj.value='';
+    	dateObj.select();
+        return false;
+      }
      
       sMonth = sDate.substring(sDate.indexOf("/")+1,sDate.lastIndexOf("/"));
+      if(isNaN(sMonth)){
+        alertDialog("web","invalidDate");
+        dateObj.value='';
+    	dateObj.select();
+        return false;
+      }
       if(sMonth.length < 2) sMonth = "0"+sMonth;	
     }
     else{
@@ -179,6 +218,12 @@ function checkDate(dateObj){
     }
     
     sYear = sDate.substring(sDate.lastIndexOf("/")+1);
+      if(isNaN(sYear)){
+        alertDialog("web","invalidDate");
+        dateObj.value='';
+    	dateObj.select();
+        return false;
+      }
     sYear = y2k(sYear);
   }
   else{

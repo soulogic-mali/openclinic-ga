@@ -4110,7 +4110,22 @@
 			<dataelement unique="transactions" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE1;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE2;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE3;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE4;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE5" outputItemValue="RX04" value="1" label="RX04 - UIV" uid="r5fENYEvM5h"/>
 			<dataelement unique="transactions" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE1;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE2;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE3;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE4;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE5" outputItemValue="RX05" value="1" label="RX05 - Salpingo urographie" uid="h0zqRB8RbiX"/>
 			<dataelement unique="transactions" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE1;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE2;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE3;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE4;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE5" outputItemValue="RX06" value="1" label="RX06 - Lavement baryté" uid="tnYv9u4Zd1d"/>
+			<dataelement unique="transactions" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE1;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE2;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE3;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE4;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE5" outputItemValue="RX07" value="1" label="RX07 - Scanner" uid="i6yp3LCof4M"/>
 			<dataelement unique="transactions" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE1;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE2;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE3;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE4;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE5" outputItemValue="RX99" value="1" label="RX99 - Autres examens RX" uid="UDF4e8DLgdv"/>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 6 - Notification des examens anormaux goutte épaisse (laboratoire)" type="lab" uid="n7vMhpxeHOF">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Labo"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="invalue">
+			<option uid="T5CueXq4qZV" value='Falciparum' name="Falciparum"/>
+			<option uid="kiOczQIam9M" value="Malariae" name="Malariae"/>
+			<option uid="r24OBF6VvPl" value="Ovale" name="Ovale"/>
+			<option uid="azzKNIM5MsT" value="Vivax" name="Vivax"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement code="BP01" label="Plasmodium" uid="afmjqV12QqE"/>
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 6 - Notification des examens anormaux (laboratoire)" type="lab" abnormal="1" uid="n7vMhpxeHOF">
@@ -4135,6 +4150,19 @@
 			<dataelement code="BI12" label="BI12 - Transaminases" uid="DEp9cLROlBm"/>
 			<dataelement code="BI13" label="BI13 - Urée" uid="RMpuuXscWaU"/>
 			<dataelement code="BI14" label="BI14 - Créatinine" uid="Y9lahTzngv1"/>
+			<dataelement code="BI15" label="BI15 - Albumine sanguine" uid="YtUXNeW3jLd"/>
+			<dataelement code="BI16" label="BI16 - Albumine serique" uid="sEVzxkoMV10"/>
+			<dataelement code="BI17" label="BI17 - Amylasémie" uid="kmReSJxSXpu"/>
+			<dataelement code="BI18" label="BI18 - Amylasurie" uid="ssYJlsGxK1D"/>
+			<dataelement code="BI19" label="BI19 - Acide lactique" uid="HePg8wHA9hx"/>
+			<dataelement code="BI20" label="BI20 - Albumine glyquée" uid="qpbuagAfU1h"/>
+			<dataelement code="BI21" label="BI21 - Analyse du liquide amniotique" uid="zz59GHBocmU"/>
+			<dataelement code="BI22" label="BI22 - Analyse du liquide peritoneal" uid="eKYTrgF9Yjo"/>
+			<dataelement code="BI23" label="BI23 - HDL" uid="WVG1tgEzjrB"/>
+			<dataelement code="BI24" label="BI24 - LDL" uid="edRf1ig5iFe"/>
+			<dataelement code="BI25" label="BI25 - Cholestérol total" uid="mzi8tHcwbyB"/>
+			<dataelement code="BI26" label="BI26 - Triglycerides" uid="eg6ev3jMCDV"/>
+			<dataelement code="BI27" label="BI27 - Myélogramme" uid="JEAJxMRw1qo"/>
 			<dataelement code="BI99" label="BI99 - Autres axamens biochimie" uid="QCnMtC5ZUDV"/>
 			<dataelement code="BP01" label="BP01 - Goutte épaisse" uid="yQTFDuHIE56"/>
 			<dataelement code="BP02" label="BP02 - Frottis sanguin" uid="iE9QnQcDGkE"/>
@@ -4144,6 +4172,7 @@
 			<dataelement code="BP06" label="BP06 - Examen selles" uid="JlISw9mHNOs"/>
 			<dataelement code="BP07" label="BP07 - Examen urines" uid="X8jCFdZpcxc"/>
 			<dataelement code="BP08" label="BP08 - Examen autres sécrétions" uid="y7zWoRVf1VD"/>
+			<dataelement code="BP09" label="BP09 - ECBU" uid="wB4AHnN5y8Z"/>
 			<dataelement code="BP99" label="BP99 - Autres examens Bactério/parasito" uid="JeeRFwqBVuA"/>
 			<dataelement code="HS01" label="HS01 - NFS" uid="MLexNyBX7xI"/>
 			<dataelement code="HS02" label="HS02 - Test Emmel" uid="GNYQiMyZtD9"/>
@@ -4158,7 +4187,18 @@
 			<dataelement code="HS11" label="HS11 - CD4" uid="UjGfaP78n9K"/>
 			<dataelement code="HS12" label="HS12 - Groupe sanguin" uid="mBytjGr2qJQ"/>
 			<dataelement code="HS13" label="HS13 - Epreuve de compatilité sanguine" uid="mrNBu6BhslN"/>
-			<dataelement code="HS14" label="HS14 - Charge virale" uid="999999999"/>
+			<dataelement code="HS14" label="HS14 - Analyse ADN" uid="PPGGRzMwMAk"/>
+			<dataelement code="HS15" label="HS15 - ASLO" uid="JEFo0zcI5y2"/>
+			<dataelement code="HS16" label="HS16 - Sérotoxo" uid="ZBjWdPO0SL0"/>
+			<dataelement code="HS17" label="HS17 - AgHbs" uid="eOSgUYt5965"/>
+			<dataelement code="HS18" label="HS18 - AcHVC" uid="NaIA7U7BAR4"/>
+			<dataelement code="HS19" label="HS19 - IgG" uid="rvedp0uv6cq"/>
+			<dataelement code="HS20" label="HS20 - IgM" uid="bROPpI7y6Ex"/>
+			<dataelement code="HS21" label="HS21 - PSA" uid="DHAzHKXN1DG"/>
+			<dataelement code="HS22" label="HS22 - TP" uid="xrdNzb7QN7T"/>
+			<dataelement code="HS23" label="HS23 - TCK" uid="bMfbhwt6FTz"/>
+			<dataelement code="HS24" label="HS24 - VS" uid="H88JAbzSWfH"/>
+			<dataelement code="HS25" label="HS25 - AgVHA" uid="LBugCwnLoa1"/>
 			<dataelement code="HS99" label="HS99 - Autres examens hémato/sérologiques" uid="toYVOdtO7b1"/>
 		</dataelements>
 	</dataset>
@@ -4202,6 +4242,7 @@
 			<dataelement unique="transactions" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE1;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE2;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE3;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE4;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE5" outputItemValue="RX04" value="1" label="RX04 - UIV" uid="XAPe1k3oLDi"/>
 			<dataelement unique="transactions" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE1;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE2;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE3;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE4;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE5" outputItemValue="RX05" value="1" label="RX05 - Salpingo urographie" uid="aud6vgc2Gwi"/>
 			<dataelement unique="transactions" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE1;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE2;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE3;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE4;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE5" outputItemValue="RX06" value="1" label="RX06 - Lavement baryté" uid="Hg3SanO0LL3"/>
+			<dataelement unique="transactions" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE1;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE2;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE3;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE4;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE5" outputItemValue="RX07" value="1" label="RX07 - Scanner" uid="eKwLYTuyvRb"/>
 			<dataelement unique="transactions" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE1;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE2;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE3;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE4;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DHIS2CODE5" outputItemValue="RX99" value="1" label="RX99 - Autres examens RX" uid="Uz4xiOPSdX8"/>
 		</dataelements>
 	</dataset>
@@ -4250,6 +4291,19 @@
 			<dataelement code="BI12" label="BI12 - Transaminases" uid="M7EgSl6zLs2"/>
 			<dataelement code="BI13" label="BI13 - Urée" uid="xcEShRKw1rn"/>
 			<dataelement code="BI14" label="BI14 - Créatinine" uid="k4qKcbIv2xV"/>
+			<dataelement code="BI15" label="BI15 - Albumine sanguine" uid="HWgauGKTQiT"/>
+			<dataelement code="BI16" label="BI16 - Albumine serique" uid="nVUiWbwBpQ3"/>
+			<dataelement code="BI17" label="BI17 - Amylasémie" uid="MU53zTIk5Zx"/>
+			<dataelement code="BI18" label="BI18 - Amylasurie" uid="kCUIbgvLdfl"/>
+			<dataelement code="BI19" label="BI19 - Acide lactique" uid="vu55EKikH1F"/>
+			<dataelement code="BI20" label="BI20 - Albumine glyquée" uid="gYPeO8VSdSu"/>
+			<dataelement code="BI21" label="BI21 - Analyse du liquide amniotique" uid="SqOK66GNQQe"/>
+			<dataelement code="BI22" label="BI22 - Analyse du liquide peritoneal" uid="PNDO2HytHmT"/>
+			<dataelement code="BI23" label="BI23 - HDL" uid="w116q3dABM2"/>
+			<dataelement code="BI24" label="BI24 - LDL" uid="R8WTjeGppDM"/>
+			<dataelement code="BI25" label="BI25 - Cholestérol total" uid="AEIQjCvEdhn"/>
+			<dataelement code="BI26" label="BI26 - Triglycerides" uid="musPcRktuyo"/>
+			<dataelement code="BI27" label="BI27 - Myélogramme" uid="RLEo6jDLm8y"/>
 			<dataelement code="BI99" label="BI99 - Autres axamens biochimie" uid="x9C6HDN4mVF"/>
 			<dataelement code="BP01" label="BP01 - Goutte épaisse" uid="Uvj83ApugPn"/>
 			<dataelement code="BP02" label="BP02 - Frottis sanguin" uid="UWFeBQgOPIV"/>
@@ -4259,6 +4313,7 @@
 			<dataelement code="BP06" label="BP06 - Examen selles" uid="fwbgr8O84RZ"/>
 			<dataelement code="BP07" label="BP07 - Examen urines" uid="rCRyeskGoEb"/>
 			<dataelement code="BP08" label="BP08 - Examen autres sécrétions" uid="uKFZxje04ud"/>
+			<dataelement code="BP09" label="BP09 - ECBU" uid="tAUp2lMDktT"/>
 			<dataelement code="BP99" label="BP99 - Autres examens Bactério/parasito" uid="X1cKMGN55te"/>
 			<dataelement code="HS01" label="HS01 - NFS" uid="AmZBtNXQfh6"/>
 			<dataelement code="HS02" label="HS02 - Test Emmel" uid="ukycFKo5Edn"/>
@@ -4273,10 +4328,23 @@
 			<dataelement code="HS11" label="HS11 - CD4" uid="aVqfXt4mdk8"/>
 			<dataelement code="HS12" label="HS12 - Groupe sanguin" uid="IgMdp1ds8C3"/>
 			<dataelement code="HS13" label="HS13 - Epreuve de compatilité sanguine" uid="a05iExr1YQF"/>
+			<dataelement code="HS14" label="HS14 - Analyse ADN" uid="EPyZXgl7uR4"/>
+			<dataelement code="HS15" label="HS15 - ASLO" uid="yscp3uZGGFL"/>
+			<dataelement code="HS16" label="HS16 - Sérotoxo" uid="nLTJh8At7Sx"/>
+			<dataelement code="HS17" label="HS17 - AgHbs" uid="j3LIy2PhlKh"/>
+			<dataelement code="HS18" label="HS18 - AcHVC" uid="ySYufTj4dAw"/>
+			<dataelement code="HS19" label="HS19 - IgG" uid="CSgnwo1qb7y"/>
+			<dataelement code="HS20" label="HS20 - IgM" uid="InCY2kjBAJD"/>
+			<dataelement code="HS21" label="HS21 - PSA" uid="EhziZ2azM0y"/>
+			<dataelement code="HS22" label="HS22 - TP" uid="MzHj1Og6pgA"/>
+			<dataelement code="HS23" label="HS23 - TCK" uid="fkEHkDcIT6y"/>
+			<dataelement code="HS24" label="HS24 - VS" uid="FbRdF720D9y"/>
+			<dataelement code="HS25" label="HS25 - AgVHA" uid="RqZGbh0utk9"/>
 			<dataelement code="HS99" label="HS99 - Autres examens hémato/sérologiques" uid="c0L2ggGJyVw"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 7 - Activité globale des urgences" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PATIENTTYPE" exactitemtype="1" uid="x1bjdExzUxs">
+	<dataset label="DSNIS-HOP - Fiche 7 - Activité globale des urgences" type="title" uid="x1bjdExzUxs"/>
+	<dataset label="DSNIS-HOP - Fiche 7 - Activité globale des urgences - arrivées" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PATIENTTYPE" exactitemtype="1" uid="x1bjdExzUxs">
 		<attributeOptionCombo type="department">
 			<option uid="GKkUPluq2QJ" value="urg" name="Urgences"/>
 		</attributeOptionCombo>
@@ -4289,13 +4357,13 @@
 			<dataelement unique="encounters" label="Nombre de patients" uid="VqmFE5ngFRe"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité" type="title" uid="WMGqhLQn0Il"/>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par qualification et provenance)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité" type="title" uid="wU5C1GuLwuQ"/>
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par qualification et provenance)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="jJI2P34k15f" value="1" name="District"/>
+			<option uid="jJI2P34k15f" value="1|5" name="District"/>
 			<option uid="aLlY2l4ARNc" value="2" name="Hors district"/>
 			<option uid="IPKOJ7udf45" value="3" name="Hors province"/>
 			<option uid="EhUhIaHNrVz" value="4" name="Hors Burundi"/>
@@ -4307,12 +4375,12 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par sage-femme et provenance)" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par sage-femme et provenance)" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="u6hW37fP9NT" value="1" name="District"/>
+			<option uid="u6hW37fP9NT" value="1|5" name="District"/>
 			<option uid="r7R8TD4NJki" value="2" name="Hors district"/>
 			<option uid="HGRdXj1JFJa" value="3" name="Hors province"/>
 			<option uid="iXpnbtexJPk" value="4" name="Hors Burundi"/>
@@ -4324,12 +4392,12 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par infirmière et provenance)" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par infirmière et provenance)" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="MPnSCB1aGau" value="1" name="District"/>
+			<option uid="MPnSCB1aGau" value="1|5" name="District"/>
 			<option uid="tjGRrQgPuak" value="2" name="Hors district"/>
 			<option uid="XaXrNcLNW5U" value="3" name="Hors province"/>
 			<option uid="iXpnbtexJPk" value="4" name="Hors Burundi"/>
@@ -4341,12 +4409,12 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par autre personne et provenance)" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par autre personne et provenance)" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="mRZgvyfH32f" value="1" name="District"/>
+			<option uid="mRZgvyfH32f" value="1|5" name="District"/>
 			<option uid="LuN4K6nrbuL" value="2" name="Hors district"/>
 			<option uid="z62zZoYDtA3" value="3" name="Hors province"/>
 			<option uid="LQISqPJCUJH" value="4" name="Hors Burundi"/>
@@ -4358,7 +4426,7 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par âge)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par âge)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4378,7 +4446,7 @@
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE"/>
 			</dataelement>
 			<dataelement unique="patients" calculate="itemCount" uid="S049c48iQeu" label="Nombre d'avortements">
-				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_ABORTION"/>
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_ABORTION" itemvalue="medwan.common.true"/>
 			</dataelement>
 			<dataelement unique="patients" calculate="itemCount" uid="YiSgN3sW9fR" label="Testées VIH en salle de travail">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_DEPISTVIH" itemvalue="medwan.common.true"/>
@@ -4392,15 +4460,15 @@
 			<dataelement unique="patients" calculate="itemCount" uid="OEy7p30izz1" label="Hemorragie postpartum">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_HEMORRHAGIAPOST" itemvalue="medwan.common.true"/>
 			</dataelement>
-			<dataelement calculate="itemCount" unique="patients" uid="gs0gvAYs4N7" label="Eclampsie">
-				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_ECLAMPSIA" itemvalue="medwan.common.true"/>
-			</dataelement>
 			<dataelement calculate="itemCount" unique="patients" uid="pGESzMeImfx" label="Pré-éclampsie">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREECLAMPSIA" itemvalue="medwan.common.true"/>
 			</dataelement>
+			<dataelement calculate="itemCount" unique="patients" uid="gs0gvAYs4N7" label="Eclampsie">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_ECLAMPSIA" itemvalue="medwan.common.true"/>
+			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par type)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (nombre accouchements par type)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4414,9 +4482,15 @@
 			<dataelement calculate="itemCount" unique="patients" uid="RdSih78SnoD" label="Dystociques">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_DELIVERYTYPE_DYSTOCIC" itemvalue="medwan.common.true"/>
 			</dataelement>
+			<dataelement calculate="itemCount" unique="patients" uid="JG6eeDqGrnl" label="Femme ayant anémie">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_ANEMIA" itemvalue="medwan.common.true"/>
+			</dataelement>
+			<dataelement calculate="itemCount" unique="patients" uid="EYvgjVcAiq3" label="Femme ayant paludisme">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_MALARIA" itemvalue="medwan.common.true"/>
+			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (accouchements avec...)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (accouchements avec...)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4424,6 +4498,24 @@
 			<option uid="GKkUPluq2QJ" name="Nombre d'accouchements"/>
 		</categoryOptionCombo>
 		<dataelements>
+			<dataelement calculate="itemCount" unique="patients" uid="h2tl8PBq9Ps" label="Ventouse">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_VENTOUSSE" itemvalue="medwan.common.true"/>
+			</dataelement>
+			<dataelement calculate="itemCount" unique="patients" uid="Z4H6qWKQDoV" label="Forceps">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_FORCEPS" itemvalue="medwan.common.true"/>
+			</dataelement>
+			<dataelement calculate="itemCount" unique="patients" uid="ynC7KMSAEyd" label="Man. Int et ext">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_MANOEUVRE" itemvalue="medwan.common.true"/>
+			</dataelement>
+			<dataelement calculate="itemCount" unique="patients" uid="N97qK5ZpZp3" label="Césariennes">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_DELIVERYTYPE_CAESERIAN" itemvalue="medwan.common.true"/>
+			</dataelement>
+			<dataelement calculate="itemCount" itemsneeded="1" unique="patients" uid="c663GdhmxNV" label="Autre">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_EPISIOTOMY" itemvalue="medwan.common.true"/>
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PERINEALTEAR" itemvalue="medwan.common.true"/>
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_VAGINALTEAR" itemvalue="medwan.common.true"/>
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_COLLARTEAR" itemvalue="medwan.common.true"/>
+			</dataelement>
 			<dataelement calculate="itemCount" unique="patients" uid="GpzJJlsKqVt" label="Risque">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PREGNANCY_HIGHRISK" itemvalue="medwan.common.true"/>
 			</dataelement>
@@ -4445,27 +4537,9 @@
 			<dataelement calculate="itemCount" unique="patients" uid="YI1WniDPvFP" label="Nb femmes VHB+ connu sous traitement">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_HBVPOSTREATED" itemvalue="medwan.common.true"/>
 			</dataelement>
-			<dataelement calculate="itemCount" unique="patients" uid="h2tl8PBq9Ps" label="Ventouse">
-				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_VENTOUSSE" itemvalue="medwan.common.true"/>
-			</dataelement>
-			<dataelement calculate="itemCount" unique="patients" uid="Z4H6qWKQDoV" label="Forceps">
-				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_FORCEPS" itemvalue="medwan.common.true"/>
-			</dataelement>
-			<dataelement calculate="itemCount" unique="patients" uid="ynC7KMSAEyd" label="Man. Int et ext">
-				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_MANOEUVRE" itemvalue="medwan.common.true"/>
-			</dataelement>
-			<dataelement calculate="itemCount" unique="patients" uid="N97qK5ZpZp3" label="Césariennes">
-				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_DELIVERYTYPE_CAESERIAN" itemvalue="medwan.common.true"/>
-			</dataelement>
-			<dataelement calculate="itemCount" itemsneeded="1" unique="patients" uid="c663GdhmxNV" label="Autre">
-				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_EPISIOTOMY" itemvalue="medwan.common.true"/>
-				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_PERINEALTEAR" itemvalue="medwan.common.true"/>
-				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_VAGINALTEAR" itemvalue="medwan.common.true"/>
-				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_COLLARTEAR" itemvalue="medwan.common.true"/>
-			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (indications des césariennes)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (indications des césariennes)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4502,7 +4576,7 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - naissances vivantes)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - naissances vivantes)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4516,7 +4590,7 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - naissances vivantes)|2" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - naissances vivantes)|2" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4530,7 +4604,7 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Hommes" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Hommes" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4544,7 +4618,7 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Hommes|2" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Hommes|2" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4558,7 +4632,7 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Hommes|3" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Hommes|3" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4572,7 +4646,7 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Femmes" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Femmes" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4586,7 +4660,7 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Femmes|5" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Femmes|5" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4600,7 +4674,7 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Femmes|6" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (issues accouchement - morts-nés) - Femmes|6" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4614,7 +4688,7 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (spécificités accouchements)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="WMGqhLQn0Il">
+	<dataset label="DSNIS-HOP - Fiche 8 - Maternité (spécificités accouchements)" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_DELIVERY_MSPLS" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" exactitemtype="1" uid="wU5C1GuLwuQ">
 		<attributeOptionCombo type="default">
 			<option uid="GKkUPluq2QJ" name="Maternité"/>
 		</attributeOptionCombo>
@@ -4622,40 +4696,51 @@
 			<option uid="GKkUPluq2QJ" name="Nombre d'accouchements"/>
 		</categoryOptionCombo>
 		<dataelements>
-			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" countall="1" uid="SDm3VVG1jMp" label="1. Nouveau-nés à terme &lt;2500g">
+			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" countall="1" uid="SDm3VVG1jMp" label="Nouveau-nés à terme &lt;2500g">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_ATTERM;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILDWEIGHT" itemvalue="medwan.common.true;{lessthan}2500"/>
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_ATTERM;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILDWEIGHT2" itemvalue="medwan.common.true;{lessthan}2500"/>
 			</dataelement>
-			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" countall="1" uid="tpMy75J74KM" label="2. Prématurés">
+			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" countall="1" uid="tpMy75J74KM" label="Prématurés">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_ATTERM;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE" itemvalue="medwan.common.false;"/>
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_ATTERM;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_REANIMATION_DATE2" itemvalue="medwan.common.false;"/>
 			</dataelement>
-			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" countall="1" uid="Y0alfPyZ81U" label="3. Décès nouveau-nés endéans les 24h">
+			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" countall="1" uid="Y0alfPyZ81U" label="Décès nouveau-nés endéans les 24h">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILD_DEADIN24H" itemvalue="medwan.common.true"/>
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILD_DEADIN24H2" itemvalue="medwan.common.true;"/>
 			</dataelement>
-			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" countall="1" uid="NYd6KIjGS3Z" label="4. Mis sous ARV prophylactique">
+			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" countall="1" uid="NYd6KIjGS3Z" label="Mis sous ARV prophylactique">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILD_PROPHYLAXISARV" itemvalue="medwan.common.true"/>
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILD_PROPHYLAXISARV2" itemvalue="medwan.common.true;"/>
 			</dataelement>
-			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" uid="ur0FrVtmhPG" label="5. Femmes allaitant à la première heure">
+			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" uid="ur0FrVtmhPG" label="Femmes allaitant à la première heure">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILD1_SURVEILLANCE_BREASTFEED30"/>
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILD2_SURVEILLANCE_BREASTFEED30"/>
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILD1_SURVEILLANCE_BREASTFEED1"/>
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILD2_SURVEILLANCE_BREASTFEED1"/>
 			</dataelement>
-			<dataelement calculate="itemCount" unique="patients" uid="Y0alfPyZ81U" label="6. Décès maternel">
+			<dataelement calculate="itemCount" unique="patients" uid="sc8fs4GfcOy" label="Décès maternel">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_DEATH" itemvalue="medwan.common.true"/>
 			</dataelement>
-			<dataelement calculate="itemCount" unique="patients" uid="mcE69Ua7rjV" label="7. Femmes ayant reçu une méthode PF avant /à la sortie de maternité">
+			<dataelement calculate="itemCount" unique="patients" uid="mcE69Ua7rjV" label="Femmes ayant reçu une méthode PF avant /à la sortie de maternité">
 				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_FAMILYPLANNING" itemvalue="medwan.common.true"/>
+			</dataelement>
+			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" countall="1" uid="AQgHUN0BfZk" label="NNé de mère HVB +">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_HBVPOS;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILDALIVE" itemvalue="medwan.common.true;"/>
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_HBVPOS;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILDALIVE2" itemvalue="medwan.common.true;"/>
+			</dataelement>
+			<dataelement calculate="itemCount" unique="patients" itemsneeded="1" countall="1" uid="XnZVqrcbuR5" label="NNé de mère HVB + ayant reçu le vaccin dans les 24h">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_HBVPOS;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_HBVVACCINATED" itemvalue="medwan.common.true;medwan.common.true"/>
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_HBVPOS;be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_HBVVACCINATED2" itemvalue="medwan.common.true;medwan.common.true"/>
 			</dataelement>
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 9 et 10 - Bloc opératoire - Programmation des anesthésies et des actes" type="title" uid="MIUHFmgewAq"/>
 	<dataset label="DSNIS-HOP - Fiche 9 et 10 - Bloc opératoire - Programmation des anesthésies et des actes (actes programmés)" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_OPERATION_PROTOCOL" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID" uid="MIUHFmgewAq">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Bloc opératoire"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
-			<option uid="QfoDEd7LD38" name="Nombre d'actes"/>
+			<option uid="QfoDEd7LD38" name="Programmé"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="transactions" calculate="itemCount" itemsneeded="1" countall="1" uid="iPwSsolMQP4" label="ANE199 - Autre chirurgie majeure anestésiologique">
@@ -5266,8 +5351,11 @@
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 9 et 10 - Bloc opératoire - Programmation des anesthésies et des actes (actes non-programmés)" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_OPERATION_PROTOCOL" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID" uid="MIUHFmgewAq">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Bloc opératoire"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
-			<option uid="TLGfrM3ylxU" name="Nombre d'actes"/>
+			<option uid="TLGfrM3ylxU" name="Non programmé / Urgence"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="transactions" calculate="itemCount" itemsneeded="1" countall="1" uid="iPwSsolMQP4" label="ANE199 - Autre chirurgie majeure anestésiologique">
@@ -5880,7 +5968,7 @@
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang" type="title" uid="tQ6UqqNjSOM"/>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|0" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="EwP6zSTC949" value="int" name="Medecine interne"/>
+			<option uid="GKkUPluq2QJ" value="int" name="Medecine interne"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="EwP6zSTC949" name="Valeur"/>
@@ -5894,7 +5982,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|1" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="EwP6zSTC949" value="int" name="Medecine interne"/>
+			<option uid="GKkUPluq2QJ" value="int" name="Medecine interne"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="gMo7jdfPvy5" name="Valeur"/>
@@ -5905,7 +5993,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|2" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="EwP6zSTC949" value="int" name="Medecine interne"/>
+			<option uid="GKkUPluq2QJ" value="int" name="Medecine interne"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="picgRQRWWTx" name="Valeur"/>
@@ -5916,7 +6004,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|3" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="EwP6zSTC949" value="int" name="Medecine interne"/>
+			<option uid="GKkUPluq2QJ" value="int" name="Medecine interne"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="y4of2QTk2JF" name="Valeur"/>
@@ -5927,7 +6015,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|4" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="bEXo9nnKdnY" value="chi" name="Chirurgie"/>
+			<option uid="GKkUPluq2QJ" value="chi" name="Chirurgie"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="bEXo9nnKdnY" name="Valeur"/>
@@ -5941,7 +6029,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|5" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="bEXo9nnKdnY" value="chi" name="Chirurgie"/>
+			<option uid="GKkUPluq2QJ" value="chi" name="Chirurgie"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="CGP8M2Qp1EB" name="Valeur"/>
@@ -5952,7 +6040,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|6" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="bEXo9nnKdnY" value="chi" name="Chirurgie"/>
+			<option uid="GKkUPluq2QJ" value="chi" name="Chirurgie"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="cuVgxSRbvNX" name="Valeur"/>
@@ -5963,7 +6051,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|7" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="bEXo9nnKdnY" value="chi" name="Chirurgie"/>
+			<option uid="GKkUPluq2QJ" value="chi" name="Chirurgie"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="zj72cjHScir" name="Valeur"/>
@@ -5974,7 +6062,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|8" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="kTXZ603C3hY" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="GKkUPluq2QJ" value="gyn" name="Gyneco-obstetrique"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="kTXZ603C3hY" name="Valeur"/>
@@ -5988,7 +6076,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|9" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="kTXZ603C3hY" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="GKkUPluq2QJ" value="gyn" name="Gyneco-obstetrique"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="gMo7jdfPvy5" name="Valeur"/>
@@ -5999,7 +6087,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|10" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="kTXZ603C3hY" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="GKkUPluq2QJ" value="gyn" name="Gyneco-obstetrique"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="PM2mcrnrCYl" name="Valeur"/>
@@ -6010,7 +6098,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|11" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="kTXZ603C3hY" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="GKkUPluq2QJ" value="gyn" name="Gyneco-obstetrique"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="OChRAkPu2rt" name="Valeur"/>
@@ -6021,7 +6109,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|12" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="wzo7dXG20xK" value="ped" name="Pediatrie"/>
+			<option uid="GKkUPluq2QJ" value="ped" name="Pediatrie"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="wzo7dXG20xK" name="Valeur"/>
@@ -6035,7 +6123,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|13" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="wzo7dXG20xK" value="ped" name="Pediatrie"/>
+			<option uid="GKkUPluq2QJ" value="ped" name="Pediatrie"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="kHRKAsyQ0ft" name="Valeur"/>
@@ -6046,7 +6134,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|14" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="wzo7dXG20xK" value="ped" name="Pediatrie"/>
+			<option uid="GKkUPluq2QJ" value="ped" name="Pediatrie"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="om9TKNmPxdp" name="Valeur"/>
@@ -6057,7 +6145,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|15" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="wzo7dXG20xK" value="ped" name="Pediatrie"/>
+			<option uid="GKkUPluq2QJ" value="ped" name="Pediatrie"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="EhJNgKoTxrk" name="Valeur"/>
@@ -6068,7 +6156,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|16" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="EVUpzOhPtxu" value="icu" name="Soins intensifs"/>
+			<option uid="GKkUPluq2QJ" value="icu" name="Soins intensifs"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="EVUpzOhPtxu" name="Valeur"/>
@@ -6082,7 +6170,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|17" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="EVUpzOhPtxu" value="icu" name="Soins intensifs"/>
+			<option uid="GKkUPluq2QJ" value="icu" name="Soins intensifs"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="DL3xna20o6a" name="Valeur"/>
@@ -6093,7 +6181,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|18" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="EVUpzOhPtxu" value="icu" name="Soins intensifs"/>
+			<option uid="GKkUPluq2QJ" value="icu" name="Soins intensifs"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="tKb02bXGxFa" name="Valeur"/>
@@ -6104,7 +6192,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|19" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="EVUpzOhPtxu" value="icu" name="Soins intensifs"/>
+			<option uid="GKkUPluq2QJ" value="icu" name="Soins intensifs"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="Ndxbkrwcel3" name="Valeur"/>
@@ -6115,7 +6203,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|20" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="tlPNWKJ0XWx" value="urg" name="Urgences"/>
+			<option uid="GKkUPluq2QJ" value="urg" name="Urgences"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="tlPNWKJ0XWx" name="Valeur"/>
@@ -6129,7 +6217,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|21" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="tlPNWKJ0XWx" value="urg" name="Urgences"/>
+			<option uid="GKkUPluq2QJ" value="urg" name="Urgences"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="qm7jAhAukcg" name="Valeur"/>
@@ -6140,7 +6228,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|22" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="tlPNWKJ0XWx" value="urg" name="Urgences"/>
+			<option uid="GKkUPluq2QJ" value="urg" name="Urgences"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="FobMwULJoak" name="Valeur"/>
@@ -6151,7 +6239,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|23" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="tlPNWKJ0XWx" value="urg" name="Urgences"/>
+			<option uid="GKkUPluq2QJ" value="urg" name="Urgences"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="oqgk5sizrhJ" name="Valeur"/>
@@ -6162,7 +6250,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|24" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="AUcUBvGwCvV" value="blc" name="Bloc operatoire"/>
+			<option uid="GKkUPluq2QJ" value="blc" name="Bloc operatoire"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="AUcUBvGwCvV" name="Valeur"/>
@@ -6176,7 +6264,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|25" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="AUcUBvGwCvV" value="blc" name="Bloc operatoire"/>
+			<option uid="GKkUPluq2QJ" value="blc" name="Bloc operatoire"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="qUeZeRHR4oV" name="Valeur"/>
@@ -6187,7 +6275,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|26" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="AUcUBvGwCvV" value="blc" name="Bloc operatoire"/>
+			<option uid="GKkUPluq2QJ" value="blc" name="Bloc operatoire"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="R8JSB750s7F" name="Valeur"/>
@@ -6198,7 +6286,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|27" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="AUcUBvGwCvV" value="blc" name="Bloc operatoire"/>
+			<option uid="GKkUPluq2QJ" value="blc" name="Bloc operatoire"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="n0oM6GI9kQd" name="Valeur"/>
@@ -6209,7 +6297,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|28" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="RVRhQZWeAov" value="orl" name="ORL"/>
+			<option uid="GKkUPluq2QJ" value="orl" name="ORL"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="RVRhQZWeAov" name="Valeur"/>
@@ -6223,7 +6311,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|29" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="RVRhQZWeAov" value="orl" name="ORL"/>
+			<option uid="GKkUPluq2QJ" value="orl" name="ORL"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="lbY9GWYNCPi" name="Valeur"/>
@@ -6234,7 +6322,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|30" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="RVRhQZWeAov" value="orl" name="ORL"/>
+			<option uid="GKkUPluq2QJ" value="orl" name="ORL"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="hXvmtLrLDbg" name="Valeur"/>
@@ -6245,7 +6333,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 11 - Banque de sang|31" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CNTS_BLOODREQUEST" uid="tQ6UqqNjSOM">
 		<attributeOptionCombo type="department">
-			<option uid="RVRhQZWeAov" value="orl" name="ORL"/>
+			<option uid="GKkUPluq2QJ" value="orl" name="ORL"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="default">
 			<option uid="a2pyYK0LZ3L" name="Valeur"/>
@@ -6257,7 +6345,7 @@
 	<dataset label="DSNIS-HOP - Fiche 12 et 13 - Activités préventives" type="title" uid="EoDCEQAjveu"/>
 	<dataset label="DSNIS-HOP - Fiche 12 et 13 - Activités préventives (Planification familiale 1 - Nouvelles acceptantes)" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_FAMILY_PLANNING_" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.selectedmethod" uid="EoDCEQAjveu">
 		<categoryOptionCombo type="zone">
-			<option uid="b4JXoLnf1aT" value="1" name="District"/>
+			<option uid="b4JXoLnf1aT" value="1|5" name="District"/>
 			<option uid="mJnnuNNzcNd" value="2" name="Hors district"/>
 			<option uid="PqC9T4Z8aHZ" value="3" name="Hors province"/>
 			<option uid="VItTaRE76s8" value="4" name="Hors Burundi"/>
@@ -6271,7 +6359,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 12 et 13 - Activités préventives (Planification familiale 1 - Nouvelles acceptantes)|1" type="item" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_FAMILY_PLANNING_" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.selectedmethod" uid="EoDCEQAjveu">
 		<categoryOptionCombo type="zone">
-			<option uid="ymAw4aNSF3Z" value="1" name="District"/>
+			<option uid="ymAw4aNSF3Z" value="1|5" name="District"/>
 			<option uid="LqKodBL7aOH" value="2" name="Hors district"/>
 			<option uid="b2cp7y50n5j" value="3" name="Hors province"/>
 			<option uid="rQex8elGB9v" value="4" name="Hors Burundi"/>
@@ -6284,7 +6372,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 12 et 13 - Activités préventives (Planification familiale 1 - Nouvelles acceptantes)|2" type="item" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_FAMILY_PLANNING_" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.selectedmethod" uid="EoDCEQAjveu">
 		<categoryOptionCombo type="zone">
-			<option uid="MA8EOs6pt6I" value="1" name="District"/>
+			<option uid="MA8EOs6pt6I" value="1|5" name="District"/>
 			<option uid="hTJYV3qs674" value="2" name="Hors district"/>
 			<option uid="RjYqcgQyaeK" value="3" name="Hors province"/>
 			<option uid="cwbzS2rzko1" value="4" name="Hors Burundi"/>
@@ -6297,7 +6385,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 12 et 13 - Activités préventives (Planification familiale 1 - Nouvelles acceptantes)|3" type="item" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_FAMILY_PLANNING_" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.selectedmethod" uid="EoDCEQAjveu">
 		<categoryOptionCombo type="zone">
-			<option uid="U0LKqQ5332Z" value="1" name="District"/>
+			<option uid="U0LKqQ5332Z" value="1|5" name="District"/>
 			<option uid="C5Qod5RISde" value="2" name="Hors district"/>
 			<option uid="ojQrFlHLh7f" value="3" name="Hors province"/>
 			<option uid="VRYWsBtLIZT" value="4" name="Hors Burundi"/>
@@ -6310,7 +6398,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 12 et 13 - Activités préventives (Planification familiale 1 - Nouvelles acceptantes)|4" type="item" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_FAMILY_PLANNING_" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.selectedmethod" uid="EoDCEQAjveu">
 		<categoryOptionCombo type="zone">
-			<option uid="gzjz1qRx22u" value="1" name="District"/>
+			<option uid="gzjz1qRx22u" value="1|5" name="District"/>
 			<option uid="KkOsEr0LR9S" value="2" name="Hors district"/>
 			<option uid="hCc17i5WxZg" value="3" name="Hors province"/>
 			<option uid="aAP9AQ75hhT" value="4" name="Hors Burundi"/>
@@ -6323,7 +6411,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 12 et 13 - Activités préventives (Planification familiale 1 - Nouvelles acceptantes)|5" type="item" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_FAMILY_PLANNING_" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.selectedmethod" uid="EoDCEQAjveu">
 		<categoryOptionCombo type="zone">
-			<option uid="IWZz8EZXQDq" value="1" name="District"/>
+			<option uid="IWZz8EZXQDq" value="1|5" name="District"/>
 			<option uid="Fe4u2QYAJnm" value="2" name="Hors district"/>
 			<option uid="eJ4IYrTRV0Q" value="3" name="Hors province"/>
 			<option uid="gj8sdLBBUM0" value="4" name="Hors Burundi"/>
@@ -6336,7 +6424,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 12 et 13 - Activités préventives (Planification familiale 1 - Nouvelles acceptantes)|6" type="item" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_FAMILY_PLANNING_" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.selectedmethod" uid="EoDCEQAjveu">
 		<categoryOptionCombo type="zone">
-			<option uid="HbFtLVbnz8h" value="1" name="District"/>
+			<option uid="HbFtLVbnz8h" value="1|5" name="District"/>
 			<option uid="hmnGhmxGA7k" value="2" name="Hors district"/>
 			<option uid="E1dMjygWtW0" value="3" name="Hors province"/>
 			<option uid="ggF6UXYuWv1" value="4" name="Hors Burundi"/>
@@ -6349,7 +6437,7 @@
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 12 et 13 - Activités préventives (Planification familiale 1 - Nouvelles acceptantes)|7" type="item" notitle="1" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_FAMILY_PLANNING_" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.selectedmethod" uid="EoDCEQAjveu">
 		<categoryOptionCombo type="zone">
-			<option uid="R5A1sXRa4LD" value="1" name="District"/>
+			<option uid="R5A1sXRa4LD" value="1|5" name="District"/>
 			<option uid="k6lgGAdNpOW" value="2" name="Hors district"/>
 			<option uid="axrE0PbMNCp" value="3" name="Hors province"/>
 			<option uid="ybdvK4Ti7mR" value="4" name="Hors Burundi"/>
@@ -6568,10 +6656,24 @@
 			</dataelement>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires" type="title" uid="zmCc5BPQjPp"/>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires" type="title" uid="BlvDmrE2I4L"/>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="YvCUIPUKLle" value="1" name="District"/>
+			<option uid="YvCUIPUKLle" value="1" name="District - AR"/>
+			<option uid="HHGk2AMmirW" value="5" name="District - HAR"/>
 			<option uid="cvQ9blJeFdQ" value="2" name="Hors district"/>
 			<option uid="tDdARXqry4O" value="3" name="Hors province"/>
 			<option uid="mlBnjIpPist" value="4" name="Hors Burundi"/>
@@ -6580,9 +6682,23 @@
 			<dataelement unique="encounters" minage="0" maxage="1" uid="h9EytkY6M2z" label="0-11 mois"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|1" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|1" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="AJ1mSBEZVRL" value="1" name="District"/>
+			<option uid="AJ1mSBEZVRL" value="1" name="District - AR"/>
+			<option uid="Y8LhEgtVBZT" value="5" name="District - HAR"/>
 			<option uid="Wniye2bzynG" value="2" name="Hors district"/>
 			<option uid="zNtqiEyZSKy" value="3" name="Hors province"/>
 			<option uid="vcjadYXH1So" value="4" name="Hors Burundi"/>
@@ -6591,9 +6707,23 @@
 			<dataelement unique="encounters" minage="1" maxage="5" uid="h9EytkY6M2z" label="12-59 mois"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|2" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|2" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="jOUfbSve14z" value="1" name="District"/>
+			<option uid="jOUfbSve14z" value="1" name="District - AR"/>
+			<option uid="TIKlqtlDsx2" value="5" name="District - HAR"/>
 			<option uid="eqKkCs7ppDx" value="2" name="Hors district"/>
 			<option uid="oAutQjb2vLu" value="3" name="Hors province"/>
 			<option uid="oQfVFsyaE4a" value="4" name="Hors Burundi"/>
@@ -6602,9 +6732,23 @@
 			<dataelement unique="encounters" minage="5" maxage="10" uid="h9EytkY6M2z" label="5-9 ans"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|3" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|3" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="a8b3m1mZ9W2" value="1" name="District"/>
+			<option uid="a8b3m1mZ9W2" value="1" name="District - AR"/>
+			<option uid="iaQ3uV2G8as" value="5" name="District - HAR"/>
 			<option uid="XdAzY9quP8m" value="2" name="Hors district"/>
 			<option uid="vduqdE1lxau" value="3" name="Hors province"/>
 			<option uid="OasPrk5RdOE" value="4" name="Hors Burundi"/>
@@ -6613,9 +6757,23 @@
 			<dataelement unique="encounters" minage="10" maxage="15" uid="h9EytkY6M2z" label="10-14 ans"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|4" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|4" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="r2GZuXWPS31" value="1" name="District"/>
+			<option uid="r2GZuXWPS31" value="1" name="District - AR"/>
+			<option uid="Wxgq99g8r1D" value="5" name="District - HAR"/>
 			<option uid="BZhQjcJTjex" value="2" name="Hors district"/>
 			<option uid="iNw43rMunnz" value="3" name="Hors province"/>
 			<option uid="AxwQtYsvYF8" value="4" name="Hors Burundi"/>
@@ -6624,31 +6782,173 @@
 			<dataelement unique="encounters" minage="15" maxage="20" uid="h9EytkY6M2z" label="15-19 ans"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|5" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|5" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="EIRgo01aGkk" value="1" name="District"/>
-			<option uid="BZhQjcJTjex" value="2" name="Hors district"/>
-			<option uid="iNw43rMunnz" value="3" name="Hors province"/>
-			<option uid="AxwQtYsvYF8" value="4" name="Hors Burundi"/>
+			<option uid="EIRgo01aGkk" value="1" name="District - AR"/>
+			<option uid="Ec3OYTSmzA0" value="5" name="District - HAR"/>
+			<option uid="Z5A3SavAm2D" value="2" name="Hors district"/>
+			<option uid="KamFoTN0HfW" value="3" name="Hors province"/>
+			<option uid="oKCTjHhtXBE" value="4" name="Hors Burundi"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" minage="20" maxage="25" uid="h9EytkY6M2z" label="20-24 ans"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|6" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|6" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="QzXZThLrqzv" value="1" name="District"/>
-			<option uid="iJxwOeKnnRm" value="2" name="Hors district"/>
-			<option uid="QDMOYR4kbuc" value="3" name="Hors province"/>
-			<option uid="pbdisb9DuiD" value="4" name="Hors Burundi"/>
+			<option uid="QuXsLJnKt3r" value="1" name="District - AR"/>
+			<option uid="tAYtELcP4lQ" value="5" name="District - HAR"/>
+			<option uid="YJnn9YEpmUb" value="2" name="Hors district"/>
+			<option uid="YJnn9YEpmUb" value="3" name="Hors province"/>
+			<option uid="WIlYMzeUysF" value="4" name="Hors Burundi"/>
 		</categoryOptionCombo>
 		<dataelements>
-			<dataelement unique="encounters" minage="25" maxage="50" uid="h9EytkY6M2z" label="25-49 ans"/>
+			<dataelement unique="encounters" minage="25" maxage="30" uid="h9EytkY6M2z" label="25-29 ans"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|7" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|6a" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="oWwXUioM1k4" value="1" name="District"/>
+			<option uid="JWPfEq2ZiaO" value="1" name="District - AR"/>
+			<option uid="ZxNkoZwTbVu" value="5" name="District - HAR"/>
+			<option uid="VoVTwI34OHS" value="2" name="Hors district"/>
+			<option uid="quWhE3fbkWI" value="3" name="Hors province"/>
+			<option uid="nNh7Tfp93Me" value="4" name="Hors Burundi"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement unique="encounters" minage="30" maxage="35" uid="h9EytkY6M2z" label="30-34 ans"/>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|6b" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="zone">
+			<option uid="YCN4xm8LZY3" value="1" name="District - AR"/>
+			<option uid="Esw23U9nk21" value="5" name="District - HAR"/>
+			<option uid="uiTb0WBkJlu" value="2" name="Hors district"/>
+			<option uid="XCL0I67A2YV" value="3" name="Hors province"/>
+			<option uid="cdHASVz73vO" value="4" name="Hors Burundi"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement unique="encounters" minage="35" maxage="40" uid="h9EytkY6M2z" label="35-39 ans"/>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|6c" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="zone">
+			<option uid="a06rVD4gRQy" value="1" name="District - AR"/>
+			<option uid="PyhEXdpBpb9" value="5" name="District - HAR"/>
+			<option uid="Yx5HXsfUcCq" value="2" name="Hors district"/>
+			<option uid="MQAq0ia3Z23" value="3" name="Hors province"/>
+			<option uid="imDPBqttSGT" value="4" name="Hors Burundi"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement unique="encounters" minage="40" maxage="45" uid="h9EytkY6M2z" label="40-44 ans"/>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|6d" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="zone">
+			<option uid="nqolRzauXwf" value="1" name="District - AR"/>
+			<option uid="tLGe3nGTf8l" value="5" name="District - HAR"/>
+			<option uid="IHsryQkkik3" value="2" name="Hors district"/>
+			<option uid="XI7hj7e43tz" value="3" name="Hors province"/>
+			<option uid="hgPGcPLhqmN" value="4" name="Hors Burundi"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement unique="encounters" minage="45" maxage="50" uid="h9EytkY6M2z" label="45-49 ans"/>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|7" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="zone">
+			<option uid="oWwXUioM1k4" value="1" name="District - AR"/>
+			<option uid="T90iMHO3cjP" value="5" name="District - HAR"/>
 			<option uid="ahtBCTSiLEQ" value="2" name="Hors district"/>
 			<option uid="zZ4ipiGEJnn" value="3" name="Hors province"/>
 			<option uid="OPCp2JnEOWp" value="4" name="Hors Burundi"/>
@@ -6657,34 +6957,86 @@
 			<dataelement unique="encounters" minage="50" uid="h9EytkY6M2z" label="50 ans et plus"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="agegender">
 			<option uid="U8aCp07FOkl" min="0" max="999" gender="m" name="Homme"/>
-			<option uid="hdW79u4HG4n" min="0" max="999" gender="f" name="Femme"/>
+			<option uid="SZ3Yme0kP73" min="0" max="999" gender="f" name="Femme"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" minage="0" maxage="1" uid="kaNcWCaRAr1" label="0-11 mois"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|1" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|1" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="agegender">
-			<option uid="Iausicu6pk0" min="0" max="999" gender="m" name="Homme"/>
-			<option uid="gvXsXCKqbPD" min="0" max="999" gender="f" name="Femme"/>
+			<option uid="PlTdJYtk9mS" min="0" max="999" gender="m" name="Homme"/>
+			<option uid="Iausicu6pk0" min="0" max="999" gender="f" name="Femme"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" minage="1" maxage="5" uid="kaNcWCaRAr1" label="12-59 mois"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|2" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|2" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="agegender">
-			<option uid="TbspwAXR3OD" min="0" max="999" gender="m" name="Homme"/>
-			<option uid="TZRSB3xqZOq" min="0" max="999" gender="f" name="Femme"/>
+			<option uid="vMR1S7Xf8A6" min="0" max="999" gender="m" name="Homme"/>
+			<option uid="TbspwAXR3OD" min="0" max="999" gender="f" name="Femme"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" minage="5" maxage="10" uid="kaNcWCaRAr1" label="5-9 ans"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|3" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|3" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="agegender">
 			<option uid="N1Zr3qfbsCL" min="0" max="999" gender="m" name="Homme"/>
 			<option uid="hoNLYwhYjTL" min="0" max="999" gender="f" name="Femme"/>
@@ -6693,7 +7045,20 @@
 			<dataelement unique="encounters" minage="10" maxage="15" uid="kaNcWCaRAr1" label="10-14 ans"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|4" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|4" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="agegender">
 			<option uid="ZGJflSG6UwE" min="0" max="999" gender="m" name="Homme"/>
 			<option uid="JbIbKYeils6" min="0" max="999" gender="f" name="Femme"/>
@@ -6702,7 +7067,20 @@
 			<dataelement unique="encounters" minage="15" maxage="20" uid="kaNcWCaRAr1" label="15-19 ans"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|5" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|5" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="agegender">
 			<option uid="Hug5t6xZVoh" min="0" max="999" gender="m" name="Homme"/>
 			<option uid="cKXZcdLiGn5" min="0" max="999" gender="f" name="Femme"/>
@@ -6711,16 +7089,130 @@
 			<dataelement unique="encounters" minage="20" maxage="25" uid="kaNcWCaRAr1" label="20-24 ans"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|6" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|6" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="agegender">
-			<option uid="jwjJ1OTsb9O" min="0" max="999" gender="m" name="Homme"/>
-			<option uid="JmsSA826ihd" min="0" max="999" gender="f" name="Femme"/>
+			<option uid="fz2nTLdb2PJ" min="0" max="999" gender="m" name="Homme"/>
+			<option uid="Ofxid5wo6xe" min="0" max="999" gender="f" name="Femme"/>
 		</categoryOptionCombo>
 		<dataelements>
-			<dataelement unique="encounters" minage="25" maxage="50" uid="kaNcWCaRAr1" label="25-49 ans"/>
+			<dataelement unique="encounters" minage="25" maxage="30" uid="kaNcWCaRAr1" label="25-29 ans"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|7" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|6b" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="agegender">
+			<option uid="Sxn0D250lCS" min="0" max="999" gender="m" name="Homme"/>
+			<option uid="jZEPKiOdkVA" min="0" max="999" gender="f" name="Femme"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement unique="encounters" minage="30" maxage="35" uid="kaNcWCaRAr1" label="30-34 ans"/>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|6c" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="agegender">
+			<option uid="BXplpwIpqbT" min="0" max="999" gender="m" name="Homme"/>
+			<option uid="tUTbzZl9ptF" min="0" max="999" gender="f" name="Femme"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement unique="encounters" minage="35" maxage="40" uid="kaNcWCaRAr1" label="35-39 ans"/>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|6d" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="agegender">
+			<option uid="DHSRF6zTUCB" min="0" max="999" gender="m" name="Homme"/>
+			<option uid="dXWIMexqn99" min="0" max="999" gender="f" name="Femme"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement unique="encounters" minage="40" maxage="45" uid="kaNcWCaRAr1" label="40-44 ans"/>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|6e" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="agegender">
+			<option uid="hS6Tv3YxNfR" min="0" max="999" gender="m" name="Homme"/>
+			<option uid="KhOEQgU1NFl" min="0" max="999" gender="f" name="Femme"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement unique="encounters" minage="45" maxage="50" uid="kaNcWCaRAr1" label="45-49 ans"/>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par age et par sexe)|7" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="agegender">
 			<option uid="GOV8QlzHstb" min="0" max="999" gender="m" name="Homme"/>
 			<option uid="gROhM9NUOYB" min="0" max="999" gender="f" name="Femme"/>
@@ -6729,35 +7221,79 @@
 			<dataelement unique="encounters" minage="50" uid="kaNcWCaRAr1" label="50 ans et plus"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (anciens cas par age)" newcase="0" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (anciens cas par age)" newcase="0" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="age">
 			<option uid="hdW79u4HG4n" min="0" max="1" name="0-11 mois"/>
 			<option uid="gvXsXCKqbPD" min="1" max="5" name="12-59 mois"/>
 			<option uid="TZRSB3xqZOq" min="5" max="10" name="5-9 ans"/>
 			<option uid="LSc3yHFnyXy" min="10" max="15" name="10-14 ans"/>
 			<option uid="aBwE08HeLYw" min="15" max="20" name="15-19 ans"/>
-			<option uid="jYww3vBErHW" min="20" max="25" name="20-24 ans"/>
-			<option uid="LQISqPJCUJH" min="25" max="50" name="25-49 ans"/>
+			<option uid="h0OqmSfURUQ" min="20" max="25" name="20-24 ans"/>
+			<option uid="HlvkpZ2MJIl" min="25" max="30" name="25-29 ans"/>
+			<option uid="E91KVIXR8ve" min="30" max="35" name="30-34 ans"/>
+			<option uid="zgJOIBoycJD" min="35" max="40" name="35-39 ans"/>
+			<option uid="VdbpMB4xHmt" min="40" max="45" name="40-44 ans"/>
+			<option uid="vIomFxZNHTu" min="45" max="50" name="45-49 ans"/>
 			<option uid="LjzRme3MI8s" min="50" max="999" name="&gt;=50 ans"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" uid="Kg32Hb5UpUC" label="Anciens cas"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (cas particuliers par origine)" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PATIENTTYPE2" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (cas particuliers par origine)" type="item" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PATIENTTYPE" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="zone">
-			<option uid="MDkOkN6SD8A" value="1" name="District"/>
-			<option uid="bfvWKKACtrO" value="2" name="Hors district"/>
+			<option uid="MDkOkN6SD8A" value="1" name="District - AR"/>
+			<option uid="vxFU4n3A1P7" value="5" name="District - HAR"/>
+			<option uid="TevRFfJfqUw" value="2" name="Hors district"/>
 			<option uid="ryxFt2qd6MA" value="3" name="Hors province"/>
 			<option uid="pQTjP0wgke9" value="4" name="Hors Burundi"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PATIENTTYPE2" outputItemValue="1" uid="bfvWKKACtrO" label="Femmes en post-partum &lt;42 jours"/>
-			<dataelement unique="encounters" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PATIENTTYPE2" outputItemValueIn="2|4" uid="YOqnn9FNn2W" label="Femmes enceintes"/>
-			<dataelement unique="encounters" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PATIENTTYPE2" outputItemValue="3" uid="hQw1iAmOOl9" label="Patients PVVIH"/>
+			<dataelement unique="encounters" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PATIENTTYPE2" outputItemValueIn="2|4|5" uid="YOqnn9FNn2W" label="Femmes enceintes"/>
+			<dataelement unique="encounters" outputtype="transactionItemValue" outputid="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_PATIENTTYPE4" outputItemValue="1;" uid="hQw1iAmOOl9" label="Patients PVVIH"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (cas par mode d'arrivée)" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (cas par mode d'arrivée)" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="origin">
 			<option uid="XQxobLpM71T" value="healthcenter" name="Par CDS"/>
 			<option uid="tYIvBZGH9zh" value="otherhospital" name="Par autre hôpital"/>
@@ -6766,7 +7302,20 @@
 			<dataelement unique="encounters" uid="V4oQapFj8hP" label="Nombre de cas référés"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (cas par mode de sortie)" type="encounter" encountertype="visit" incoming="1" uid="zmCc5BPQjPp">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (cas par mode de sortie)" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="outcome">
 			<option uid="iiX9rcRsZPL" value="better" name="Amélioré/Retour à domicile"/>
 			<option uid="thSLGzl7Azc" value="contrareference" name="Contre référés"/>
@@ -6776,6 +7325,89 @@
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" uid="VoPIe8CieEo" label="Nombre de cas sorties"/>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (petite chirurgie)" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement calculate="itemCount" unique="transactions" countall="1" uid="PlVOuMi10wp" label="Nombre d'actes de petite chirurgie">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_SMALLSURGERY" itemvalue="medwan.common.true"/>
+			</dataelement>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (petite chirurgie)|1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="age">
+			<option uid="GKkUPluq2QJ" min="0" max="5" name="Default"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement calculate="itemCount" unique="transactions" countall="1" uid="ykBQ1rg7T0Y" label="Nombre d'actes de petite chirurgie &lt; 5 ans">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_SMALLSURGERY" itemvalue="medwan.common.true"/>
+			</dataelement>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (lésions pré-cancéreuses col utérus)" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+		<attributeOptionCombo type="department">
+			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
+			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
+			<option uid="B3mJbSxZ33O" value="den" name="Dentisterie"/>
+			<option uid="zhe4w2Dixus" value="der" name="Dermatologie"/>
+			<option uid="CCIAg5PRnRP" value="gyn" name="Gyneco-obstetrique"/>
+			<option uid="jfjXznWnBfI" value="int" name="Medecine interne"/>
+			<option uid="rE5t6LaDPlm" value="orl" name="ORL"/>
+			<option uid="iSViL67tigT" value="oph" name="Ophtalmologie"/>
+			<option uid="TUKn6BQQ1kZ" value="ped" name="Pediatrie"/>
+			<option uid="hNxaaaFgAFq" value="kin" name="Rehabilitation-Kinesitherapie"/>
+			<option uid="yi5TSjCXC1y" value="urg" name="Urgences"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="age">
+			<option uid="t3eEbkLledV" min="10" max="15" name="10-14 ans"/>
+			<option uid="QLFbCYqXnp4" min="15" max="20" name="15-19 ans"/>
+			<option uid="qKufGd49w2h" min="20" max="25" name="20-24 ans"/>
+			<option uid="siUD0aUXgBP" min="25" max="30" name="25-29 ans"/>
+			<option uid="BWPBFjj3TF7" min="30" max="35" name="30-34 ans"/>
+			<option uid="KLpoloSLQ21" min="35" max="40" name="35-39 ans"/>
+			<option uid="eWtXSPbs5gy" min="40" max="45" name="40-44 ans"/>
+			<option uid="aHFM8bFfdLz" min="45" max="50" name="45-49 ans"/>
+			<option uid="DXR8GpeXGTk" min="50" max="999" name="&gt;=50 ans"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement calculate="itemCount" unique="transactions" countall="1" uid="HKsGZ8px7wu" label="Nombre de femmes dépistées">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_UTERUSPRECANCER_SCREENING" itemvalue="medwan.common.true"/>
+			</dataelement>
+			<dataelement calculate="itemCount" unique="transactions" countall="1" uid="cFPxupKCWKO" label="Nombre de femmes dépistées positives">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_UTERUSPRECANCER_POSITIVE" itemvalue="medwan.common.true"/>
+			</dataelement>
+			<dataelement calculate="itemCount" unique="transactions" countall="1" uid="XqtTHVvg0CA" label="Nombre de femmes traitées">
+				<item itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_UTERUSPRECANCER_TREATMENT" itemvalue="medwan.common.true"/>
+			</dataelement>
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST" type="title" uid="E9v9OrklEEC"/>

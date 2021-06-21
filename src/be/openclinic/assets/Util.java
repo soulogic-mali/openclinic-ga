@@ -63,7 +63,7 @@ public class Util {
 		int count = 0;
 		Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
 		try {
-			String sSql="select count(*) total from oc_assets a,oc_maintenanceplans p,oc_maintenanceoperations o where a.oc_asset_objectid=replace(oc_maintenanceplan_assetuid,'"+MedwanQuery.getInstance().getConfigInt("serverId")+".','') and oc_maintenanceplan_objectid=replace(oc_maintenanceoperation_maintenanceplanuid,'"+MedwanQuery.getInstance().getConfigInt("serverId")+".','')";
+			String sSql="select count(distinct oc_maintenanceoperation_objectid) total from oc_assets a,oc_maintenanceplans p,oc_maintenanceoperations o where a.oc_asset_objectid=replace(oc_maintenanceplan_assetuid,'"+MedwanQuery.getInstance().getConfigInt("serverId")+".','') and oc_maintenanceplan_objectid=replace(oc_maintenanceoperation_maintenanceplanuid,'"+MedwanQuery.getInstance().getConfigInt("serverId")+".','')";
 			Enumeration<String> pars = parameters.keys();
 			while(pars.hasMoreElements()) {
 				String key = pars.nextElement();

@@ -1112,7 +1112,10 @@ public class SPT {
 		try {
 			String sptp = Pointer.getPointerWithDate(pointer,conn);
 			String sptPointer =sptp.split("\\|")[0];
-			String pointerupdate = sptp.split("\\|")[1];
+			String pointerupdate = null;
+			if(sptp.split("\\|").length>1) {
+				pointerupdate = sptp.split("\\|")[1];
+			}
 			if(sptPointer.length()>0){
 				Hashtable sptSigns=unSerializeSigns(sptPointer);
 				Hashtable cleanedSptSigns = new Hashtable();

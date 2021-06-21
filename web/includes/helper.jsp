@@ -695,6 +695,18 @@
         return tableHeader;
     }
 
+    public String writeTableHeaderButton(String sTitle, String sButton){
+        String tableHeader = "<table width='100%' cellspacing='0' class='list' style='border-bottom:none;'>"+
+                              "<tr class='admin'>"+
+                               "<td id='tableHeaderTitle' width='1%' nowrap>"+sTitle+"</td>";
+        tableHeader+= "<td align='left'>"+sButton+"</td>";
+
+        tableHeader+=  "</tr>"+
+                      "</table>";
+
+        return tableHeader;
+    }
+
     //--- GET TRAN DB -----------------------------------------------------------------------------
     public String getTranDb(String sType, String sID, String sLanguage){
         return ScreenHelper.getTranDb(sType,sID,sLanguage);

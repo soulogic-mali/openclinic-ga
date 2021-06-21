@@ -289,7 +289,7 @@
     String sMessage = "";
     
     if(sEditAssetUID.length() > 0 ){
-        asset.setUid(sEditAssetUID);
+        asset = Asset.get(sEditAssetUID);
     }
     else{
         asset.setUid("-1");
@@ -404,7 +404,7 @@
     
     if(!errorOccurred){
     	//initialize maintenance plans if new asset
-    	if(checkString(request.getParameter("newasset")).equals("1")){
+    	if(SH.ci("loadDefaultMaintenancePlansForNewAsset",0)==1 && checkString(request.getParameter("newasset")).equals("1")){
     		asset.setDefaultMaintenancePlans();
     	}
         sMessage = "<font color='green'>"+getTranNoLink("web","dataIsSaved",sWebLanguage)+"</font>";

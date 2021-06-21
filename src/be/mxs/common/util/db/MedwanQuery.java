@@ -4314,7 +4314,7 @@ public class MedwanQuery {
 	        	ps.setInt(1, Integer.parseInt(encounterUid.split("\\.")[1]));
 	        	ps.setString(2, encounterUid);
 	        	ps.setString(3, types[n]);
-	        	if(values[n].length()>0){
+	        	if(values.length>n && values[n].length()>0){
 	        		ps.setString(4, values[n].replaceAll("\\{lessthan\\}","").replaceAll("\\{morethan\\}","").replaceAll("\\{like\\}","").replaceAll("\\{sem\\}",";"));
 	        	}
 	        	ResultSet rs = ps.executeQuery();

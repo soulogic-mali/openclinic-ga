@@ -998,7 +998,7 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
                 	Debug.println("normal : "+normal); 
                     
 	                if(SH.ci("enableLabrev", 1)==1) {
-	                	cell=createLabelCourier(result,labResultFontSize,10,Font.NORMAL);
+	                	cell=createLabelCourier(normal,labResultFontSize,10,Font.NORMAL);
 		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
 		                subTable.addCell(cell);
@@ -1040,7 +1040,7 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
 		                subTable.addCell(cell);
 	                }
 	                else {
-	                	cell=createLabelCourier(result,labResultFontSize,14,Font.NORMAL);
+	                	cell=createLabelCourier(normal,labResultFontSize,14,Font.NORMAL);
 		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
 		                subTable.addCell(cell);
@@ -1218,7 +1218,7 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
                 }
                 else {
 	                if(SH.ci("enableLabrev", 1)==1) {
-	                	cell=createLabelCourier(result,labResultFontSize,55,Font.NORMAL);
+	                	cell=createLabelCourier(normal,labResultFontSize,55,Font.NORMAL);
 		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
 		                subTable.addCell(cell);
@@ -1260,7 +1260,7 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
 		                subTable.addCell(cell);
 	                }
 	                else {
-	                	cell=createLabelCourier(result,labResultFontSize,59,Font.NORMAL);
+	                	cell=createLabelCourier(normal,labResultFontSize,59,Font.NORMAL);
 		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
 		                subTable.addCell(cell);
@@ -1641,7 +1641,7 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
         cell=createLabel(MedwanQuery.getInstance().getLabel("labresult","requestdate",user.person.language),8,15,Font.ITALIC);
         cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
         subTable.addCell(cell);
-        cell=createLabel(ScreenHelper.fullDateFormat.format(labRequest.getRequestdate()),10,20,Font.BOLD);
+        cell=createLabel(ScreenHelper.fullDateFormat.format(tran.getUpdateTime()),10,20,Font.BOLD);
         cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
         subTable.addCell(cell);
         cell=createLabel(MedwanQuery.getInstance().getLabel("labresult","service",user.person.language),8,20,Font.ITALIC);

@@ -61,8 +61,8 @@
         String[] items = name.split("\\.");
         if(items[0].equalsIgnoreCase("show")){
             LabRequest labRequest = new LabRequest(Integer.parseInt(items[1]),Integer.parseInt(items[2]));
-            if(labRequest.getRequestdate()!=null){
-                requestList.put(new SimpleDateFormat("yyyyMMddHHmmss").format(labRequest.getRequestdate())+"."+items[1]+"."+items[2],labRequest);
+            if(labRequest.getTransaction()!=null){
+                requestList.put(new SimpleDateFormat("yyyyMMddHHmmss").format(labRequest.getTransaction().getUpdateTime())+"."+items[1]+"."+items[2],labRequest);
             }
         }
     }
@@ -94,7 +94,7 @@
 	        while(requestsIterator.hasNext()){
 	            LabRequest labRequest = (LabRequest)requestList.get(requestsIterator.next());
 	            
-	            out.print("<td>"+ScreenHelper.fullDateFormat.format(labRequest.getRequestdate())+"&nbsp;&nbsp;&nbsp;"+
+	            out.print("<td>"+ScreenHelper.fullDateFormat.format(labRequest.getTransaction().getUpdateTime())+"&nbsp;&nbsp;&nbsp;"+
 	                       "<a href='javascript:showRequest("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'><b>"+labRequest.getTransactionid()+"</b></a><br/>"+
 	                       "<img height='14px' src='"+sCONTEXTPATH+"/_img/icons/icon_print.png'> <a href='javascript:printRequest("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'><b>"+getTran(request,"web","labresults",sWebLanguage)+"</b></a><br/>"+
 	                       "<img height='14px' src='"+sCONTEXTPATH+"/_img/icons/icon_print.png'> <a href='javascript:printOrder("+labRequest.getServerid()+","+labRequest.getTransactionid()+")'><b>"+getTran(request,"web","laborder",sWebLanguage)+"</b></a></td>");

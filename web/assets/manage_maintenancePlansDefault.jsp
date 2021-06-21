@@ -36,7 +36,7 @@
 		    <table class="list" border="0" width="100%" cellspacing="1">        
 		        <%-- search ASSET --%>    
 		        <tr>
-		            <td class="admin"><%=getTran(request,"web.assets","asset",sWebLanguage)%>&nbsp;</td>
+		            <td class="admin"><%=getTran(request,"web","nomenclature",sWebLanguage)%>&nbsp;</td>
 		            <td class="admin2">
 		                <input type="text" class="text" readonly id="nomenclature" name="nomenclature" size="50" maxLength="80" value="">
 		                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("Web","select",sWebLanguage)%>" onclick="searchNomenclature('FindNomenclatureCode','nomenclature');">
@@ -124,6 +124,7 @@
 	}
     if(sAction.equalsIgnoreCase("edit")){
     	plan = MaintenancePlan.getFromDefault(sEditPlanUID);
+    	plan.setUid(sEditPlanUID);
     }
     else if(sAction.equalsIgnoreCase("new")){
     	plan = new MaintenancePlan();
@@ -281,9 +282,9 @@
 		            <td class="admin"/>
 		            <td class="admin2" colspan="3">
 						<%
-							if(activeUser.getAccessRight("assets.defaultmaintenanceplans.add")){
+							if(activeUser.getAccessRight("assets.defaultmaintenanceplans.edit")){
 						%>
-		                <input class="button" type="button" name="buttonAddDefault" id="buttonAddDefault" value="<%=getTranNoLink("web","adddefault",sWebLanguage)%>" onclick="addDefault();">&nbsp;
+		                <input class="button" type="button" name="buttonSaveDefault" id="buttonSaveDefault" value="<%=getTranNoLink("web","save",sWebLanguage)%>" onclick="saveDefault();">&nbsp;
 						<%
 							}
 							if(activeUser.getAccessRight("assets.defaultmaintenanceplans.select")){
@@ -348,7 +349,7 @@
 		}
 	}
 	
-	function addDefault(overwrite){
+	function saveDefault(overwrite){
 		if(document.getElementById('nomenclaturecode').value==''){
 			alert('<%=getTranNoLink("web","nomenclaturenotspecified",sWebLanguage)%>');
 		}
@@ -371,31 +372,25 @@
             "&comment3="+document.getElementById('comment3').value+
             "&comment4="+document.getElementById('comment4').value+
             "&comment5="+document.getElementById('comment5').value+
-            /*
-            "&comment6="+EditForm.comment6.value+
-            "&comment7="+EditForm.comment7.value+
-            "&comment8="+EditForm.comment8.value+
-            "&comment9="+EditForm.comment9.value+
-            */
             "&comment10="+EditForm.comment10.value+
             "&instructions="+document.getElementById('instructions').value.replace(new RegExp("'", 'g'), '´').replace(new RegExp('"', 'g'), '´');
 	        if(overwrite){
 	        	sParams+="&overwrite=1";
 	        }
-		    var url = "<c:url value='/assets/ajax/maintenancePlan/addDefault.jsp'/>?ts="+new Date().getTime();
+		    var url = "<c:url value='/assets/ajax/maintenancePlan/saveDefault.jsp'/>?ts="+new Date().getTime();
 		    new Ajax.Request(url,{
 		      method: "POST",
 		      parameters: sParams,
 		      onSuccess: function(resp){
 		    	  if(resp.responseText.indexOf("OK-200")>0){
-		        	  viewDefault();
+		        	  window.location.href='<%=sCONTEXTPATH%>/main.jsp?Page=assets/manage_maintenancePlansDefault.jsp';
 		    	  }
 		    	  else if(resp.responseText.indexOf("NOK-300")>0){
 		    		  alert('NOK-300 <%=getTranNoLink("web","assetnotspecified",sWebLanguage)%>');
 		    	  }
 		    	  else if(resp.responseText.indexOf("NOK-400")>0){
 		    		  if(window.confirm('<%=getTranNoLink("web","overwritemaintenanceplan",sWebLanguage)%>: '+document.getElementById('name').value+" ["+document.getElementById("frequency").options[document.getElementById("frequency").selectedIndex].text+"]"+"?")){
-		    			  addDefault(true);
+		    			  saveDefault(true);
 		    		  }
 		    	  }
 		      },
@@ -453,7 +448,6 @@
   <%-- SAVE MAINTENANCE PLAN --%>
   function saveMaintenancePlan(){
     var okToSubmit = true;
-    
     <%-- check required fields --%>
     if(requiredFieldsProvided()){
       <%-- check email (planManager) --%>
@@ -474,8 +468,6 @@
         var sParams = "EditPlanUID="+EditForm.EditPlanUID.value+
                       "&name="+EditForm.name.value+
                       "&assetUID="+EditForm.assetUID.value+
-                      "&startDate="+EditForm.startDate.value+
-                      "&endDate="+EditForm.endDate.value+
                       "&frequency="+EditForm.frequency.value+
                       "&operator="+EditForm.operator.value+
                       "&planManager="+EditForm.planManager.value+
@@ -485,12 +477,6 @@
                       "&comment3="+EditForm.comment3.value+
                       "&comment4="+EditForm.comment4.value+
                       "&comment5="+EditForm.comment5.value+
-                      /*
-                      "&comment6="+EditForm.comment6.value+
-                      "&comment7="+EditForm.comment7.value+
-                      "&comment8="+EditForm.comment8.value+
-                      "&comment9="+EditForm.comment9.value+
-                      */
                       "&comment10="+EditForm.comment10.value+
                       "&lockedby="+document.getElementById("lockedby").value+
                       "&instructions="+EditForm.instructions.value;
@@ -527,11 +513,7 @@
   
   <%-- REQUIRED FIELDS PROVIDED --%>
   function requiredFieldsProvided(){
-	  if(document.getElementById("startDate").value.length == 0 ){
-		  document.getElementById("startDate").focus();
-		  return false;
-	  }
-	  else if(document.getElementById("name").value.length == 0 ){
+	  if(document.getElementById("name").value.length == 0 ){
 		  document.getElementById("name").focus();
 		  return false;
 	  }

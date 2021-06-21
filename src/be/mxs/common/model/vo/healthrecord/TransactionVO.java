@@ -10,6 +10,7 @@ import be.openclinic.adt.Encounter;
 import be.openclinic.common.IObjectReference;
 import be.openclinic.common.ObjectReference;
 import be.openclinic.finance.Prestation;
+import be.openclinic.medical.RequestedLabAnalysis;
 import be.openclinic.system.SH;
 import net.admin.AdminPerson;
 
@@ -39,10 +40,19 @@ public class TransactionVO extends IObjectReference implements Serializable, IId
     private int version;
     private int versionserverid;
     private Date timestamp;
+    private Vector analyses = new Vector();
     private static SimpleDateFormat extDateFormat = ScreenHelper.fullDateFormatSS;
 
     
-    //--- CONSTRUCTOR 1 ---------------------------------------------------------------------------
+    public Vector getAnalyses() {
+		return analyses;
+	}
+
+	public void setAnalyses(Vector analyses) {
+		this.analyses = analyses;
+	}
+
+	//--- CONSTRUCTOR 1 ---------------------------------------------------------------------------
     public TransactionVO(Integer transactionId, String transactionType, Date creationDate, Date updateTime,
     		             int status, UserVO user, Collection itemsVO, int serverid, int version,
     		             int versionserverid, Date timestamp) {
@@ -553,6 +563,39 @@ public class TransactionVO extends IObjectReference implements Serializable, IId
     			transactionVO.items.add(itemVO);
     		}
     	}
+    	transactionVO.analyses=new Vector();
+    	Element eAnalyses = transaction.element("analyses");
+    	if(eAnalyses!=null) {
+    		Iterator analyses = eAnalyses.elementIterator("analysis");
+    		while(analyses.hasNext()) {
+    			Element analysis = (Element)analyses.next();
+	    		RequestedLabAnalysis a = new RequestedLabAnalysis();
+	    		a.setServerId(transactionVO.serverId+"");
+	    		a.setTransactionId(transactionVO.transactionId+"");
+	    		a.setAnalysisCode(SH.c(analysis.elementText("analysiscode")));
+	    		a.setComment(SH.c(analysis.elementText("comment")));
+	    		a.setResultValue(SH.c(analysis.elementText("resultvalue")));
+	    		a.setResultUnit(SH.c(analysis.elementText("resultunit")));
+	    		a.setResultModifier(SH.c(analysis.elementText("resultmodifier")));
+	    		a.setResultRefMax(SH.c(analysis.elementText("resultrefmax")));
+	    		a.setResultRefMin(SH.c(analysis.elementText("resultrefmin")));
+	    		a.setResultDate(SH.c(analysis.elementText("resultdate")).length()==0?null:new java.util.Date(Long.parseLong(analysis.elementText("resultdate"))));
+	    		a.setResultUserId(SH.c(analysis.elementText("userid")));
+	    		a.setPatientId(SH.c(analysis.elementText("patientid")));
+	    		a.setResultProvisional(SH.c(analysis.elementText("resultprovisional")));
+	    		a.setTechnicalvalidation(SH.c(analysis.elementText("technicalvalidator")).length()==0?-1:Integer.parseInt(analysis.elementText("technicalvalidator")));
+	    		a.setTechnicalvalidationdatetime(SH.c(analysis.elementText("technicalvalidationdatetime")).length()==0?null:new java.util.Date(Long.parseLong(analysis.elementText("technicalvalidationdatetime"))));
+	    		a.setFinalvalidation(SH.c(analysis.elementText("finalvalidator")).length()==0?-1:Integer.parseInt(analysis.elementText("finalvalidator")));
+	    		a.setFinalvalidationdatetime(SH.c(analysis.elementText("finalvalidationdatetime")).length()==0?null:new java.util.Date(Long.parseLong(analysis.elementText("finalvalidationdatetime"))));
+	    		a.setRequestDate(SH.c(analysis.elementText("requestdatetime")).length()==0?null:new java.sql.Date(Long.parseLong(analysis.elementText("requestdatetime"))));
+	    		a.setSamplereceptiondatetime(SH.c(analysis.elementText("samplereceptiondatetime")).length()==0?null:new java.sql.Date(Long.parseLong(analysis.elementText("samplereceptiondatetime"))));
+	    		a.setSampletakendatetime(SH.c(analysis.elementText("sampletakendatetime")).length()==0?null:new java.sql.Date(Long.parseLong(analysis.elementText("sampletakendatetime"))));
+	    		a.setSampler(SH.c(analysis.elementText("sampler")).length()==0?-1:Integer.parseInt(analysis.elementText("sampler")));
+	    		a.setWorklisteddatetime(SH.c(analysis.elementText("worklisteddatetime")).length()==0?null:new java.sql.Date(Long.parseLong(analysis.elementText("worklisteddatetime"))));
+	    		a.setUpdatetime(SH.c(analysis.elementText("updatetime")).length()==0?null:new java.sql.Date(Long.parseLong(analysis.elementText("updatetime"))));
+	    		transactionVO.analyses.add(a);
+    		}
+    	}
     	return transactionVO;
     }
     
@@ -576,6 +619,36 @@ public class TransactionVO extends IObjectReference implements Serializable, IId
         while(iterator.hasNext()){
             itemVO=(ItemVO)iterator.next();
             eItems.add(itemVO.toXMLElement());
+        }
+        if(transactionType.equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_LAB_REQUEST")) {
+        	//Add lab analyses to transaction
+        	Element eAnalyses = transaction.addElement("analyses");
+        	Vector analyses = RequestedLabAnalysis.find(serverId+"", transactionId+"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", false, "");
+        	for(int n=0;n<analyses.size();n++) {
+        		RequestedLabAnalysis analysis = (RequestedLabAnalysis)analyses.elementAt(n);
+        		Element eAnalysis = eAnalyses.addElement("analysis");
+        		eAnalysis.addElement("analysiscode").setText(analysis.getAnalysisCode());
+        		eAnalysis.addElement("comment").setText(analysis.getComment());
+        		eAnalysis.addElement("resultvalue").setText(analysis.getResultValue());
+        		eAnalysis.addElement("resultunit").setText(analysis.getResultUnit());
+        		eAnalysis.addElement("resultmodifier").setText(analysis.getResultModifier());
+        		eAnalysis.addElement("resultrefmax").setText(analysis.getResultRefMax());
+        		eAnalysis.addElement("resultrefmin").setText(analysis.getResultRefMin());
+        		eAnalysis.addElement("resultdate").setText(analysis.getResultDate()==null?"":analysis.getResultDate().getTime()+"");
+        		eAnalysis.addElement("resultuserid").setText(analysis.getResultUserId());
+        		eAnalysis.addElement("patientid").setText(analysis.getPatientId());
+        		eAnalysis.addElement("resultprovisional").setText(analysis.getResultProvisional());
+        		eAnalysis.addElement("technicalvalidator").setText(analysis.getTechnicalvalidation()+"");
+        		eAnalysis.addElement("technicalvalidationdatetime").setText(analysis.getTechnicalvalidationdatetime()==null?"":analysis.getTechnicalvalidationdatetime().getTime()+"");
+        		eAnalysis.addElement("finalvalidator").setText(analysis.getFinalvalidation()+"");
+        		eAnalysis.addElement("finalvalidationdatetime").setText(analysis.getFinalvalidationdatetime()==null?"":analysis.getFinalvalidationdatetime().getTime()+"");
+        		eAnalysis.addElement("requestdatetime").setText(analysis.getRequestDate()==null?"":analysis.getRequestDate().getTime()+"");
+        		eAnalysis.addElement("samplereceptiondatetime").setText(analysis.getSamplereceptiondatetime()==null?"":analysis.getSamplereceptiondatetime().getTime()+"");
+        		eAnalysis.addElement("sampletakendatetime").setText(analysis.getSampletakendatetime()==null?"":analysis.getSampletakendatetime().getTime()+"");
+        		eAnalysis.addElement("sampler").setText(analysis.getSampler()+"");
+        		eAnalysis.addElement("worklisteddatetime").setText(analysis.getWorklisteddatetime()==null?"":analysis.getWorklisteddatetime().getTime()+"");
+        		eAnalysis.addElement("updatetime").setText(analysis.getUpdatetime()==null?"":analysis.getUpdatetime().getTime()+"");
+        	}
         }
         return transaction;
     }

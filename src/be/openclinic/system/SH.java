@@ -22,10 +22,6 @@ public class SH extends ScreenHelper {
 		return checkString(s,defaultValue);
 	}
 	
-	public static String p(HttpServletRequest request,String parameter) {
-		return c(request.getParameter(parameter));
-	}
-	
 	public static String sid() {
 		return SH.getConfigString("serverid");
 	}
@@ -40,6 +36,10 @@ public class SH extends ScreenHelper {
 	
 	public static String c(java.util.Date d) {
 		return formatDate(d,SH.fullDateFormatSS);
+	}
+	
+	public static String p(HttpServletRequest request, String parameter) {
+		return c(request.getParameter(parameter));
 	}
 	
     public static int ci(String key, int defaultValue) {

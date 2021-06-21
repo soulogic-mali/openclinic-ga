@@ -1,8 +1,8 @@
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
+<%@page import="org.apache.commons.fileupload.*"%>
+<%@page import="org.apache.commons.fileupload.servlet.*"%>
 <%@page import="org.dom4j.tree.*, 
-	be.openclinic.reporting.*,java.io.*,
-	org.apache.commons.fileupload.servlet.*,
-	org.apache.commons.fileupload.disk.*,
-	org.apache.commons.fileupload.*"%>
+	be.openclinic.reporting.*,java.io.*"%>
 <%@include file="/includes/validateUser.jsp"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%=checkPermission(out,"system.management","select",activeUser)%>
@@ -30,8 +30,8 @@ Element getElement(Element element, String elementname, String attributename,Str
 	String sReportProfiles = ";";
 	String sReportUid = checkString(request.getParameter("selectedreport"));
 	String sReportXml="";
-	
-	boolean isMultipart = FileUpload.isMultipartContent(request);
+
+	boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 	if (!isMultipart) {
 		Debug.println("NOT MULTIPART");
 	}

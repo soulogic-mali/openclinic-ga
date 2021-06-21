@@ -32,6 +32,7 @@ import be.openclinic.pharmacy.Batch;
 import be.openclinic.pharmacy.Product;
 import be.openclinic.pharmacy.ProductStock;
 import be.openclinic.system.Center;
+import be.openclinic.system.SH;
 import net.admin.Service;
 
 public class DHIS2Exporter {
@@ -1423,6 +1424,7 @@ public class DHIS2Exporter {
 		double maxAge=-1;
 		String origin=null;
 		String outcome=null;
+		String invalue=null;
 		//This is where we create the DataValueSet
         DataValueSet dataValueSet = new DataValueSet();
         dataValueSet.setDataSet(dataset.attributeValue("uid"));
@@ -1452,6 +1454,10 @@ public class DHIS2Exporter {
 					maxAge=Double.parseDouble(categoryOptionComboValue.attributeValue("max"));
 					gender=categoryOptionComboValue.attributeValue("gender");
 					Debug.println("Exporting categoryOptionType "+categoryOptionCombo.attributeValue("type")+" - "+minAge+"->"+maxAge+ " | "+gender);
+				}
+				else if(categoryOptionCombo.attributeValue("type").equalsIgnoreCase("invalue")){
+					invalue=categoryOptionComboValue.attributeValue("value");
+					Debug.println("Exporting categoryOptionType "+categoryOptionCombo.attributeValue("type")+" - "+invalue);
 				}
 				Debug.println("Checking "+items.size()+" items...");
 				for(int n=0;n<items.size();n++){
@@ -1484,6 +1490,11 @@ public class DHIS2Exporter {
 						}
 						catch(Exception e){
 							e.printStackTrace();
+						}
+					}
+					else if(categoryOptionCombo.attributeValue("type").equalsIgnoreCase("invalue")){
+						if(item.split(";").length>6 && item.split(";")[6].length()>0 && invalue.toLowerCase().contains(item.split(";")[6].toLowerCase())) {
+							selectedItems.add(item);
 						}
 					}
 					else if(categoryOptionCombo.attributeValue("type").equalsIgnoreCase("default")){
@@ -1761,6 +1772,7 @@ public class DHIS2Exporter {
 		double maxAge=-1;
 		String origin=null;
 		String outcome=null;
+		String invalue=null;
 
 		//First we check if any categoryOptionCombo has been defined
 		Element categoryOptionCombo = dataset.element("categoryOptionCombo");
@@ -1784,6 +1796,9 @@ public class DHIS2Exporter {
 						maxAge=Double.parseDouble(categoryOptionComboValue.attributeValue("max"));
 						gender=categoryOptionComboValue.attributeValue("gender");
 						Debug.println("Exporting categoryOptionType "+categoryOptionCombo.attributeValue("type")+" - "+minAge+"->"+maxAge+ " | "+gender);
+					}
+					else if(categoryOptionCombo.attributeValue("type").equalsIgnoreCase("invalue")){
+						invalue=categoryOptionComboValue.attributeValue("value");
 					}
 					Debug.println("Checking "+items.size()+" items...");
 					for(int n=0;n<items.size();n++){
@@ -1816,6 +1831,11 @@ public class DHIS2Exporter {
 							}
 							catch(Exception e){
 								e.printStackTrace();
+							}
+						}
+						else if(categoryOptionCombo.attributeValue("type").equalsIgnoreCase("invalue")){
+							if(item.split(";").length>6 && item.split(";")[6].length()>0 && invalue.toLowerCase().contains(item.split(";")[6].toLowerCase())) {
+								selectedItems.add(item);
 							}
 						}
 						else if(categoryOptionCombo.attributeValue("type").equalsIgnoreCase("default")){
@@ -2052,7 +2072,7 @@ public class DHIS2Exporter {
 				if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("1") && !Encounter.isNewCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
 					continue;
 				}
-				else if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("0") && !Encounter.isOldCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
+				else if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("0") && Encounter.isNewCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
 					continue;
 				}
 				if(sOutcome.length()>0 && !sOutcome.equalsIgnoreCase(item.split(";")[5])){
@@ -2370,8 +2390,10 @@ public class DHIS2Exporter {
 			HashSet uniqueexams = new HashSet();
 			for(int n=0;n<items.size();n++){
 				String item = (String)items.elementAt(n);
-				if(inArray(item.split(";")[3].toLowerCase(), dataelement.attributeValue("code").toLowerCase())){
-					uniqueexams.add(item.split(";")[5]);
+				if(SH.c(dataelement.attributeValue("invalue")).length()==0 || (item.split(";").length>6 && item.split(";")[6].length()>0 && dataelement.attributeValue("invalue").toLowerCase().contains(item.split(";")[6].toLowerCase()))) {
+					if(inArray(item.split(";")[3].toLowerCase(), dataelement.attributeValue("code").toLowerCase())){
+						uniqueexams.add(item.split(";")[5]);
+					}
 				}
 			}
 			if(MedwanQuery.getInstance().getConfigInt("cleanDHIS2DataSets",0)==0 && uniqueexams.size()>0){
@@ -2394,6 +2416,12 @@ public class DHIS2Exporter {
 			long uidcounter=0;
 			for(int n=0;n<items.size();n++){
 				String item = (String)items.elementAt(n);
+				if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("1") && !Encounter.isNewCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
+					continue;
+				}
+				else if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("0") && Encounter.isNewCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
+					continue;
+				}
 				if(ScreenHelper.checkString(dataelement.attributeValue("minage")).length()>0){
 					try{
 						double minAge = Double.parseDouble(dataelement.attributeValue("minage"));
@@ -2568,8 +2596,6 @@ public class DHIS2Exporter {
 											}
 											else if(ScreenHelper.checkString(dataelement.attributeValue("unique")).equalsIgnoreCase("transactions")){
 												uids.put(item.split(";")[11],value);
-												System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> item "+item.split(";")[11]+" - "+value);
-												System.out.println(dataelement.asXML());
 											}
 											else {
 												uidcounter+=value;
@@ -2829,7 +2855,7 @@ public class DHIS2Exporter {
 			if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("1") && !Encounter.isNewCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
 				continue;
 			}
-			else if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("0") && !Encounter.isOldCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
+			else if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("0") && Encounter.isNewCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
 				continue;
 			}
 			if(sOutcome.length()>0 && !sOutcome.equalsIgnoreCase(item.split(";")[5])){
@@ -2978,6 +3004,12 @@ public class DHIS2Exporter {
 		String sEncounterType = ScreenHelper.checkString(dataset.attributeValue("encountertype"));
 		for(int n=0;n<items.size();n++){
 			String item = (String)items.elementAt(n);
+			if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("1") && !Encounter.isNewCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
+				continue;
+			}
+			else if(ScreenHelper.checkString(dataset.attributeValue("newcase")).equals("0") && Encounter.isNewCase(MedwanQuery.getInstance().getConfigString("serverId")+"."+item.split(";")[1])){
+				continue;
+			}
 			if(!bMortality || item.split(";")[5].startsWith("dead")){
 				if(sEncounterType.length()==0 || ScreenHelper.checkString(item.split(";")[6]).equalsIgnoreCase(sEncounterType)){
 					Iterator i = dataset.element("dataelements").elementIterator("dataelement");
@@ -3472,6 +3504,7 @@ public class DHIS2Exporter {
 							+ " a.personid=b.oc_encounter_patientuid and"
 							+ " a.dateofbirth>'1900-01-01' and"
 							+ " (oc_encounter_enddate>=? and oc_encounter_begindate<?)";
+			
 			PreparedStatement ps = conn.prepareStatement(sSql);
 			ps.setDate(1, new java.sql.Date(begin.getTime()));
 			ps.setDate(2, new java.sql.Date(end.getTime()));
@@ -3613,6 +3646,28 @@ public class DHIS2Exporter {
 		Vector items = new Vector();
 		Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
 		try{
+			String sExtra="";
+			if(ScreenHelper.checkString(dataset.attributeValue("transactiontype")).split(",").length>1){
+				sExtra+=" d.transactionType in (";
+				for(int n=0;n<ScreenHelper.checkString(dataset.attributeValue("transactiontype")).split(",").length;n++) {
+					if(n>0) {
+						sExtra+=",";
+					}
+					sExtra+="'"+ScreenHelper.checkString(dataset.attributeValue("transactiontype")).split(",")[n]+"'";
+				}
+				sExtra+=") and";
+			}
+			if(ScreenHelper.checkString(dataset.attributeValue("itemtype")).split(",").length>1){
+				sExtra+=" e.type in (";
+				for(int n=0;n<ScreenHelper.checkString(dataset.attributeValue("itemtype")).split(",").length;n++) {
+					if(n>0) {
+						sExtra+=",";
+					}
+					sExtra+="'"+ScreenHelper.checkString(dataset.attributeValue("itemtype")).split(",")[n]+"'";
+				}
+				sExtra+=") and";
+			}
+
 			String sSql = 	"select a.personid,gender,dateofbirth,oc_encounter_begindate,oc_encounter_enddate,oc_encounter_outcome,"
 							+ " oc_encounter_type,oc_encounter_origin,oc_encounter_objectid,(select max(oc_encounter_serviceuid) from oc_encounters_view where oc_encounter_serverid=b.oc_encounter_serverid and oc_encounter_objectid=b.oc_encounter_objectid and convert(oc_encounter_startdate,date)<=convert(d.updatetime,date) and convert(oc_encounter_enddate,date)>=convert(d.updatetime,date)) as oc_encounter_serviceuid,e.value,e.type,e.serverid,"
 							+ " e.transactionid,oc_encounter_situation,oc_encounter_begindate,oc_encounter_enddate"
@@ -3623,6 +3678,7 @@ public class DHIS2Exporter {
 							+ " c.personid=b.oc_encounter_patientuid and"
 							+ " c.healthrecordid=d.healthrecordid and"
 							+ " d.transactiontype like ? and"
+							+ sExtra
 							+ " e.serverid=d.serverid and"
 							+ " e.transactionid=d.transactionid and"
 							+ " e.type like ? and"
@@ -3636,13 +3692,13 @@ public class DHIS2Exporter {
 			if(ScreenHelper.checkString(dataset.attributeValue("exacttransactiontype")).equalsIgnoreCase("1")){
 				ps.setString(3, ScreenHelper.checkString(dataset.attributeValue("transactiontype")));
 			}
-			else{
+			else if(ScreenHelper.checkString(dataset.attributeValue("transactiontype")).split(",").length==1){
 				ps.setString(3, ScreenHelper.checkString(dataset.attributeValue("transactiontype"))+"%");
 			}
 			if(ScreenHelper.checkString(dataset.attributeValue("exactitemtype")).equalsIgnoreCase("1")){
 				ps.setString(4, ScreenHelper.checkString(dataset.attributeValue("itemtype")));
 			}
-			else{
+			else if(ScreenHelper.checkString(dataset.attributeValue("itemtype")).split(",").length==1){
 				ps.setString(4, ScreenHelper.checkString(dataset.attributeValue("itemtype"))+"%");
 			}
 			ResultSet rs = ps.executeQuery();
@@ -3827,7 +3883,7 @@ public class DHIS2Exporter {
 		Vector items = new Vector();
 		Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
 		try{
-			String sSql = 	"select a.personid,gender,dateofbirth,c.dhis2code,b.serverid,b.transactionid"
+			String sSql = 	"select a.personid,gender,dateofbirth,c.dhis2code,b.serverid,b.transactionid,b.resultvalue"
 							+ " from adminview a,requestedlabanalyses b,labanalysis c"
 							+ " where"
 							+ " a.personid=b.patientid and"
@@ -3854,7 +3910,8 @@ public class DHIS2Exporter {
 						+ScreenHelper.formatDate(rs.getDate("dateofbirth"))+";"
 						+rs.getString("dhis2code")+";"
 						+rs.getString("serverid")+";"
-						+rs.getString("transactionid")+";";
+						+rs.getString("transactionid")+";"
+						+rs.getString("resultvalue")+";";
 				Debug.println(item);
 				items.add(item);
 			}

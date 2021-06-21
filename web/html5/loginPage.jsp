@@ -44,6 +44,9 @@
         	if(MedwanQuery.getInstance().getConfigString("mobile.edition","").equalsIgnoreCase("spt")){
 				out.print("<script>window.location.href='welcomespt.jsp';</script>");
         	}
+        	if(MedwanQuery.getInstance().getConfigString("mobile.edition","").equalsIgnoreCase("gmao")){
+				out.print("<script>window.location.href='welcomegmao.jsp';</script>");
+        	}
         	else{
 				out.print("<script>window.location.href='welcome.jsp';</script>");
         	}
@@ -63,7 +66,7 @@
 		<form name='transactionForm' method='post'>
 			<table width='100%' cellpadding='0' cellspacing='0'>
 				<tr>
-					<td colspan='2' style='text-align:center;'><img style="max-width:100%;max-height:150px;" src='../_img/openclinic_logo.jpg'/></td>
+					<td colspan='2' style='text-align:center;'><img style="max-width:100%;max-height:150px;" src='<%=MedwanQuery.getInstance().getConfigString("mobileLoginLogo","../_img/openclinic_logo.jpg") %>'/></td>
 				</tr>
 				<tr>
 					<td colspan='2'>

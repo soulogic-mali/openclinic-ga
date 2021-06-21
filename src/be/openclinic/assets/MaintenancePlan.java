@@ -273,6 +273,14 @@ public class MaintenancePlan extends OC_Object {
 		}
     }
     
+    public static void addDocumentTagBinaryString(StringBuffer xml,String tag,ResultSet rs) throws SQLException{
+		String s = rs.getString("arch_document_"+tag);
+		if(ScreenHelper.checkString(s).length()>0){
+			xml.append("<"+tag+"><![CDATA["+HTMLEntities.htmlentities(s)+"]]></"+tag+">");
+			//xml.append("<"+tag+">"+HTMLEntities.xmlencode(s)+"</"+tag+">");
+		}
+    }
+    
     public static void addDocumentTagDate(StringBuffer xml,String tag,ResultSet rs) throws SQLException{
     	try{
 	    	java.util.Date d = rs.getTimestamp("arch_document_"+tag);
@@ -293,16 +301,16 @@ public class MaintenancePlan extends OC_Object {
     		ResultSet rs = ps.executeQuery();
     		if(rs.next()){
     			xml.append("<maintenanceplan serverid='"+rs.getInt("oc_maintenanceplan_serverid")+"' objectid='"+rs.getInt("oc_maintenanceplan_objectid")+"'>");
-    			addTagString(xml,"name",rs);
+    			addTagBinaryString(xml,"name",rs);
     			addTagString(xml,"assetuid",rs);
     			addTagDate(xml,"startdate",rs);
     			addTagString(xml,"frequency",rs);
-    			addTagString(xml,"operator",rs);
-    			addTagString(xml,"planmanager",rs);
+    			addTagBinaryString(xml,"operator",rs);
+    			addTagBinaryString(xml,"planmanager",rs);
     			addTagBinaryString(xml,"instructions",rs);
     			addTagDate(xml,"updatetime",rs);
     			addTagString(xml,"updateid",rs);
-    			addTagString(xml,"type",rs);
+    			addTagBinaryString(xml,"type",rs);
     			addTagDate(xml,"enddate",rs);
     			addTagBinaryString(xml,"comment1",rs);
     			addTagBinaryString(xml,"comment2",rs);
@@ -337,15 +345,15 @@ public class MaintenancePlan extends OC_Object {
     				addDocumentTagString(xml, "serverid", rs);
     				addDocumentTagString(xml, "objectid", rs);
     				addDocumentTagString(xml, "udi", rs);
-    				addDocumentTagString(xml, "title", rs);
-    				addDocumentTagString(xml, "description", rs);
-    				addDocumentTagString(xml, "category", rs);
-    				addDocumentTagString(xml, "author", rs);
+    				addDocumentTagBinaryString(xml, "title", rs);
+    				addDocumentTagBinaryString(xml, "description", rs);
+    				addDocumentTagBinaryString(xml, "category", rs);
+    				addDocumentTagBinaryString(xml, "author", rs);
     				addDocumentTagDate(xml, "date", rs);
-    				addDocumentTagString(xml, "destination", rs);
-    				addDocumentTagString(xml, "reference", rs);
+    				addDocumentTagBinaryString(xml, "destination", rs);
+    				addDocumentTagBinaryString(xml, "reference", rs);
     				addDocumentTagString(xml, "personid", rs);
-    				addDocumentTagString(xml, "storagename", rs);
+    				addDocumentTagBinaryString(xml, "storagename", rs);
     				addDocumentTagString(xml, "tran_serverid", rs);
     				addDocumentTagString(xml, "tran_transactionid", rs);
     				addDocumentTagDate(xml, "deletedate", rs);
@@ -759,6 +767,7 @@ public class MaintenancePlan extends OC_Object {
                 ps.executeUpdate();
             } 
             else{
+            	storeHistory();
                 // update existing record
                 sSql = "UPDATE OC_MAINTENANCEPLANS SET"+
                        "  OC_MAINTENANCEPLAN_NAME = ?, OC_MAINTENANCEPLAN_ASSETUID = ?, OC_MAINTENANCEPLAN_STARTDATE = ?,"+
@@ -835,6 +844,97 @@ public class MaintenancePlan extends OC_Object {
         
         return errorOccurred;
     }
+    public boolean hasHistory(){
+        boolean bHistory=false;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        
+        try{
+            String sSql = "SELECT * FROM oc_maintenanceplanshistory"+
+                          " WHERE (OC_maintenanceplan_SERVERID = ? AND OC_maintenanceplan_OBJECTID = ?)";
+            ps = oc_conn.prepareStatement(sSql);
+            ps.setInt(1,Integer.parseInt(getUid().substring(0,getUid().indexOf("."))));
+            ps.setInt(2,Integer.parseInt(getUid().substring(getUid().indexOf(".")+1)));
+
+            // execute
+            rs = ps.executeQuery();
+            bHistory=rs.next();
+        }
+        catch(Exception e){
+            if(Debug.enabled) e.printStackTrace();
+            Debug.printProjectErr(e,Thread.currentThread().getStackTrace());
+        }
+        finally{
+            try{
+                if(rs!=null) rs.close();
+                if(ps!=null) ps.close();
+                oc_conn.close();
+            }
+            catch(SQLException se){
+                Debug.printProjectErr(se,Thread.currentThread().getStackTrace());
+            }
+        }
+        
+        return bHistory;
+    }
+        
+    
+    public boolean storeHistory(){
+    	boolean errorOccurred = false;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sSql;
+        
+        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+                
+        try{            
+            // insert new plan
+            sSql = "INSERT INTO OC_MAINTENANCEPLANSHISTORY(OC_MAINTENANCEPLAN_SERVERID,OC_MAINTENANCEPLAN_OBJECTID,"+
+                   "  OC_MAINTENANCEPLAN_NAME,OC_MAINTENANCEPLAN_ASSETUID,OC_MAINTENANCEPLAN_STARTDATE,"+
+            	   "  OC_MAINTENANCEPLAN_FREQUENCY,OC_MAINTENANCEPLAN_OPERATOR,OC_MAINTENANCEPLAN_PLANMANAGER,"+
+                   "  OC_MAINTENANCEPLAN_INSTRUCTIONS,OC_MAINTENANCEPLAN_TYPE,OC_MAINTENANCEPLAN_ENDDATE,OC_MAINTENANCEPLAN_COMMENT1"
+                   + ",OC_MAINTENANCEPLAN_COMMENT2,OC_MAINTENANCEPLAN_COMMENT3,OC_MAINTENANCEPLAN_COMMENT4,OC_MAINTENANCEPLAN_COMMENT5"
+                   + ",OC_MAINTENANCEPLAN_COMMENT6,OC_MAINTENANCEPLAN_COMMENT7,OC_MAINTENANCEPLAN_COMMENT8,OC_MAINTENANCEPLAN_COMMENT9"
+                   + ",OC_MAINTENANCEPLAN_COMMENT10"+
+                   "  ,OC_MAINTENANCEPLAN_UPDATETIME,OC_MAINTENANCEPLAN_UPDATEID,OC_MAINTENANCEPLAN_LOCKEDBY,OC_MAINTENANCEPLAN_HISTORYDATE,OC_MAINTENANCEPLAN_HISTORYUSER)"+
+                   " select OC_MAINTENANCEPLAN_SERVERID,OC_MAINTENANCEPLAN_OBJECTID,"+
+		            "  OC_MAINTENANCEPLAN_NAME,OC_MAINTENANCEPLAN_ASSETUID,OC_MAINTENANCEPLAN_STARTDATE,"+
+		     	   "  OC_MAINTENANCEPLAN_FREQUENCY,OC_MAINTENANCEPLAN_OPERATOR,OC_MAINTENANCEPLAN_PLANMANAGER,"+
+		            "  OC_MAINTENANCEPLAN_INSTRUCTIONS,OC_MAINTENANCEPLAN_TYPE,OC_MAINTENANCEPLAN_ENDDATE,OC_MAINTENANCEPLAN_COMMENT1"
+		            + ",OC_MAINTENANCEPLAN_COMMENT2,OC_MAINTENANCEPLAN_COMMENT3,OC_MAINTENANCEPLAN_COMMENT4,OC_MAINTENANCEPLAN_COMMENT5"
+		            + ",OC_MAINTENANCEPLAN_COMMENT6,OC_MAINTENANCEPLAN_COMMENT7,OC_MAINTENANCEPLAN_COMMENT8,OC_MAINTENANCEPLAN_COMMENT9"
+		            + ",OC_MAINTENANCEPLAN_COMMENT10"+
+		            "  ,OC_MAINTENANCEPLAN_UPDATETIME,OC_MAINTENANCEPLAN_UPDATEID,OC_MAINTENANCEPLAN_LOCKEDBY,?,? from OC_MAINTENANCEPLANS"
+		            + " where OC_MAINTENANCEPLAN_SERVERID=? and OC_MAINTENANCEPLAN_OBJECTID=?";
+            ps = oc_conn.prepareStatement(sSql);
+            
+            int serverId = Integer.parseInt(getUid().split("\\.")[0]),
+                    objectId = Integer.parseInt(getUid().split("\\.")[1]);
+            ps.setTimestamp(1,new Timestamp(new java.util.Date().getTime()));
+            ps.setString(2, getUpdateUser());
+            ps.setInt(3, serverId);
+            ps.setInt(4, objectId);
+            ps.executeUpdate();
+        }
+        catch(Exception e){
+        	errorOccurred = true;
+        	e.printStackTrace();
+        }
+        finally{
+            try{
+                if(rs!=null) rs.close();
+                if(ps!=null) ps.close();
+                oc_conn.close();
+            }
+            catch(SQLException se){
+            	se.printStackTrace();
+            }
+        }
+        
+        return errorOccurred;
+    }
     
     //--- DELETE ----------------------------------------------------------------------------------
     public static boolean delete(String sPlanUID){
@@ -881,15 +981,82 @@ public class MaintenancePlan extends OC_Object {
     	MaintenancePlan plan = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+        if(splanUid.split("\\.").length==2) {
+	        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+	        
+	        try{
+	            String sSql = "SELECT * FROM OC_MAINTENANCEPLANS"+
+	                          " WHERE (OC_MAINTENANCEPLAN_SERVERID = ? AND OC_MAINTENANCEPLAN_OBJECTID = ?)";
+	            ps = oc_conn.prepareStatement(sSql);
+	            ps.setInt(1,Integer.parseInt(splanUid.substring(0,splanUid.indexOf("."))));
+	            ps.setInt(2,Integer.parseInt(splanUid.substring(splanUid.indexOf(".")+1)));
+	
+	            // execute
+	            rs = ps.executeQuery();
+	            if(rs.next()){
+	                plan = new MaintenancePlan();
+	                plan.setUid(rs.getString("OC_MAINTENANCEPLAN_SERVERID")+"."+rs.getString("OC_MAINTENANCEPLAN_OBJECTID"));
+	                plan.serverId = Integer.parseInt(rs.getString("OC_MAINTENANCEPLAN_SERVERID"));
+	                plan.objectId = Integer.parseInt(rs.getString("OC_MAINTENANCEPLAN_OBJECTID"));
+	                
+	                plan.name         = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_NAME"));
+	                plan.assetUID     = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_ASSETUID"));
+	                plan.startDate    = rs.getDate("OC_MAINTENANCEPLAN_STARTDATE");
+	                plan.endDate    = rs.getDate("OC_MAINTENANCEPLAN_ENDDATE");
+	                plan.frequency    = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_FREQUENCY"));
+	                plan.operator     = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_OPERATOR"));
+	                plan.planManager  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_PLANMANAGER"));
+	                plan.instructions = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_INSTRUCTIONS"));
+	                plan.type 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_TYPE"));
+	                plan.comment1 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT1"));
+	                plan.comment2 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT2"));
+	                plan.comment3 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT3"));
+	                plan.comment4 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT4"));
+	                plan.comment5 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT5"));
+	                plan.comment6 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT6"));
+	                plan.comment7 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT7"));
+	                plan.comment8 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT8"));
+	                plan.comment9 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT9"));
+	                plan.comment10 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT10"));
+	                
+	                // update-info
+	                plan.setUpdateDateTime(rs.getTimestamp("OC_MAINTENANCEPLAN_UPDATETIME"));
+	                plan.setUpdateUser(rs.getString("OC_MAINTENANCEPLAN_UPDATEID"));
+	                plan.setLockedBy(rs.getInt("OC_MAINTENANCEPLAN_LOCKEDBY"));
+	            }
+	        }
+	        catch(Exception e){
+	        	if(Debug.enabled) e.printStackTrace();
+	            Debug.printProjectErr(e,Thread.currentThread().getStackTrace());
+	        }
+	        finally{
+	            try{
+	                if(rs!=null) rs.close();
+	                if(ps!=null) ps.close();
+	                oc_conn.close();
+	            }
+	            catch(SQLException se){
+	                Debug.printProjectErr(se,Thread.currentThread().getStackTrace());
+	            }
+	        }
+        }
+        return plan;
+    }
+        
+    public static MaintenancePlan getHistory(String splanUid,java.util.Date timestamp){
+    	MaintenancePlan plan = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         
         Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
         
         try{
-            String sSql = "SELECT * FROM OC_MAINTENANCEPLANS"+
-                          " WHERE (OC_MAINTENANCEPLAN_SERVERID = ? AND OC_MAINTENANCEPLAN_OBJECTID = ?)";
+            String sSql = "SELECT * FROM OC_MAINTENANCEPLANSHISTORY"+
+                          " WHERE (OC_MAINTENANCEPLAN_SERVERID = ? AND OC_MAINTENANCEPLAN_OBJECTID = ? and oc_maintenanceplan_historydate=?)";
             ps = oc_conn.prepareStatement(sSql);
             ps.setInt(1,Integer.parseInt(splanUid.substring(0,splanUid.indexOf("."))));
             ps.setInt(2,Integer.parseInt(splanUid.substring(splanUid.indexOf(".")+1)));
+            ps.setTimestamp(3, new java.sql.Timestamp(timestamp.getTime()));
 
             // execute
             rs = ps.executeQuery();
@@ -922,7 +1089,6 @@ public class MaintenancePlan extends OC_Object {
                 // update-info
                 plan.setUpdateDateTime(rs.getTimestamp("OC_MAINTENANCEPLAN_UPDATETIME"));
                 plan.setUpdateUser(rs.getString("OC_MAINTENANCEPLAN_UPDATEID"));
-                plan.setLockedBy(rs.getInt("OC_MAINTENANCEPLAN_LOCKEDBY"));
             }
         }
         catch(Exception e){
@@ -978,10 +1144,6 @@ public class MaintenancePlan extends OC_Object {
                 plan.comment8 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT8"));
                 plan.comment9 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT9"));
                 plan.comment10 		  = ScreenHelper.checkString(rs.getString("OC_MAINTENANCEPLAN_COMMENT10"));
-                
-                // update-info
-                plan.setUpdateDateTime(rs.getTimestamp("OC_MAINTENANCEPLAN_UPDATETIME"));
-                plan.setUpdateUser(rs.getString("OC_MAINTENANCEPLAN_UPDATEID"));
             }
         }
         catch(Exception e){
@@ -1234,6 +1396,75 @@ public class MaintenancePlan extends OC_Object {
         	ps.setString(1, getName());
         	ps.setInt(2, MedwanQuery.getInstance().getOpenclinicCounter("DEFAULTMAINTENANCEPLANUID"));
         	ps.setString(3, nomenclaturecode);
+        	ps.setDate(4, getStartDate()==null?null:new java.sql.Date(getStartDate().getTime()));
+        	ps.setDate(5, getEndDate()==null?null:new java.sql.Date(getEndDate().getTime()));
+        	ps.setString(6, getFrequency());
+        	ps.setString(7, getOperator());
+        	ps.setString(8, getPlanManager());
+        	ps.setString(9, getInstructions());
+        	ps.setString(10, getType());
+        	ps.setString(11, getComment1());
+        	ps.setString(12, getComment2());
+        	ps.setString(13, getComment3());
+        	ps.setString(14, getComment4());
+        	ps.setString(15, getComment5());
+        	ps.setString(16, getComment6());
+        	ps.setString(17, getComment7());
+        	ps.setString(18, getComment8());
+        	ps.setString(19, getComment9());
+        	ps.setString(20, getComment10());
+        	ps.execute();
+        }
+        catch(Exception e){
+        	e.printStackTrace();
+        }
+        finally{
+            try{
+                if(ps!=null) ps.close();
+                oc_conn.close();
+            }
+            catch(SQLException se){
+            	se.printStackTrace();
+            }
+        }
+    }
+
+    public void saveDefault(){
+        PreparedStatement ps = null;
+        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        if(getUid()==null || getUid().length()==0) {
+        	setUid(MedwanQuery.getInstance().getOpenclinicCounter("DEFAULTMAINTENANCEPLANUID")+"");
+        }
+        try{
+        	ps = oc_conn.prepareStatement("delete from oc_defaultmaintenanceplans where oc_maintenanceplan_uid=?");
+        	ps.setString(1, getUid());
+        	ps.execute();
+        	ps.close();
+        	ps = oc_conn.prepareStatement("insert into oc_defaultmaintenanceplans ("
+        			+ " OC_MAINTENANCEPLAN_NAME,"
+        			+ " OC_MAINTENANCEPLAN_UID,"
+        			+ " OC_MAINTENANCEPLAN_NOMENCLATURE,"
+        			+ " OC_MAINTENANCEPLAN_STARTDATE,"
+        			+ " OC_MAINTENANCEPLAN_ENDDATE,"
+        			+ " OC_MAINTENANCEPLAN_FREQUENCY,"
+        			+ " OC_MAINTENANCEPLAN_OPERATOR,"
+        			+ " OC_MAINTENANCEPLAN_PLANMANAGER,"
+        			+ " OC_MAINTENANCEPLAN_INSTRUCTIONS,"
+        			+ " OC_MAINTENANCEPLAN_TYPE,"
+        			+ " OC_MAINTENANCEPLAN_COMMENT1,"
+        			+ " OC_MAINTENANCEPLAN_COMMENT2,"
+        			+ " OC_MAINTENANCEPLAN_COMMENT3,"
+        			+ " OC_MAINTENANCEPLAN_COMMENT4,"
+        			+ " OC_MAINTENANCEPLAN_COMMENT5,"
+        			+ " OC_MAINTENANCEPLAN_COMMENT6,"
+        			+ " OC_MAINTENANCEPLAN_COMMENT7,"
+        			+ " OC_MAINTENANCEPLAN_COMMENT8,"
+        			+ " OC_MAINTENANCEPLAN_COMMENT9,"
+        			+ " OC_MAINTENANCEPLAN_COMMENT10)"
+        			+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        	ps.setString(1, getName());
+        	ps.setInt(2, Integer.parseInt(getUid()));
+        	ps.setString(3, getNomenclature());
         	ps.setDate(4, getStartDate()==null?null:new java.sql.Date(getStartDate().getTime()));
         	ps.setDate(5, getEndDate()==null?null:new java.sql.Date(getEndDate().getTime()));
         	ps.setString(6, getFrequency());

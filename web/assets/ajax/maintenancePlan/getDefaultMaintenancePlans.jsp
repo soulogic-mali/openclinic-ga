@@ -48,8 +48,8 @@
     // compose object to pass search criteria with
     List plans = new Vector();
 	Connection conn = SH.getOpenClinicConnection();
-	PreparedStatement ps = conn.prepareStatement("select * from oc_defaultmaintenanceplans where oc_maintenanceplan_nomenclature like ? and oc_maintenanceplan_name like ? and oc_maintenanceplan_frequency like ?");
-	ps.setString(1,sNomenclature.length()==0?"%":sNomenclature);
+	PreparedStatement ps = conn.prepareStatement("select * from oc_defaultmaintenanceplans where oc_maintenanceplan_nomenclature like ? and oc_maintenanceplan_name like ? and oc_maintenanceplan_frequency like ? order by oc_maintenanceplan_name,oc_maintenanceplan_uid");
+	ps.setString(1,sNomenclature+"%");
 	ps.setString(2,sName.length()==0?"%":sName);
 	ps.setString(3,sType.length()==0?"%":sType);
 	ResultSet rs = ps.executeQuery();
@@ -64,6 +64,7 @@
         	%>
             <%-- header --%>
             <tr class="admin" style="padding-left:1px;">    
+                <td nowrap>ID</td>
                 <td nowrap><%=HTMLEntities.htmlentities(getTran(request,"web.assets","nomenclature",sWebLanguage))%></td>
                 <td nowrap><%=HTMLEntities.htmlentities(getTran(request,"web.assets","type",sWebLanguage))%></td>
                 <td nowrap><%=HTMLEntities.htmlentities(getTran(request,"web.assets","name",sWebLanguage))%></td>
@@ -74,6 +75,7 @@
         
 		out.println(
         "<tr class='list"+sClass+"' onclick=\"displayMaintenancePlan('"+rs.getString("oc_maintenanceplan_uid")+"');\">"+
+        "	<td class='hand' style='padding-left:5px'>"+rs.getString("oc_maintenanceplan_uid")+"</td>"+
         "	<td class='hand' style='padding-left:5px'>"+getTranNoLink("admin.nomenclature.asset",checkString(rs.getString("oc_maintenanceplan_nomenclature")),sWebLanguage)+"</td>"+
         "	<td class='hand' style='padding-left:5px'>"+getTranNoLink("maintenanceplan.type",checkString(rs.getString("oc_maintenanceplan_type")),sWebLanguage)+"</td>"+
         "	<td class='hand' style='padding-left:5px'>"+checkString(rs.getString("oc_maintenanceplan_name"))+"</td>"+

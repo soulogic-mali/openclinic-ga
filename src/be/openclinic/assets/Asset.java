@@ -2,6 +2,7 @@ package be.openclinic.assets;
 
 import be.openclinic.archiving.ArchiveDocument;
 import be.openclinic.common.OC_Object;
+import be.openclinic.system.SH;
 import be.openclinic.util.Nomenclature;
 import net.admin.Service;
 import be.mxs.common.util.db.MedwanQuery;
@@ -308,7 +309,7 @@ public class Asset extends OC_Object {
 	
 	public static StringBuffer toXmlForServiceUnlocked(String serviceid){
 		StringBuffer xml = new StringBuffer();
-		xml.append("<gmao>");
+		xml.append("<gmao serviceid='"+serviceid+"'>");
 		String allChildren=Service.getChildIdsAsString(serviceid);
     	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
     	try{
@@ -934,6 +935,14 @@ public class Asset extends OC_Object {
 		}
     }
     
+    public static void addComponentTagBinaryString(StringBuffer xml,String tag,ResultSet rs) throws SQLException{
+		String s = rs.getString("oc_component_"+tag);
+		if(ScreenHelper.checkString(s).length()>0){
+			xml.append("<"+tag+"><![CDATA["+HTMLEntities.htmlentities(s)+"]]></"+tag+">");
+			//xml.append("<"+tag+">"+HTMLEntities.xmlencode(s)+"</"+tag+">");
+		}
+    }
+    
     public static void addComponentTagDate(StringBuffer xml,String tag,ResultSet rs) throws SQLException{
     	try{
     		java.util.Date d = rs.getTimestamp("oc_component_"+tag);
@@ -949,6 +958,14 @@ public class Asset extends OC_Object {
 		if(ScreenHelper.checkString(s).length()>0){
 			//xml.append("<"+tag+"><![CDATA["+HTMLEntities.htmlentities(s)+"]]></"+tag+">");
 			xml.append("<"+tag+">"+HTMLEntities.xmlencode(s)+"</"+tag+">");
+		}
+    }
+    
+    public static void addDocumentTagBinaryString(StringBuffer xml,String tag,ResultSet rs) throws SQLException{
+		String s = rs.getString("arch_document_"+tag);
+		if(ScreenHelper.checkString(s).length()>0){
+			xml.append("<"+tag+"><![CDATA["+HTMLEntities.htmlentities(s)+"]]></"+tag+">");
+			//xml.append("<"+tag+">"+HTMLEntities.xmlencode(s)+"</"+tag+">");
 		}
     }
     
@@ -972,12 +989,12 @@ public class Asset extends OC_Object {
     		ResultSet rs = ps.executeQuery();
     		if(rs.next()){
     			xml.append("<asset serverid='"+rs.getInt("oc_asset_serverid")+"' objectid='"+rs.getInt("oc_asset_objectid")+"'>");
-    			addTagString(xml,"code",rs);
+    			addTagBinaryString(xml,"code",rs);
     			addTagString(xml,"parentuid",rs);
-    			addTagString(xml,"description",rs);
-    			addTagString(xml,"serial",rs);
+    			addTagBinaryString(xml,"description",rs);
+    			addTagBinaryString(xml,"serial",rs);
     			addTagString(xml,"quantity",rs);
-    			addTagString(xml,"type",rs);
+    			addTagBinaryString(xml,"type",rs);
     			addTagString(xml,"supplieruid",rs);
     			addTagDate(xml,"purchasedate",rs);
     			addTagString(xml,"purchaseprice",rs);
@@ -987,7 +1004,7 @@ public class Asset extends OC_Object {
     			addTagString(xml,"writeoffperiod",rs);
     			addTagString(xml,"annuity",rs);
     			addTagBinaryString(xml,"characteristics",rs);
-    			addTagString(xml,"accountingcode",rs);
+    			addTagBinaryString(xml,"accountingcode",rs);
     			addTagString(xml,"gains",rs);
     			addTagString(xml,"losses",rs);
     			addTagDate(xml,"loandate",rs);
@@ -1002,8 +1019,8 @@ public class Asset extends OC_Object {
     			addTagDate(xml,"updatetime",rs);
     			addTagString(xml,"updateid",rs);
     			addTagString(xml,"gmdncode",rs);
-    			addTagString(xml,"service",rs);
-    			addTagString(xml,"nomenclature",rs);
+    			addTagBinaryString(xml,"service",rs);
+    			addTagBinaryString(xml,"nomenclature",rs);
     			addTagBinaryString(xml,"comment1",rs);
     			addTagBinaryString(xml,"comment2",rs);
     			addTagBinaryString(xml,"comment3",rs);
@@ -1036,9 +1053,9 @@ public class Asset extends OC_Object {
     			while(rs.next()){
     				xml.append("<component>");
     				addComponentTagString(xml, "assetuid", rs);
-    				addComponentTagString(xml, "nomenclature", rs);
-    				addComponentTagString(xml, "type", rs);
-    				addComponentTagString(xml, "characteristics", rs);
+    				addComponentTagBinaryString(xml, "nomenclature", rs);
+    				addComponentTagBinaryString(xml, "type", rs);
+    				addComponentTagBinaryString(xml, "characteristics", rs);
     				addComponentTagString(xml, "status", rs);
     				addComponentTagString(xml, "objectid", rs);
     				xml.append("</component>");
@@ -1055,15 +1072,15 @@ public class Asset extends OC_Object {
     				addDocumentTagString(xml, "serverid", rs);
     				addDocumentTagString(xml, "objectid", rs);
     				addDocumentTagString(xml, "udi", rs);
-    				addDocumentTagString(xml, "title", rs);
-    				addDocumentTagString(xml, "description", rs);
-    				addDocumentTagString(xml, "category", rs);
-    				addDocumentTagString(xml, "author", rs);
+    				addDocumentTagBinaryString(xml, "title", rs);
+    				addDocumentTagBinaryString(xml, "description", rs);
+    				addDocumentTagBinaryString(xml, "category", rs);
+    				addDocumentTagBinaryString(xml, "author", rs);
     				addDocumentTagDate(xml, "date", rs);
-    				addDocumentTagString(xml, "destination", rs);
-    				addDocumentTagString(xml, "reference", rs);
+    				addDocumentTagBinaryString(xml, "destination", rs);
+    				addDocumentTagBinaryString(xml, "reference", rs);
     				addDocumentTagString(xml, "personid", rs);
-    				addDocumentTagString(xml, "storagename", rs);
+    				addDocumentTagBinaryString(xml, "storagename", rs);
     				addDocumentTagString(xml, "tran_serverid", rs);
     				addDocumentTagString(xml, "tran_transactionid", rs);
     				addDocumentTagDate(xml, "deletedate", rs);
@@ -1612,6 +1629,90 @@ public class Asset extends OC_Object {
     	return sAssetCode;
     }
     
+    public double getRemainingValue() {
+    	//default Write-off method is linear
+    	String method="linear";
+    	if(SH.c(this.getWriteOffMethod()).length()>0) {
+    		method=this.getWriteOffMethod();
+    	}
+    	//default annuity is complete
+    	String annuity="complete";
+    	if(SH.c(this.getAnnuity()).length()>0) {
+    		annuity=this.getAnnuity();
+    	}
+    	java.util.Date begin = this.getPurchaseDate();
+    	if(begin==null) {
+    		begin=SH.parseDate(this.comment12);
+    	}
+    	if(this.getPurchasePrice()>0 && this.getWriteOffPeriod()>0 && begin!=null) {
+    		if(annuity.equalsIgnoreCase("complete")) {
+    			//Each year part accounts for a complete write-off year
+    			int years = new java.util.Date().getYear()-begin.getYear()+1;
+    			if(years<this.getWriteOffPeriod()) {
+    				return this.getPurchasePrice()*(this.getWriteOffPeriod()-years)/this.getWriteOffPeriod();
+    			}
+    			else {
+    				return 0;
+    			}
+    		}
+    		else if(annuity.equalsIgnoreCase("prorata")) {
+    			//Each year part accounts for a proportional part of a write-off year
+    			double day = 24*3600*1000;
+    			double year = 365*day;
+    			double years = new Double(new java.util.Date().getTime()-begin.getTime())/year;
+    			if(years<this.getWriteOffPeriod()) {
+    				return this.getPurchasePrice()*(new Double(this.getWriteOffPeriod())-years)/new Double(this.getWriteOffPeriod());
+    			}
+    			else {
+    				return 0;
+    			}
+    		}
+    	}
+    	return -1;
+    }
+    
+    public double getRemainingValue(java.util.Date date) {
+    	//default Write-off method is linear
+    	String method="linear";
+    	if(SH.c(this.getWriteOffMethod()).length()>0) {
+    		method=this.getWriteOffMethod();
+    	}
+    	//default annuity is complete
+    	String annuity="complete";
+    	if(SH.c(this.getAnnuity()).length()>0) {
+    		annuity=this.getAnnuity();
+    	}
+    	java.util.Date begin = this.getPurchaseDate();
+    	if(begin==null) {
+    		begin=SH.parseDate(this.comment12);
+    	}
+    	if(this.getPurchasePrice()>0 && this.getWriteOffPeriod()>0 && begin!=null) {
+    		if(annuity.equalsIgnoreCase("complete")) {
+    			//Each year part accounts for a complete write-off year
+    			int years = date.getYear()-begin.getYear()+1;
+    			if(years<this.getWriteOffPeriod()) {
+    				return this.getPurchasePrice()*(this.getWriteOffPeriod()-years)/this.getWriteOffPeriod();
+    			}
+    			else {
+    				return 0;
+    			}
+    		}
+    		else if(annuity.equalsIgnoreCase("prorata")) {
+    			//Each year part accounts for a proportional part of a write-off year
+    			double day = 24*3600*1000;
+    			double year = 365*day;
+    			double years = new Double(date.getTime()-begin.getTime())/year;
+    			if(years<this.getWriteOffPeriod()) {
+    				return this.getPurchasePrice()*(new Double(this.getWriteOffPeriod())-years)/new Double(this.getWriteOffPeriod());
+    			}
+    			else {
+    				return 0;
+    			}
+    		}
+    	}
+    	return -1;
+    }
+    
     public boolean existDefaultMaintenancePlans(){
     	boolean bExist =false;
     	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
@@ -1643,6 +1744,213 @@ public class Asset extends OC_Object {
     	return bExist;
     }
     
+    public static void deleteDefault(int uid){
+        PreparedStatement ps = null;
+        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        
+        try{
+        	ps=oc_conn.prepareStatement("delete from oc_defaultassets where oc_asset_uid=?");
+        	ps.setInt(1, uid);
+        	ps.execute();
+        }
+        catch(Exception e){
+        	if(Debug.enabled) e.printStackTrace();
+            Debug.printProjectErr(e,Thread.currentThread().getStackTrace());
+        }
+        finally{
+            try{
+                if(ps!=null) ps.close();
+                oc_conn.close();
+            }
+            catch(SQLException se){
+                Debug.printProjectErr(se,Thread.currentThread().getStackTrace());
+            }
+        }
+    }
+
+    public static Vector getDefaultAssets(String sNomenclatureCode) {
+    	Vector assets = new Vector();
+        PreparedStatement ps = null;
+        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        try{
+        	ps = oc_conn.prepareStatement("select * from oc_defaultassets where oc_asset_nomenclature like ? order by oc_asset_description");
+        	ps.setString(1, sNomenclatureCode+"%");
+        	ResultSet rs = ps.executeQuery();
+        	while(rs.next()) {
+                Asset asset = new Asset();
+                asset.setUid(rs.getString("OC_ASSET_UID"));
+
+                asset.code              = ScreenHelper.checkString(rs.getString("OC_ASSET_CODE"));
+                asset.description       = ScreenHelper.checkString(rs.getString("OC_ASSET_DESCRIPTION"));
+                asset.quantity          = rs.getDouble("OC_ASSET_QUANTITY");
+                asset.assetType         = ScreenHelper.checkString(rs.getString("OC_ASSET_TYPE"));
+                asset.supplierUid       = ScreenHelper.checkString(rs.getString("OC_ASSET_SUPPLIERUID"));
+                asset.characteristics   = ScreenHelper.checkString(rs.getString("OC_ASSET_CHARACTERISTICS"));
+                try {
+					asset.setUpdateDateTime(rs.getTimestamp("OC_ASSET_UPDATETIME"));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                asset.setUpdateUser(rs.getString("OC_ASSET_UPDATEID"));
+                asset.setNomenclature(rs.getString("OC_ASSET_NOMENCLATURE"));
+                asset.setComment1(rs.getString("OC_ASSET_COMMENT1"));
+                asset.setComment2(rs.getString("OC_ASSET_COMMENT2"));
+                asset.setComment3(rs.getString("OC_ASSET_COMMENT3"));
+                asset.setComment4(rs.getString("OC_ASSET_COMMENT4"));
+                asset.setComment5(rs.getString("OC_ASSET_COMMENT5"));
+                asset.setComment6(rs.getString("OC_ASSET_COMMENT6"));
+                asset.setComment7(rs.getString("OC_ASSET_COMMENT7"));
+                asset.setComment8(rs.getString("OC_ASSET_COMMENT8"));
+                asset.setComment9(rs.getString("OC_ASSET_COMMENT9"));
+                asset.setComment10(rs.getString("OC_ASSET_COMMENT10"));
+                asset.setComment11(rs.getString("OC_ASSET_COMMENT11"));
+                asset.setComment12(rs.getString("OC_ASSET_COMMENT12"));
+                asset.setComment13(rs.getString("OC_ASSET_COMMENT13"));
+                asset.setComment14(rs.getString("OC_ASSET_COMMENT14"));
+                asset.setComment15(rs.getString("OC_ASSET_COMMENT15"));
+                asset.setComment16(rs.getString("OC_ASSET_COMMENT16"));
+                asset.setComment17(rs.getString("OC_ASSET_COMMENT17"));
+                asset.setComment18(rs.getString("OC_ASSET_COMMENT18"));
+                asset.setComment19(rs.getString("OC_ASSET_COMMENT19"));
+                asset.setComment20(rs.getString("OC_ASSET_COMMENT20"));
+                assets.add(asset);
+        	}
+        	rs.close();
+        	ps.close();
+        	oc_conn.close();
+        }
+        catch(Exception e) {
+        	e.printStackTrace();
+        }
+        return assets;
+    }
+    
+    public static Asset getDefaultAsset(String uid) {
+    	Asset asset=null;
+    	PreparedStatement ps = null;
+        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        try{
+        	ps = oc_conn.prepareStatement("select * from oc_defaultassets where oc_asset_uid=?");
+        	ps.setString(1, uid);
+        	ResultSet rs = ps.executeQuery();
+        	if(rs.next()) {
+                asset = new Asset();
+                asset.setUid(rs.getString("OC_ASSET_UID"));
+
+                asset.code              = ScreenHelper.checkString(rs.getString("OC_ASSET_CODE"));
+                asset.description       = ScreenHelper.checkString(rs.getString("OC_ASSET_DESCRIPTION"));
+                asset.quantity          = rs.getDouble("OC_ASSET_QUANTITY");
+                asset.assetType         = ScreenHelper.checkString(rs.getString("OC_ASSET_TYPE"));
+                asset.supplierUid       = ScreenHelper.checkString(rs.getString("OC_ASSET_SUPPLIERUID"));
+                asset.characteristics   = ScreenHelper.checkString(rs.getString("OC_ASSET_CHARACTERISTICS"));
+                try {
+					asset.setUpdateDateTime(rs.getTimestamp("OC_ASSET_UPDATETIME"));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                asset.setUpdateUser(rs.getString("OC_ASSET_UPDATEID"));
+                asset.setNomenclature(rs.getString("OC_ASSET_NOMENCLATURE"));
+                asset.setComment1(rs.getString("OC_ASSET_COMMENT1"));
+                asset.setComment2(rs.getString("OC_ASSET_COMMENT2"));
+                asset.setComment3(rs.getString("OC_ASSET_COMMENT3"));
+                asset.setComment4(rs.getString("OC_ASSET_COMMENT4"));
+                asset.setComment5(rs.getString("OC_ASSET_COMMENT5"));
+                asset.setComment6(rs.getString("OC_ASSET_COMMENT6"));
+                asset.setComment7(rs.getString("OC_ASSET_COMMENT7"));
+                asset.setComment8(rs.getString("OC_ASSET_COMMENT8"));
+                asset.setComment9(rs.getString("OC_ASSET_COMMENT9"));
+                asset.setComment10(rs.getString("OC_ASSET_COMMENT10"));
+                asset.setComment11(rs.getString("OC_ASSET_COMMENT11"));
+                asset.setComment12(rs.getString("OC_ASSET_COMMENT12"));
+                asset.setComment13(rs.getString("OC_ASSET_COMMENT13"));
+                asset.setComment14(rs.getString("OC_ASSET_COMMENT14"));
+                asset.setComment15(rs.getString("OC_ASSET_COMMENT15"));
+                asset.setComment16(rs.getString("OC_ASSET_COMMENT16"));
+                asset.setComment17(rs.getString("OC_ASSET_COMMENT17"));
+                asset.setComment18(rs.getString("OC_ASSET_COMMENT18"));
+                asset.setComment19(rs.getString("OC_ASSET_COMMENT19"));
+                asset.setComment20(rs.getString("OC_ASSET_COMMENT20"));
+        	}
+        	rs.close();
+        	ps.close();
+        	oc_conn.close();
+        }
+        catch(Exception e) {
+        	e.printStackTrace();
+        }
+        return asset;
+    }
+    
+    public void copyToDefault(String nomenclaturecode){
+        PreparedStatement ps = null;
+        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        
+        try{
+        	ps = oc_conn.prepareStatement("delete from oc_defaultassets where oc_asset_nomenclature=? and oc_asset_description=?");
+        	ps.setString(1, nomenclaturecode);
+        	ps.setString(2, getDescription());
+        	ps.execute();
+        	ps.close();
+        	ps = oc_conn.prepareStatement("insert into oc_defaultassets ("
+        			+ " OC_ASSET_CODE,"
+        			+ " OC_ASSET_UID,"
+        			+ " OC_ASSET_DESCRIPTION,"
+        			+ " OC_ASSET_QUANTITY,"
+        			+ " OC_ASSET_TYPE,"
+        			+ " OC_ASSET_SUPPLIERUID,"
+        			+ " OC_ASSET_CHARACTERISTICS,"
+        			+ " OC_ASSET_NOMENCLATURE,"
+        			+ " OC_ASSET_COMMENT1,"
+        			+ " OC_ASSET_COMMENT2,"
+        			+ " OC_ASSET_COMMENT3,"
+        			+ " OC_ASSET_COMMENT4,"
+        			+ " OC_ASSET_COMMENT5,"
+        			+ " OC_ASSET_COMMENT7,"
+        			+ " OC_ASSET_COMMENT8,"
+        			+ " OC_ASSET_COMMENT9,"
+        			+ " OC_ASSET_COMMENT10,"
+        			+ " OC_ASSET_COMMENT15,"
+        			+ " OC_ASSET_COMMENT16,"
+        			+ " OC_ASSET_COMMENT17)"
+        			+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        	ps.setString(1, getCode());
+        	ps.setInt(2, MedwanQuery.getInstance().getOpenclinicCounter("DEFAULTASSETUID"));
+        	ps.setString(3, getDescription());
+        	ps.setDouble(4, getQuantity());
+        	ps.setString(5, getAssetType());
+        	ps.setString(6, getSupplierUid());
+        	ps.setString(7, getCharacteristics());
+        	ps.setString(8, getNomenclature());
+        	ps.setString(9, getComment1());
+        	ps.setString(10, getComment2());
+        	ps.setString(11, getComment3());
+        	ps.setString(12, getComment4());
+        	ps.setString(13, getComment5());
+        	ps.setString(14, getComment7());
+        	ps.setString(15, getComment8());
+        	ps.setString(16, getComment9());
+        	ps.setString(17, getComment10());
+        	ps.setString(18, getComment15());
+        	ps.setString(19, getComment16());
+        	ps.setString(20, getComment17());
+        	ps.execute();
+        }
+        catch(Exception e){
+        	e.printStackTrace();
+        }
+        finally{
+            try{
+                if(ps!=null) ps.close();
+                oc_conn.close();
+            }
+            catch(SQLException se){
+            	se.printStackTrace();
+            }
+        }
+    }
+
     public void setDefaultMaintenancePlans(){
     	if(!existDefaultMaintenancePlans()){
     		return;
@@ -1702,7 +2010,66 @@ public class Asset extends OC_Object {
             }
         }
     }
-        
+    
+    public boolean saveDefault() {
+    	boolean bSuccess=true;
+        Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        PreparedStatement ps = null;
+        try {
+        	if(getUid()==null || getUid().length()==0) {
+        		setUid(MedwanQuery.getInstance().getOpenclinicCounter("DEFAULTASSETUID")+"");
+        	}
+        	deleteDefault(getUid());
+        	String sql = "insert into oc_defaultassets(oc_asset_uid,oc_asset_code,oc_asset_description,oc_asset_type,"
+        			+ "oc_asset_supplieruid,oc_asset_characteristics,oc_asset_nomenclature,oc_asset_quantity,oc_asset_comment1,oc_asset_comment2,oc_asset_comment3"
+        			+ ",oc_asset_comment4,oc_asset_comment5,oc_asset_comment7,oc_asset_comment8,oc_asset_comment9,oc_asset_comment10,oc_asset_comment15"
+        			+ ",oc_asset_comment16,oc_asset_comment17) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        	ps=conn.prepareStatement(sql);
+        	ps.setString(1,getUid());
+        	ps.setString(2,getCode());
+        	ps.setString(3, getDescription());
+        	ps.setString(4, getAssetType());
+        	ps.setString(5, getSupplierUid());
+        	ps.setString(6, getCharacteristics());
+        	ps.setString(7, getNomenclature());
+        	ps.setDouble(8, getQuantity());
+        	ps.setString(9, getComment1());
+        	ps.setString(10, getComment2());
+        	ps.setString(11, getComment3());
+        	ps.setString(12, getComment4());
+        	ps.setString(13, getComment5());
+        	ps.setString(14, getComment7());
+        	ps.setString(15, getComment8());
+        	ps.setString(16, getComment9());
+        	ps.setString(17, getComment10());
+        	ps.setString(18, getComment15());
+        	ps.setString(19, getComment16());
+        	ps.setString(20, getComment17());
+        	ps.execute();
+        	ps.close();
+        	conn.close();
+        }
+        catch(Exception e) {
+        	bSuccess=false;
+        	e.printStackTrace();
+        }
+    	return bSuccess;
+    }
+    
+    public static void deleteDefault(String uid) {
+        Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        PreparedStatement ps = null;
+        try {
+        	ps=conn.prepareStatement("delete from oc_defaultassets where oc_asset_uid=?");
+        	ps.setString(1, uid);
+        	ps.execute();
+        	ps.close();
+        	conn.close();
+        }
+        catch(Exception e) {
+        	e.printStackTrace();
+        }
+    }
     //--- STORE -----------------------------------------------------------------------------------
     public boolean store(String userUid){
         boolean errorOccurred = false;
@@ -1823,6 +2190,7 @@ public class Asset extends OC_Object {
             } 
             else{
                 // update existing record
+            	storeHistory();
                 sSql = "UPDATE oc_assets SET"+
                        "  OC_ASSET_CODE = ?, OC_ASSET_PARENTUID = ?, OC_ASSET_DESCRIPTION = ?, OC_ASSET_SERIAL = ?,"+
                        "  OC_ASSET_QUANTITY = ?, OC_ASSET_TYPE = ?, OC_ASSET_SUPPLIERUID = ?, OC_ASSET_PURCHASEDATE = ?,"+
@@ -1938,6 +2306,65 @@ public class Asset extends OC_Object {
         finally{
             try{
                 if(rs!=null) rs.close();
+                if(ps!=null) ps.close();
+                oc_conn.close();
+            }
+            catch(SQLException se){
+            	se.printStackTrace();
+            }
+        }
+        
+        return errorOccurred;
+    }
+    
+    public boolean storeHistory(){
+        boolean errorOccurred = false;
+        PreparedStatement ps = null;
+        String sSql;
+        
+        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+                
+        try{            
+            // insert new asset
+            sSql = "INSERT INTO oc_assetshistory(OC_ASSET_SERVERID,OC_ASSET_OBJECTID,OC_ASSET_CODE,"+
+                   " OC_ASSET_PARENTUID,OC_ASSET_DESCRIPTION,OC_ASSET_SERIAL,OC_ASSET_QUANTITY,OC_ASSET_TYPE,"+
+                   " OC_ASSET_SUPPLIERUID,OC_ASSET_PURCHASEDATE,OC_ASSET_PURCHASEPRICE,OC_ASSET_PURCHASERECEIPTBY,"+
+                   " OC_ASSET_PURCHASEDOCS,OC_ASSET_WRITEOFFMETHOD,OC_ASSET_WRITEOFFPERIOD,OC_ASSET_ANNUITY,OC_ASSET_CHARACTERISTICS,"+
+                   " OC_ASSET_ACCOUNTINGCODE,OC_ASSET_GAINS,OC_ASSET_LOSSES,OC_ASSET_LOANDATE,OC_ASSET_LOANAMOUNT,"+
+                   " OC_ASSET_LOANINTERESTRATE,OC_ASSET_LOANREIMBURSEMENTPLAN,OC_ASSET_LOANCOMMENT,OC_ASSET_LOANDOCS,"+
+                   " OC_ASSET_SALEDATE,OC_ASSET_SALEVALUE,OC_ASSET_SALECLIENT,OC_ASSET_UPDATETIME,OC_ASSET_UPDATEID,OC_ASSET_GMDNCODE,"
+                   + "OC_ASSET_NOMENCLATURE,OC_ASSET_COMMENT1,OC_ASSET_COMMENT2,OC_ASSET_COMMENT3,OC_ASSET_COMMENT4,OC_ASSET_COMMENT5"
+                   + ",OC_ASSET_COMMENT6,OC_ASSET_COMMENT7,OC_ASSET_COMMENT8,OC_ASSET_COMMENT9,OC_ASSET_COMMENT10,OC_ASSET_COMMENT11"
+                   + ",OC_ASSET_COMMENT12,OC_ASSET_COMMENT13,OC_ASSET_COMMENT14,OC_ASSET_COMMENT15,OC_ASSET_COMMENT16,OC_ASSET_COMMENT17"
+                   + ",OC_ASSET_COMMENT18,OC_ASSET_COMMENT19,OC_ASSET_COMMENT20,OC_ASSET_SERVICE,OC_ASSET_LOCKEDBY,OC_ASSET_LOCKEDDATE,OC_ASSET_HISTORYDATE,OC_ASSET_HISTORYUSER)"+
+                   " select OC_ASSET_SERVERID,OC_ASSET_OBJECTID,OC_ASSET_CODE,"+
+		            " OC_ASSET_PARENTUID,OC_ASSET_DESCRIPTION,OC_ASSET_SERIAL,OC_ASSET_QUANTITY,OC_ASSET_TYPE,"+
+		            " OC_ASSET_SUPPLIERUID,OC_ASSET_PURCHASEDATE,OC_ASSET_PURCHASEPRICE,OC_ASSET_PURCHASERECEIPTBY,"+
+		            " OC_ASSET_PURCHASEDOCS,OC_ASSET_WRITEOFFMETHOD,OC_ASSET_WRITEOFFPERIOD,OC_ASSET_ANNUITY,OC_ASSET_CHARACTERISTICS,"+
+		            " OC_ASSET_ACCOUNTINGCODE,OC_ASSET_GAINS,OC_ASSET_LOSSES,OC_ASSET_LOANDATE,OC_ASSET_LOANAMOUNT,"+
+		            " OC_ASSET_LOANINTERESTRATE,OC_ASSET_LOANREIMBURSEMENTPLAN,OC_ASSET_LOANCOMMENT,OC_ASSET_LOANDOCS,"+
+		            " OC_ASSET_SALEDATE,OC_ASSET_SALEVALUE,OC_ASSET_SALECLIENT,OC_ASSET_UPDATETIME,OC_ASSET_UPDATEID,OC_ASSET_GMDNCODE,"
+		            + "OC_ASSET_NOMENCLATURE,OC_ASSET_COMMENT1,OC_ASSET_COMMENT2,OC_ASSET_COMMENT3,OC_ASSET_COMMENT4,OC_ASSET_COMMENT5"
+		            + ",OC_ASSET_COMMENT6,OC_ASSET_COMMENT7,OC_ASSET_COMMENT8,OC_ASSET_COMMENT9,OC_ASSET_COMMENT10,OC_ASSET_COMMENT11"
+		            + ",OC_ASSET_COMMENT12,OC_ASSET_COMMENT13,OC_ASSET_COMMENT14,OC_ASSET_COMMENT15,OC_ASSET_COMMENT16,OC_ASSET_COMMENT17"
+		            + ",OC_ASSET_COMMENT18,OC_ASSET_COMMENT19,OC_ASSET_COMMENT20,OC_ASSET_SERVICE,OC_ASSET_LOCKEDBY,OC_ASSET_LOCKEDDATE,?,?"
+		            +" from oc_assets where OC_ASSET_SERVERID=? and OC_ASSET_OBJECTID=?";
+		            ps = oc_conn.prepareStatement(sSql);
+            
+            int serverId = Integer.parseInt(getUid().split("\\.")[0]),
+                objectId = Integer.parseInt(getUid().split("\\.")[1]);
+            ps.setTimestamp(1,new Timestamp(new java.util.Date().getTime()));
+            ps.setString(2, getUpdateUser());
+            ps.setInt(3, serverId);
+            ps.setInt(4, objectId);
+            ps.executeUpdate();
+        }
+        catch(Exception e){
+            errorOccurred = true;
+            e.printStackTrace();
+        }
+        finally{
+            try{
                 if(ps!=null) ps.close();
                 oc_conn.close();
             }
@@ -2117,6 +2544,172 @@ public class Asset extends OC_Object {
         }
         
         return asset;
+    }
+        
+    public static Asset getHistory(String sAssetUid,java.util.Date timestamp){
+        Asset asset = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        
+        try{
+            String sSql = "SELECT * FROM oc_assetshistory"+
+                          " WHERE (OC_ASSET_SERVERID = ? AND OC_ASSET_OBJECTID = ? and OC_ASSET_HISTORYDATE = ?)";
+            ps = oc_conn.prepareStatement(sSql);
+            ps.setInt(1,Integer.parseInt(sAssetUid.substring(0,sAssetUid.indexOf("."))));
+            ps.setInt(2,Integer.parseInt(sAssetUid.substring(sAssetUid.indexOf(".")+1)));
+            ps.setTimestamp(3, new java.sql.Timestamp(timestamp.getTime()));
+
+            // execute
+            rs = ps.executeQuery();
+            if(rs.next()){
+                asset = new Asset();
+                asset.setUid(rs.getString("OC_ASSET_SERVERID")+"."+rs.getString("OC_ASSET_OBJECTID"));
+                asset.serverId = Integer.parseInt(rs.getString("OC_ASSET_SERVERID"));
+                asset.objectId = Integer.parseInt(rs.getString("OC_ASSET_OBJECTID"));
+
+                asset.code              = ScreenHelper.checkString(rs.getString("OC_ASSET_CODE"));
+                asset.gmdncode          = ScreenHelper.checkString(rs.getString("OC_ASSET_GMDNCODE"));
+                asset.parentUid         = ScreenHelper.checkString(rs.getString("OC_ASSET_PARENTUID"));
+                asset.description       = ScreenHelper.checkString(rs.getString("OC_ASSET_DESCRIPTION"));
+                asset.serialnumber      = ScreenHelper.checkString(rs.getString("OC_ASSET_SERIAL"));
+                asset.quantity          = rs.getDouble("OC_ASSET_QUANTITY");
+                asset.assetType         = ScreenHelper.checkString(rs.getString("OC_ASSET_TYPE"));
+                asset.supplierUid       = ScreenHelper.checkString(rs.getString("OC_ASSET_SUPPLIERUID"));
+                try {
+					asset.purchaseDate      = rs.getDate("OC_ASSET_PURCHASEDATE");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                asset.purchasePrice     = rs.getDouble("OC_ASSET_PURCHASEPRICE");                
+                asset.receiptBy         = ScreenHelper.checkString(rs.getString("OC_ASSET_PURCHASERECEIPTBY"));
+                asset.purchaseDocuments = ScreenHelper.checkString(rs.getString("OC_ASSET_PURCHASEDOCS"));
+                asset.writeOffMethod    = ScreenHelper.checkString(rs.getString("OC_ASSET_WRITEOFFMETHOD"));
+                asset.writeOffPeriod    = rs.getInt("OC_ASSET_WRITEOFFPERIOD");
+                asset.annuity           = ScreenHelper.checkString(rs.getString("OC_ASSET_ANNUITY"));
+                asset.characteristics   = ScreenHelper.checkString(rs.getString("OC_ASSET_CHARACTERISTICS"));
+                asset.accountingCode    = ScreenHelper.checkString(rs.getString("OC_ASSET_ACCOUNTINGCODE"));
+                asset.gains             = ScreenHelper.checkString(rs.getString("OC_ASSET_GAINS"));
+                asset.losses            = ScreenHelper.checkString(rs.getString("OC_ASSET_LOSSES"));
+                //asset.residualValueHistory = calculateResidualValueHistory();
+                
+                //*** loan ***
+                try {
+					asset.loanDate              = rs.getDate("OC_ASSET_LOANDATE");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                asset.loanAmount            = rs.getDouble("OC_ASSET_LOANAMOUNT");
+                asset.loanInterestRate      = rs.getString("OC_ASSET_LOANINTERESTRATE");
+                asset.loanReimbursementPlan = ScreenHelper.checkString(rs.getString("OC_ASSET_LOANREIMBURSEMENTPLAN"));
+                //asset.loanReimbursementAmount = calculateReimbursementAmount();
+                asset.loanComment           = ScreenHelper.checkString(rs.getString("OC_ASSET_LOANCOMMENT"));
+                asset.loanDocuments         = ScreenHelper.checkString(rs.getString("OC_ASSET_LOANDOCS"));
+                
+                try {
+					asset.saleDate   = rs.getDate("OC_ASSET_SALEDATE");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                asset.saleValue  = rs.getDouble("OC_ASSET_SALEVALUE");
+                asset.saleClient = ScreenHelper.checkString(rs.getString("OC_ASSET_SALECLIENT")); 
+                
+                // update-info
+                try {
+					asset.setUpdateDateTime(rs.getTimestamp("OC_ASSET_UPDATETIME"));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                asset.setUpdateUser(rs.getString("OC_ASSET_UPDATEID"));
+                
+                asset.setNomenclature(rs.getString("OC_ASSET_NOMENCLATURE"));
+                asset.setComment1(rs.getString("OC_ASSET_COMMENT1"));
+                asset.setComment2(rs.getString("OC_ASSET_COMMENT2"));
+                asset.setComment3(rs.getString("OC_ASSET_COMMENT3"));
+                asset.setComment4(rs.getString("OC_ASSET_COMMENT4"));
+                asset.setComment5(rs.getString("OC_ASSET_COMMENT5"));
+                asset.setComment6(rs.getString("OC_ASSET_COMMENT6"));
+                asset.setComment7(rs.getString("OC_ASSET_COMMENT7"));
+                asset.setComment8(rs.getString("OC_ASSET_COMMENT8"));
+                asset.setComment9(rs.getString("OC_ASSET_COMMENT9"));
+                asset.setComment10(rs.getString("OC_ASSET_COMMENT10"));
+                asset.setComment11(rs.getString("OC_ASSET_COMMENT11"));
+                asset.setComment12(rs.getString("OC_ASSET_COMMENT12"));
+                asset.setComment13(rs.getString("OC_ASSET_COMMENT13"));
+                asset.setComment14(rs.getString("OC_ASSET_COMMENT14"));
+                asset.setComment15(rs.getString("OC_ASSET_COMMENT15"));
+                asset.setComment16(rs.getString("OC_ASSET_COMMENT16"));
+                asset.setComment17(rs.getString("OC_ASSET_COMMENT17"));
+                asset.setComment18(rs.getString("OC_ASSET_COMMENT18"));
+                asset.setComment19(rs.getString("OC_ASSET_COMMENT19"));
+                asset.setComment20(rs.getString("OC_ASSET_COMMENT20"));
+                asset.setServiceuid(rs.getString("OC_ASSET_SERVICE"));
+                asset.setLockedBy(rs.getInt("OC_ASSET_LOCKEDBY"));
+                try {
+					asset.setLockeddate(rs.getTimestamp("OC_ASSET_LOCKEDDATE"));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        }
+        catch(Exception e){
+            if(Debug.enabled) e.printStackTrace();
+            Debug.printProjectErr(e,Thread.currentThread().getStackTrace());
+        }
+        finally{
+            try{
+                if(rs!=null) rs.close();
+                if(ps!=null) ps.close();
+                oc_conn.close();
+            }
+            catch(SQLException se){
+                Debug.printProjectErr(se,Thread.currentThread().getStackTrace());
+            }
+        }
+        
+        return asset;
+    }
+        
+    public boolean hasHistory(){
+        boolean bHistory=false;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        
+        try{
+            String sSql = "SELECT * FROM oc_assetshistory"+
+                          " WHERE (OC_ASSET_SERVERID = ? AND OC_ASSET_OBJECTID = ?)";
+            ps = oc_conn.prepareStatement(sSql);
+            ps.setInt(1,Integer.parseInt(getUid().substring(0,getUid().indexOf("."))));
+            ps.setInt(2,Integer.parseInt(getUid().substring(getUid().indexOf(".")+1)));
+
+            // execute
+            rs = ps.executeQuery();
+            bHistory=rs.next();
+        }
+        catch(Exception e){
+            if(Debug.enabled) e.printStackTrace();
+            Debug.printProjectErr(e,Thread.currentThread().getStackTrace());
+        }
+        finally{
+            try{
+                if(rs!=null) rs.close();
+                if(ps!=null) ps.close();
+                oc_conn.close();
+            }
+            catch(SQLException se){
+                Debug.printProjectErr(se,Thread.currentThread().getStackTrace());
+            }
+        }
+        
+        return bHistory;
     }
         
     //--- GET LIST --------------------------------------------------------------------------------
@@ -2363,6 +2956,47 @@ public class Asset extends OC_Object {
         }
         
         return sHistory;
+    }
+    
+    
+    public java.util.Date getNextMaintenance(){
+    	java.util.Date date = null;
+    	try {
+    		Connection conn = SH.getOpenClinicConnection();
+    		String sql= "select min(oc_maintenanceoperation_nextdate) nextdate from oc_maintenanceoperations o, oc_maintenanceplans p"+
+    					" where"+
+    					" oc_maintenanceoperation_maintenanceplanuid=oc_maintenanceplan_serverid||'.'||oc_maintenanceplan_objectid and"+
+    					" oc_maintenanceplan_assetuid=? and"+
+    					" oc_maintenanceoperation_nextdate>?";
+    		PreparedStatement ps = conn.prepareStatement(sql);
+    		ps.setString(1, this.getUid());
+    		ps.setTimestamp(2, new java.sql.Timestamp(new java.util.Date().getTime()));
+    		ResultSet rs = ps.executeQuery();
+    		if(rs.next() && rs.getDate("nextdate")!=null) {
+    			date = rs.getDate("nextdate");
+    		}
+    		else {
+    			rs.close();
+    			ps.close();
+        		sql= "select max(oc_maintenanceoperation_nextdate) nextdate from oc_maintenanceoperations o, oc_maintenanceplans p"+
+    					" where"+
+    					" oc_maintenanceoperation_maintenanceplanuid=oc_maintenanceplan_serverid||'.'||oc_maintenanceplan_objectid and"+
+    					" oc_maintenanceplan_assetuid=?";
+        		ps = conn.prepareStatement(sql);
+        		ps.setString(1, this.getUid());
+        		rs = ps.executeQuery();
+        		if(rs.next()) {
+        			date = rs.getDate("nextdate");
+        		}
+    		}
+    		rs.close();
+    		ps.close();
+    		conn.close();
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return date;
     }
     
     //--- CALCULATE REIMBURSEMENT TOTALS ----------------------------------------------------------

@@ -69,19 +69,29 @@
     if(assets.size() > 0){
         Hashtable hSort = new Hashtable();
         Asset asset;
-    	int i=0;
+    	int i=0,nActive=0,nAccessible=0;
         // sort on asset.code
         for(i=skip; i<assets.size(); i++){
             asset = (Asset)assets.get(i);
+            boolean bCanContinue=true;
             if(sShowInactive.equalsIgnoreCase("false") && asset.isInactive()){
-            	continue;
+            	bCanContinue=false;
+            }
+            if(!asset.isInactive()){
+            	nActive++;
             }
             boolean bAuthorized=asset.isAuthorizedUser(activeUser.userid);
             if(!bAuthorized && !activeUser.isAdmin()){
+    			System.out.println("NOT authorized for asset "+asset.getUid());
+    			bCanContinue=false;
+            }
+            else{
+            	nAccessible++;
+            }
+            if(!bCanContinue){
             	continue;
             }
     		boolean bLocked = asset.getObjectId()>-1 && ((asset.getLockedBy()>-1 && asset.getLockedBy()!=MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)) || (asset.getLockedBy()==-1 && MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)!=0));
-			
     		String pd = "";
     		try{
     			pd=ScreenHelper.formatDate(asset.purchaseDate);
@@ -105,11 +115,10 @@
                       "<td class='hand'>"+ud+"</td>"+
                       (sShowInactive.equalsIgnoreCase("true")?"<td class='hand'>"+ScreenHelper.formatDate(asset.saleDate)+"</td>":"")+
                      "</tr>");
-            if(i>=skip+MedwanQuery.getInstance().getConfigInt("maxAssetRecords",100)){
+            if(i>=skip+MedwanQuery.getInstance().getConfigInt("maxAssetRecords",99)){
             	break;
             }
         }
-    
         Vector keys = new Vector(hSort.keySet());
         Collections.sort(keys);
         Iterator iter = keys.iterator();
@@ -122,8 +131,8 @@
             
             sReturn+= "<tr class='list"+sClass+"' "+hSort.get(iter.next());
         }
-        if(i>=MedwanQuery.getInstance().getConfigInt("maxAssetRecords",100)){
-            sReturn+= "</table><table><tr><td colspan='6'><i>&gt;"+i+" "+getTran(request,"web","records",sWebLanguage)+" ("+(skip+1)+" - "+i+" "+getTran(request,"web","of",sWebLanguage)+" "+assets.size()+")</i>";
+        if(i>=MedwanQuery.getInstance().getConfigInt("maxAssetRecords",99)){
+            sReturn+= "</table><table><tr><td colspan='6'><i>&gt;"+(i+1)+" "+getTran(request,"web","records",sWebLanguage)+" ("+(skip+1)+" - "+i+" "+getTran(request,"web","of",sWebLanguage)+" "+assets.size()+"), <b>"+nActive+"</b> "+getTran(request,"web","active",sWebLanguage)+", <b>"+nAccessible+"</b> "+getTran(request,"web","accessiblefor",sWebLanguage)+" "+activeUser.person.getFullName()+"</i>";
 			if(skip>0){
 				sReturn+=" <a href='javascript:searchAssets("+(skip-MedwanQuery.getInstance().getConfigInt("maxAssetRecords",100))+")'>"+getTran(request,"web","previous",sWebLanguage)+"</a>";
 			}
@@ -133,7 +142,7 @@
             sReturn+="</td></tr>";
         }
         else{
-        	sReturn+="</table><table><tr><td colspan='6'><i>"+assets.size()+" "+getTran(request,"web","recordsFound",sWebLanguage)+"</i></td></tr>";
+        	sReturn+="</table><table><tr><td colspan='6'><i><b>"+assets.size()+"</b> "+getTran(request,"web","recordsFound",sWebLanguage)+", <b>"+nActive+"</b> "+getTran(request,"web","active",sWebLanguage)+", <b>"+nAccessible+"</b> "+getTran(request,"web","accessiblefor",sWebLanguage)+" "+activeUser.person.getFullName()+"</i></td></tr>";
         }
         
     }

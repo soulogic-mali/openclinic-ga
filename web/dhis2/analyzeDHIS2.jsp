@@ -9,7 +9,7 @@
 	String updatefield = SH.c(request.getParameter("updatefield"));
 %>
 <%=sJSPROTOTYPE %>
-<form name='transactionForm' method='post' action='<%=sCONTEXTPATH%>/popup.jsp?Page=dhis2/analyzeDHIS2.jsp'>
+<form name='transactionForm' method='post' action='<%=sCONTEXTPATH%>/main.jsp?Page=dhis2/analyzeDHIS2.jsp'>
 	<input type='hidden' name='PopupWidth' id='PopupWidth' value='<%=SH.c(request.getParameter("PopupWidth"))%>'/>
 	<input type='hidden' name='PopupHeight' id='PopupHeight' value='<%=SH.c(request.getParameter("PopupHeight"))%>'/>
 	<input type='hidden' name='updatefield' id='updatefield' value='<%=SH.c(request.getParameter("updatefield"))%>'/>

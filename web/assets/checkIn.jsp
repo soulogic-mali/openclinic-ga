@@ -2,10 +2,21 @@
 org.apache.http.impl.client.*,org.apache.http.message.*,org.apache.http.client.entity.*,org.apache.http.entity.mime.*,org.apache.http.*,org.apache.http.entity.*"%>
 <%@page import="org.dom4j.*,java.net.*"%>
 <%@page import="org.dom4j.io.SAXReader"%>
-<%@page import="java.io.File,java.util.*"%>
+<%@page import="java.io.File,java.util.*,java.io.*"%>
 <%@page import="be.mxs.common.util.db.MedwanQuery,java.sql.*,be.openclinic.assets.*,org.apache.commons.io.*"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
+<%!
+	java.util.Date std(String s){
+		try{
+			return new SimpleDateFormat("yyyyMMddHHmmssSSS").parse(s);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+%>
 <%
 try{
 	//****************************************
@@ -61,10 +72,11 @@ try{
 			MedwanQuery.getInstance().setOpenclinicCounter("ARCH_DOCUMENTS", -100000);
 		}
 	}
+	int nAssets=0;
 	out.println(getTran(request,"gmao",sResult,sWebLanguage).toUpperCase()+"<br/>"+getTran(request,"gmao","uploadingrecordsfrom",sWebLanguage)+"...");
 	out.flush();
 	StringBuffer sb = new StringBuffer();
-	sb.append("<gmao>");
+	sb.append("<gmao datetime='"+new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new java.util.Date())+"' user='"+activeUser.getFullName()+"'>");
 	Vector checkedOutAssetUids=Asset.getCheckedOutAssetUids();
 	for(int n=0;n<checkedOutAssetUids.size();n++){
 		String uid = (String)checkedOutAssetUids.elementAt(n);
@@ -74,13 +86,13 @@ try{
 	try{
 		String url = MedwanQuery.getInstance().getConfigString("GMAOCentralServer","http://localhost/openclinic")+"/assets/uploadAssets.jsp";
 		CloseableHttpClient client = HttpClients.createDefault();
-		HttpPost httpPost = new HttpPost(MedwanQuery.getInstance().getConfigString("GMAOCentralServer","http://localhost/openclinic")+"/assets/uploadAssets.jsp");
+		HttpPost httpPost = new HttpPost(url);
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-		if(!new java.io.File(MedwanQuery.getInstance().getConfigString("tempDirectrory","/tmp")).exists()){
-			new java.io.File(MedwanQuery.getInstance().getConfigString("tempDirectrory","/tmp")).mkdirs();
+		if(!new java.io.File(MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")).exists()){
+			new java.io.File(MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")).mkdirs();
 		}
-		String sFilename=MedwanQuery.getInstance().getConfigString("tempDirectrory","/tmp")+"/upload.xml";
+		String sFilename=MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")+"/upload.xml";
 		File file = new File(sFilename);
 		if(file.exists()){
 			file.delete();
@@ -96,7 +108,34 @@ try{
 				out.println(getTran(request,"gmao","done",sWebLanguage).toUpperCase());
 			}
 			else{
-				out.println(getTran(request,"gmao","done",sWebLanguage).toUpperCase()+"<br/>"+getTran(request,"gmao","unlockingitemsoncentralserver",sWebLanguage)+"...");
+				out.println("<br/>"+getTran(request,"gmao","uploadof",sWebLanguage)+" <b>"+checkedOutAssetUids.size()+"</b> "+getTran(request,"gmao","localymanagedassets",sWebLanguage)+"...");
+				SAXReader reader = new SAXReader(false);
+			    Document document = reader.read(new StringReader(sb.toString()));
+			    Element rootElement = document.getRootElement(); //gmao
+				Iterator<Element> iAssets = rootElement.elementIterator("asset");
+				int nAssetCount=0,nPlanCount=0,nOperationCount=0;
+				while(iAssets.hasNext()){
+					Element eAsset = iAssets.next();
+					if(SH.c(eAsset.elementText("lockeddate")).length()>0 && std(SH.c(eAsset.elementText("lockeddate"))).before(std(SH.c(eAsset.elementText("updatetime"))))){
+						nAssetCount++;
+					}
+					Iterator<Element> iPlans = eAsset.element("maintenanceplans").elementIterator("maintenanceplan");
+					while(iPlans.hasNext()){
+						Element ePlan =iPlans.next();
+						if(SH.c(eAsset.elementText("lockeddate")).length()>0 && std(SH.c(eAsset.elementText("lockeddate"))).before(std(SH.c(ePlan.elementText("updatetime"))))){
+							nPlanCount++;
+						}
+						Iterator<Element> iOperations = ePlan.element("maintenanceoperations").elementIterator("maintenanceoperation");
+						while(iOperations.hasNext()){
+							Element eOperation =iOperations.next();
+							if(SH.c(eAsset.elementText("lockeddate")).length()>0 && std(SH.c(eAsset.elementText("lockeddate"))).before(std(SH.c(eOperation.elementText("updatetime"))))){
+								nOperationCount++;
+							}
+						}
+					}
+				}
+				out.println(getTran(request,"gmao","done",sWebLanguage).toUpperCase()+" <br/>"+getTran(request,"gmao","modified",sWebLanguage)+" <b>"+nAssetCount+"</b> "+getTran(request,"web","assets",sWebLanguage)+", <b>"+nPlanCount+"</b> "+getTran(request,"web","maintenanceplans",sWebLanguage)+", <b>"+nOperationCount+"</b> "+getTran(request,"web","maintenanceoperations",sWebLanguage));
+				out.println("<br/>"+getTran(request,"gmao","unlockingitemsoncentralserver",sWebLanguage)+"...");
 				url = MedwanQuery.getInstance().getConfigString("GMAOCentralServer","http://localhost/openclinic")+"/assets/checkInAssetsForServerId.jsp";
 				client = HttpClients.createDefault();
 				httpPost = new HttpPost(url);
@@ -116,12 +155,12 @@ try{
 			}
 		}
 		else {
-			out.println("ERROR!<br/>"+getTran(request,"gmao","notunlockingitemsoncentralserver",sWebLanguage)+"...");
+			out.println("ERROR! ["+xmlIn+"]<br/>"+getTran(request,"gmao","notunlockingitemsoncentralserver",sWebLanguage)+"...");
 		}
 	}
 	catch(Exception a){
 		a.printStackTrace();
-		out.println("ERROR!<br/>"+getTran(request,"gmao","notunlockingitemsoncentralserver",sWebLanguage)+"...");
+		out.println("ERROR! ["+a.getMessage()+"]<br/>"+getTran(request,"gmao","notunlockingitemsoncentralserver",sWebLanguage)+"...");
 	}
 }
 catch(Exception e){
@@ -131,4 +170,12 @@ catch(Exception e){
 <p/>
 <center>
 	<input type='button' class='button' name='closeButton' value='<%=getTranNoLink("web","close",sWebLanguage)%>' onclick='window.close();'/>
+	<input type='button' class='button' name='closeButton' value='<%=getTranNoLink("web","view",sWebLanguage)%>' onclick='viewContent();'/>
 </center>
+
+<script>
+	function viewContent(){
+		openPopup("assets/viewXmlDetails.jsp&filename=<%=MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")+"/upload.xml"%>",800,600);
+	}
+	window.opener.location.reload();
+</script>

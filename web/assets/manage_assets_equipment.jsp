@@ -27,13 +27,20 @@
 		asset=Asset.get(sEditAssetUID);
 		sEditServiceUid=asset.getServiceuid();
 	}
+	else if(sAction.equalsIgnoreCase("history")){
+		asset=Asset.getHistory(sEditAssetUID,SH.parseDate(SH.p(request,"timestamp"), "yyyyMMddHHmmssSSS"));
+		sEditServiceUid=asset.getServiceuid();
+	}
+	if(asset!=null){
+		bLocked = asset.getObjectId()>-1 && ((asset.getLockedBy()>-1 && asset.getLockedBy()!=MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)) || (asset.getLockedBy()==-1 && MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)!=0));
+	}
 %>
 <form name="EditForm" id="EditForm" method="POST">
 	<input type='hidden' name='searchCode' id='searchCode' value=''/>
 	<input type='hidden' name='action' id='action' value=''/>
 	<input type='hidden' name='lockedby' id='lockedby' value='<%=asset.getLockedBy()%>'/>
     <input type="hidden" id="EditAssetUID" name="EditAssetUID" value="<%=asset.getUid()%>">
-    <%=writeTableHeader("web","assets.equipment",sWebLanguage,"")%>
+    <%=writeTableHeaderButton(getTran(request,"web","assets.equipment",sWebLanguage),!asset.hasHistory()?"":"<img title='"+getTranNoLink("web","history",sWebLanguage)+"' src='"+sCONTEXTPATH+"/_img/icons/icon_history2.gif' onclick='showHistory();'/>&nbsp;")%>
     
     <input type='hidden' id='comment17'/>
                 
@@ -62,10 +69,12 @@
 	                	</b></td>
 	                </tr>
 	                <tr>
-	                	<td>
+	                	<td nowrap>
 			                <input type="hidden" name="serviceuid" id="serviceuid" value="<%=sEditServiceUid%>">
-			                <input class="text" type="text" name="servicename" id="servicename" readonly size="60" value="<%=getTranNoLink("service",sEditServiceUid,sWebLanguage)%>" >
+	                		<input onblur="if(document.getElementById('serviceuid').value.length==0){this.value='';}" class="text" type="text" name="servicename" id="servicename" size="50" value="<%=getTranNoLink("service",sEditServiceUid,sWebLanguage) %>" >
 			                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTran(null,"Web","select",sWebLanguage)%>" onclick="searchService('serviceuid','servicename');">
+				            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTran(null,"Web","delete",sWebLanguage)%>" onclick="document.getElementById('serviceuid').value='';document.getElementById('servicename').value='';document.getElementById('servicename').focus();">
+							<div id="autocomplete_service" class="autocomple"></div>
 						</td>
 					</tr>			              
 				</table>
@@ -79,10 +88,11 @@
 	        <%-- GMDNCODE --%>
             <td class="admin" ><%=getTran(request,"web","nomenclature",sWebLanguage)%> *</td>
             <td class="admin2" colspan="3">
-                <input class="greytext" type="text" readonly size="15" name="FindNomenclatureCode" id="FindNomenclatureCode" value="<%=checkString(asset.getNomenclature())%>" onchange="checkDefaultMaintenancePlans();validateLabels()">&nbsp;
-                <input type="text" class="text" readonly id="nomenclature" name="nomenclature" size="60" maxLength="110" value="<%=getTranNoLink("admin.nomenclature.asset",checkString(asset.getNomenclature()),sWebLanguage)%>">
+          		<input onfocus='this.blur()' class="greytext" type="text" readonly size="15" name="FindNomenclatureCode" id="FindNomenclatureCode" value="<%=checkString(asset.getNomenclature())%>" onchange="checkDefaultMaintenancePlans();validateLabels()">&nbsp;
+                <input onblur="if(document.getElementById('FindNomenclatureCode').value.length==0){this.value='';}" type="text" class="text" id="nomenclature" name="nomenclature" size="50" maxLength="80" value="<%=getTranNoLink("admin.nomenclature.asset",checkString(asset.getNomenclature()),sWebLanguage)%>">
                 <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("Web","select",sWebLanguage)%>" onclick="searchNomenclature('FindNomenclatureCode','nomenclature');">
                 <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="EditForm.FindNomenclatureCode.value='';EditForm.nomenclature.value='';">
+				<div id="autocomplete_nomenclature" class="autocomple"></div>
             </td>
             <td class="admin" ><%=getTran(request,"web.assets","UID",sWebLanguage)%></td>
             <td class="admin2">
@@ -109,7 +119,7 @@
                 </select>
             </td>
             <td class="admin">
-            	<%=getTran(request,"web.assets","functionality",sWebLanguage)%>
+            	<%=getTran(request,"web.assets","functionality",sWebLanguage)%>&nbsp;*&nbsp;
             </td>
             <td class="admin2">
                 <select class="text" id="comment7" name="comment7">
@@ -125,14 +135,10 @@
         
         <%-- SERIAL NUMBER --%>
         <tr>
-            <td class="admin" id="serialnumber_label"><%=getTran(request,"web.assets","serialnumber",sWebLanguage)%>&nbsp;</td>
-            <td class="admin2">
+            <td class="admin" id="serialnumber_label"><%=getTran(request,"gmao","serialnumber",sWebLanguage)%>&nbsp;</td>
+            <td class="admin2" colspan="3">
                 <input type="text" class="text" id="serialnumber" name="serialnumber" size="20" maxLength="30" value="<%=checkString(asset.getSerialnumber())%>">
-            </td>
-	        <%-- QUANTITY (*) --%>
-            <td class="admin" id="quantity_label"><%=getTran(request,"web.assets","quantity",sWebLanguage)%>&nbsp;*&nbsp;</td>
-            <td class="admin2">
-                <input type="text" class="text" id="quantity" name="quantity" size="8" maxLength="8" value="<%=asset.getQuantity()>0?asset.getQuantity():1%>" onKeyUp="isNumber(this);" onBlur="if(isNumber(this))setDecimalLength(this,2,true);">
+            	<input type="hidden" class="text" id="quantity" name="quantity" value="1"/>
             </td>
 	        <%-- CENORM --%>
             <td class="admin">
@@ -168,13 +174,9 @@
             </td>
 	        <%-- MODEL --%>
             <td class="admin"><%=getTran(request,"web.assets","model",sWebLanguage)%></td>
-            <td class="admin2">
-                <input type="text" class="text" id="comment10" name="comment10" size="20" maxLength="30" value="<%=checkString(asset.getComment10())%>">
-            </td>
-	        <%-- TYPE --%>
-            <td class="admin"><%=getTran(request,"web.assets","type",sWebLanguage)%></td>
-            <td class="admin2" colspan="2">
-                <input type="text" class="text" id="assetType" name="assettype" size="30" maxLength="30" value="<%=checkString(asset.getAssetType())%>">
+            <td class="admin2" colspan="3">
+                <input type="text" class="text" id="comment10" name="comment10" size="50" maxLength="50" value="<%=checkString(asset.getComment10())%>">
+            	<input type="hidden" id="assetType" name="assettype" value=""/>
             </td>
         </tr>       
         <%-- CHARACTERISTICS --%>                
@@ -267,9 +269,9 @@
 	        <%-- PURCHASE DATE --%>
             <td class="admin"><%=getTran(request,"web.assets","purchaseDate",sWebLanguage)%>&nbsp;</td>
             <td class="admin2" nowrap>
-                <%=writeDateField("purchaseDate","EditForm",ScreenHelper.formatDate(asset.getPurchaseDate()),sWebLanguage)%>        
+                <%=writeDateField("purchaseDate","EditForm",ScreenHelper.formatDate(asset.getPurchaseDate()),sWebLanguage,"getRemainingValue();")%>        
             </td>                        
-	        <%-- PURCHASE PRICE (+currency) --%>
+	        <%-- RECEIPT BY --%>
             <td class="admin"><%=getTran(request,"web.assets","receiptBy",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
                 <input type="text" class="text" id="receiptBy" name="receiptBy" size="30" maxLength="50" value="<%=checkString(asset.getReceiptBy())%>">
@@ -277,13 +279,13 @@
         </tr>        
         
         <tr>
-            <td class="admin"><%=getTran(request,"web.assets","productiodate",sWebLanguage)%>&nbsp;</td>
+            <td class="admin"><%=getTran(request,"web.assets","equipment.productiodate",sWebLanguage)%>&nbsp;</td>
             <td class="admin2" nowrap>
                 <%=writeDateField("comment11","EditForm",checkString(asset.getComment11()),sWebLanguage)%>        
             </td>                        
-            <td class="admin"><%=getTran(request,"web.assets","deliverydate",sWebLanguage)%>*&nbsp;</td>
+            <td class="admin"><%=getTran(request,"web.assets","equipment.deliverydate",sWebLanguage)%>&nbsp;</td>
             <td class="admin2" nowrap>
-                <%=writeDateField("comment12","EditForm",checkString(asset.getComment12()),sWebLanguage)%>        
+                <%=writeDateField("comment12","EditForm",checkString(asset.getComment12()),sWebLanguage,"getRemainingValue();")%>        
             </td>                        
             <td class="admin"><%=getTran(request,"web.assets","firstusagedate",sWebLanguage)%>&nbsp;</td>
             <td class="admin2" nowrap>
@@ -291,13 +293,13 @@
             </td>                        
         </tr>        
         
-        <%-- RECEIPT BY --%>
+        <%-- PURCHASE PRICE (+currency) --%>
         <tr>
-            <td class="admin"><%=getTran(request,"web.assets","purchasePrice",sWebLanguage)%>&nbsp;</td>
+            <td class="admin"><%=getTran(request,"web.assets","purchasePrice",sWebLanguage)%>&nbsp;*&nbsp;</td>
             <td class="admin2">
-                <input type="text" class="text" id="purchasePrice" name="purchasePrice" size="15" maxLength="15" value="<%=asset.getPurchasePrice() %>" onKeyUp="isNumber(this);" onBlur="if(isNumber(this))setDecimalLength(this,2,true);"> <%=MedwanQuery.getInstance().getConfigParam("currency","€")%>&nbsp;
+                <input type="text" class="text" id="purchasePrice" name="purchasePrice" size="15" maxLength="15" value="<%=asset.getPurchasePrice() %>" onKeyUp="isNumber(this);" onBlur="if(isNumber(this))setDecimalLength(this,2,true);getRemainingValue();"> <%=MedwanQuery.getInstance().getConfigParam("currency","€")%>&nbsp;
             </td>
-            <td class="admin"><%=getTran(request,"web.assets","fundingsource",sWebLanguage)%>&nbsp;*&nbsp;</td>
+            <td class="admin"><%=getTran(request,"web.assets","fundingsource",sWebLanguage)%>&nbsp;</td>
             <td class="admin2">
                 <input type="text" class="text" id="comment6" name="comment6" size="20" maxLength="255" value="<%=asset.getComment6() %>" />
             </td>
@@ -364,10 +366,15 @@
         	<td class='admin'>
         		<%=getTran(request,"web","accounting",sWebLanguage) %>
         	</td> 
-        	<td class='admin' colspan='5'>
+        	<td class='admin' colspan='3'>
         		<a href='javascript:showFinance(1)'><%=getTran(request,"web","show",sWebLanguage) %></a>&nbsp;
         		<a href='javascript:showFinance(0)'><%=getTran(request,"web","hide",sWebLanguage) %></a>
         	</td>
+        	<td class='admin'>
+        		<%=getTran(request,"web","remainingvalue",sWebLanguage) %>
+        	</td> 
+        	<td class='admin2' id='remainingvalue'>
+        	</td> 
         </tr>
         <script>
         	function showFinance(value){
@@ -387,7 +394,7 @@
 			        <tr>
 			            <td class="admin"  width='15%'><%=getTran(request,"web.assets","writeOffMethod",sWebLanguage)%>&nbsp;</td>
 			            <td class="admin2">
-			                <select class="text" id="writeOffMethod" name="writeOffMethod">
+			                <select class="text" id="writeOffMethod" name="writeOffMethod" onchange="getRemainingValue()">
 			                    <option/>
 			                    <%=ScreenHelper.writeSelect(request,"assets.writeOffMethod",checkString(asset.getWriteOffMethod()),sWebLanguage)%>
 			                </select>
@@ -395,12 +402,12 @@
 				        <%-- WRITE OFF PERIOD --%>
 			            <td class="admin"><%=getTran(request,"web.assets","writeOffPeriod",sWebLanguage)%>&nbsp;</td>
 			            <td class="admin2">
-			                <input type="text" class="text" id="writeOffPeriod" name="writeOffPeriod" size="2" maxLength="2" value="<%=asset.getWriteOffPeriod() %>" onKeyUp="isNumber(this);">&nbsp;<%=getTran(request,"web","years",sWebLanguage).toLowerCase()%>&nbsp;
+			                <input type="text" class="text" id="writeOffPeriod" name="writeOffPeriod" size="2" maxLength="2" value="<%=asset.getWriteOffPeriod() %>" onKeyUp="isNumber(this);getRemainingValue();">&nbsp;<%=getTran(request,"web","years",sWebLanguage).toLowerCase()%>&nbsp;
 			            </td>
 				        <%-- ANNUITIY --%>
 			            <td class="admin"><%=getTran(request,"web.assets","annuity",sWebLanguage)%>&nbsp;</td>
 			            <td class="admin2">
-			                <select class="text" id="annuity" name="annuity">
+			                <select class="text" id="annuity" name="annuity" onchange="getRemainingValue()">
 			                    <option/>
 			                    <%=ScreenHelper.writeSelect(request,"assets.annuity",checkString(asset.getAnnuity()),sWebLanguage)%>
 			                </select>
@@ -670,8 +677,26 @@
             <td class="admin" nowrap>
             	<%=getTran(request,"web","lastmodificationby",sWebLanguage)%>&nbsp;
             </td>
-            <td class="admin2" colspan="5">
+            <td class="admin2" colspan="3">
             	<b><%=User.getFullUserName(asset.getUpdateUser()) %> (<%=ScreenHelper.formatDate(asset.getUpdateDateTime(), ScreenHelper.fullDateFormat) %>)</b>
+				<%if(bLocked && asset.getLockedBy()>0){ %>
+				&nbsp;[<%=getTran(request,"web","lockedby",sWebLanguage) %>: <%=asset.getLockedBy()%>]
+				<%} %>
+            </td>
+            <td class="admin" nowrap>
+            	<%=getTran(request,"web","nextmaintenance",sWebLanguage)%>&nbsp;
+            </td>
+            <td class="admin2">
+            	<b><%
+            		java.util.Date d = asset.getNextMaintenance();
+            		if(d!=null && d.before(new java.util.Date())){
+            			out.println("<font style='color: red'><img style='vertical-align: middle' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif' height='14px'/> "+SH.formatDate(d)+"</font>");
+            		}
+            		else{
+            			out.println(SH.formatDate(d));
+            		}
+            		%>
+            	</b>
             </td>
         </tr>        
                             
@@ -679,6 +704,7 @@
         <tr>     
             <td class="admin"/>
             <td class="admin2" colspan="7">
+            	<%if(!sAction.equalsIgnoreCase("history") && !SH.p(request,"readonly").equalsIgnoreCase("true")){ %>
 				<%if(!bLocked && activeUser.getAccessRight("assets.edit")){ %>
                 <input class="button" type="button" name="buttonSave" id="buttonSave" value="<%=getTranNoLink("web","save",sWebLanguage)%>" onclick="saveAsset();">&nbsp;
 				<%} %>
@@ -686,14 +712,80 @@
                 <input class="button" type="button" name="buttonDelete" id="buttonDelete" value="<%=getTranNoLink("web","delete",sWebLanguage)%>" onclick="deleteAsset();" >&nbsp;
 				<%} %>
                 <input class="button" type="button" name="buttonList" id="buttonList" value="<%=getTranNoLink("web","list",sWebLanguage)%>" onclick="listAssets();">&nbsp;
+                <input class="button" type="button" name="buttonSpareParts" id="buttonSpareParts" value="<%=getTranNoLink("web","spareparts",sWebLanguage)%>" onclick="showSpareParts('<%=asset.getUid()%>');">&nbsp;
                 <input class="button" type="button" name="buttonMaintenance" id="buttonMaintenance" value="<%=getTranNoLink("web","maintenanceplans",sWebLanguage)%>" onclick="listMaintenancePlans();">&nbsp;
                 <input class="button" type="button" name="buttonOperations" id="buttonOperations" value="<%=getTranNoLink("web","operations",sWebLanguage)%>" onclick="listMaintenanceOperations();">&nbsp;
                 <input class="button" type="button" name="buttonDocuments" id="buttonDocuments" value="<%=getTranNoLink("web","documents",sWebLanguage)%>" onclick="printWordDocuments();">&nbsp;
+				<%
+					if(activeUser.getAccessRight("assets.defaultassets.add")){
+				%>
+                <input class="button" type="button" name="buttonAddDefault" id="buttonAddDefault" value="<%=getTranNoLink("web","adddefaultequipment",sWebLanguage)%>" onclick="addDefault();">&nbsp;
+				<%
+					}
+					if(activeUser.getAccessRight("assets.defaultassets.select")){
+				%>
+                <input class="button" type="button" name="buttonViewDefault" id="buttonViewDefault" value="<%=getTranNoLink("web","loaddefaultequipment",sWebLanguage)%>" onclick="viewDefault();">&nbsp;
+				<%
+					}
+            	}
+				%>
             </td>
         </tr>
     </table>
     <i><%=getTran(request,"web","colored_fields_are_obligate",sWebLanguage)%></i>
     
+    <%if(sAction.equalsIgnoreCase("history")|| SH.p(request,"readonly").equalsIgnoreCase("true")){%>
+    	<center><input class="button" type="button" name="buttonClose" id="buttonClose" value="<%=getTranNoLink("web","close",sWebLanguage)%>" onclick="window.close();"></center>
+	<%}%>
+
     <div id="divMessage" style="padding-top:10px;"></div>
 </form>
+<script>
+	new Ajax.Autocompleter('nomenclature','autocomplete_nomenclature','assets/findNomenclature.jsp',{
+	  minChars:1,
+	  method:'post',
+	  afterUpdateElement: afterAutoCompleteNomenclature,
+	  callback: composeCallbackURLNomenclature
+	});
 
+	function afterAutoCompleteNomenclature(field,item){
+	  var regex = new RegExp('[-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.]*-idcache','i');
+	  var nomimage = regex.exec(item.innerHTML);
+	  var id = nomimage[0].replace('-idcache','');
+	  document.getElementById("FindNomenclatureCode").value = id;
+	  document.getElementById("nomenclature").value=item.innerHTML.split("$")[1];
+	}
+	
+	function composeCallbackURLNomenclature(field,item){
+	  document.getElementById('FindNomenclatureCode').value='';
+	  var url = "";
+	  if(field.id=="nomenclature"){
+		url = "code=<%=SH.c(request.getParameter("assetType")).equalsIgnoreCase("infrastructure")?"I":SH.c(request.getParameter("assetType")).equalsIgnoreCase("equipment")?"E":""%>&text="+field.value;
+	  }
+	  return url;
+	}
+
+	new Ajax.Autocompleter('servicename','autocomplete_service','assets/findService.jsp',{
+		  minChars:1,
+		  method:'post',
+		  afterUpdateElement: afterAutoCompleteService,
+		  callback: composeCallbackURLService
+		});
+
+		function afterAutoCompleteService(field,item){
+		  var regex = new RegExp('[-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.]*-idcache','i');
+		  var nomimage = regex.exec(item.innerHTML);
+		  var id = nomimage[0].replace('-idcache','');
+		  document.getElementById("serviceuid").value = id;
+		  document.getElementById("servicename").value=item.innerHTML.split("$")[1];
+		}
+		
+		function composeCallbackURLService(field,item){
+		  document.getElementById('serviceuid').value
+		  var url = "";
+		  if(field.id=="servicename"){
+			url = "text="+field.value;
+		  }
+		  return url;
+		}
+</script>

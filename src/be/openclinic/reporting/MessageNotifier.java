@@ -163,6 +163,16 @@ public class MessageNotifier {
 						Debug.println("Error sending SMS with messageid "+messageId+" to "+sentto);
 					}
 				}
+				else if(transport.equalsIgnoreCase("smtp")){
+					String sMailTitle = ScreenHelper.getTranNoLink("messagetypes", messageType, messageLanguage);
+					if(TimeFilterReportGenerator.sendEmailWithImages("", MedwanQuery.getInstance().getConfigString("messageNotifierEmailSender","frank.verbeke@post-factum.be"), sentto, sMailTitle, data, SH.cs("mailrobot.logo", SH.cs("projectLogo", "/var/tomcat/webapps/openclinic/_img/projectlogo.jpg")))) {
+						Debug.println("E-mail correctly sent messageid "+messageId+" to "+sentto);
+						setSpoolMessageSent(messageId,transport);
+					}
+					else {
+						Debug.println("Error sending E-mail with messageid "+messageId+" to "+sentto);
+					}
+				}
 				else if(transport.equalsIgnoreCase("simplemail")){
 					String sMailTitle = ScreenHelper.getTranNoLink("messagetypes", messageType, messageLanguage);
 					if(sendHtmlMail.sendSimpleMail(MedwanQuery.getInstance().getConfigString("PatientEdit.MailServer"), MedwanQuery.getInstance().getConfigString("messageNotifierEmailSender","frank.verbeke@post-factum.be"), sentto, sMailTitle, data)){

@@ -21,7 +21,8 @@
         
     // return fields
     String sReturnFieldUid  = checkString(request.getParameter("ReturnFieldUid")),
-           sReturnFieldCode = checkString(request.getParameter("ReturnFieldCode"));
+           sReturnFieldCode = checkString(request.getParameter("ReturnFieldCode")),
+           sReturnFieldDate = checkString(request.getParameter("ReturnFieldDate"));
 
     /// DEBUG /////////////////////////////////////////////////////////////////////////////////////
     if(Debug.enabled){
@@ -42,7 +43,16 @@
            sServiceName     = checkString(request.getParameter("searchServiceName")),
            sSearchAssetCode = ScreenHelper.checkString(request.getParameter("searchAssetCode")),
            sOperator        = ScreenHelper.checkString(request.getParameter("searchOperator"));
-
+    if(sAssetUID.length()==0){
+    	sAssetUID=SH.p(request,"AssetUID");
+    }
+	if(sServiceUid.length()==0 && sAssetUID.length()>0){
+		Asset asset = Asset.get(sAssetUID);
+		if(asset!=null){
+			sServiceUid=asset.getServiceuid();
+			sServiceName=getTranNoLink("service",sServiceUid,sWebLanguage);
+		}
+	}
     ///////////////////////////////////////////////////////////////////////////
     if(Debug.enabled){
         Debug.println("\n********** innerSearch **********");
@@ -86,7 +96,7 @@
 		            <td class="admin"><%=getTran(request,"web.assets","asset",sWebLanguage)%>&nbsp;</td>
 		            <td class="admin2">
 		                <input type="hidden" name="searchAssetUID" id="searchAssetUID" value="<%=sAssetUID%>">
-		                <input type="text" class="text" id="searchAssetCode" name="searchAssetCode" size="20" readonly value="<%=sSearchAssetCode%>">
+		                <input type="text" class="text" id="searchAssetCode" name="searchAssetCode" size="20" readonly value="<%=sSearchAssetCode+" ["+sAssetUID+"]"%>">
 		                                   
 		                <%-- buttons --%>
 		                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("web","select",sWebLanguage)%>" onclick="selectAsset('searchAssetUID','searchAssetCode');">
@@ -147,7 +157,7 @@
 		                            else                   sClass = "";
 		                            
 		                            %>
-		                                <tr class="list<%=sClass%>" onmouseover="this.style.cursor='hand';" onmouseout="this.style.cursor='default';" onClick="selectMaintenancePlan('<%=plan.getUid()%>','<%=plan.name%>');">
+		                                <tr class="list<%=sClass%>" onmouseover="this.style.cursor='hand';" onmouseout="this.style.cursor='default';" onClick="selectMaintenancePlan('<%=plan.getUid()%>','<%=plan.name%>','<%=SH.formatDate(plan.getStartDate())%>');">
 		                                    <td><%=checkString(plan.name)%></td>
 		                                    <td><%=getAssetCodeFromDB(plan.assetUID)%></td>
 		                                    <td><%=checkString(plan.operator)%></td>
@@ -229,13 +239,16 @@
   }
   
   <%-- SELECT MAINTENANCE PLAN --%>
-  function selectMaintenancePlan(uid,code){
+  function selectMaintenancePlan(uid,code, date){
     if("<%=sReturnFieldUid%>".length > 0){
       window.opener.document.getElementsByName("<%=sReturnFieldUid%>")[0].value = uid;
     }
     if("<%=sReturnFieldCode%>".length > 0){
-      window.opener.document.getElementsByName("<%=sReturnFieldCode%>")[0].value = code;
-    }
+        window.opener.document.getElementsByName("<%=sReturnFieldCode%>")[0].value = code;
+      }
+    if("<%=sReturnFieldDate%>".length > 0){
+        window.opener.document.getElementById("<%=sReturnFieldDate%>").innerHTML = "<b>"+date+"</b>";
+      }
     
     <%
         if(sFunction.length() > 0){

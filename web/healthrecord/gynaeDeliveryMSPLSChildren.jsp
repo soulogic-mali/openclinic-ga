@@ -78,6 +78,15 @@
         </tr>
         <tr>
             <td class="admin"/>
+            <td class="admin2"/>
+            <td class="admin"><%=getTran(request,"gynaeco", "HBVvaccinated24h", sWebLanguage)%>
+            </td>
+            <td class="admin2">
+            	<%=SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_DELIVERY_HBVVACCINATED", "") %>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"/>
             <td colspan="3" bgcolor="#EBF3F7">
                 <table width="100%" cellspacing="1" bgcolor="white">
                     <%-- BORN DEAD -------------------------------------------------------------%>
@@ -668,6 +677,15 @@
             </td>
             <td class="admin2">
                 <input <%=setRightClick(session,"ITEM_TYPE_DELIVERY_CHILDCRANIEN2")%> type="text" class="text" size="5" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILDCRANIEN2" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DELIVERY_CHILDCRANIEN2" property="value"/>" onblur="isNumber(this)"> cm
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"/>
+            <td class="admin2"/>
+            <td class="admin"><%=getTran(request,"gynaeco", "HBVvaccinated24h", sWebLanguage)%>
+            </td>
+            <td class="admin2">
+            	<%=SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_DELIVERY_HBVVACCINATED2", "") %>
             </td>
         </tr>
         <tr>

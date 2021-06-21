@@ -615,25 +615,54 @@ public class Encounter extends OC_Object {
     }
     
     public static boolean isNewCase(String encounterUid){
-    	boolean bNewCase = false;
+    	boolean bNewCase = true;
     	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
     	try{
     		PreparedStatement ps = conn.prepareStatement("select * from OC_RFE where OC_RFE_ENCOUNTERUID=?");
     		ps.setString(1, encounterUid);
     		ResultSet rs = ps.executeQuery();
-    		while (!bNewCase && rs.next()){
+    		while (bNewCase && rs.next()){
     			String flags = rs.getString("OC_RFE_FLAGS");
-    			bNewCase=flags.contains("N");
+    			if(flags.contains("n")) {
+    				bNewCase=false;
+    			}
     		}
     		rs.close();
     		ps.close();
-    		if(!bNewCase){
-    			ps=conn.prepareStatement("select * from OC_DIAGNOSES where OC_DIAGNOSIS_ENCOUNTERUID=? and OC_DIAGNOSIS_NC=1");
+    		if(bNewCase){
+    			ps=conn.prepareStatement("select * from OC_DIAGNOSES where OC_DIAGNOSIS_ENCOUNTERUID=? and (OC_DIAGNOSIS_NC IS NULL OR OC_DIAGNOSIS_NC =0)");
         		ps.setString(1, encounterUid);
         		rs = ps.executeQuery();
-        		bNewCase=rs.next();
+        		if(rs.next()) {
+        			bNewCase=false;
+        		}
         		rs.close();
         		ps.close();
+    		}
+    		if(bNewCase) {
+    			ps=conn.prepareStatement("select OC_ENCOUNTER_PATIENTUID,OC_ENCOUNTER_BEGINDATE from oc_encounters where oc_encounter_serverid=? and oc_encounter_objectid=?");
+    			ps.setInt(1, Integer.parseInt(encounterUid.split("\\.")[0]));
+    			ps.setInt(2, Integer.parseInt(encounterUid.split("\\.")[1]));
+    			rs=ps.executeQuery();
+    			if(rs.next()) {
+    				String pid = rs.getString("oc_encounter_patientuid");
+    				java.sql.Timestamp ts = rs.getTimestamp("oc_encounter_begindate");
+    				rs.close();
+    				ps.close();
+    				ps=conn.prepareStatement("select * from OC_ENCOUNTERS where OC_ENCOUNTER_PATIENTUID=? and OC_ENCOUNTER_BEGINDATE>? and OC_ENCOUNTER_BEGINDATE<?");
+    				ps.setString(1, pid);
+    				long day = 24*3600*1000;
+    				ps.setTimestamp(2, new java.sql.Timestamp(ts.getTime()-SH.ci("minimumDelayForNewCase", 15)*day));
+    				ps.setTimestamp(3, ts);
+    				rs=ps.executeQuery();
+    				if(rs.next()) {
+    					//We do have a recent contact, so this is not a new case
+    					bNewCase=false;
+    				}
+    			}
+    			
+        		ps.setString(1, encounterUid);
+        		rs = ps.executeQuery();
     		}
     		conn.close();
     	}
@@ -644,23 +673,23 @@ public class Encounter extends OC_Object {
     }
 
     public static boolean isOldCase(String encounterUid){
-    	boolean bNewCase = false;
+    	boolean bOldCase = false;
     	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
     	try{
     		PreparedStatement ps = conn.prepareStatement("select * from OC_RFE where OC_RFE_ENCOUNTERUID=?");
     		ps.setString(1, encounterUid);
     		ResultSet rs = ps.executeQuery();
-    		while (!bNewCase && rs.next()){
+    		while (!bOldCase && rs.next()){
     			String flags = rs.getString("OC_RFE_FLAGS");
-    			bNewCase=flags.contains("n");
+    			bOldCase=flags.contains("n");
     		}
     		rs.close();
     		ps.close();
-    		if(!bNewCase){
+    		if(!bOldCase){
     			ps=conn.prepareStatement("select * from OC_DIAGNOSES where OC_DIAGNOSIS_ENCOUNTERUID=? and OC_DIAGNOSIS_NC<>1");
         		ps.setString(1, encounterUid);
         		rs = ps.executeQuery();
-        		bNewCase=rs.next();
+        		bOldCase=rs.next();
         		rs.close();
         		ps.close();
     		}
@@ -669,7 +698,7 @@ public class Encounter extends OC_Object {
     	catch(Exception e){
     		e.printStackTrace();
     	}
-    	return bNewCase;
+    	return bOldCase;
     }
 
     public boolean discontinuedAccident(){

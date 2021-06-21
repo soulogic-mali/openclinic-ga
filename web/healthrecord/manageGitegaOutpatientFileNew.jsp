@@ -292,9 +292,36 @@
 			            </td>
 			        </tr>
 			        <tr>
+			            <td class="admin"><%=getTran(request,"Web.Occup","rmh.precancerlesions",sWebLanguage)%>&nbsp;</td>
+			            <td>
+         					<table width='100%'>
+         						<tr onclick='selectKeywords("","","","keywords")'>
+			         				<td class='admin2' width='1%' nowrap>
+						                <%= SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_RMH_UTERUSPRECANCER_SCREENING", "") %>
+						                <%=getTran(request,"web","uterusprecancerscreening",sWebLanguage) %>&nbsp;
+									</td>
+			         				<td class='admin2' width='1%' nowrap>
+						                <%= SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_RMH_UTERUSPRECANCER_POSITIVE", "") %>
+						                <%=getTran(request,"web","uterusprecancerpositive",sWebLanguage) %>&nbsp;
+									</td>
+			         				<td class='admin2'>
+						                <%= SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_RMH_UTERUSPRECANCER_TREATMENT", "") %>
+						                <%=getTran(request,"web","uterusprecancertreatment",sWebLanguage) %>
+									</td>
+								</tr>
+							</table>
+			            </td>
+			        </tr>
+			        <tr>
 			            <td class="admin"><%=getTran(request,"Web.Occup","rmh.treatment",sWebLanguage)%>&nbsp;</td>
 			            <td>
          					<table width='100%'>
+         						<tr onclick='selectKeywords("","","","keywords")'>
+			         				<td class='admin2'>
+						                <%= SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_RMH_SMALLSURGERY", "") %>
+						                <%=getTran(request,"web","smallsurgery",sWebLanguage) %>
+									</td>
+								</tr>
          						<tr onclick='selectKeywords("","","","keywords")'>
 			         				<td class='admin2'>
 						                <textarea onKeyup="resizeTextarea(this,10);limitChars(this,5000);" <%=setRightClick(session,"ITEM_TYPE_RMH_TREATMENT")%> class="text" cols="80" rows="2" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_TREATMENT" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_RMH_TREATMENT" property="value"/></textarea>

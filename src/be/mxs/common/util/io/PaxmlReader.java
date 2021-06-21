@@ -36,6 +36,7 @@ public class PaxmlReader {
 
 	public static void main(String[] args) throws GeneralException, IOException {
 		PrimroseLoader.load(args[0], true);
+		ScanDirectoryMonitor.loadConfig();
 		Collection<File> files = FileUtils.listFiles(new File(args[1]), new WildcardFileFilter("*.paxml"), null);
 		Iterator<File> iFiles = files.iterator();
 		while(iFiles.hasNext()) {

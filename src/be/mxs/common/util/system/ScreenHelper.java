@@ -703,7 +703,6 @@ public class ScreenHelper {
     
     public static boolean updateTransactionUid(String oldUid, String newUid) {
     	boolean bSuccess = false;
-    	Connection conn = SH.getOpenClinicConnection();
     	try {
     		updateTableColumn("Transactions", "transactionid", oldUid, newUid);
     		updateTableColumn("Items", "transactionid", oldUid, newUid);
@@ -742,6 +741,20 @@ public class ScreenHelper {
         	catch(Exception e2){
         		//e2.printStackTrace();
         	}
+		}
+ 
+		return date;
+    }
+    
+    public static java.util.Date parseDate(String sDate, String dateFormat){
+    	reloadDateFormats();
+    	java.util.Date date = null;
+				
+		try{  
+			date = new SimpleDateFormat(dateFormat).parse(sDate);
+		}
+		catch(Exception e){   
+			e.printStackTrace();
 		}
  
 		return date;
@@ -1864,26 +1877,55 @@ public static String removeAccents(String sTest){
     }
     
     public static String writeDateField(String sName, String sForm, String sValue, boolean allowPastDates, 
-    		                            boolean allowFutureDates, String sWebLanguage, String sCONTEXTDIR, String sExtraOnBlur){
-        String gfPopType = "1"; // default        
-        if(allowPastDates && allowFutureDates){
-            gfPopType = "1";
-        }
-        else{
-               if(allowFutureDates) gfPopType = "3";
-          else if(allowPastDates) gfPopType = "2";
-        }
-        
-        String sExtraCondition = "";
-        if(!allowFutureDates){
-        	sExtraCondition = " || isFutureDate(this,false)";
-        }
-        
-        return "<span style='white-space: nowrap'><input type='text' maxlength='10' class='text' id='"+sName+"' name='"+sName+"' value='"+sValue+"' size='10' onblur='if(!checkDate(this)"+sExtraCondition+"){dateError(this);}else{"+sExtraOnBlur+"}'>"+
-               "&nbsp;<img height='16px' name='popcal' style='vertical-align:middle;' onclick='gfPop"+gfPopType+".fPopCalendar(document."+sForm+"."+sName+");return false;' src='"+sCONTEXTDIR+"/_img/icons/icon_agenda.png' alt='"+HTMLEntities.htmlentities(getTran(null,"Web","Select",sWebLanguage))+"'></a>"+
-               "&nbsp;<img height='16px' style='vertical-align:middle;' src='"+sCONTEXTDIR+"/_img/icons/icon_compose.png' alt='"+getTranNoLink("Web","PutToday",sWebLanguage)+"' onclick='getToday(document."+sForm+"."+sName+");'></span>";
-    }
-    
+            boolean allowFutureDates, String sWebLanguage, String sCONTEXTDIR, String sExtraOnBlur){
+		String gfPopType = "1"; // default        
+		if(allowPastDates && allowFutureDates){
+			gfPopType = "1";
+		}
+		else{
+			if(allowFutureDates) gfPopType = "3";
+			else if(allowPastDates) gfPopType = "2";
+		}
+		
+		String sExtraCondition = "";
+		if(!allowFutureDates){
+			sExtraCondition = " || isForbiddenFutureDate(this,false)";
+		}
+		
+		if(!allowPastDates){
+			sExtraCondition = " || isForbiddenPastDate(this,false)";
+		}
+		
+		return "<span style='white-space: nowrap'><input type='text' maxlength='10' class='text' id='"+sName+"' name='"+sName+"' value='"+sValue+"' size='10' onblur='if(!checkDate(this)"+sExtraCondition+"){dateError(this);}else{"+sExtraOnBlur+"}'>"+
+		"&nbsp;<img height='16px' name='popcal' style='vertical-align:middle;' onclick='gfPop"+gfPopType+".fPopCalendar(document."+sForm+"."+sName+");return false;' src='"+sCONTEXTDIR+"/_img/icons/icon_agenda.png' alt='"+HTMLEntities.htmlentities(getTran(null,"Web","Select",sWebLanguage))+"'></a>"+
+		"&nbsp;<img height='16px' style='vertical-align:middle;' src='"+sCONTEXTDIR+"/_img/icons/icon_compose.png' alt='"+getTranNoLink("Web","PutToday",sWebLanguage)+"' onclick='getToday(document."+sForm+"."+sName+");'></span>";
+	}
+
+    public static String writeDateFieldWithReadonly(String sName, String sForm, String sValue, boolean allowPastDates, 
+            boolean allowFutureDates, String sWebLanguage, String sCONTEXTDIR, String sExtraOnBlur){
+		String gfPopType = "1"; // default        
+		if(allowPastDates && allowFutureDates){
+			gfPopType = "1";
+		}
+		else{
+			if(allowFutureDates) gfPopType = "3";
+			else if(allowPastDates) gfPopType = "2";
+		}
+		
+		String sExtraCondition = "";
+		if(!allowFutureDates){
+			sExtraCondition = " || isForbiddenFutureDate(this,false)";
+		}
+		
+		if(!allowPastDates){
+			sExtraCondition = " || isForbiddenPastDate(this,false)";
+		}
+		
+		return "<span style='white-space: nowrap'><input type='text' maxlength='10' class='text' id='"+sName+"' name='"+sName+"' value='"+sValue+"' size='10' onblur='if(!checkDate(this)"+sExtraCondition+"){dateError(this);}else{"+sExtraOnBlur+"}'>"+
+		"&nbsp;<img height='16px' name='popcal' style='vertical-align:middle;' onclick='if(document.getElementById(\""+sName+"\").getAttribute(\"readonly\")){}else{gfPop"+gfPopType+".fPopCalendar(document."+sForm+"."+sName+");return false;}' src='"+sCONTEXTDIR+"/_img/icons/icon_agenda.png' alt='"+HTMLEntities.htmlentities(getTran(null,"Web","Select",sWebLanguage))+"'></a>"+
+		"&nbsp;<img height='16px' style='vertical-align:middle;' src='"+sCONTEXTDIR+"/_img/icons/icon_compose.png' alt='"+getTranNoLink("Web","PutToday",sWebLanguage)+"' onclick='if(document.getElementById(\""+sName+"\").getAttribute(\"readonly\")){}else{getToday(document."+sForm+"."+sName+");}'></span>";
+	}
+	
     public static String writeDateFieldMPI(String sName, String sForm, String sValue, boolean allowPastDates, 
             boolean allowFutureDates, String sWebLanguage, String sCONTEXTDIR, String imageSize){
 		String gfPopType = "1"; // default        
@@ -1897,9 +1939,13 @@ public static String removeAccents(String sTest){
 		
 		String sExtraCondition = "";
 		if(!allowFutureDates){
-		sExtraCondition = " || isFutureDate(this,false)";
+			sExtraCondition = " || isForbiddenFutureDate(this,false)";
 		}
 		
+        if(!allowPastDates){
+        	sExtraCondition = " || isForbiddenPastDate(this,false)";
+        }
+        
 		return "<span style='white-space: nowrap'><input type='text' maxlength='10' class='text' id='"+sName+"' name='"+sName+"' value='"+sValue+"' size='10' onblur='if(!checkDate(this)"+sExtraCondition+"){dateError(this);}else{}'>"+
 		"&nbsp;<img height='"+imageSize+"' name='popcal' style='vertical-align:middle;' onclick='gfPop"+gfPopType+".fPopCalendar(document."+sForm+"."+sName+");return false;' src='"+sCONTEXTDIR+"/_img/icons/icon_agenda.png' alt='"+HTMLEntities.htmlentities(getTran(null,"Web","Select",sWebLanguage))+"'></a>"+
 		"&nbsp;<img height='"+imageSize+"' style='vertical-align:middle;' src='"+sCONTEXTDIR+"/_img/icons/icon_compose.png' alt='"+getTranNoLink("Web","PutToday",sWebLanguage)+"' onclick='getToday(document."+sForm+"."+sName+");'></span>";
@@ -1924,7 +1970,11 @@ public static String removeAccents(String sTest){
         
         String sExtraCondition = "";
         if(!allowFutureDates){
-        	sExtraCondition = " || isFutureDate(this,false)";
+        	sExtraCondition = " || isForbiddenFutureDate(this,false)";
+        }
+        
+        if(!allowPastDates){
+        	sExtraCondition = " || isForbiddenPastDate(this,false)";
         }
         
         return "<span style='white-space: nowrap'><input type='text' maxlength='10' class='text' id='"+sName+"' name='"+sName+"' value='"+sValue+"' size='10' onblur='if(!checkDate(this)"+sExtraCondition+"){dateError(this);}else{"+sExtraOnBlur+"}'>"

@@ -1400,7 +1400,7 @@ public class RequestedLabAnalysis {
             Debug.println("*** sServerId      : "+ScreenHelper.checkString(this.serverId));
             Debug.println("*** sTransactionId : "+ScreenHelper.checkString(this.transactionId));
             Debug.println("*** sPatientId     : "+ScreenHelper.checkString(this.patientId));
-            Debug.println("*** sPatientId     : "+ScreenHelper.checkString(this.analysisCode)+"\n");
+            Debug.println("*** sAnalysisCode  : "+ScreenHelper.checkString(this.analysisCode)+"\n");
 
             throw new Exception("RequestedLabAnalysis : store : not all required data is set");
         }

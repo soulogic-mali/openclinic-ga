@@ -44,7 +44,6 @@
 	if(serviceuid.length()==0){
 		serviceuid=checkString((String)session.getAttribute("activeservice"));
 	}
-    
     if(sAction.length()==0){
 %>            
 
@@ -84,7 +83,7 @@
 		                <input type="text" class="text" id="searchMaintenancePlanName" name="searchMaintenancePlanName" size="50" readonly value="">
 		                                   
 		                <%-- buttons --%>
-		                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("web","select",sWebLanguage)%>" onclick="selectMaintenancePlan('searchMaintenancePlanUID','searchMaintenancePlanName');">
+		                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("web","select",sWebLanguage)%>" onclick="selectMaintenancePlan('searchMaintenancePlanUID','searchMaintenancePlanName','');">
 		                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("web","clear",sWebLanguage)%>" onclick="clearMaintenancePlanSearchFields();">
 		                <img src="<c:url value="/_img/icons/icon_view.png"/>" class="link" alt="<%=getTranNoLink("web","view",sWebLanguage)%>" onclick="viewPlan();">
 		            </td>
@@ -143,6 +142,7 @@
 	<%
 		}
 	}
+
 	%>
 	
 <script>
@@ -249,20 +249,40 @@
 			operation.setLockedBy(-1);
 		}
 	}
+	else if(sAction.equalsIgnoreCase("history")){
+		operation=MaintenanceOperation.getHistory(sOperationUID, SH.parseDate(SH.p(request,"timestamp"), "yyyyMMddHHmmssSSS"));
+	}
 	else if(sAction.equalsIgnoreCase("edit")){
 		operation = MaintenanceOperation.get(sOperationUID);
 	}
-	
+
 	if(operation!=null){
 		bLocked = operation.getObjectId()>-1 && ((operation.getLockedBy()>-1 && operation.getLockedBy()!=MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)) || (operation.getLockedBy()==-1 && MedwanQuery.getInstance().getConfigInt("GMAOLocalServerId",-1)!=0));
 %>
-	    <%=writeTableHeader("web.assets","maintenanceOperations",sWebLanguage,"")%>
+		<%=writeTableHeaderButton(getTran(request,"web.assets","maintenanceOperations",sWebLanguage),!operation.hasHistory()?"":"<img title='"+getTranNoLink("web","history",sWebLanguage)+"' src='"+sCONTEXTPATH+"/_img/icons/icon_history2.gif' onclick='showHistory();'/>&nbsp;")%>
 
 		<form name="EditForm" id="EditForm" method="POST">
 		    <input type="hidden" id="EditOperationUID" name="EditOperationUID" value="<%=operation.getUid()%>">
 			<input type='hidden' name='lockedby' id='lockedby' value='<%=operation.getLockedBy()%>'/>
 		                
 		    <table class="list" border="0" width="100%" cellspacing="1">
+		        <%-- ASSET (*) --%>
+		        <tr>
+		            <td class="admin"><%=getTran(request,"web.assets","asset",sWebLanguage)%></td>
+		            <td class="admin2" colspan='3'>
+		                <%
+		                	if(operation!=null && operation.getMaintenancePlan()!=null && operation.getMaintenancePlan().hasValidUid()){
+		                		out.println(operation.getMaintenancePlan().getAssetUID()+" - "+SH.capitalize(operation.getMaintenancePlan().getAssetName()));
+		                	}
+		                	else if(sAssetUID.length()>0){
+		                		Asset asset = Asset.get(sAssetUID);
+		                		if(asset!=null){
+		                			out.println(asset.getUid()+" - "+SH.capitalize(asset.getDescription()));
+		                		}
+		                	}
+		                %>
+		            </td>
+		        </tr> 
 		        <%-- MAINTENANCE PLAN (*) --%>
 		        <tr>
 		            <td class="admin" width="<%=sTDAdminWidth%>"><%=getTran(request,"web.assets","maintenancePlan",sWebLanguage)%>&nbsp;*&nbsp;</td>
@@ -271,23 +291,30 @@
 		                <input type="text" class="text" id="maintenancePlanName" name="maintenancePlanName" size="50" readonly value="<%=operation.getMaintenancePlan().getName()%>" onchange="getNextOperationDate()">
 		                                   
 		                <%-- buttons --%>
-		                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("web","select",sWebLanguage)%>" onclick="selectMaintenancePlan('maintenancePlanUID','maintenancePlanName');">
+		                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("web","select",sWebLanguage)%>" onclick="selectMaintenancePlan('maintenancePlanUID','maintenancePlanName','tddate');">
 		                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("web","clear",sWebLanguage)%>" onclick="clearMaintenancePlanFields();">
 		                <img src="<c:url value="/_img/icons/icon_view.png"/>" class="link" alt="<%=getTranNoLink("web","view",sWebLanguage)%>" onclick="viewPlan();">
 		            </td>
 		        </tr>   
 		        
+		        <%-- MAINTENANCE PLAN DATE --%>
+		        <tr>
+		            <td class="admin"><%=getTran(request,"web.assets","datemaintenanceplan",sWebLanguage)%>&nbsp;*&nbsp;</td>
+		            <td class="admin2" colspan='3' id="tddate">
+		            	<b><%=SH.formatDate(operation.getMaintenancePlan().getStartDate()) %></b>
+		            </td>
+		        </tr> 
 		        <%-- DATE (*) --%>
 		        <tr>
 		            <td class="admin"><%=getTran(request,"web.assets","dateintervention",sWebLanguage)%>&nbsp;*&nbsp;</td>
 		            <td class="admin2" colspan='3'>
-		                <%=writeDateField("date","EditForm",ScreenHelper.formatDate(operation.getDate()),sWebLanguage,"getNextOperationDate();")%>
+		            	<%=SH.writeDateField("date", "EditForm", ScreenHelper.formatDate(operation.getDate()), true, false, sWebLanguage, sCONTEXTPATH) %>
 		            </td>
 		        </tr> 
 		        <tr>
 		            <td class="admin"><%=getTran(request,"web.assets","enddate",sWebLanguage)%></td>
 		            <td class="admin2" colspan='3'>
-		                <%=writeDateField("comment5","EditForm",operation.getComment5(),sWebLanguage)%>
+		                <%=writeDateField("comment5","EditForm",SH.c(operation.getComment5()),sWebLanguage)%>
 		            </td>
 		        </tr> 
 		            
@@ -378,6 +405,7 @@
 		        <tr>     
 		            <td class="admin"/>
 		            <td class="admin2" colspan="3">
+		            	<%if(!sAction.equalsIgnoreCase("history") && !SH.p(request,"readonly").equalsIgnoreCase("true")){ %>
 						<%if(!bLocked && activeUser.getAccessRight("maintenanceoperations.edit")){ %>
 		                <input class="button" type="button" name="buttonSave" id="buttonSave" value="<%=getTranNoLink("web","save",sWebLanguage)%>" onclick="saveMaintenanceOperation();">&nbsp;
 						<%} %>
@@ -386,11 +414,16 @@
 						<%} %>
 		                <input class="button" type="button" name="buttonList" id="buttonList" value="<%=getTranNoLink("web","list",sWebLanguage)%>" onclick="listMaintenanceOperations();">&nbsp;
 		                <input class="button" type="button" name="buttonDocuments" id="buttonDocuments" value="<%=getTranNoLink("web","documents",sWebLanguage)%>" onclick="printWordDocuments();">&nbsp;
+						<%} %>
 		            </td>
 		        </tr>
 		    </table>
 		    <i><%=getTran(request,"web","colored_fields_are_obligate",sWebLanguage)%></i>
 		    
+		    <%if(sAction.equalsIgnoreCase("history")|| SH.p(request,"readonly").equalsIgnoreCase("true")){%>
+		    	<center><input class="button" type="button" name="buttonClose" id="buttonClose" value="<%=getTranNoLink("web","close",sWebLanguage)%>" onclick="window.close();"></center>
+			<%}%>
+		
 		    <div id="divMessage" style="padding-top:10px;"></div>
 		</form>
 <%
@@ -410,15 +443,22 @@
     document.getElementById(nameField).focus();
   }
   <%-- SELECT MAINTENANCE PLAN --%>
-  function selectMaintenancePlan(uidField,codeField){
+  function selectMaintenancePlan(uidField,codeField,dateField){
     var url = "/_common/search/searchMaintenancePlan.jsp&ts=<%=getTs()%>&Action=search&PopupWidth=600&PopupHeight=400"+
 		      (document.getElementById("searchAssetUID")?"&searchAssetUID="+document.getElementById("searchAssetUID").value+
 		      "&searchAssetCode="+document.getElementById("searchAssetCode").value:"")+
+   		      "&AssetUID=<%=sAssetUID%>"+
    		      "&ReturnFieldUid="+uidField+
+   		      "&ReturnFieldDate="+dateField+
               "&ReturnFieldCode="+codeField;
     openPopup(url);
     document.getElementById(codeField).focus();
   }  
+  
+  function showHistory(){
+	  openPopup("assets/showHistory.jsp&type=maintenanceoperation&uid=<%=operation==null?"":operation.getUid()%>",800,500);
+  }
+
   function searchService(serviceUidField,serviceNameField){
 	  	openPopup("/_common/search/searchService.jsp&ts=<%=getTs()%>&VarCode="+serviceUidField+"&VarText="+serviceNameField);
 	  	document.getElementById(serviceNameField).focus();
