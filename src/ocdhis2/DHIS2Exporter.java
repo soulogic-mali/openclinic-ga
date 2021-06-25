@@ -436,6 +436,17 @@ public class DHIS2Exporter {
 					continue;
 				}
 			}
+			if(ScreenHelper.checkString(dataset.attributeValue("beforedate")).equalsIgnoreCase("begin")){
+				try{
+					java.util.Date begindate = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
+					if(!begindate.before(begin)){
+						continue;
+					}
+				}
+				catch(Exception e){
+					continue;
+				}
+			}
 			selectedItems.add(item);
 		}
 		if(dataset.attributeValue("type").equalsIgnoreCase("pharmacy")){
@@ -466,6 +477,17 @@ public class DHIS2Exporter {
 						try{
 							java.util.Date begindate = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
 							if(begindate.after(begin)){
+								continue;
+							}
+						}
+						catch(Exception e){
+							continue;
+						}
+					}
+					if(ScreenHelper.checkString(dataset.attributeValue("beforedate")).equalsIgnoreCase("begin")){
+						try{
+							java.util.Date begindate = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
+							if(!begindate.before(begin)){
 								continue;
 							}
 						}
@@ -524,6 +546,17 @@ public class DHIS2Exporter {
 						continue;
 					}
 				}
+				if(ScreenHelper.checkString(dataset.attributeValue("beforedate")).equalsIgnoreCase("begin")){
+					try{
+						java.util.Date begindate = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
+						if(!begindate.before(begin)){
+							continue;
+						}
+					}
+					catch(Exception e){
+						continue;
+					}
+				}
 				selectedItems.add(item);
 			}
 			if(dataset.attributeValue("type").equalsIgnoreCase("diagnosis")){
@@ -568,6 +601,17 @@ public class DHIS2Exporter {
 							try{
 								java.util.Date begindate = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
 								if(begindate.after(begin)){
+									continue;
+								}
+							}
+							catch(Exception e){
+								continue;
+							}
+						}
+						if(ScreenHelper.checkString(dataset.attributeValue("beforedate")).equalsIgnoreCase("begin")){
+							try{
+								java.util.Date begindate = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
+								if(!begindate.before(begin)){
 									continue;
 								}
 							}
@@ -623,6 +667,17 @@ public class DHIS2Exporter {
 					try{
 						java.util.Date begindate = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
 						if(begindate.after(begin)){
+							continue;
+						}
+					}
+					catch(Exception e){
+						continue;
+					}
+				}
+				if(ScreenHelper.checkString(dataset.attributeValue("beforedate")).equalsIgnoreCase("begin")){
+					try{
+						java.util.Date begindate = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
+						if(!begindate.before(begin)){
 							continue;
 						}
 					}
@@ -2108,11 +2163,11 @@ public class DHIS2Exporter {
 						}
 						else if(ScreenHelper.checkString(dataelement.attributeValue("calculate")).equalsIgnoreCase("admissionDays")){
 							try{
-								java.util.Date begin = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
+								java.util.Date begin = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[13]);
 								if(begin.before(this.begin)){
 									begin=this.begin;
 								}
-								java.util.Date end = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[9]);
+								java.util.Date end = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[14]);
 								if(end.after(this.end)){
 									end=new java.util.Date(this.end.getTime()-1000);
 								}
@@ -2123,9 +2178,10 @@ public class DHIS2Exporter {
 							}
 						}
 						else if(ScreenHelper.checkString(dataelement.attributeValue("calculate")).equalsIgnoreCase("totalAdmissionDays")){
+							System.out.println(item);
 							try{
-								java.util.Date begin = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
-								java.util.Date end = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[9]);
+								java.util.Date begin = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[13]);
+								java.util.Date end = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[14]);
 								if(end.after(this.end)){
 									end=new java.util.Date(this.end.getTime()-1000);
 								}
@@ -2137,8 +2193,8 @@ public class DHIS2Exporter {
 						}
 						else if(ScreenHelper.checkString(dataelement.attributeValue("calculate")).equalsIgnoreCase("totalAdmissionDaysPlus")){
 							try{
-								java.util.Date begin = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
-								java.util.Date end = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[9]);
+								java.util.Date begin = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[13]);
+								java.util.Date end = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[14]);
 								if(end.after(this.end)){
 									end=new java.util.Date(this.end.getTime()-1000);
 								}
@@ -2635,8 +2691,8 @@ public class DHIS2Exporter {
 								}
 								else if(ScreenHelper.checkString(dataelement.attributeValue("calculate")).equalsIgnoreCase("totalAdmissionDaysPlus")){
 									try{
-										java.util.Date begin = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[8]);
-										java.util.Date end = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[9]);
+										java.util.Date begin = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[13]);
+										java.util.Date end = new SimpleDateFormat("yyyyMMddHHmm").parse(item.split(";")[14]);
 										if(end.after(this.end)){
 											end=new java.util.Date(this.end.getTime()-1000);
 										}
@@ -3703,6 +3759,14 @@ public class DHIS2Exporter {
 			}
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
+				java.util.Date dBegin=rs.getTimestamp("oc_encounter_begindate");
+				java.util.Date dEnd=rs.getTimestamp("oc_encounter_enddate")==null?new java.util.Date():rs.getTimestamp("oc_encounter_enddate");
+				if(SH.c(dataset.attributeValue("incoming")).equalsIgnoreCase("1") && (dBegin.before(begin) || dBegin.after(end))){
+					continue;
+				}
+				if(SH.c(dataset.attributeValue("outgoing")).equalsIgnoreCase("1") && (dEnd.before(begin) || dEnd.after(end))){
+					continue;
+				}
 				String item = rs.getString("personid")+";"
 						+rs.getString("oc_encounter_objectid")+";"
 						+rs.getString("gender")+";"
@@ -3716,8 +3780,8 @@ public class DHIS2Exporter {
 						+rs.getString("serverid")+";"
 						+rs.getString("transactionid")+";"
 						+rs.getString("oc_encounter_situation")+";"
-						+new SimpleDateFormat("yyyyMMddHHmm").format(rs.getTimestamp("oc_encounter_begindate"))+";"
-						+new SimpleDateFormat("yyyyMMddHHmm").format(rs.getTimestamp("oc_encounter_enddate")==null?new java.util.Date():rs.getTimestamp("oc_encounter_enddate"))+";";
+						+new SimpleDateFormat("yyyyMMddHHmm").format(dBegin)+";"
+						+new SimpleDateFormat("yyyyMMddHHmm").format(dEnd)+";";
 				Debug.println(item);
 				if(minval.length()>0){
 					try{

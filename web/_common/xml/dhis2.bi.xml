@@ -6807,7 +6807,7 @@
 			<dataelement unique="encounters" minage="20" maxage="25" uid="h9EytkY6M2z" label="20-24 ans"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|6" notitle="1" newcase="1" type="encounter" encountertype="visit" incoming="1" uid="BlvDmrE2I4L">
+	<dataset label="DSNIS-HOP - Fiche 14 - Consultations ambulatoires (nouveaux cas par origine et par âge)|6"  notitle="1" newcase="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_" encountertype="visit" uid="BlvDmrE2I4L">
 		<attributeOptionCombo type="department">
 			<option uid="bvYCT9fPMMc" value="chi" name="Chirurgie"/>
 			<option uid="scMXOQSSdDc" value="con" name="consultation"/>
@@ -7411,9 +7411,9 @@
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST" type="title" uid="E9v9OrklEEC"/>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (nombre de cas au début du mois par sexe et par age)" type="encounter" encountertype="admission" ondate="begin" uid="E9v9OrklEEC">
+	<dataset label="DSNIS-HOP - Fiche 15 - SST (nombre de cas au début du mois par sexe et par age)" type="encounter" encountertype="admission" beforedate="begin" uid="E9v9OrklEEC">
 		<attributeOptionCombo type="department">
-			<option uid="JKi9Yvys9d9" value="the" name=""/>
+			<option uid="GKkUPluq2QJ" value="the" name="Default"/>
 		</attributeOptionCombo>
 		<categoryOptionCombo type="agegender">
 			<option uid="yvg2IfmSJ3x" min="0" max="0.5" gender="m" name="&lt;6 mois M"/>
@@ -7429,159 +7429,130 @@
 			<dataelement unique="encounters" uid="kGFFXAZg8aH" label="Nombre de cas"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (nouvelles admissions par motif, age et sexe)" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+	<dataset label="DSNIS-HOP - Fiche 15 - SST (admissions par motif, age et sexe)" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="xPiO3tSEN73" outputItemValueIn="1|2" name="P/T &lt;-3Z ou &lt;70% ou PB &lt;115 mm"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="DSMET7iOWmn" outputItemValue="3" name="Oedemes"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="zWrNg77xFrV" outputItemValue="4" name="Rechute"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="XprLiLrF3qV" outputItemValue="5" name="Re-admission"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="NdckF6ZP6jZ" outputItemValueIn="6|7" name="Transfert interne"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" maxage="0.5" gender="m" uid="qhAVfotsopD" label="&lt;6 mois M"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (nouvelles admissions par motif, age et sexe)|1" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+	<dataset label="DSNIS-HOP - Fiche 15 - SST (admissions par motif, age et sexe)|1" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="BWaXplCU1ep" outputItemValueIn="1|2" name="P/T &lt;-3Z ou &lt;70% ou PB &lt;115 mm"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="sDDizTXyYio" outputItemValue="3" name="Oedemes"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="DPjzrQYgE8m" outputItemValue="4" name="Rechute"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="QV25QCKrC91" outputItemValue="5" name="Re-admission"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="NEOL5Lpv88d" outputItemValueIn="6|7" name="Transfert interne"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" maxage="0.5" gender="f" uid="qhAVfotsopD" label="&lt;6 mois F"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (nouvelles admissions par motif, age et sexe)|2" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+	<dataset label="DSNIS-HOP - Fiche 15 - SST (admissions par motif, age et sexe)|2" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="JgHiUM7yKRh" outputItemValueIn="1|2" name="P/T &lt;-3Z ou &lt;70% ou PB &lt;115 mm"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="bwrSAgEm1lB" outputItemValue="3" name="Oedemes"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="BYU1BHNqVH8" outputItemValue="4" name="Rechute"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="VCK22svli9Q" outputItemValue="5" name="Re-admission"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="Ogq1QIukUd1" outputItemValueIn="6|7" name="Transfert interne"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" minage="0.5" maxage="2" gender="m" uid="qhAVfotsopD" label="6-23 mois M"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (nouvelles admissions par motif, age et sexe)|3" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+	<dataset label="DSNIS-HOP - Fiche 15 - SST (admissions par motif, age et sexe)|3" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="VAmiFRNKmhb" outputItemValueIn="1|2" name="P/T &lt;-3Z ou &lt;70% ou PB &lt;115 mm"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="ufDJ59Wfvtf" outputItemValue="3" name="Oedemes"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="VMmd1dO3i8u" outputItemValue="4" name="Rechute"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="ngizbOQGzJy" outputItemValue="5" name="Re-admission"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="T57wozzOdac" outputItemValueIn="6|7" name="Transfert interne"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" minage="0.5" maxage="2" gender="f" uid="qhAVfotsopD" label="6-23 mois F"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (nouvelles admissions par motif, age et sexe)|4" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+	<dataset label="DSNIS-HOP - Fiche 15 - SST (admissions par motif, age et sexe)|4" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="cDUD69Dy9KS" outputItemValueIn="1|2" name="P/T &lt;-3Z ou &lt;70% ou PB &lt;115 mm"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="optEDhAVk5O" outputItemValue="3" name="Oedemes"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="nURzEJBYTvw" outputItemValue="4" name="Rechute"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="rOMc1Zuocn2" outputItemValue="5" name="Re-admission"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="TPuyxg5ShTx" outputItemValueIn="6|7" name="Transfert interne"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" minage="2" maxage="5" gender="m" uid="qhAVfotsopD" label="24-59 mois M"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (nouvelles admissions par motif, age et sexe)|5" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+	<dataset label="DSNIS-HOP - Fiche 15 - SST (admissions par motif, age et sexe)|5" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="skeBeXxHVeF" outputItemValueIn="1|2" name="P/T &lt;-3Z ou &lt;70% ou PB &lt;115 mm"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="mHcDgMyoDbf" outputItemValue="3" name="Oedemes"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="XGyU6CgG4LQ" outputItemValue="4" name="Rechute"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="DhR5m0bcipe" outputItemValue="5" name="Re-admission"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="jcdKDcdgiiF" outputItemValueIn="6|7" name="Transfert interne"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" minage="2" maxage="5" gender="f" uid="qhAVfotsopD" label="24-59 mois F"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (nouvelles admissions par motif, age et sexe)|6" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+	<dataset label="DSNIS-HOP - Fiche 15 - SST (admissions par motif, age et sexe)|6" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="ErOnUuKwf90" outputItemValueIn="1|2" name="P/T &lt;-3Z ou &lt;70% ou PB &lt;115 mm"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="fX0E8Pl25K2" outputItemValue="3" name="Oedemes"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="cFwyayyAtOK" outputItemValue="4" name="Rechute"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="lHD81l38fFO" outputItemValue="5" name="Re-admission"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="LdC7rsgsHDK" outputItemValueIn="6|7" name="Transfert interne"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" minage="5" gender="m" uid="qhAVfotsopD" label="&gt;59 mois M"/>
 		</dataelements>
 	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (nouvelles admissions par motif, age et sexe)|7" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+	<dataset label="DSNIS-HOP - Fiche 15 - SST (admissions par motif, age et sexe)|7" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="Qdg39OC7p68" outputItemValueIn="1|2" name="P/T &lt;-3Z ou &lt;70% ou PB &lt;115 mm"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="rUSRtkVyPZJ" outputItemValue="3" name="Oedemes"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="oS5vX87kg8a" outputItemValue="4" name="Rechute"/>
-		</categoryOptionCombo>
-		<dataelements>
-			<dataelement unique="encounters" minage="5" gender="f" uid="qhAVfotsopD" label="&gt;59 mois F"/>
-		</dataelements>
-	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (autres admissions par motif, age et sexe)" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
-		<categoryOptionCombo type="transactionitemvalue">
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="XprLiLrF3qV" outputItemValue="5" name="Re-admission"/>
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="NdckF6ZP6jZ" outputItemValue="6" name="Transfert interne"/>
-		</categoryOptionCombo>
-		<dataelements>
-			<dataelement unique="encounters" maxage="0.5" gender="m" uid="qhAVfotsopD" label="&lt;6 mois M"/>
-		</dataelements>
-	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (autres admissions par motif, age et sexe)|1" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
-		<categoryOptionCombo type="transactionitemvalue">
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="QV25QCKrC91" outputItemValue="5" name="Re-admission"/>
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="NEOL5Lpv88d" outputItemValue="6" name="Transfert interne"/>
-		</categoryOptionCombo>
-		<dataelements>
-			<dataelement unique="encounters" maxage="0.5" gender="f" uid="qhAVfotsopD" label="&lt;6 mois F"/>
-		</dataelements>
-	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (autres admissions par motif, age et sexe)|2" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
-		<categoryOptionCombo type="transactionitemvalue">
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="VCK22svli9Q" outputItemValue="5" name="Re-admission"/>
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="Ogq1QIukUd1" outputItemValue="6" name="Transfert interne"/>
-		</categoryOptionCombo>
-		<dataelements>
-			<dataelement unique="encounters" minage="0.5" maxage="2" gender="m" uid="qhAVfotsopD" label="6-23 mois M"/>
-		</dataelements>
-	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (autres admissions par motif, age et sexe)|3" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
-		<categoryOptionCombo type="transactionitemvalue">
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="ngizbOQGzJy" outputItemValue="5" name="Re-admission"/>
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="T57wozzOdac" outputItemValue="6" name="Transfert interne"/>
-		</categoryOptionCombo>
-		<dataelements>
-			<dataelement unique="encounters" minage="0.5" maxage="2" gender="f" uid="qhAVfotsopD" label="6-23 mois F"/>
-		</dataelements>
-	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (autres admissions par motif, age et sexe)|4" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
-		<categoryOptionCombo type="transactionitemvalue">
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="rOMc1Zuocn2" outputItemValue="5" name="Re-admission"/>
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="TPuyxg5ShTx" outputItemValue="6" name="Transfert interne"/>
-		</categoryOptionCombo>
-		<dataelements>
-			<dataelement unique="encounters" minage="2" maxage="5" gender="m" uid="qhAVfotsopD" label="24-59 mois M"/>
-		</dataelements>
-	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (autres admissions par motif, age et sexe)|5" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
-		<categoryOptionCombo type="transactionitemvalue">
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="DhR5m0bcipe" outputItemValue="5" name="Re-admission"/>
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="jcdKDcdgiiF" outputItemValue="6" name="Transfert interne"/>
-		</categoryOptionCombo>
-		<dataelements>
-			<dataelement unique="encounters" minage="2" maxage="5" gender="f" uid="qhAVfotsopD" label="24-59 mois F"/>
-		</dataelements>
-	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (autres admissions par motif, age et sexe)|6" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
-		<categoryOptionCombo type="transactionitemvalue">
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="lHD81l38fFO" outputItemValue="5" name="Re-admission"/>
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="LdC7rsgsHDK" outputItemValue="6" name="Transfert interne"/>
-		</categoryOptionCombo>
-		<dataelements>
-			<dataelement unique="encounters" minage="5" gender="m" uid="qhAVfotsopD" label="&gt;59 mois M"/>
-		</dataelements>
-	</dataset>
-	<dataset label="DSNIS-HOP - Fiche 15 - SST (autres admissions par motif, age et sexe)|7" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
-		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="aiiO8x4Mpcn" outputItemValue="5" name="Re-admission"/>
-			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="AuIlGOoQTch" outputItemValue="6" name="Transfert interne"/>
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_ADMISSIONTYPE" uid="AuIlGOoQTch" outputItemValueIn="6|7" name="Transfert interne"/>
 		</categoryOptionCombo>
 		<dataelements>
 			<dataelement unique="encounters" minage="5" gender="f" uid="qhAVfotsopD" label="&gt;59 mois F"/>
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST (VIH+)" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_HIV" encountertype="admission" incoming="1" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="agegender">
 			<option uid="yvg2IfmSJ3x" min="0" max="0.5" gender="m" name="&lt;6 mois M"/>
 			<option uid="ibWJxELQpKO" min="0" max="0.5" gender="f" name="&lt;6 mois F"/>
@@ -7597,6 +7568,9 @@
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST (sorties par motif, age et sexe)" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_DISCHARGE" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" encountertype="admission" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="ffZHI4vqxFy" outputItemValue="1" name="Traité avec succès"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="JVvm5ukxFDb" outputItemValue="2" name="Décès"/>
@@ -7608,6 +7582,9 @@
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST (sorties par motif, age et sexe)|2" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_DISCHARGE" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" encountertype="admission" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="FCE3uZO7Pvi" outputItemValue="1" name="Traité avec succès"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="l1cUL6ss9r8" outputItemValue="2" name="Décès"/>
@@ -7619,6 +7596,9 @@
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST (sorties par motif, age et sexe)|3" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_DISCHARGE" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" encountertype="admission" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="xkxzHEjVFqn" outputItemValue="1" name="Traité avec succès"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="LnlsaVOhthh" outputItemValue="2" name="Décès"/>
@@ -7630,6 +7610,9 @@
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST (sorties par motif, age et sexe)|4" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_DISCHARGE" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" encountertype="admission" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="l40Ujw665h2" outputItemValue="1" name="Traité avec succès"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="FL2mNfnPHoz" outputItemValue="2" name="Décès"/>
@@ -7641,6 +7624,9 @@
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST (sorties par motif, age et sexe)|5" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_DISCHARGE" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" encountertype="admission" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="GwCXRN2neaA" outputItemValue="1" name="Traité avec succès"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="THUFsvNx3in" outputItemValue="2" name="Décès"/>
@@ -7652,6 +7638,9 @@
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST (sorties par motif, age et sexe)|6" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_DISCHARGE" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" encountertype="admission" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="RHlH0CwRf4X" outputItemValue="1" name="Traité avec succès"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="QNElzMzaU9c" outputItemValue="2" name="Décès"/>
@@ -7663,6 +7652,9 @@
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST (sorties par motif, age et sexe)|7" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_DISCHARGE" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" encountertype="admission" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="qc8nIwFwZSV" outputItemValue="1" name="Traité avec succès"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="aKilfGnrGH0" outputItemValue="2" name="Décès"/>
@@ -7674,6 +7666,9 @@
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST (sorties par motif, age et sexe)|8" notitle="1" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_DISCHARGE" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" encountertype="admission" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="transactionitemvalue">
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="ykmFwqW7R7s" outputItemValue="1" name="Traité avec succès"/>
 			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="Oat4IzgsInL" outputItemValue="2" name="Décès"/>
@@ -7685,6 +7680,9 @@
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 15 - SST (sorties - durées de séjour par âge et sexe)" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_DISCHARGE" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID" encountertype="admission" outgoing="1" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
 		<categoryOptionCombo type="agegender">
 			<option uid="yvg2IfmSJ3x" min="0" max="0.5" gender="m" name="&lt;6 mois M"/>
 			<option uid="ibWJxELQpKO" min="0" max="0.5" gender="f" name="&lt;6 mois F"/>
@@ -7696,7 +7694,18 @@
 			<option uid="JwPOuOjLb0d" min="5" max="999" gender="f" name="&gt;59 mois F"/>
 		</categoryOptionCombo>
 		<dataelements>
-			<dataelement calculate="totalAdmissionDaysPlus" uid="dvfLveF7Vfv" label="Nombre de jours"/>
+			<dataelement calculate="totalAdmissionDaysPlus" uid="Dpm7evcmQGl" label="Nombre de jours"/>
+		</dataelements>
+	</dataset>
+	<dataset label="DSNIS-HOP - Fiche 15 - SST (Erreurs d'admission)" type="item" transactiontype="be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_DISCHARGE" itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" encountertype="admission" uid="E9v9OrklEEC">
+		<attributeOptionCombo type="default">
+			<option uid="GKkUPluq2QJ" name="Default"/>
+		</attributeOptionCombo>
+		<categoryOptionCombo type="transactionitemvalue">
+			<option itemtype="be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_SST_TREATMENTRESULT" uid="GKkUPluq2QJ" outputItemValue="7" name="Erreur d'admission"/>
+		</categoryOptionCombo>
+		<dataelements>
+			<dataelement unique="encounters" uid="CSRO6gHSldY" label="Erreurs par défaut"/>
 		</dataelements>
 	</dataset>
 	<dataset label="DSNIS-HOP - Fiche 23-25 - Pharmacie" type="title" uid="Yp7VUzjLsGP"/>
@@ -7710,7 +7719,6 @@
 			<option uid="GKkUPluq2QJ;3" name="Quantité périmée"/>
 			<option uid="GKkUPluq2QJ;4" name="Nb jours rupture stock"/>
 			<option uid="GKkUPluq2QJ;5" name="Quantité à durée de vie &lt;= 3 mois"/>
-			<option uid="GKkUPluq2QJ;6" name="Date de péremption &lt;= 3 mois"/>
 			<option uid="GKkUPluq2QJ;7" name="CMM"/>
 		</categoryOptionCombo>
 		<dataelements>
@@ -7723,7 +7731,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="v0Z0XmGyyDY"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="PMwDperprxi"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Z6jh2MjxVq4"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="KLLh3z8x2Yu"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="EApUW4tDAG8"/>
 			</dataelement>
 			<dataelement productcode="2" nolink="1" label="Albendazole, sirop">
@@ -7735,7 +7742,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="kXcvLGhSvyI"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="XKS3iYSocIg"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="PTVnwmevpjD"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="Xto1BvyNjO6"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="JkfyT3BPYLm"/>
 			</dataelement>
 			<dataelement productcode="3" nolink="1" label=" Albendazole co 400mg">
@@ -7747,7 +7753,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="jkVkSynirsX"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="zw5dHIkgqRC"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="nU6i0cBkPhX"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="T2WUwTNI4wv"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="LDjgpEEwc72"/>
 			</dataelement>
 			<dataelement productcode="4" nolink="1" label="Aminophylline, comprimés 100 mg">
@@ -7759,7 +7764,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="jIE9MMCvGfo"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="ywH6rI7bD0f"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="vUQevUairzF"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="P7yFeYEbyaZ"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="XNZdS6Ph2WZ"/>
 			</dataelement>
 			<dataelement productcode="5" nolink="1" label=" Amoxicilline 250 mg /5ml, suspension buvable">
@@ -7771,7 +7775,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="Gug2pEyANLb"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="vxlqmRKYHLt"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="yfQvvi5uQvN"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="pgTcbHMFDRj"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="zKXaq7BevYg"/>
 			</dataelement>
 			<dataelement productcode="6" nolink="1" label=" Amoxicilline gélules 500mg">
@@ -7783,7 +7786,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="X4YjBdwYbxZ"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="PBrCSjuKeTi"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="DkfaFgNgDQC"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="cYCzgfzUCvn"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="UXRXTXgzguS"/>
 			</dataelement>
 			<dataelement productcode="7" nolink="1" label=" Ampicilline, solution injectable 1 g">
@@ -7795,7 +7797,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="EIMVM5Bdd8G"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="tUuhopahkEb"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="l8BBwX8DTYk"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="DIve61v5ulk"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="RnztSHkUHA8"/>
 			</dataelement>
 			<dataelement productcode="8" nolink="1" label=" Benzathine Benzylpénicilline, solution injectable 2,4M UI">
@@ -7807,7 +7808,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="JTQ5Np4m2Jr"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="WaHEpVj2nVM"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="wUpF68hawsL"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="sWi4pFFap1R"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="RtGUfaPpLwp"/>
 			</dataelement>
 			<dataelement productcode="9" nolink="1" label="Chloramphénicol,  gélule 250 mg">
@@ -7819,7 +7819,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="e2ewkzGJxeo"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="rvefx9z8M5f"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="QoIqA3gVEAz"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="CBXn5YCo8vW"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="LaZGTW6Usp2"/>
 			</dataelement>
 			<dataelement productcode="10" nolink="1" label="Chloramphénicol, suspension orale 125mg/5ml">
@@ -7831,7 +7830,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="hNh0WKHeLYH"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="FO5b6injKbB"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="PHhCFTuBs2A"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="lM5xCsOYqd3"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="yAkc2a61zDK"/>
 			</dataelement>
 			<dataelement productcode="11" nolink="1" label=" Chlorhexidine solution 5%">
@@ -7843,7 +7841,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="Hc3pv3KQehC"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="MxJhtT2TOW3"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Y18hTeInTOi"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="b6utzDQUEbc"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="T1itGsge3Hh"/>
 			</dataelement>
 			<dataelement productcode="12" nolink="1" label="Chlorphéniramine, comprimés 4mg">
@@ -7855,7 +7852,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="gATeU2sblxb"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="NZ2xFLxsoia"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="ooM9nW5YbRW"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="SqvGWfjSRat"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="Ykw1F5lRDt6"/>
 			</dataelement>
 			<dataelement productcode="13" nolink="1" label="Ciprofloxacine, comprimés 500mg">
@@ -7867,7 +7863,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="WezRYuodxQs"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="PR49NVncKs5"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="qLypUKa3ZvU"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="eOQSB7gEgpj"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="vESrpgKPVtC"/>
 			</dataelement>
 			<dataelement productcode="14" nolink="1" label="Cloxacilline, gélule 500mg">
@@ -7879,7 +7874,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="wB0L0AnwM5T"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="bXGdE24cMG9"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="nW88f2jH1Im"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="yy7TYs61f1J"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="D3wE7LC8F0G"/>
 			</dataelement>
 			<dataelement productcode="15" nolink="1" label="Diazépam, comprimés 5mg">
@@ -7891,7 +7885,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="NUHDfIknqpV"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="PNGTJw0iAwy"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="FlXNpRTRGg7"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="sZvNd4zGTJ9"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="p3dD0YOQeAm"/>
 			</dataelement>
 			<dataelement productcode="16" nolink="1" label="Diclofénac, comprimés 100mg ">
@@ -7903,7 +7896,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="GiguDbGuNhS"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="EVq2u9P2IV3"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="MgjvS2e8sW6"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="buaiRrqoz4M"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="AFSWpfOPM9L"/>
 			</dataelement>
 			<dataelement productcode="17" nolink="1" label="Doxycycline comprimés 100mg">
@@ -7915,7 +7907,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="kbc4F3NHmXy"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="GUcAoobYUMq"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Vs7GC6wOidh"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="j8OoFzrqSWs"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="NNQTdqVi7kV"/>
 			</dataelement>
 			<dataelement productcode="18" nolink="1" label="Eau pour préparation injectable 10 ml">
@@ -7927,7 +7918,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="PbATnGcB1Pr"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="ayn0cgMFkPb"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="eJT3lmfDy2y"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="X5EyN1CSQzQ"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="Up7fb8986FV"/>
 			</dataelement>
 			<dataelement productcode="19" nolink="1" label="Erythromycine,  gélule 500mg">
@@ -7939,7 +7929,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="DpnpWDRagfO"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="zCIMN8SoowU"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="lTAIYl2o04J"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="AlTQsDYmzWT"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="CfOxnZtwQBu"/>
 			</dataelement>
 			<dataelement productcode="20" nolink="1" label=" Fer/Acide folique co 200mg/1mg">
@@ -7951,7 +7940,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="ytqniAqOiPj"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="wfhw2iOHnjG"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="i3eKb6AANYI"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="VBlKc4RpJ1t"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="WTG53HtPKM5"/>
 			</dataelement>
 			<dataelement productcode="21" nolink="1" label="Gentamycine, solution injectable 80mg / ml">
@@ -7963,7 +7951,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="GtoZUAI5gy2"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="VDEpxhErQid"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="K3ibdEkzmVz"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="ZxQk07cVPTN"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="dZV2UnKw5L3"/>
 			</dataelement>
 			<dataelement productcode="22" nolink="1" label=" Sérum glucosé 5% 500ml">
@@ -7975,7 +7962,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="qGsfFnvovXW"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="h26rabhDW9t"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="sFrGRFghbBG"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="wRiIoM3jLeo"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="ac3B7jEvBls"/>
 			</dataelement>
 			<dataelement productcode="23" nolink="1" label="Hydroxyde d'Al+Trisilicate de Mg, comprimés 125mg+250mg">
@@ -7987,7 +7973,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="YfxQi8skGGb"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="sxjDeAHmUK8"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="ZIkkikLyXEH"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="zIFEF0H3gvV"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="X5mdnZ9C8Lk"/>
 			</dataelement>
 			<dataelement productcode="24" nolink="1" label="Hyocine butylbromide, comprimés 10mg">
@@ -7999,7 +7984,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="uvbiKG1maSc"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="bEwRW4X0UVT"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="phWxdfPyYZY"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="QAHPWjxWIXN"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="ZRnxUQMgx9T"/>
 			</dataelement>
 			<dataelement productcode="25" nolink="1" label="Ibuprofène, comprimés 400 mg">
@@ -8011,7 +7995,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="E1Mdrdbgzx6"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="zHGYIBLyWwz"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="l3Hk7VMxo0N"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="TDDwjTWDIpB"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="lVR8p365pL0"/>
 			</dataelement>
 			<dataelement productcode="26" nolink="1" label="Ibuprofène, sirop ">
@@ -8023,7 +8006,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="vbEde06Xq14"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="oOSchLmTvhW"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="pEuaRFti3Xm"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="pNy379wteNI"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="hYQvnLsrCr7"/>
 			</dataelement>
 			<dataelement productcode="27" nolink="1" label=" Indométhacine co 25mg">
@@ -8035,7 +8017,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="YLrTNpXd2q3"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="cf7sUeQuNZW"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="riGlAgWAFCE"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="kIL5YfuJYNu"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="lsIynLOwB82"/>
 			</dataelement>
 			<dataelement productcode="28" nolink="1" label="Lidocaine dentaire 2% de 50ml">
@@ -8047,7 +8028,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="IDHFHmEoBVF"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="bfyc4vxLzDR"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="HINk2DeGSSa"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="CIa2wlQjIr8"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="PjBZiBbt61o"/>
 			</dataelement>
 			<dataelement productcode="29" nolink="1" label=" Mebendazole co 100mg">
@@ -8059,7 +8039,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="Qcp55qdkUfo"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="vvAG9SYs0Sb"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="kHZJiF9Kbfx"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="bdIk7mTDLUa"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="OPs4hsBWcgy"/>
 			</dataelement>
 			<dataelement productcode="30" nolink="1" label=" Methylergométrine ampoule inj 0,2 mg/ml">
@@ -8071,7 +8050,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="PsdSXBf0ebN"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="kJCFCZfgvFn"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="vC3NyqKlM4D"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="KNR8WCxRCl9"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="jJAP6gvMDKK"/>
 			</dataelement>
 			<dataelement productcode="31" nolink="1" label=" Metronidazole co 250mg">
@@ -8083,7 +8061,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="JtTznnwm73A"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="EoXXvIigsoq"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="C3nLnbgcav6"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="ksmYikl1tc6"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="CU4sS240vq3"/>
 			</dataelement>
 			<dataelement productcode="32" nolink="1" label="Métronidazole, suspension 125mg/ 5ml">
@@ -8095,7 +8072,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="XbR3W4ZjPdH"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="yegjv6s1LYH"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="PsRxwE12vUQ"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="QHwzIpAz24d"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="xpRSJCvMMRh"/>
 			</dataelement>
 			<dataelement productcode="33" nolink="1" label="Niclosamide, comprimés 500mg">
@@ -8107,7 +8083,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="pbSmgZbbQB5"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="ctIUn5xSeT4"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="m2negJ8RwFK"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="cO3E5hzB0G2"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="MWZiAcOGH8M"/>
 			</dataelement>
 			<dataelement productcode="34" nolink="1" label="Nifedipine, comprimés 20mg">
@@ -8119,7 +8094,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="YcTCkVaOrOF"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="fIRLEwkXPuN"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="qaAFgy5zDWE"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="pqznfgC8lSY"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="hWXDYRYf5Rk"/>
 			</dataelement>
 			<dataelement productcode="35" nolink="1" label="Nystatine, comprimés 500 000 UI">
@@ -8131,7 +8105,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="qdhYhrvBnxM"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="nFjfm6TFZNR"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="E0VxkpPBcdR"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="faJ82FS6LLL"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="GTIvIQO7UgK"/>
 			</dataelement>
 			<dataelement productcode="36" nolink="1" label="Nystatine, comprimés vaginaux 100.000 UI">
@@ -8143,7 +8116,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="ApcTXsMAV7e"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="jmOyqA96aWq"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Ilz9hlGheD4"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="aabAJu1JDab"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="MmVilaullpa"/>
 			</dataelement>
 			<dataelement productcode="37" nolink="1" label=" Paracetamol co 500mg">
@@ -8155,7 +8127,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="forcd0W93lZ"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="P81V14zSwvT"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="cZEmCc6bxGP"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="mllc2N8hD59"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="Ut19U73leri"/>
 			</dataelement>
 			<dataelement productcode="38" nolink="1" label="Paracétamol, sirop 125 mg/5 ml 100ml">
@@ -8167,7 +8138,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="tt9Bqwi6RZZ"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="zWT1BtEgheN"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="U9y0tfzNLFe"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="mD8l3qtc5lt"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="HXLQXhdAUdv"/>
 			</dataelement>
 			<dataelement productcode="39" nolink="1" label=" Penicilline V co 250mg">
@@ -8179,7 +8149,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="ztdYnnSBSlM"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="zz1SiilfdW8"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="wHwaXIZIrRP"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="K9LrOk5rdJX"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="xzd2eu5hjWT"/>
 			</dataelement>
 			<dataelement productcode="40" nolink="1" label="Promethazine, comprimés 25mg">
@@ -8191,7 +8160,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="gHipkayfeLt"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="i1OjCWAmloJ"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="wwY9XZwB0X8"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="Mu5RXfq7eof"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="acjKcaYiz18"/>
 			</dataelement>
 			<dataelement productcode="41" nolink="1" label=" SRO sachets">
@@ -8203,7 +8171,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="RI5dFqCHyey"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="nz5CLu2tlZM"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="ogCMODUCh04"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="uzZd5ZBL09o"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="yaJmGFw9xiO"/>
 			</dataelement>
 			<dataelement productcode="42" nolink="1" label="Salbutamol, comprimés 4mg">
@@ -8215,7 +8182,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="DqEtoq6VLVi"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="eSLA5sYlvkp"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Q9zeSNNMk4S"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="rZ0WYj4w8uq"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="EjfIlh3Tg0p"/>
 			</dataelement>
 			<dataelement productcode="43" nolink="1" label="Sulfamethoxazole+trimethoprime comprimés 400/80mg">
@@ -8227,7 +8193,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="CD7m739g5sD"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="SxQd1wgBRcA"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="TKuxwCTvT70"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="LL5QVQbb2kr"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="Q8ZsEjyJXuE"/>
 			</dataelement>
 			<dataelement productcode="44" nolink="1" label="Sulfamethoxazole+trimethoprime, sirop 240ml">
@@ -8239,7 +8204,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="jxqg3mOT5K9"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="IdXr9JPTkav"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="IQhB1aybtN2"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="ubRou1JpnOj"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="kvvPf369Qiz"/>
 			</dataelement>
 			<dataelement productcode="45" nolink="1" label="Tétracycline, poudre ophtalmologique 1%">
@@ -8251,7 +8215,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="eMiAoG6mSc1"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="VCUJ0590r7X"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Qp0HTpE8eML"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="J1obkglybsm"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="meZR0hYU1jy"/>
 			</dataelement>
 			<dataelement productcode="46" nolink="1" label="Tinidazole, comprimés 500mg">
@@ -8263,7 +8226,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="e5NbD6T7A0o"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="oE8HQd0KEcQ"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="yCzvjSYMUU0"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="u5VudicJnuc"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="z9qBRxIbnGE"/>
 			</dataelement>
 			<dataelement productcode="47" nolink="1" label="Vitamine B complexe, comprimés 50mg">
@@ -8275,7 +8237,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="MBVYZ9sRrEm"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="mdeuAQ8yNRP"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="NK2OOj91pjK"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="pbeOLFjRaIt"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="CwAWxJODpVy"/>
 			</dataelement>
 			<dataelement productcode="48" nolink="1" label="Ocytocine">
@@ -8287,7 +8248,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="KHmxT95a2w4"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="jbHerXhTLdl"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="A55VvmSBv0A"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="lyBr56Y5Vps"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="l6c8SAdMuNZ"/>
 			</dataelement>
 			<dataelement productcode="49" nolink="1" label="Calcium Gluconate">
@@ -8299,7 +8259,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="EL4GAIxtvJB"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="GLQTQPO7c6w"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="GuKxcMEia2Z"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="aXTMVZJtzrr"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="t2adFar88pF"/>
 			</dataelement>
 			<dataelement productcode="50" nolink="1" label="Magnesium sulphate">
@@ -8311,7 +8270,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="UWXqXSj3V3y"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="miMyC1l6hzV"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="pPNRa4RX9nc"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="kWFVM3B6DZh"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="D2rhyelKRxW"/>
 			</dataelement>
 		</dataelements>
@@ -8326,7 +8284,6 @@
 			<option uid="GKkUPluq2QJ;3" name="Quantité périmée"/>
 			<option uid="GKkUPluq2QJ;4" name="Nb jours rupture stock"/>
 			<option uid="GKkUPluq2QJ;5" name="Quantité à durée de vie &lt;= 3 mois"/>
-			<option uid="GKkUPluq2QJ;6" name="Date de péremption &lt;= 3 mois"/>
 			<option uid="GKkUPluq2QJ;7" name="CMM"/>
 		</categoryOptionCombo>
 		<dataelements>
@@ -8339,7 +8296,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="dROl1y5Ev3W"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="r8CXHlZTcWb"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="qnixi8orNxf"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="WAvSqNL31GC"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="KypoF8qyDqw"/>
 			</dataelement>
 			<dataelement productcode="52" nolink="1" label=" Vitamine A">
@@ -8351,7 +8307,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="q1gbndUg8LU"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="b81nTvhnjeq"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="DyGVHpQZeUw"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="XQHLiMwNlwN"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="NjkdVroZgna"/>
 			</dataelement>
 		</dataelements>
@@ -8366,7 +8321,6 @@
 			<option uid="GKkUPluq2QJ;3" name="Quantité périmée"/>
 			<option uid="GKkUPluq2QJ;4" name="Nb jours rupture stock"/>
 			<option uid="GKkUPluq2QJ;5" name="Quantité à durée de vie &lt;= 3 mois"/>
-			<option uid="GKkUPluq2QJ;6" name="Date de péremption &lt;= 3 mois"/>
 			<option uid="GKkUPluq2QJ;7" name="CMM"/>
 		</categoryOptionCombo>
 		<dataelements>
@@ -8379,7 +8333,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="FfxwmZYLhen"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="I1HCskWxrgA"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="mqh7YwU4ZxQ"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="Pr1eDHwSe4w"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="N6skXWJnqF5"/>
 			</dataelement>
 			<dataelement productcode="54" nolink="1" label=" Blister Artésunate">
@@ -8391,7 +8344,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="KktR2VzH097"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="Bx84h6YS5KO"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="YAm3PgJheyP"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="YQLULMeMeFP"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="w2WEFpb7ivZ"/>
 			</dataelement>
 			<dataelement productcode="55" nolink="1" label=" Blister Artésunate">
@@ -8403,7 +8355,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="jiiRi9YgdXS"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="SyoBNkoWplW"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="cKiB9PwqyQY"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="Zg9Yv0jFl5Q"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="VdyAYMJNBZM"/>
 			</dataelement>
 			<dataelement productcode="56" nolink="1" label=" Blister Artésunate">
@@ -8415,7 +8366,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="utEQxDRnLkH"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="VntZM1ApJQg"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="yLQY3m3c0Dt"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="MRzuvtCIQWV"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="VUdpqwEsOMA"/>
 			</dataelement>
 			<dataelement productcode="57" nolink="1" label=" Quinine co 100mg">
@@ -8427,7 +8377,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="zs2XqpC5c0s"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="mDhH61Rc0sw"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="C7Sd9JhbLUp"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="yudlDTUeabx"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="hpMHbhejxy4"/>
 			</dataelement>
 			<dataelement productcode="58" nolink="1" label=" Quinine co 300mg">
@@ -8439,7 +8388,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="vis0Mvnm7NI"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="a8E7gCKmw9B"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="KM4nkhux7XE"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="biotGLvg4Pw"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="l2bZalaKq3w"/>
 			</dataelement>
 			<dataelement productcode="59" nolink="1" label=" Quinine co 500mg">
@@ -8451,7 +8399,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="LanJ42cOUrz"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="mx7QJDdqi8k"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="n3bZeEX9KTz"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="jg3IGi3C08O"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="aiVTDrWxWmz"/>
 			</dataelement>
 			<dataelement productcode="60" nolink="1" label=" Quinine inject 250mg">
@@ -8463,7 +8410,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="Kg4gLyIJ0sl"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="tqmoDKquhu3"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="W3FcZEBH8TW"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="y5tQOLpgi1S"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="Y9WTYm8toce"/>
 			</dataelement>
 			<dataelement productcode="61" nolink="1" label=" Quinine inject 300mg">
@@ -8475,7 +8421,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="SGSorukGbce"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="qgaK86rqTM8"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="iz4CxnbVYMN"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="yWQ4RBsJiXy"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="qPgKxt2kaSR"/>
 			</dataelement>
 			<dataelement productcode="62" nolink="1" label=" Quinine inject 500mg">
@@ -8487,7 +8432,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="tOu6RC6j6F4"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="e16Gtuqw6iS"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="AjhSlaf9YFo"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="np4Be6zlF5f"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="PAB7psFhZqt"/>
 			</dataelement>
 			<dataelement productcode="63" nolink="1" label=" Quinine inject 600mg">
@@ -8499,7 +8443,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="ci7LTl64eIk"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="p3SxRBP3T5U"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="i7HacWiWlY8"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="ZOV13tVgyfJ"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="r7U9U7oyuMJ"/>
 			</dataelement>
 			<dataelement productcode="64" nolink="1" label=" Clindamycine 150mg">
@@ -8511,7 +8454,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="P1E8aHxFxJu"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="b8pFBKbUMXL"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="ASU9CEssO0S"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="PVRG8NbY3W4"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="A2K2kndI49X"/>
 			</dataelement>
 			<dataelement productcode="65" nolink="1" label=" Clindamycine 300mg">
@@ -8523,7 +8465,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="pL7WV0DJs3r"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="m0RCw19R57Y"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="ilH2ZJWefZV"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="CyEPPalJAwj"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="JmkC8WOZPnq"/>
 			</dataelement>
 			<dataelement productcode="66" nolink="1" label=" Artésunate injectable 60mg/vial">
@@ -8535,7 +8476,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="I7OdbPtbXRC"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="dyTRjskRcYv"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="GHJjmn5ryvy"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="hcmTLK0JY60"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="dbOKEVtMYqE"/>
 			</dataelement>
 			<dataelement productcode="67" nolink="1" label=" Sulfadoxine Pyriméthanine">
@@ -8547,7 +8487,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="AMEpwV9FwiW"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="jWckoinOq8U"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="oZotmIF6Cfr"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="l694waDYeL6"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="wTc1jnuL5QB"/>
 			</dataelement>
 			<dataelement productcode="68" nolink="1" label=" MILDA">
@@ -8559,7 +8498,7 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="By4KUtA15UA"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="n0zlE0Gm2NK"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="LBr4g2BTWhU"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="ASbUy7GfiOQ"/>
+				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="ASbUy7GfiOQ"/>
 			</dataelement>
 			<dataelement productcode="69" nolink="1" label=" Test rapide paludisme">
 				<parameter option="GKkUPluq2QJ" calculate="initialstock" uid="dpbNYWwJUUM"/>
@@ -8570,7 +8509,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="EZZno4VkxCd"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="CIzZgUihGhd"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="iHBOlNau7QN"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="FgxnEMoWuui"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="sCK76Ybtl4H"/>
 			</dataelement>
 		</dataelements>
@@ -8598,7 +8536,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="e7UCnqxDw0K"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="qNCReBvnv6A"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="BRiLU10SxKE"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="RHlJTama7tP"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="ZVFwwX4iybn"/>
 			</dataelement>
 			<dataelement productcode="71" nolink="1" label=" Préservatif féminin">
@@ -8610,7 +8547,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="mZleAdCLl2c"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="Kuzyjt7EQy1"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="V9X8KZD4nay"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="dPMJx2B7XMp"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="b4DQLp6zNca"/>
 			</dataelement>
 			<dataelement productcode="72" nolink="1" label=" DIU">
@@ -8622,7 +8558,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="jkI6JvTuXBT"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="RuMEOhJeWsS"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="W3MnZX1F2iK"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="kOst3yHGPcy"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="mHGCe9ceK7T"/>
 			</dataelement>
 			<dataelement productcode="73" nolink="1" label=" COC (oraux combinés)">
@@ -8634,7 +8569,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="ngbDnaCeYVM"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="CeDvtAPRq8R"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="NAsKuYWz4a1"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="FLbaQzuOvcW"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="k2UvtlpDECU"/>
 			</dataelement>
 			<dataelement productcode="74" nolink="1" label=" COP (oraux à progestérone seul)">
@@ -8646,7 +8580,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="ngo7zQUJwsI"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="nr5xSYqJV4L"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="otonihBLXRP"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="kMoGjVmnqxQ"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="Yf0meJbcgF9"/>
 			</dataelement>
 			<dataelement productcode="75" nolink="1" label=" Implants">
@@ -8658,7 +8591,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="zwA0bUimFP1"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="EaCefLT3hnP"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="XYB3BRV1hG5"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="Uao9Xv2tDU2"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="ngoa5zzYPlz"/>
 			</dataelement>
 			<dataelement productcode="76" nolink="1" label=" POSTINOR">
@@ -8670,7 +8602,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="WJTMjj0GfXz"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="O6nx62E6MBb"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Ir4AgLqc9xu"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="w5rWCV2wPYV"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="z0zHciVVBsn"/>
 			</dataelement>
 			<dataelement productcode="77" nolink="1" label=" DMPA">
@@ -8682,7 +8613,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="oYO9qEOGqBZ"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="Wv7MFxeFzWG"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="sxlu0atW6Vt"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="sJaXLpJDc3C"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="aK3lrWrG8x0"/>
 			</dataelement>
 		</dataelements>
@@ -8697,7 +8627,6 @@
 			<option uid="GKkUPluq2QJ;3" name="Quantité périmée"/>
 			<option uid="GKkUPluq2QJ;4" name="Nb jours rupture stock"/>
 			<option uid="GKkUPluq2QJ;5" name="Quantité à durée de vie &lt;= 3 mois"/>
-			<option uid="GKkUPluq2QJ;6" name="Date de péremption &lt;= 3 mois"/>
 			<option uid="GKkUPluq2QJ;7" name="CMM"/>
 		</categoryOptionCombo>
 		<dataelements>
@@ -8710,7 +8639,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="DDftgEag3Ol"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="LWUaKswjDx3"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="x0jhEYT6OT8"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="fIIdtHu0b5m"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="PqG4euX0JOj"/>
 			</dataelement>
 			<dataelement productcode="79" nolink="1" label=" RH (150/75), médicaments combinés en un seul comprimé ">
@@ -8722,7 +8650,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="hr4doxrRtX2"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="ik7N6OBmu5t"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="NCQTVuS3Aix"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="AmnWo7ICr9N"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="wxgeqatYhKl"/>
 			</dataelement>
 			<dataelement productcode="80" nolink="1" label=" Streptomycine (S 1g), flacon de 1g, injectable">
@@ -8734,7 +8661,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="y0IrmW7nH6u"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="KmaL1SiYWLH"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="xW1Z2XgXswu"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="fp9jRAnj6Ws"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="s4L6G4MmUAM"/>
 			</dataelement>
 			<dataelement productcode="81" nolink="1" label=" Ethambutol, comprimés de 100mg">
@@ -8746,7 +8672,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="St2yho4MICy"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="riArrR72DRb"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Ijn4D9fyxlr"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="m9OA4gOCwCZ"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="pqEOAUttFem"/>
 			</dataelement>
 			<dataelement productcode="82" nolink="1" label=" RHZ (60/30/150), médicaments pédiatriques combinés en un seul comprimé ">
@@ -8758,7 +8683,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="hvTYmAoWxQe"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="QKe8ie7qv8T"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="X86dbOvq85v"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="Nno5jqKLUoD"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="v5cuUdqWQMm"/>
 			</dataelement>
 			<dataelement productcode="83" nolink="1" label=" RH (60/30), médicaments pédiatriques combinés en un seul comprimé">
@@ -8770,7 +8694,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="derjfAfSrvN"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="bZ30MQxhQqg"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="BhQ7iZd1Pkd"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="UYTnSk4HXfC"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="IYfunZt8mQn"/>
 			</dataelement>
 			<dataelement productcode="84" nolink="1" label=" RH (60/60), médicaments pédiatriques combinés en un seul comprimé">
@@ -8782,7 +8705,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="JKOsZ28QRTS"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="dgMYDNPQENB"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="R3kAPB5pfCN"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="wiRMn6QwGS6"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="zC09kSZ7DCF"/>
 			</dataelement>
 			<dataelement productcode="85" nolink="1" label=" Pyrazinamide, comprimés de 400mg">
@@ -8794,7 +8716,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="bKxGfA9c1fi"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="lZmoQpOAqLF"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Q7lQZnGNbbl"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="XxcYKjTL4tx"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="mP4tS2nvJTF"/>
 			</dataelement>
 			<dataelement productcode="86" nolink="1" label=" Isoniazide, comprimés de 100mg">
@@ -8806,7 +8727,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="eY4Uc1UwgMV"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="ahzKBcTJesK"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Xpl7e04Y5xI"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="kkIzK4LXul7"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="tGPCUl62wPZ"/>
 			</dataelement>
 			<dataelement productcode="87" nolink="1" label=" RHE (150/75/275),médicaments combinés en un seul comprimé ">
@@ -8818,7 +8738,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="IXYE3YTs4Ja"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="l7RCSSE1ktO"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="TcQzftYlOS3"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="ceF7LBUrYNo"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="d18XIcIy5hH"/>
 			</dataelement>
 		</dataelements>
@@ -8833,7 +8752,6 @@
 			<option uid="GKkUPluq2QJ;3" name="Quantité périmée"/>
 			<option uid="GKkUPluq2QJ;4" name="Nb jours rupture stock"/>
 			<option uid="GKkUPluq2QJ;5" name="Quantité à durée de vie &lt;= 3 mois"/>
-			<option uid="GKkUPluq2QJ;6" name="Date de péremption &lt;= 3 mois"/>
 			<option uid="GKkUPluq2QJ;7" name="CMM"/>
 		</categoryOptionCombo>
 		<dataelements>
@@ -8846,7 +8764,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="fGmILc4PHuT"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="www0NRsr8uG"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Hy8P5VsqK47"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="G9Dzt16vbvf"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="hB0Q3AJ9CFp"/>
 			</dataelement>
 			<dataelement productcode="89" nolink="1" label="Abacavir/Lamivudine 60/30mg, boite">
@@ -8858,7 +8775,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="BSzbH61X8Ye"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="Yzv3KACZpG8"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="itc2C6JZ9li"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="e47fRpWSiIr"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="tLfPulQArXA"/>
 			</dataelement>
 			<dataelement productcode="90" nolink="1" label="Abacavir/Lamivudine 600/300mg, boite">
@@ -8870,7 +8786,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="vdZUSPkv4Wl"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="C0PTiy7bAF7"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="IHEjsFqWYh4"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="MZrDtiAsJUj"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="Ac0C8ZaJUuh"/>
 			</dataelement>
 			<dataelement productcode="91" nolink="1" label="Atazanavir/ritonavir 300/100mg, boite">
@@ -8882,7 +8797,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="iXpTbItid3O"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="lPmJ6gdav4u"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Nzh2k40ku8G"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="x1thYElM7uj"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="lRTVMznWDyX"/>
 			</dataelement>
 			<dataelement productcode="92" nolink="1" label="Efavirenz 200mg, boite">
@@ -8894,7 +8808,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="K6vK6UZFesx"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="HJbLQAYzlHe"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="CnLc7e18r3h"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="bdgghK4FELt"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="xujljv1eVsq"/>
 			</dataelement>
 			<dataelement productcode="93" nolink="1" label="Efavirenz 600mg, boite">
@@ -8906,7 +8819,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="wunUj6PQTME"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="bXGCVRBEVZ6"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="z6IbN3BewGL"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="D6ipDcqFE5A"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="lwL1R5T00WD"/>
 			</dataelement>
 			<dataelement productcode="94" nolink="1" label=" Lopinavir/ritonavir 200/50mg, boite">
@@ -8918,7 +8830,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="zlfJu3QBtIq"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="K8map1NaNA7"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="KLrOGyDgFj4"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="f9mv553KyOL"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="FhVS7mb8BFf"/>
 			</dataelement>
 			<dataelement productcode="95" nolink="1" label=" Lopinavir">
@@ -8930,7 +8841,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="Eq1wB5hoe0t"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="RK0adN81Gjh"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="VyXSyVFH6TM"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="xsEJFMDYI7P"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="twfSKNbaarO"/>
 			</dataelement>
 			<dataelement productcode="96" nolink="1" label=" Névirapine 50mg,boîte">
@@ -8942,7 +8852,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="IaMEpDNePdx"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="UsPYKxSI3DH"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="MgsWxe2Zhkr"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="uamvI8IDvYG"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="Yzrv9EOW6kG"/>
 			</dataelement>
 			<dataelement productcode="97" nolink="1" label=" Névirapine 200mg,boîte">
@@ -8954,7 +8863,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="vrl0CiRG0i0"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="Jxx3EW0B5NP"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="oFfsEfwTrOD"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="w6NFscf1qwm"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="N7HCFVWBNBV"/>
 			</dataelement>
 			<dataelement productcode="98" nolink="1" label=" Tenofovir/Lamivudine 300mg/300mg,boîte">
@@ -8966,7 +8874,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="m7M7aN7V9cR"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="uXDbQmuIPQW"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="KzmoPj70Xtg"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="JvRRLr2elQt"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="JmM0jdQqAI1"/>
 			</dataelement>
 			<dataelement productcode="99" nolink="1" label=" Tenofovir/Lamivudine/Efavirenz 300/300/600mg,boite">
@@ -8978,7 +8885,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="qbbQvcBV60m"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="wESNEhGXN67"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="SyFI4OzIjmn"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="UK3a9vvDAUI"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="bOkQbxJITID"/>
 			</dataelement>
 			<dataelement productcode="100" nolink="1" label=" Zidovudine/Lamivudine 300/150mg,boite">
@@ -8990,7 +8896,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="PnH6PCzJQcZ"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="CHQGie26AKB"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="LfnhTReQml6"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="XM2bIVl2WU6"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="p48P4QPg9cB"/>
 			</dataelement>
 			<dataelement productcode="101" nolink="1" label=" Zidovudine/Lamivudine/Névirapine cp(60mg/30mg/50mg)">
@@ -9002,7 +8907,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="zH0tUQqpi1q"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="Gw7aiAhNXdm"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="QHqsJwkgGBT"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="KoA7Tj77o3T"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="dlNomm4QakC"/>
 			</dataelement>
 			<dataelement productcode="102" nolink="1" label=" Zidovudine/Lamivudine 60/30mg,boite">
@@ -9014,7 +8918,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="XXcmTnlWJvs"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="TRmzOjifZGG"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="HBEfgsy0CBK"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="VFfTqtIbqbQ"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="ppCh20uWXPh"/>
 			</dataelement>
 			<dataelement productcode="103" nolink="1" label=" Zidovudine/Lamivudine/Abacavir 300/150/300mg, boite">
@@ -9026,7 +8929,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="zQ7D6dgNsHU"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="WTsLvwjeWFF"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="ruGmgp5ddBH"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="DFr7S08dlc9"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="fF76qk8VbEP"/>
 			</dataelement>
 			<dataelement productcode="104" nolink="1" label=" Nevirapine solution orale 10 mg/ml">
@@ -9038,7 +8940,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="Fwrv6Wd7Ers"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="xJeoByGrNHV"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="rGQDzv0rRWZ"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="LoeSeIwdy03"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="aZQp8PKJZAr"/>
 			</dataelement>
 			<dataelement productcode="105" nolink="1" label=" Zidovudine solution orale 10 mg/ml">
@@ -9050,7 +8951,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="WfoUT800ow6"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="HuSXFUjo4ii"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Wz0J2W0Cdhl"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="XYUCbWHyL6T"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="H0E8H0gZ3La"/>
 			</dataelement>
 			<dataelement productcode="106" nolink="1" label=" VIH 1/2 Determine, Kit">
@@ -9062,7 +8962,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="KAfpwlMiBnZ"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="ac33RrnsbCN"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="DvcuuAHIkkX"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="wfbJ46WPhYU"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="l2B0yNUPkgH"/>
 			</dataelement>
 			<dataelement productcode="107" nolink="1" label=" VIH 1/2 Stat">
@@ -9074,7 +8973,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="P9iyTu3tpix"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="VbG6mDALvTa"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="s2YsdXlcgNM"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="Hc2241HemCn"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="yA0mvfVSDc2"/>
 			</dataelement>
 			<dataelement productcode="108" nolink="1" label=" Cotrimoxazole Sirop 240/5ml">
@@ -9086,7 +8984,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="E7e33QG9kgR"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="SE1UUF6bRZ8"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="Q17JADmu6Lx"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="UZkRWjyObiY"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="NtxdVsZcJ0l"/>
 			</dataelement>
 			<dataelement productcode="109" nolink="1" label=" Cotrimoxazole 960 mg(800/160mg cp)">
@@ -9098,7 +8995,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="ezL1Pyh7pnA"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="ikPdukrsK8M"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="NCpImTcW516"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="B2QIEMqK5bj"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="oH9AbVqpnVr"/>
 			</dataelement>
 			<dataelement productcode="110" nolink="1" label=" Cotrimoxazole 400mg(800mg cp)">
@@ -9110,7 +9006,6 @@
 				<parameter option="GKkUPluq2QJ;3" calculate="quantityexpired" uid="kspgJQyZG0w"/>
 				<parameter option="GKkUPluq2QJ;4" calculate="stockoutdays" uid="QD2EiIgDNAk"/>
 				<parameter option="GKkUPluq2QJ;5" calculate="quantitytoexpire" delay="90" uid="br7sApBdAsp"/>
-				<parameter option="GKkUPluq2QJ;6" calculate="quantitytoexpire" delay="90" uid="ZDzNPZ3hi4z"/>
 				<parameter option="GKkUPluq2QJ;7" calculate="averageconsumption" uid="yv5tFBcuerh"/>
 			</dataelement>
 		</dataelements>

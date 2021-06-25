@@ -1218,7 +1218,7 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
                 }
                 else {
 	                if(SH.ci("enableLabrev", 1)==1) {
-	                	cell=createLabelCourier(normal,labResultFontSize,55,Font.NORMAL);
+	                	cell=createLabelCourier(result,labResultFontSize,55,Font.NORMAL);
 		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
 		                subTable.addCell(cell);
@@ -1260,7 +1260,7 @@ public class PDFLabResultGenerator extends PDFOfficialBasic {
 		                subTable.addCell(cell);
 	                }
 	                else {
-	                	cell=createLabelCourier(normal,labResultFontSize,59,Font.NORMAL);
+	                	cell=createLabelCourier(result,labResultFontSize,59,Font.NORMAL);
 		                cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 		                cell.setVerticalAlignment(PdfPCell.ALIGN_TOP);
 		                subTable.addCell(cell);

@@ -535,10 +535,11 @@ public class Product extends OC_Object implements Comparable {
     	int days=0;
     	long day=ScreenHelper.getTimeDay();
     	long stockoutbegin=0;
-    	double level = getTotalQuantityAvailable();
+    	double level = getTotalQuantityAvailable(begin);
     	if(level<=0) {
     		stockoutbegin=begin.getTime();
     	}
+    	level=getTotalQuantityAvailable();
 		try {
 			//Now run through all operations on this product after begin until end
 	    	Vector operations = (Vector)productstockoperations.get(getUid());

@@ -123,7 +123,7 @@
 		    </td>
    
 	        <%-- DIAGNOSIS --%>
-	    	<td class="admin">
+	    	<td class="admin" style='vertical-align: top'>
 		      	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/diagnosesEncoding.jsp"),pageContext);%>
 	    	</td>
 	    </tr>
