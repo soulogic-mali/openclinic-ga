@@ -77,7 +77,6 @@ if(MedwanQuery.getInstance(true).getConfigString("edition","openclinic").equalsI
 			MedwanQuery.getInstance().setConfigString("configureCountry","");
 		}
     	String sDoc = MedwanQuery.getInstance().getConfigString("templateSource") + "application.xml";
-    	System.out.println("doc="+sDoc);
         SAXReader reader = new SAXReader(false);
         Document document = reader.read(new URL(sDoc));
         Element element = document.getRootElement().element("version");
