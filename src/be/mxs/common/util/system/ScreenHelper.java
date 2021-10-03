@@ -673,6 +673,8 @@ public class ScreenHelper {
     		ps.setInt(2, OC_Object.getServerId(oldUid));
     		ps.setInt(3, OC_Object.getObjectId(oldUid));
     		ps.execute();
+    		ps.close();
+    		conn.close();
     		
     		//Update Transactions
     		Vector<TransactionVO> transactions = MedwanQuery.getInstance().getTransactionsByEncounter(Integer.parseInt(encounter.getPatientUID()), encounter.getUid());

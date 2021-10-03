@@ -141,22 +141,28 @@
 		ctx = document.getElementById("matStateChart");
 		data = {
 			    datasets: [{
-			        data: [document.getElementById('matgoodstate').innerHTML*1, document.getElementById('mattotalstate').innerHTML*1-document.getElementById('matgoodstate').innerHTML*1],
+			        data: [document.getElementById('matgoodstate').innerHTML*1,document.getElementById('state2').value*1,document.getElementById('state3').value*1,document.getElementById('state4').value*1],
 		            backgroundColor: [
 		                'rgba(255, 206, 86, 0.2)',
-		                'rgba(255, 99, 132, 0.2)'
+		                'rgba(255, 99, 132, 0.2)',
+		                'rgba(75, 192, 192, 0.2)',
+		                'rgba(255, 159, 64, 0.2)'
 		            ],
 		            borderColor: [
 		                'rgba(255, 206, 86, 1)',
-		                'rgba(255,99,132,1)'
+		                'rgba(255,99,132,1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(255, 159, 64,1)'
 		            ],
 		            borderWidth: 1
 	            }],
 
 			    // These labels appear in the legend and in the tooltips when hovering different arcs
 			    labels: [
-			        '<%=getTranNoLink("web","shortgoodstate",sWebLanguage)%>',
-			        '<%=getTranNoLink("web","shortbadstate",sWebLanguage)%>'
+			        '<%=getTranNoLink("assets.functionality","1",sWebLanguage)%>',
+			        '<%=getTranNoLink("assets.functionality","2",sWebLanguage)%>',
+			        '<%=getTranNoLink("assets.functionality","3",sWebLanguage)%>',
+			        '<%=getTranNoLink("assets.functionality","4",sWebLanguage)%>'
 			    ]
 			};
 		drawPieChart(ctx,data);
@@ -229,6 +235,26 @@
 			    ]
 			};
 		drawPieChart(ctx,data);
+
+		ctx = document.getElementById("functionalStatusChart");
+		data = {
+			    datasets: [{
+			        data: [document.getElementById('functionalStatus').value.split(",")[0]*1,document.getElementById('functionalStatus').value.split(",")[1]*1,document.getElementById('functionalStatus').value.split(",")[2]*1,document.getElementById('functionalStatus').value.split(",")[3]*1,document.getElementById('functionalStatus').value.split(",")[4]*1],
+		            backgroundColor: ["#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+		            borderColor: ["#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+		            borderWidth: 1
+	            }],
+	
+			    // These labels appear in the legend and in the tooltips when hovering different arcs
+			    labels: [
+			    	'?',
+			        '<%=getTranNoLink("assets.functionality","1",sWebLanguage)%>',
+			        '<%=getTranNoLink("assets.functionality","2",sWebLanguage)%>',
+			        '<%=getTranNoLink("assets.functionality","3",sWebLanguage)%>',
+			        '<%=getTranNoLink("assets.functionality","4",sWebLanguage)%>'
+			    ]
+			};
+		drawPieChart(ctx,data);
 	}
 	
 	new Ajax.Autocompleter('servicename','autocomplete_service','assets/findService.jsp',{
@@ -253,6 +279,11 @@
 		url = "text="+field.value;
 	  }
 	  return url;
+	}
+	
+	function showPreventativeMaintenanceList(){
+		var url="assets/showPreventativeMaintenanceList.jsp&service="+document.getElementById("serviceuid").value+"&begin="+document.getElementById("dashboardBegin").value+"&end="+document.getElementById("dashboardEnd").value;
+		openPopup(url,1024,800);
 	}
 
 </script>

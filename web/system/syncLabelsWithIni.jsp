@@ -92,7 +92,7 @@
         excludedLabelTypes = "*datacenterserver*datacenterservergroup*labanalysis*labanalysis.short*labanalysis.monster*labanalysis.group*insurance.types*prestation.type*resultprofiles*"+
         					 " *admin.category*labanalysis.refcomment*"+
                              " *labprofiles*activitycodes*worktime*patientsharecoverageinsurance*patientsharecoverageinsurance2*"+
-                             " *urgency.origin*encountertype*prestation.type*product.productgroup*"+
+                             " *urgency.origin*encountertype*prestation.type*product.productgroup*costcenter*"+
                              " *insurance.types*labanalysis.group*drug.category*planningresource*systemmessages*product.unit*credit.type*wicketcredit.type*"+
                              " *productstockoperation.sourcedestinationtype*queue*anonymousqueue*costcenter*ikirezi.functional.signs*mir_type*radiologist*"; // default
     }

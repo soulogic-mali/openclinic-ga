@@ -1843,7 +1843,6 @@
 								}
 							}
 							catch(Exception d){}
-							//hDiagnoses.add(User.getFullUserName(diagnosis.getAuthorUID())+";"+diagnosis.getCode().toUpperCase()+";"+MedwanQuery.getInstance().getDiagnosisLabel("icd10", diagnosis.getCode(), sWebLanguage));
 						}
 					}
 					if(checkString(request.getParameter("diagsrfe")).equalsIgnoreCase("1")){
@@ -1858,7 +1857,6 @@
 									if(rfe.getFlags().contains("N")){
 										newcase="1";
 									}
-									//hDiagnoses.add(User.getFullUserName(rfe.getAuthorUID())+";"+rfe.getCode().toUpperCase()+";*"+MedwanQuery.getInstance().getDiagnosisLabel("icd10", rfe.getCode(), sWebLanguage));
 								}
 								catch(Exception d){}
 							}
@@ -1872,7 +1870,6 @@
 							hAuthors.add(diaglabel[0]);
 							hDiagcodes.add(diaglabel[1]);
 							hDiaglabels.add(diaglabel[2]);
-							//hDiagnoses.add(((String)iFree.next()).toUpperCase().replaceAll("\n", " ").replaceAll("\r", ""));
 						}
 					}
 					
@@ -1908,7 +1905,7 @@
 					else{
 						Iterator i = hDiaglabels.iterator();
 						while(i.hasNext()){
-							sResult.append(i.next());
+							sResult.append(((String)i.next()).replaceAll("\n", " ").replaceAll("\r", ""));
 							if(i.hasNext()){
 								sResult.append(", ");
 							}
@@ -2024,57 +2021,89 @@
         }
         os.flush();
         int activeEncounterObjectId=-1;
+        Vector records = new Vector();
 		while(rs.next()){
-			int encounterServerId = rs.getInt("oc_encounter_serverid");
-			int encounterObjectId=rs.getInt("oc_encounter_objectid");
+			Hashtable ht = new Hashtable();
+			ht.put("oc_encounter_serverid",rs.getInt("oc_encounter_serverid"));
+			ht.put("oc_encounter_objectid",rs.getInt("oc_encounter_objectid"));
+			ht.put("personid",rs.getInt("personid"));
+			ht.put("lastname",SH.c(rs.getString("lastname")));
+			ht.put("firstname",SH.c(rs.getString("firstname")));
+			ht.put("gender",SH.c(rs.getString("gender")));
+			if(rs.getDate("dateofbirth")!=null){
+				ht.put("dateofbirth",rs.getDate("dateofbirth"));
+			}
+			ht.put("oc_encounter_begindate",rs.getTimestamp("oc_encounter_begindate"));
+			if(rs.getTimestamp("oc_encounter_enddate")!=null){
+				ht.put("oc_encounter_enddate",rs.getTimestamp("oc_encounter_enddate"));
+			}
+			ht.put("oc_encounter_origin",SH.c(rs.getString("oc_encounter_origin")));
+			ht.put("oc_encounter_outcome",SH.c(rs.getString("oc_encounter_outcome")));
+			records.add(ht);
+		}
+		rs.close();
+		ps.close();
+		for(int r=0;r<records.size();r++){
+			Hashtable ht = (Hashtable)records.elementAt(r);
+			int encounterServerId = (Integer)ht.get("oc_encounter_serverid");
+			int encounterObjectId=(Integer)ht.get("oc_encounter_objectid");
 			
 			sResult = new StringBuffer();
-			int personid = rs.getInt("personid");
+			int personid = (Integer)ht.get("personid");
 			sResult.append(personid+";");
-			sResult.append(rs.getString("lastname").toUpperCase().replaceAll(";","")+";");
-			sResult.append(rs.getString("firstname").toUpperCase().replaceAll(";","")+";");
-			sResult.append(rs.getString("gender").toUpperCase()+";");
-			java.util.Date dateofbirth = getSqlDate(rs,"dateofbirth");
-			sResult.append(ScreenHelper.formatDate(dateofbirth)+";");
+			sResult.append(((String)ht.get("lastname")).toUpperCase().replaceAll(";","")+";");
+			sResult.append(((String)ht.get("firstname")).toUpperCase().replaceAll(";","")+";");
+			sResult.append(((String)ht.get("gender")).toUpperCase()+";");
 			String age = "";
-			try{
-				int a = AdminPerson.getAge(dateofbirth);
-				if(a<1){
-					age = "0->11m";
+			if(ht.get("dateofbirth")!=null){
+				java.util.Date dateofbirth = new java.util.Date(((java.sql.Date)ht.get("dateofbirth")).getTime());
+				sResult.append(ScreenHelper.formatDate(dateofbirth)+";");
+				try{
+					int a = AdminPerson.getAge(dateofbirth);
+					if(a<1){
+						age = "0->11m";
+					}
+					else if(a<5){
+						age = "12->59m";
+					}
+					else if(a<10){
+						age = "5->9";
+					}
+					else if(a<10){
+						age = "5->9";
+					}
+					else if(a<15){
+						age = "10->14";
+					}
+					else if(a<20){
+						age = "15->19";
+					}
+					else if(a<25){
+						age = "20->24";
+					}
+					else if(a<50){
+						age = "25->49";
+					}
+					else {
+						age = "50+";
+					}
 				}
-				else if(a<5){
-					age = "12->59m";
-				}
-				else if(a<10){
-					age = "5->9";
-				}
-				else if(a<10){
-					age = "5->9";
-				}
-				else if(a<15){
-					age = "10->14";
-				}
-				else if(a<20){
-					age = "15->19";
-				}
-				else if(a<25){
-					age = "20->24";
-				}
-				else if(a<50){
-					age = "25->49";
-				}
-				else {
-					age = "50+";
+				catch(Exception e){
+					// empty
 				}
 			}
-			catch(Exception e){
-				// empty
+			else{
+				sResult.append(";");
 			}
 			sResult.append(age+";");
-			java.util.Date begindate = getSqlDate(rs,"oc_encounter_begindate");
-			java.util.Date enddate = getSqlDate(rs,"oc_encounter_enddate");
+			java.util.Date begindate = new java.util.Date(((java.sql.Timestamp)ht.get("oc_encounter_begindate")).getTime());
+			java.util.Date enddate = null;
+			try{
+				enddate = new java.util.Date(((java.sql.Timestamp)ht.get("oc_encounter_enddate")).getTime());
+			}
+			catch(Exception ex){}
 			sResult.append(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(begindate)+";");
-			sResult.append(ScreenHelper.removeAccents(getTranNoLink("urgency.origin",rs.getString("oc_encounter_origin"),sWebLanguage)).toUpperCase()+";");
+			sResult.append(ScreenHelper.removeAccents(getTranNoLink("urgency.origin",(String)ht.get("oc_encounter_origin"),sWebLanguage)).toUpperCase()+";");
 			if(enddate!=null){
 				sResult.append(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(enddate)+";");
 				sResult.append(((enddate.getTime()-begindate.getTime())/day+1)+";");
@@ -2082,7 +2111,7 @@
 			else{
 				sResult.append(";;");
 			}
-			sResult.append(ScreenHelper.removeAccents(getTranNoLink("encounter.outcome",rs.getString("oc_encounter_outcome"),sWebLanguage)).toUpperCase()+";");
+			sResult.append(ScreenHelper.removeAccents(getTranNoLink("encounter.outcome",(String)ht.get("oc_encounter_outcome"),sWebLanguage)).toUpperCase()+";");
 			
 			//Find ICD10 codes on addmission
 			String freetext="";
@@ -2090,27 +2119,31 @@
 			Vector admissions = MedwanQuery.getInstance().getTransactionsByType(personid, "be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_HPRC_ADMISSION",encounterServerId+"."+encounterObjectId);
 			for(int n=0;n<admissions.size();n++){
 				TransactionVO transaction = (TransactionVO)admissions.elementAt(n);
-				Collection items = transaction.getItems();
-				Iterator i = items.iterator();
-				while(i.hasNext()){
-					ItemVO item = (ItemVO)i.next();
-					if(item.getType().startsWith("ICD10Code")){
-						admissionDiagnoses.add(item.getType().replaceAll("ICD10Code", "")+" "+MedwanQuery.getInstance().getCodeTran(item.getType().toLowerCase(), sWebLanguage));
-					}
-					else if(item.getType().equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_HPRC_DIAGNOSIS")){
-						freetext=item.getValue();
+				if(transaction!=null){
+					Collection items = transaction.getItems();
+					Iterator i = items.iterator();
+					while(i.hasNext()){
+						ItemVO item = (ItemVO)i.next();
+						if(item.getType().startsWith("ICD10Code")){
+							admissionDiagnoses.add(item.getType().replaceAll("ICD10Code", "")+" "+MedwanQuery.getInstance().getCodeTran(item.getType().toLowerCase(), sWebLanguage));
+						}
+						else if(item.getType().equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_HPRC_DIAGNOSIS")){
+							freetext=item.getValue();
+						}
 					}
 				}
 			}
 			admissions = MedwanQuery.getInstance().getTransactionsByType(personid, "be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION",encounterServerId+"."+encounterObjectId);
 			for(int n=0;n<admissions.size();n++){
 				TransactionVO transaction = (TransactionVO)admissions.elementAt(n);
-				Collection items = transaction.getItems();
-				Iterator i = items.iterator();
-				while(i.hasNext()){
-					ItemVO item = (ItemVO)i.next();
-					if(item.getType().startsWith("ICD10Code")){
-						admissionDiagnoses.add(item.getType().replaceAll("ICD10Code", "")+" "+MedwanQuery.getInstance().getCodeTran(item.getType().toLowerCase(), sWebLanguage));
+				if(transaction!=null){
+					Collection items = transaction.getItems();
+					Iterator i = items.iterator();
+					while(i.hasNext()){
+						ItemVO item = (ItemVO)i.next();
+						if(item.getType().startsWith("ICD10Code")){
+							admissionDiagnoses.add(item.getType().replaceAll("ICD10Code", "")+" "+MedwanQuery.getInstance().getCodeTran(item.getType().toLowerCase(), sWebLanguage));
+						}
 					}
 				}
 			}
@@ -2120,14 +2153,14 @@
 				if(bInit){
 					sResult.append(", ");
 				}
-				sResult.append(it.next());
+				sResult.append(((String)it.next()).replaceAll("\n", " ").replaceAll("\r", ""));
 				bInit=true;
 			}
 			if(freetext.length()>0){
 				if(bInit){
 					sResult.append(", ");
 				}
-				sResult.append(freetext.replaceAll(";",""));
+				sResult.append(freetext.replaceAll(";","").replaceAll("\n", " ").replaceAll("\r", ""));
 			}
 			sResult.append(";");
 
@@ -2137,27 +2170,31 @@
 			Vector discharges = MedwanQuery.getInstance().getTransactionsByType(personid, "be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_HPRC_DISCHARGE",encounterServerId+"."+encounterObjectId);
 			for(int n=0;n<discharges.size();n++){
 				TransactionVO transaction = (TransactionVO)discharges.elementAt(n);
-				Collection items = transaction.getItems();
-				Iterator i = items.iterator();
-				while(i.hasNext()){
-					ItemVO item = (ItemVO)i.next();
-					if(item.getType().startsWith("ICD10Code")){
-						dischargeDiagnoses.add(item.getType().replaceAll("ICD10Code", "")+" "+MedwanQuery.getInstance().getCodeTran(item.getType().toLowerCase(), sWebLanguage));
-					}
-					else if(item.getType().equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PAYMENT_TYPE")){
-						paymenttype=item.getValue();
+				if(transaction!=null){
+					Collection items = transaction.getItems();
+					Iterator i = items.iterator();
+					while(i.hasNext()){
+						ItemVO item = (ItemVO)i.next();
+						if(item.getType().startsWith("ICD10Code")){
+							dischargeDiagnoses.add(item.getType().replaceAll("ICD10Code", "")+" "+MedwanQuery.getInstance().getCodeTran(item.getType().toLowerCase(), sWebLanguage));
+						}
+						else if(item.getType().equalsIgnoreCase("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_PAYMENT_TYPE")){
+							paymenttype=item.getValue();
+						}
 					}
 				}
 			}
 			discharges = MedwanQuery.getInstance().getTransactionsByType(personid, "be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_SST_ADMISSION",encounterServerId+"."+encounterObjectId);
 			for(int n=0;n<discharges.size();n++){
 				TransactionVO transaction = (TransactionVO)discharges.elementAt(n);
-				Collection items = transaction.getItems();
-				Iterator i = items.iterator();
-				while(i.hasNext()){
-					ItemVO item = (ItemVO)i.next();
-					if(item.getType().startsWith("ICD10Code")){
-						dischargeDiagnoses.add(item.getType().replaceAll("ICD10Code", "")+" "+MedwanQuery.getInstance().getCodeTran(item.getType().toLowerCase(), sWebLanguage));
+				if(transaction!=null){
+					Collection items = transaction.getItems();
+					Iterator i = items.iterator();
+					while(i.hasNext()){
+						ItemVO item = (ItemVO)i.next();
+						if(item.getType().startsWith("ICD10Code")){
+							dischargeDiagnoses.add(item.getType().replaceAll("ICD10Code", "")+" "+MedwanQuery.getInstance().getCodeTran(item.getType().toLowerCase(), sWebLanguage));
+						}
 					}
 				}
 			}
@@ -2167,7 +2204,7 @@
 				if(bInit){
 					sResult.append(", ");
 				}
-				sResult.append(it.next());
+				sResult.append(((String)it.next()).replaceAll("\n", " ").replaceAll("\r", ""));
 				bInit=true;
 			}
 			sResult.append(";");
@@ -2197,8 +2234,6 @@
 	        }
 	        os.flush();
 		}
-		rs.close();
-		ps.close();
 		
 		loc_conn.close();
         os.close();

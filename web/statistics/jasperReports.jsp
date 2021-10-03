@@ -43,7 +43,7 @@
 					while(iFields.hasNext()){
 						Element field = (Element)iFields.next();
 						if(field.getName().equalsIgnoreCase("field")){
-							out.println("<tr><td class='admin'>"+field.elementText("name")+"</td>");
+							out.println("<tr><td class='admin'>"+field.elementText("name")+"&nbsp;</td>");
 							if(field.elementText("type").equalsIgnoreCase("text")){
 								out.println("<td class='admin2'><input class='text' type='text' name='fieldname_"+field.elementText("name")+"' size='40' value='"+(checkString(field.elementText("modifier")).equalsIgnoreCase("wildcard")?"%":"")+"'/></td>");
 							}
@@ -63,6 +63,12 @@
 			                    out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_search.png' class='link' alt='"+getTranNoLink("Web","select",sWebLanguage)+"' onclick='searchService(\"fieldname_"+field.elementText("name")+"\",\"servicename_"+field.elementText("name")+"\");'>&nbsp;");
 			                    out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' class='link' alt='"+getTranNoLink("Web","clear",sWebLanguage)+"' onclick='fieldname_"+field.elementText("name")+".value=\"\";servicename_"+field.elementText("name")+".value=\"\";'></td>");
 							}
+							else if(field.elementText("type").equalsIgnoreCase("nomenclature")){
+			                    out.println("<td class='admin2'><input type='hidden' name='fieldname_"+field.elementText("name")+"' id='fieldname_"+field.elementText("name")+"' value=''>");
+			                    out.println("<input class='text' type='text' name='nomenclaturename_"+field.elementText("name")+"' id='nomenclaturename_"+field.elementText("name")+"' readonly size='40' value=''>&nbsp;");
+			                    out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_search.png' class='link' alt='"+getTranNoLink("Web","select",sWebLanguage)+"' onclick='searchNomenclature(\"fieldname_"+field.elementText("name")+"\",\"nomenclaturename_"+field.elementText("name")+"\");'>&nbsp;");
+			                    out.println("<img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' class='link' alt='"+getTranNoLink("Web","clear",sWebLanguage)+"' onclick='fieldname_"+field.elementText("name")+".value=\"\";nomenclaturename_"+field.elementText("name")+".value=\"\";'></td>");
+							}
 							else if(field.elementText("type").equalsIgnoreCase("patient")){
 			                    out.println("<td class='admin2'><input type='hidden' name='fieldname_"+field.elementText("name")+"'>");
 			                    out.println("<input class='text' type='text' name='patientname_"+field.elementText("name")+"' id='patientname_"+field.elementText("name")+"' readonly size='40'>&nbsp;");
@@ -79,6 +85,10 @@
 </form>
 
 <script>
+	function searchNomenclature(CategoryUidField,CategoryNameField){
+	    openPopup("/_common/search/searchNomenclature.jsp&ts=<%=getTs()%>&FindType=asset&FindCode="+document.getElementById(CategoryUidField).value+"&VarCode="+CategoryUidField+"&VarText="+CategoryNameField);
+	    document.getElementById(CategoryNameField).focus();
+	}
 	function searchService(serviceUidField,serviceNameField){
 	    openPopup("_common/search/searchService.jsp&ts=<%=getTs()%>&showinactive=1&VarCode="+serviceUidField+"&VarText="+serviceNameField);
 	    document.getElementsByName(serviceNameField)[0].focus();

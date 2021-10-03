@@ -157,7 +157,7 @@ public class SendSMS {
 		return sendSMS(to, message, "");
 	}
 	public static boolean sendSMS(String to, String message, String gateway){
-		System.out.println("ORIGINAL MESSAGE: "+message);
+		Debug.println("ORIGINAL MESSAGE: "+message);
 		boolean bSuccess=false;
 		String sOriginalTo=to+"";
 		//if country prefix already included, don't do anything

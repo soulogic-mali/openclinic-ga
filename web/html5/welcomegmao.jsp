@@ -41,8 +41,8 @@
 		<br/><br/><br/><br/>
 		<table style='width:100%'>
 			<tr onclick="window.location.href='<%=sCONTEXTPATH%>/html5/manageService.jsp';">
-				<td style='font-size:6vw;text-align:right;padding:10px'>
-					<img style='max-height: 40px' src='<%=sCONTEXTPATH%>/_img/icons/mobile/building.png'/>
+				<td style='font-size:6vw;text-align:center;padding:10px'>
+					<img style='max-height: 32px' src='<%=sCONTEXTPATH%>/_img/icons/mobile/building.png'/>
 				</td>
 				<td style='font-size:6vw;text-align:left;padding:10px'>
 					<%=getTran(request,"web","healthstructure",sWebLanguage) %><br>
@@ -50,23 +50,31 @@
 				</td>
 			</tr>
 			<tr onclick="window.location.href='<%=sCONTEXTPATH%>/html5/manageAssets.jsp';">
-				<td style='font-size:6vw;text-align:right;padding:10px'>
-					<img style='max-height: 40px' src='<%=sCONTEXTPATH%>/_img/icons/mobile/inventory.png'/>
+				<td style='font-size:6vw;text-align:center;padding:10px'>
+					<img style='max-height: 32px' src='<%=sCONTEXTPATH%>/_img/icons/mobile/inventory.png'/>
 				</td>
 				<td style='font-size:6vw;text-align:left;padding:10px'>
 					<%=getTran(request,"web","assets",sWebLanguage) %>
 				</td>
 			</tr>
 			<tr onclick="window.location.href='<%=sCONTEXTPATH%>/html5/manageMaintenancePlans.jsp';">
-				<td style='font-size:6vw;text-align:right;padding:10px'>
-					<img style='max-height: 40px' src='<%=sCONTEXTPATH%>/_img/icons/mobile/planning.png'/>
+				<td style='font-size:6vw;text-align:center;padding:10px'>
+					<img style='max-height: 32px' src='<%=sCONTEXTPATH%>/_img/icons/mobile/planning.png'/>
 				</td>
 				<td style='font-size:6vw;text-align:left;padding:10px'>
 					<%=getTran(request,"web","maintenanceplans",sWebLanguage) %>
 				</td>
 			</tr>
+			<tr onclick="window.location.href='<%=sCONTEXTPATH%>/html5/manageDashboard.jsp';">
+				<td style='font-size:6vw;text-align:center;padding:10px'>
+					<img style='max-height: 32px' src='<%=sCONTEXTPATH%>/_img/icons/mobile/icon_dashboard.png'/>
+				</td>
+				<td style='font-size:6vw;text-align:left;padding:10px'>
+					<%=getTran(request,"asset","dashboard",sWebLanguage) %>
+				</td>
+			</tr>
 			<tr onclick="window.history.go(0);window.parent.location.replace('<%=sCONTEXTPATH%>/html5/login.jsp');">
-				<td style='font-size:6vw;text-align:right;padding:10px'>
+				<td style='font-size:6vw;text-align:center;padding:10px'>
 					<img style='max-height: 32px' src='<%=sCONTEXTPATH%>/_img/icons/mobile/logout.png'/>
 				</td>
 				<td style='font-size:6vw;text-align:left;padding:10px'>

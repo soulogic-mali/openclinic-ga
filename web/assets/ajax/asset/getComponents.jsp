@@ -22,7 +22,7 @@
 					Nomenclature nomenclature = Nomenclature.get("assetcomponent",rs.getString("oc_component_nomenclature"));
 					if(nomenclature!=null){
 						out.println("<tr>");
-						out.println("<td valign='bottom' width='1%' nowrap>"+(!bLocked && activeUser.getAccessRight("assets.edit")?"<img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' onclick='deleteComponent(\""+assetuid+"."+rs.getString("oc_component_objectid")+"."+rs.getString("oc_component_nomenclature")+"\")'/> <img src='"+sCONTEXTPATH+"/_img/icons/icon_edit.png' onclick='editComponent(\""+assetuid+"."+rs.getString("oc_component_objectid")+"."+rs.getString("oc_component_nomenclature")+"\")'/>":"")+rs.getString("oc_component_nomenclature")+" "+nomenclature.getFullyQualifiedName(sWebLanguage)+"</td>");
+						out.println("<td valign='bottom' width='1%' nowrap>"+(!bLocked && activeUser.getAccessRight("assets.edit")?"<img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' onclick='deleteComponent(\""+assetuid+"."+rs.getString("oc_component_objectid")+"."+rs.getString("oc_component_nomenclature")+"\",\""+assetuid+"\")'/> <img src='"+sCONTEXTPATH+"/_img/icons/icon_edit.png' onclick='editComponent(\""+assetuid+"."+rs.getString("oc_component_objectid")+"."+rs.getString("oc_component_nomenclature")+"\")'/>":"")+rs.getString("oc_component_nomenclature")+" "+nomenclature.getFullyQualifiedName(sWebLanguage)+"</td>");
 						type=checkString(rs.getString("oc_component_type"));
 						status=checkString(rs.getString("oc_component_status"));
 						characteristics=checkString(rs.getString("oc_component_characteristics"));

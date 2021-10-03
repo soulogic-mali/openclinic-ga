@@ -81,7 +81,9 @@
 			if(window.confirm('<%=getTranNoLink("web","datamodified.doreload",sWebLanguage) %>')){window.setTimeout('window.location.reload();',200);}
 		}
 		else{
-			window.location.reload();
+			if(<%=SH.ci("enableAutoReloadAfterResize",0)%>==1){
+				window.location.reload();
+			}
 		}
 	}
 </script>

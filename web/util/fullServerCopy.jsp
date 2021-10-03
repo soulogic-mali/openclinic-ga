@@ -7,7 +7,7 @@
 	String executeCmd = "";
 	executeCmd = "cmd /c \""+SH.cs("offlineMySQLBinDirectory","C:/Program Files/MySQL/MySQL Server 5.7/bin")+"/mysqldump.exe\" -h "+
 		SH.cs("offlineReferenceMySQLServerIPAddress","")+" -P "+SH.cs("offlineReferenceMySQLServerPort","3306")+" -u "+SH.cs("offlineReferenceMySQLServerUser","")+" --password="+
-		SH.cs("offlineReferenceMySQLServerPassword","")+" =openclinic_dbo.oc_config --databases ocadmin_dbo openclinic_dbo > "+SH.cs("tempDirectory","/temp")+"/oc.sql";
+		SH.cs("offlineReferenceMySQLServerPassword","")+" --ignore-table=openclinic_dbo.oc_config --databases ocadmin_dbo openclinic_dbo > "+SH.cs("tempDirectory","/temp")+"/oc.sql";
 	Process runtimeProcess = Runtime.getRuntime().exec(executeCmd);
 	int processComplete = runtimeProcess.waitFor();
 	if(processComplete == 0){

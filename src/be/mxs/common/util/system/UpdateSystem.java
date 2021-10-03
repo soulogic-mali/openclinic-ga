@@ -451,7 +451,13 @@ public class UpdateSystem implements Runnable {
 	            }
 	            if(!exists && identifiers.length>2){
 	            	try {
-		            	if(MedwanQuery.getInstance().getConfigString("excludedLabelTypes","").indexOf(identifiers[0])<0){
+	                    String excludedLabelTypes = "*datacenterserver*datacenterservergroup*labanalysis*labanalysis.short*labanalysis.monster*labanalysis.group*insurance.types*prestation.type*resultprofiles*"+
+	        					 " *admin.category*labanalysis.refcomment*"+
+	                             " *labprofiles*activitycodes*worktime*patientsharecoverageinsurance*patientsharecoverageinsurance2*"+
+	                             " *urgency.origin*encountertype*prestation.type*product.productgroup*costcenter*"+
+	                             " *insurance.types*labanalysis.group*drug.category*planningresource*systemmessages*product.unit*credit.type*wicketcredit.type*"+
+	                             " *productstockoperation.sourcedestinationtype*queue*anonymousqueue*costcenter*ikirezi.functional.signs*mir_type*radiologist*"; // default
+		            	if(MedwanQuery.getInstance().getConfigString("excludedLabelTypes",excludedLabelTypes).indexOf(identifiers[0])<0){
 		            		MedwanQuery.getInstance().storeLabel(identifiers[0],identifiers[1],identifiers[2],paramValue,0);
 		            	}
 	            	}

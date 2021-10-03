@@ -100,9 +100,28 @@
 					<%=getTran(request,"web.userprofile","changepassword",sWebLanguage) %>
 				</td>
 			</tr>
+			<%if(SH.hasSPTDataToPost()){ %>
+				<tr onclick="window.location.href='<%=sCONTEXTPATH%>/html5/postSPTData.jsp';">
+					<td style='font-size:6vw;text-align:right;padding:10px'>
+						<img src='<%=sCONTEXTPATH%>/_img/icons/mobile/uploadcloud.png'/>
+					</td>
+					<td style='font-size:6vw;text-align:left;padding:10px'>
+						<%=getTran(request,"web","postsptdata",sWebLanguage) %>
+					</td>
+				</tr>
+			<%}else{ %>
+				<tr>
+					<td style='font-size:6vw;text-align:right;padding:10px'>
+						<img src='<%=sCONTEXTPATH%>/_img/icons/mobile/uploadcloud.png'/>
+					</td>
+					<td style='color:lightgrey;font-size:6vw;text-align:left;padding:10px'>
+						<%=getTran(request,"web","postsptdata",sWebLanguage) %>
+					</td>
+				</tr>
+			<%} %>
 			<tr onclick="window.location.href='<%=sCONTEXTPATH%>/html5/updateLogic.jsp';">
 				<td style='font-size:6vw;text-align:right;padding:10px'>
-					<img src='<%=sCONTEXTPATH%>/_img/icons/mobile/upload.png'/>
+					<img style='max-width: 40px' src='<%=sCONTEXTPATH%>/_img/icons/mobile/icon_brain.png'/>
 				</td>
 				<td style='font-size:6vw;text-align:left;padding:10px'>
 					<%=getTran(request,"web.userprofile","update",sWebLanguage) %>

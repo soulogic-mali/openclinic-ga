@@ -196,7 +196,9 @@ public class DHIS2Server
     public Document getXml(String query) throws DocumentException, IOException, NoSuchAlgorithmException {
     	Response response = sendToServer(query);
 		InputStream responseBody = (InputStream) response.getEntity();
-    	Document document = DocumentHelper.parseText(IOUtils.toString(responseBody));
+		String sResponse=IOUtils.toString(responseBody);
+		System.out.println("Response="+sResponse);
+    	Document document = DocumentHelper.parseText(sResponse);
     	return document;
     }
     

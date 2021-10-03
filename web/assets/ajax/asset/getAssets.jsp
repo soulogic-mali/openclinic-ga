@@ -16,8 +16,10 @@
            sServiceUid		    = checkString(request.getParameter("serviceuid")),
            sDescription         = checkString(request.getParameter("description")),
            sSerialnumber        = checkString(request.getParameter("serialnumber")),
+           sAssetType         	= checkString(request.getParameter("assetType")),
            sAssetStatus         = checkString(request.getParameter("assetStatus")),
-           sComponentStatus         = checkString(request.getParameter("componentStatus")),
+           sAssetFunctionality  = checkString(request.getParameter("assetFunctionality")),
+           sComponentStatus     = checkString(request.getParameter("componentStatus")),
            sSupplierUID         = checkString(request.getParameter("supplierUID")),
            sShowInactive        = checkString(request.getParameter("showinactive")),
            sPurchasePeriodBegin = checkString(request.getParameter("purchasePeriodBegin")),
@@ -30,14 +32,15 @@
     /// DEBUG /////////////////////////////////////////////////////////////////////////////////////
     if(Debug.enabled){
         Debug.println("\n******************* assets/ajax/asset/getAssets.jsp *******************");
-        Debug.println("sCode         : "+sCode);
-        Debug.println("sNomenclature : "+sNomenclatureCode);
-        Debug.println("sServiceUid	 : "+sServiceUid);
-        Debug.println("sDescription  : "+sDescription);
-        Debug.println("sShowInactive : "+sShowInactive);
-        Debug.println("sSerialnumber : "+sSerialnumber);
-        Debug.println("sAssetStatus  : "+sAssetStatus);
-        Debug.println("sSupplierUID  : "+sSupplierUID);
+        Debug.println("sCode         		: "+sCode);
+        Debug.println("sNomenclature 		: "+sNomenclatureCode);
+        Debug.println("sServiceUid	 		: "+sServiceUid);
+        Debug.println("sDescription  		: "+sDescription);
+        Debug.println("sShowInactive 		: "+sShowInactive);
+        Debug.println("sSerialnumber 		: "+sSerialnumber);
+        Debug.println("sAssetStatus  		: "+sAssetStatus);
+        Debug.println("sAssetFunctionality  : "+sAssetFunctionality);
+        Debug.println("sSupplierUID  		: "+sSupplierUID);
         Debug.println("sPurchasePeriodBegin : "+sPurchasePeriodBegin);
         Debug.println("sPurchasePeriodEnd   : "+sPurchasePeriodEnd+"\n");
     }
@@ -49,6 +52,7 @@
     findObject.nomenclature = sNomenclatureCode;
     findObject.description = sDescription;
     findObject.serialnumber = sSerialnumber;
+    findObject.comment7 = sAssetFunctionality;
     findObject.comment9 = sAssetStatus;
     findObject.supplierUid = sSupplierUID;
     findObject.serviceuid = sServiceUid;
@@ -110,7 +114,7 @@
                       "<td class='hand' width='1px' nowrap>"+checkString(asset.nomenclature)+"</td>"+
                       "<td class='hand'>"+getTranNoLink("admin.nomenclature.asset", asset.nomenclature,sWebLanguage)+"</td>"+
                       "<td class='hand'>"+asset.serviceuid+" - "+getTranNoLink("service",asset.serviceuid,sWebLanguage)+(!bAuthorized?" <img src='"+sCONTEXTPATH+"/_img/icons/icon_forbidden.png'/>":"")+"</td>"+
-                      "<td class='hand'>"+getTranNoLink("assets.status",checkString(asset.comment9),sWebLanguage)+"</td>"+
+                      "<td class='hand'>"+(sAssetType.equalsIgnoreCase("equipment")?getTranNoLink("assets.functionality",checkString(asset.comment7),sWebLanguage):getTranNoLink("assets.status",checkString(asset.comment9),sWebLanguage))+"</td>"+
                       "<td class='hand'>"+pd+"</td>"+
                       "<td class='hand'>"+ud+"</td>"+
                       (sShowInactive.equalsIgnoreCase("true")?"<td class='hand'>"+ScreenHelper.formatDate(asset.saleDate)+"</td>":"")+

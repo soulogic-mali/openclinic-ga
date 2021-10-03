@@ -2,17 +2,76 @@ package be.openclinic.system;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.text.RandomStringGenerator;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.ScreenHelper;
+import be.openclinic.knowledge.SPT;
 
 public class SH extends ScreenHelper {
+	
+	public static String getScanDirectoryFromPath() {
+		String SCANDIR_BASE = MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_basePath","/var/tomcat/webapps/openclinic/scan");
+	    return SCANDIR_BASE+"/"+MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_dirFrom","from");
+	}
+	
+	public static String getScanDirectoryToPath() {
+		String SCANDIR_BASE = MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_basePath","/var/tomcat/webapps/openclinic/scan");
+	    return SCANDIR_BASE+"/"+MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_dirTo","to");
+	}
+	
+	public static Hashtable getMultipartFormParameters(HttpServletRequest request) {
+		Hashtable parameters = new Hashtable();
+		if(ServletFileUpload.isMultipartContent(request)) {
+		    FileItemFactory factory = new DiskFileItemFactory();
+		    ServletFileUpload upload = new ServletFileUpload(factory);
+		    List items = null;
+		    try {
+		        items = upload.parseRequest(request);
+	        } catch (FileUploadException e) {
+	             e.printStackTrace();
+	        }
+		    Iterator itr = items.iterator();
+		    while (itr.hasNext()) {
+		        FileItem item = (FileItem) itr.next();
+		        if (item.isFormField()) {
+		        	parameters.put(item.getFieldName(), item.getString());
+		        } else {
+		        	try {
+		        		FormFile formFile =new FormFile();
+		        		formFile.document=item.get();
+		        		formFile.filename=FilenameUtils.getName(item.getName()); 
+		        		parameters.put(item.getFieldName(), formFile);
+		            } catch (Exception e) {
+		                 e.printStackTrace();
+		            }
+		      	}
+		    }    	
+		}
+		return parameters;
+	}
+	
+	public static java.sql.Timestamp ts(java.util.Date date){
+		if(date==null) {
+			return null;
+		}
+		return new java.sql.Timestamp(date.getTime());
+	}
 	
 	public static String c(String s) {
 		return checkString(s);
@@ -68,11 +127,23 @@ public class SH extends ScreenHelper {
     	return MedwanQuery.getInstance().getAdminConnection();
     }
     
+    public static Connection getStatsConnection() {
+    	return MedwanQuery.getInstance().getStatsConnection();
+    }
+    
     public static int getServerId() {
     	return MedwanQuery.getInstance().getConfigInt("serverId",1);
     }
     
     public static String formatDouble(double d) {
     	return new DecimalFormat("#0.00",new DecimalFormatSymbols(Locale.getDefault())).format(d);
+    }
+    
+    public static boolean hasSPTDataToPost() {
+    	return SPT.hasSPTDataToPost();
+    }
+    
+    public static boolean isHostReachable(String host) {
+    	return true;
     }
 }

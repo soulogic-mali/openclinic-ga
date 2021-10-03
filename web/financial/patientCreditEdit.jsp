@@ -131,7 +131,6 @@
         if(SH.c(sEditCreditInvoiceUid).split("\\.").length==2){
 		    PatientInvoice pi = PatientInvoice.get(sEditCreditInvoiceUid);
 		    double dBalance=pi.getBalance();
-		    System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD "+dBalance);
 		    if (dBalance < 0) {
 				Encounter encounter = Encounter.getActiveEncounter(pi.getPatientUid());
 				if(encounter==null){
@@ -150,7 +149,6 @@
 		        patientcredit.store();
 		        credit.setAmount(credit.getAmount()+dCredit);
 		        credit.store();
-			    System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXX "+patientcredit.getUid());
 				
 		        String sCreditUid;
 		        double dTmpCredits = 0,dTotalDebets=pi.getTotalAmount();

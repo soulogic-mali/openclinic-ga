@@ -1,16 +1,18 @@
-<%@page import="java.sql.*,java.io.*,java.util.*,javax.imageio.*,org.dcm4che3.imageio.plugins.dcm.*"%><%@page import="be.mxs.common.util.db.MedwanQuery"%><%@page import="be.openclinic.archiving.*"%><%try{
-	if(!ImageIO.getImageReadersByFormatName("DICOM").hasNext()){
-    	ImageIO.scanForPlugins();
+<%@page import="java.sql.*,java.io.*,java.util.*,javax.imageio.*,org.dcm4che3.imageio.plugins.dcm.*"%><%@page import="be.mxs.common.util.db.MedwanQuery"%><%@page import="be.openclinic.archiving.*"%>
+<%
+	try{
+		if(!ImageIO.getImageReadersByFormatName("DICOM").hasNext()){
+	    	ImageIO.scanForPlugins();
+		}
+		else{
+	    	ImageReader reader = DicomUtils.getDCM4CHE2DicomImageReader();
+	    	org.dcm4che2.imageio.plugins.dcm.DicomImageReadParam param = (org.dcm4che2.imageio.plugins.dcm.DicomImageReadParam) reader.getDefaultReadParam();
+		}
 	}
-	else{
-    	ImageReader reader = DicomUtils.getDCM4CHE2DicomImageReader();
-        DicomImageReadParam param = (DicomImageReadParam) reader.getDefaultReadParam();
+	catch(Exception e){
+		ImageIO.scanForPlugins();
+		e.printStackTrace();
 	}
-}
-catch(Exception e){
-	ImageIO.scanForPlugins();
-	e.printStackTrace();
-}
 	String uid = request.getParameter("uid");
 	response.setContentType("image/jpeg");
 	ServletOutputStream os = response.getOutputStream();
@@ -39,4 +41,5 @@ catch(Exception e){
 	ps.close();
 	conn.close();
     os.flush();
-    os.close();%>
+    os.close();
+ %>

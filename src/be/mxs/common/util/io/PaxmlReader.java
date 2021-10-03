@@ -2,6 +2,7 @@ package be.mxs.common.util.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
@@ -35,13 +36,21 @@ import uk.org.primrose.vendor.standalone.PrimroseLoader;
 public class PaxmlReader {
 
 	public static void main(String[] args) throws GeneralException, IOException {
+		String processid=ManagementFactory.getRuntimeMXBean().getName();
+		System.out.println(processid+" - Loading primrose configuration "+args[0]);
 		PrimroseLoader.load(args[0], true);
+		System.out.println(processid+" - Primrose loaded");
+		MedwanQuery.getInstance(false);
 		ScanDirectoryMonitor.loadConfig();
+		System.out.println(processid+" - ScanDirectoryMonitor configured");
 		Collection<File> files = FileUtils.listFiles(new File(args[1]), new WildcardFileFilter("*.paxml"), null);
+		System.out.println(processid+" - Found "+files.size()+" files");
 		Iterator<File> iFiles = files.iterator();
 		while(iFiles.hasNext()) {
 			File file = iFiles.next();
+			System.out.println(processid+" - Reading file"+(file==null?"null":file.getName()));
 			try {
+				Thread.sleep(100);
 				BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
 				if(attr.lastModifiedTime().toMillis()<new java.util.Date().getTime()-24*3600*1000) {
 					file.delete();
@@ -58,7 +67,7 @@ public class PaxmlReader {
 					String status = SH.c(root.elementText("status")).trim();
 					String summary = SH.c(root.elementText("summary")).trim();
 					String absolutefilename=file.getParentFile().getAbsolutePath()+"/"+filename;
-					System.out.println("Check "+absolutefilename);
+					System.out.println(processid+" - Check "+absolutefilename);
 					File docfile=new File(absolutefilename);
 					if(docfile.exists()) {
 						//We've got the matching PDF file, store it in the patient record
@@ -103,9 +112,11 @@ public class PaxmlReader {
 		    			transaction.getItems().add(new ItemVO(new Integer( IdentifierFactory.getInstance().getTemporaryNewIdentifier()),
 		    					"be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_DOC_UDI",archiveDocument.udi,new Date(),itemContextVO));
 	    				MedwanQuery.getInstance().updateTransaction(Integer.parseInt(personid),transaction);
-	    				System.out.println("UDI="+archiveDocument.udi);
+	    				System.out.println(processid+" - UDI="+archiveDocument.udi);
 	    				ScanDirectoryMonitor.acceptIncomingFile(archiveDocument.udi, docfile);
+	    				System.out.println(processid+" - Incoming file accepted");
 	    				file.delete();
+	    				System.out.println(processid+" - "+file.getName()+" deleted");
 					}
 				}
 			}
@@ -113,6 +124,7 @@ public class PaxmlReader {
 				e.printStackTrace();
 			}
 		}
+		System.out.println(processid+" - Closing system");
 		System.exit(0);
 	}
 

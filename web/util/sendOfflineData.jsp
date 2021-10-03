@@ -47,11 +47,13 @@
 		else if(type.equalsIgnoreCase("encounter")){
     		MedwanQuery.getInstance().getObjectCache().removeObject("encounter", SH.getServerId()+"."+oldid);
 			Encounter encounter = Encounter.get(SH.getServerId()+"."+oldid);
-			out.println("<tr><td class='admin' width='1%'>"+oldid+"&nbsp;</td><td class='admin2'>Patient encounter at <b>"+getTranNoLink("service",encounter.getServiceUID(),sWebLanguage)+"</b> for <b>"+encounter.getPatient().getFullName()+"</b> created on "+SH.formatDate(created, SH.fullDateFormatSS)+"</td></tr>");
-			out.flush();
-			xml=encounter.toXml();
-			minid=MedwanQuery.getInstance().getOpenclinicCounterNoIncrement("OC_ENCOUNTERS");
-			objecttype="encounter";
+			if(encounter!=null && encounter.getPatientUID()!=null && encounter.getPatient()!=null){
+				out.println("<tr><td class='admin' width='1%'>"+oldid+"&nbsp;</td><td class='admin2'>Patient encounter at <b>"+getTranNoLink("service",encounter.getServiceUID(),sWebLanguage)+"</b> for <b>"+encounter.getPatient().getFullName()+"</b> created on "+SH.formatDate(created, SH.fullDateFormatSS)+"</td></tr>");
+				out.flush();
+				xml=encounter.toXml();
+				minid=MedwanQuery.getInstance().getOpenclinicCounterNoIncrement("OC_ENCOUNTERS");
+				objecttype="encounter";
+			}
 		}
 		else if(type.equalsIgnoreCase("transaction")){
     		MedwanQuery.getInstance().getObjectCache().removeObject("transaction", SH.getServerId()+"."+oldid);
@@ -64,6 +66,7 @@
 				objecttype="transaction";
 			}
 		}
+
 		if(xml.length()>0){
 			//Send object to destination server
 			NameValuePair[] nvp = new NameValuePair[4];
@@ -75,7 +78,8 @@
 			String authStr = SH.cs("offlineSyncServer.username", "nil") + ":" + SH.cs("offlineSyncServer.password", "nil");
 			String authEncoded = Base64.getEncoder().encodeToString(authStr.getBytes());
 		    method.setRequestHeader("Authorization", "Basic "+authEncoded);
-			try{
+
+		    try{
 				int statusCode = client.executeMethod(method);
 				String sResponse=method.getResponseBodyAsString();
 				Document doc = org.dom4j.DocumentHelper.parseText(sResponse);
@@ -100,9 +104,11 @@
 					bComplete=false;
 					break;
 				}
+
 				method.releaseConnection();
 			}
 			catch(Exception e){
+				e.printStackTrace();
 				out.println("<tr><td><img src='"+sCONTEXTPATH+"/_img/icons/icon_error.gif'/></td><td class='adminred'>Error detected: <b>Could not connect to "+SH.cs("offlineSyncServerAPI","http://localhost/openclinic/api/postOfflineData.jsp")+"</b>. Process stopped. Please check URL and API credentials.</td></tr>");	
 				bComplete=false;
 				break;

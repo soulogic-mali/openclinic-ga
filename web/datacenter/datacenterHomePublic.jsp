@@ -118,7 +118,7 @@
         </div>
         <div id="container">
             <div id="content">
-            	<label><h3><%=getTran(request,"web","datacenter.intro",sWebLanguage).replaceAll("OpenClinic", "<a href='http://sourceforge.net/projects/open-clinic'>OpenClinic</a>") %> <%=getTran(request,"web","datacenter.intro2",sWebLanguage)%></h3></label>
+            	<label><h3><%=getTran(request,"web","datacenter.intro",sWebLanguage).replaceAll("OpenClinic", "<a href='http://sourceforge.net/projects/open-clinic'>OpenClinic</a>") %> <%=getTran(request,"web","datacenter.intro2",sWebLanguage).replace("´","'")%></h3></label>
             	<table width="100%" class="content" cellpadding="0" cellspacing="1" style="padding:0px;">
 			<%
 				String toggleCountryCode="",toggleCountryIdx="";

@@ -21,6 +21,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.spi.ServiceRegistry;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.ServletOutputStream;
@@ -38,11 +39,9 @@ import org.dcm4che2.io.DicomInputStream;
 import org.dcm4che2.util.CloseUtils;
 
 import com.sun.image.codec.jpeg.ImageFormatException;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import be.mxs.common.util.system.Debug;
+import be.openclinic.system.SH;
 
 /**
  * @author Gunter Zeilinger <gunterze@gmail.com>
@@ -257,17 +256,22 @@ public class Dcm2Jpg {
         }
     }
     
+    private void writeJpeg(BufferedImage bi,ImageOutputStream ios) throws IOException {
+    	ImageWriter jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
+    	ImageWriteParam jpgWriteParam = jpgWriter.getDefaultWriteParam();
+    	jpgWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+    	jpgWriteParam.setCompressionQuality(Float.parseFloat(SH.cs("PACSThumbnailCompression", "0.1f")));
+    	jpgWriter.setOutput(ios);
+    	IIOImage outputImage = new IIOImage(bi, null, null);
+    	jpgWriter.write(null, outputImage, jpgWriteParam);
+    	jpgWriter.dispose();
+    }
+    
     private void encodeByJPEGEncoder(BufferedImage bi, File dest) throws ImageFormatException, IOException {
-        OutputStream out = null;
+    	FileImageOutputStream out = null;
         try {
-            out = new BufferedOutputStream(new FileOutputStream(dest));
-            JPEGImageEncoder enc = JPEGCodec.createJPEGEncoder(out);
-            if (imageQuality != null) {
-                JPEGEncodeParam param = JPEGCodec.getDefaultJPEGEncodeParam(bi);
-                param.setQuality(imageQuality, true);
-                enc.setJPEGEncodeParam(param);
-            }
-            enc.encode(bi);
+            out = new FileImageOutputStream(dest);
+            writeJpeg(bi,out);
         } finally {
             CloseUtils.safeClose(out);
         }
@@ -275,13 +279,7 @@ public class Dcm2Jpg {
 
     private void encodeByJPEGEncoder(BufferedImage bi, ServletOutputStream dest) {
         try {
-            JPEGImageEncoder enc = JPEGCodec.createJPEGEncoder(dest);
-            if (imageQuality != null) {
-                JPEGEncodeParam param = JPEGCodec.getDefaultJPEGEncodeParam(bi);
-                param.setQuality(imageQuality, true);
-                enc.setJPEGEncodeParam(param);
-            }
-            enc.encode(bi);
+        	writeJpeg(bi,ImageIO.createImageOutputStream(dest));
         } 
         catch(Exception e){
         	e.printStackTrace();

@@ -615,7 +615,7 @@ public class Encounter extends OC_Object {
     }
     
     public static boolean isNewCase(String encounterUid){
-    	boolean bNewCase = true;
+    	boolean bNewCase = false;
     	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
     	try{
     		PreparedStatement ps = conn.prepareStatement("select * from OC_RFE where OC_RFE_ENCOUNTERUID=?");
@@ -623,23 +623,23 @@ public class Encounter extends OC_Object {
     		ResultSet rs = ps.executeQuery();
     		while (bNewCase && rs.next()){
     			String flags = rs.getString("OC_RFE_FLAGS");
-    			if(flags.contains("n")) {
-    				bNewCase=false;
+    			if(flags.contains("N")) {
+    				bNewCase=true;
     			}
     		}
     		rs.close();
     		ps.close();
-    		if(bNewCase){
-    			ps=conn.prepareStatement("select * from OC_DIAGNOSES where OC_DIAGNOSIS_ENCOUNTERUID=? and (OC_DIAGNOSIS_NC IS NULL OR OC_DIAGNOSIS_NC =0)");
+    		if(!bNewCase){
+    			ps=conn.prepareStatement("select * from OC_DIAGNOSES where OC_DIAGNOSIS_ENCOUNTERUID=? and OC_DIAGNOSIS_NC = 1");
         		ps.setString(1, encounterUid);
         		rs = ps.executeQuery();
         		if(rs.next()) {
-        			bNewCase=false;
+        			bNewCase=true;
         		}
         		rs.close();
         		ps.close();
     		}
-    		if(bNewCase) {
+    		if(!bNewCase) {
     			ps=conn.prepareStatement("select OC_ENCOUNTER_PATIENTUID,OC_ENCOUNTER_BEGINDATE from oc_encounters where oc_encounter_serverid=? and oc_encounter_objectid=?");
     			ps.setInt(1, Integer.parseInt(encounterUid.split("\\.")[0]));
     			ps.setInt(2, Integer.parseInt(encounterUid.split("\\.")[1]));
@@ -655,14 +655,13 @@ public class Encounter extends OC_Object {
     				ps.setTimestamp(2, new java.sql.Timestamp(ts.getTime()-SH.ci("minimumDelayForNewCase", 15)*day));
     				ps.setTimestamp(3, ts);
     				rs=ps.executeQuery();
-    				if(rs.next()) {
-    					//We do have a recent contact, so this is not a new case
-    					bNewCase=false;
+    				if(!rs.next()) {
+    					//We do not have a recent contact, so this is a new case
+    					bNewCase=true;
     				}
     			}
-    			
-        		ps.setString(1, encounterUid);
-        		rs = ps.executeQuery();
+    			rs.close();
+    			ps.close();
     		}
     		conn.close();
     	}

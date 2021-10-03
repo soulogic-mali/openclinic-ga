@@ -125,20 +125,12 @@
             <td class="admin">	        
             	<%=getTran(request,"web.assets","infrastructure.status",sWebLanguage)%>&nbsp;*&nbsp;
             </td>
-            <td class="admin2">
+            <td class="admin2" colspan='3'>
                 <select class="text" id="comment9" name="comment9">
                     <option/>
                     <%=ScreenHelper.writeSelect(request,"assets.status",checkString(asset.getComment9()),sWebLanguage)%>
                 </select>
-            </td>
-            <td class="admin">
-            	<%=getTran(request,"web.assets","infrastructure.functionality",sWebLanguage)%>&nbsp;*&nbsp;
-            </td>
-            <td class="admin2">
-                <select class="text" id="comment7" name="comment7">
-                    <option/>
-                    <%=ScreenHelper.writeSelect(request,"assets.functionality",checkString(asset.getComment7()),sWebLanguage)%>
-                </select>
+                <input type='hidden' name='comment7' id='comment7'/>
             </td>
             <td class="admin"><%=getTran(request,"web","details",sWebLanguage)%></td>
             <td class="admin2">
@@ -198,11 +190,11 @@
 			            		      	method: "POST",
 			            		      	parameters: "componentuid=<%=asset.getUid()%>."+value,
 			            		      	onSuccess: function(resp){
-				            		  	loadComponents();
-			            		    },
-			            		    onFailure: function(resp){
-			            		        $("divMessage").innerHTML = "Error in 'assets/addComponent.jsp' : "+resp.responseText.trim();
-			            		    }
+				            		  		loadComponents('<%=asset.getUid()%>');
+			            		    	},
+				            		    onFailure: function(resp){
+				            		        $("divMessage").innerHTML = "Error in 'assets/addComponent.jsp' : "+resp.responseText.trim();
+				            		    }
 			            		    });
 			            		}
 			            	</script>
@@ -215,12 +207,12 @@
 		</tr>     
         <%-- SUPPLIER --%>
         <tr>
-            <td class="admin" id="supplier_label"><%=getTran(request,"web.assets","supplier",sWebLanguage)%>&nbsp;</td>
+            <td class="admin" id="supplier_label"><%=getTran(request,"web.assets","company",sWebLanguage)%>&nbsp;</td>
             <td class="admin2" nowrap>
                 <input type="text" class="text" id="supplierUID" name="supplierUID" size="30" maxLength="50" value="<%=checkString(asset.getSupplierUid())%>">
             </td>
 	        <%-- PURCHASE DATE --%>
-            <td class="admin"><%=getTran(request,"web.assets","purchaseDate",sWebLanguage)%>&nbsp;</td>
+            <td class="admin"><%=getTran(request,"web.assets","workstartdate",sWebLanguage)%>&nbsp;</td>
             <td class="admin2" nowrap>
                 <%=writeDateField("purchaseDate","EditForm",ScreenHelper.formatDate(asset.getPurchaseDate()),sWebLanguage)%>        
             </td>                        
@@ -236,7 +228,7 @@
             <td class="admin2" nowrap>
                 <%=writeDateField("comment11","EditForm",checkString(asset.getComment11()),sWebLanguage)%>        
             </td>                        
-            <td class="admin"><%=getTran(request,"web.assets","infrastructure.deliverydate",sWebLanguage)%>&nbsp;</td>
+            <td class="admin"><%=getTran(request,"web.assets","infrastructure.deliverydate",sWebLanguage)%>&nbsp;*</td>
             <td class="admin2" nowrap>
                 <%=writeDateField("comment12","EditForm",checkString(asset.getComment12()),sWebLanguage)%>        
             </td>                        
@@ -248,11 +240,11 @@
         
         <%-- RECEIPT BY --%>
         <tr>
-            <td class="admin"><%=getTran(request,"web.assets","purchasePrice",sWebLanguage)%>&nbsp;</td>
+            <td class="admin"><%=getTran(request,"web.assets","workcost",sWebLanguage)%>&nbsp;*</td>
             <td class="admin2">
                 <input type="text" class="text" id="purchasePrice" name="purchasePrice" size="15" maxLength="15" value="<%=asset.getPurchasePrice() %>" onKeyUp="isNumber(this);" onBlur="if(isNumber(this))setDecimalLength(this,2,true);"> <%=MedwanQuery.getInstance().getConfigParam("currency","€")%>&nbsp;
             </td>
-            <td class="admin"><%=getTran(request,"web.assets","fundingsource",sWebLanguage)%>&nbsp;</td>
+            <td class="admin"><%=getTran(request,"web.assets","fundingsource",sWebLanguage)%>&nbsp;*</td>
             <td class="admin2">
                 <input type="text" class="text" id="comment6" name="comment6" size="20" maxLength="255" value="<%=asset.getComment6() %>" />
             </td>
@@ -629,7 +621,7 @@
 				<%if(!bLocked && activeUser.getAccessRight("assets.delete")){ %>
                 <input class="button" type="button" name="buttonDelete" id="buttonDelete" value="<%=getTranNoLink("web","delete",sWebLanguage)%>" onclick="deleteAsset();" >&nbsp;
 				<%} %>
-                <input class="button" type="button" name="buttonList" id="buttonList" value="<%=getTranNoLink("web","list",sWebLanguage)%>" onclick="listAssets();">&nbsp;
+                <input class="button" type="button" name="buttonList" id="buttonList" value="<%=getTranNoLink("web","list",sWebLanguage)%>" onclick="listAssets('infrastructure');">&nbsp;
                 <input class="button" type="button" name="buttonMaintenance" id="buttonMaintenance" value="<%=getTranNoLink("web","maintenanceplans",sWebLanguage)%>" onclick="listMaintenancePlans();">&nbsp;
                 <input class="button" type="button" name="buttonOperations" id="buttonOperations" value="<%=getTranNoLink("web","operations",sWebLanguage)%>" onclick="listMaintenanceOperations();">&nbsp;
                 <input class="button" type="button" name="buttonDocuments" id="buttonDocuments" value="<%=getTranNoLink("web","documents",sWebLanguage)%>" onclick="printWordDocuments();">&nbsp;

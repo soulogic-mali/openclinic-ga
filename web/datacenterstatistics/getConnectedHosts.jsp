@@ -55,13 +55,13 @@
 			}
 			totalusers+=systemInfo.getUsersConnected();
 		}		
-		rs.beforeFirst();
 		if(totalusers<MedwanQuery.getInstance().getConfigInt("minusers."+vpnDomain,99999999)){
 			MedwanQuery.getInstance().setConfigString("minusers."+vpnDomain,totalusers+"");
 		}
 		if(totalusers>MedwanQuery.getInstance().getConfigInt("maxusers."+vpnDomain,0)){
 			MedwanQuery.getInstance().setConfigString("maxusers."+vpnDomain,totalusers+"");
 		}
+		rs = ps.executeQuery();
 		while(rs.next()){
 			SystemInfo systemInfo = SystemInfo.parse(rs.getString("dc_monitorparameter_value"));
 			String uid = rs.getString("dc_monitorparameter_serveruid");

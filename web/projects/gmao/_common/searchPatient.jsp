@@ -14,7 +14,7 @@
 %>
 
 <%
-	if(!activeUser.getParameter("DefaultPage").equalsIgnoreCase("maintenance") || SH.c(request.getParameter("forcePatientHeader")).equalsIgnoreCase("1")){
+	if(!activeUser.getParameter("DefaultPage").equalsIgnoreCase("maintenance") || SH.c(request.getParameter("forcePatientHeader")).equalsIgnoreCase("1") || SH.c(request.getParameter("PersonID")).length()>0e){
 	    String sNewimmat    = checkString(request.getParameter("findimmatnew")),
 		       sNatreg      = checkString(request.getParameter("findnatreg")),
 		       sName        = checkString(request.getParameter("findName")),

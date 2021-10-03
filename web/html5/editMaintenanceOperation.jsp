@@ -82,7 +82,7 @@
 					</tr>
 					<tr>
 						<td class='mobileadmin' style='font-size:4vw;'>
-							<%=getTranNoLink("web","begindate",sWebLanguage)%>
+							<%=getTranNoLink("web","begindate",sWebLanguage)%>&nbsp;*
 						</td>
 						<td class='mobileadmin2' style='font-size:4vw;'>
 							<input style='width: 80% !important;padding:4px; font-size: 4vw;' type='date' name='date' id='date' value='<%=operation.getDate()==null?"":new SimpleDateFormat("yyyy-MM-dd").format(operation.getDate()) %>' onchange='getNextOperationDate();' size='10'/>
@@ -98,7 +98,7 @@
 					</tr>
 					<tr>
 						<td class='mobileadmin' style='font-size:4vw;'>
-							<%=getTranNoLink("web.assets","operator",sWebLanguage)%>
+							<%=getTranNoLink("web.assets","operator",sWebLanguage)%>&nbsp;*
 						</td>
 						<td class='mobileadmin2' style='font-size:4vw;'>
 							<input type='text' style='width: 95% !important;font-size: 4vw;height: 6vw;' name='operator' id='operator' size='10' value='<%=operation.getOperator()%>'/>
@@ -114,7 +114,7 @@
 					</tr>
 					<tr>
 						<td class='mobileadmin' style='font-size:4vw;'>
-							<%=getTranNoLink("web.assets","result",sWebLanguage)%>
+							<%=getTranNoLink("web.assets","result",sWebLanguage)%>&nbsp;*
 						</td>
 						<td class='mobileadmin2' style='font-size:4vw;'>
 					       	<select name='result' id='result' style='width: 95% !important;font-size: 4vw;height: 6vw;'>
@@ -223,9 +223,21 @@
 			  }
 			  
 			  function savePlan(){
-				  document.getElementById('action').value='save';
-				  transactionForm.submit();
+	        		if(requiredFieldsProvided()){
+		        		document.getElementById('action').value='save';
+		        		transactionForm.submit();
+	        		}
+	        		else{
+				    	alert('<%=getTranNoLink("web.manage","dataMissing",sWebLanguage)%>');
+	        		}
 			  }
+			  
+			  function requiredFieldsProvided(){
+				    return (document.getElementById("date").value.length > 0 &&
+				            document.getElementById("operator").value.length > 0 &&
+				            document.getElementById("result").selectedIndex > 0);
+			  }
+
 		</script>
 	</body>
 </html>

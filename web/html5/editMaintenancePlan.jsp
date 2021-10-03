@@ -101,7 +101,7 @@
 					</tr>
 					<tr>
 						<td class='mobileadmin' style='font-size:4vw;'>
-							<%=getTranNoLink("web","name",sWebLanguage)%>
+							<%=getTranNoLink("web","name",sWebLanguage)%>&nbsp;*
 						</td>
 						<td class='mobileadmin2' style='font-size:4vw;'>
 							<input type='text' style='width: 95% !important;font-size: 4vw;height: 6vw;' name='name' id='name' size='10' value='<%=plan.getName()%>'/>
@@ -109,7 +109,7 @@
 					</tr>
 					<tr>
 						<td class='mobileadmin' style='font-size:4vw;'>
-							<%=getTranNoLink("web","begindate",sWebLanguage)%>
+							<%=getTranNoLink("web","begindate",sWebLanguage)%>&nbsp;*
 						</td>
 						<td class='mobileadmin2' style='font-size:4vw;'>
 							<input style='width: 80% !important;padding:4px; font-size: 4vw;' type='date' name='startdate' id='startdate' value='<%=plan.getStartDate()==null?"":new SimpleDateFormat("yyyy-MM-dd").format(plan.getStartDate()) %>' size='10'/>
@@ -136,7 +136,7 @@
 					</tr>
 					<tr>
 						<td class='mobileadmin' style='font-size:4vw;'>
-							<%=getTranNoLink("web.assets","operator",sWebLanguage)%>
+							<%=getTranNoLink("web.assets","operator",sWebLanguage)%>&nbsp;*
 						</td>
 						<td class='mobileadmin2' style='font-size:4vw;'>
 							<input type='text' style='width: 95% !important;font-size: 4vw;height: 6vw;' name='operator' id='operator' size='10' value='<%=plan.getOperator()%>'/>
@@ -228,9 +228,29 @@
 		        	}
 		        	
 		        	function savePlan(){
-		        		document.getElementById('action').value='save';
-		        		transactionForm.submit();
+		        		if(requiredFieldsProvided()){
+			        		document.getElementById('action').value='save';
+			        		transactionForm.submit();
+		        		}
+		        		else{
+					    	alert('<%=getTranNoLink("web.manage","dataMissing",sWebLanguage)%>');
+		        		}
 		        	}
+		        	  function requiredFieldsProvided(){
+		        		  if(document.getElementById("startdate").value.length == 0 ){
+		        			  document.getElementById("startDate").focus();
+		        			  return false;
+		        		  }
+		        		  else if(document.getElementById("name").value.length == 0 ){
+		        			  document.getElementById("name").focus();
+		        			  return false;
+		        		  }
+		        		  else if(document.getElementById("operator").value.length == 0 ){
+		        			  document.getElementById("operator").focus();
+		        			  return false;
+		        		  }
+		        	    return true;
+		        	  }
 		        	
 		        	function manageOperations(){
 		        		window.location.href='manageOperations.jsp?planuid=<%=plan.getUid()%>';

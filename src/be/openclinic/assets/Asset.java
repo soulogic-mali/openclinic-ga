@@ -2745,6 +2745,9 @@ public class Asset extends OC_Object {
             if(ScreenHelper.checkString(findItem.assetType).length() > 0){
                 sSql+= " AND OC_ASSET_TYPE = '"+findItem.assetType+"'";
             }
+            if(ScreenHelper.checkString(findItem.comment7).length() > 0){
+                sSql+= " AND OC_ASSET_COMMENT7 = '"+findItem.comment7+"'";
+            }
             if(ScreenHelper.checkString(findItem.comment9).length() > 0){
                 sSql+= " AND OC_ASSET_COMMENT9 = '"+findItem.comment9+"'";
             }

@@ -14,7 +14,7 @@
 <%
 	String result="";
 	if((request.getParameter("formaction")+"").equalsIgnoreCase("getclique")){
-		String[] members = request.getParameter("cliqueMembers").split(",");
+		String[] members = request.getParameter("cliqueMembers").split("\n");
 		result="<div  id='resultstable'><table border='1'>"+getClique(members,request.getParameter("cliqueWeight"))+"</table></div>";
 	}
 %>

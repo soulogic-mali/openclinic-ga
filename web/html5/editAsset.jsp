@@ -140,10 +140,51 @@
 			}
 			
 			function save(){
-				document.getElementById('action').value='save';
-				transactionForm.submit();
+			    if(requiredFieldsProvided()){    
+					document.getElementById('action').value='save';
+					transactionForm.submit();
+			    }
+			    else{
+			    	alert('<%=getTranNoLink("web.manage","dataMissing",sWebLanguage)%>');
+			    }
 			}
-			
+
+			  function requiredFieldsProvided(){
+				  if(document.getElementById("code").value.length == 0 ){
+					  document.getElementById("code").focus();
+					  return false;
+				  }
+				  else if(document.getElementById("description").value.length == 0 ){
+					  document.getElementById("description").focus();
+					  return false;
+				  }
+				  else if(document.getElementById("nomenclature").value.length == 0 ){
+					  document.getElementById("nomenclature").focus();
+					  return false;
+				  }
+				  else if('<%=SH.c(request.getParameter("assetType"))%>'=='equipment' && document.getElementById("comment7").value.length == 0 ){
+					  document.getElementById("comment7").focus();
+					  return false;
+				  }
+				  else if(document.getElementById("comment6").value.length == 0 ){
+					  document.getElementById("comment6").focus();
+					  return false;
+				  }
+				  else if(document.getElementById("comment12").value.length == 0 ){
+					  document.getElementById("comment12").focus();
+					  return false;
+				  }
+				  else if(document.getElementById("purchaseprice").value.length == 0 || isNaN(document.getElementById("purchaseprice").value) || document.getElementById("purchaseprice").value*1<=0){
+					  document.getElementById("purchaseprice").focus();
+					  return false;
+				  }
+				  else if('<%=SH.c(request.getParameter("assetType"))%>'=='infrastructure' && document.getElementById('comment9').value.length == 0){
+					  document.getElementById("comment9").focus();
+					  return false;
+				  }
+			    return true;           
+			  }
+
 			function maintenancePlans(){
 				window.location.href='manageMaintenancePlans.jsp?assetuid=<%=SH.p(request,"assetuid")%>';
 			}

@@ -67,26 +67,51 @@
 	            <td class="admin2" >
 	                <input type="text" class="text" id="searchDescription" name="searchDescription" size="50" maxLength="50" value="">
 	            </td>
-	            <td class="admin"><%=getTran(request,"web.assets","serialnumber",sWebLanguage)%></td>
+	        <%	if(checkString(request.getParameter("assetType")).equalsIgnoreCase("infrastructure")){ %>
+	            <td class="admin"><%=getTran(request,"gmao","cadasternumber",sWebLanguage)%></td>
 	            <td class="admin2">
 	                <input type="text" class="text" id="searchSerialnumber" name="searchSerialnumber" size="20" maxLength="30" value="">
 	            </td>
+	        <%	}else{ %>
+	            <td class="admin"><%=getTran(request,"gmao","serialnumber",sWebLanguage)%></td>
+	            <td class="admin2">
+	                <input type="text" class="text" id="searchSerialnumber" name="searchSerialnumber" size="20" maxLength="30" value="">
+	            </td>
+	        <%	} %>
 	        </tr>     
 	        
 	        <%-- search ASSET TYPE --%>
+	        <%	if(checkString(request.getParameter("assetType")).equalsIgnoreCase("infrastructure")){ %>
 	        <tr>
-	            <td class="admin"><%=getTran(request,"web.assets","status",sWebLanguage)%></td>
+	            <td class="admin"><%=getTran(request,"web.assets","infrastructure.status",sWebLanguage)%></td>
 	            <td class="admin2">
 	                <select class="text" id="searchAssetStatus" name="searchAssetStatus">
 	                    <option/>
 	                    <%=ScreenHelper.writeSelect(request,"assets.status","",sWebLanguage)%>
 	                </select>
 	            </td>
-	            <td class="admin"><%=getTran(request,"web.assets","supplier",sWebLanguage)%></td>
+	            <td class="admin"><%=getTran(request,"web.assets","company",sWebLanguage)%></td>
 	            <td class="admin2">
+	            	<input type="hidden" id="searchAssetFunctionality" name="searchAssetFunctionality"/>
 	                <input type="text" class="text" name="searchSupplierUID" id="searchSupplierUID" size="30" value="">
 	            </td>
 	        </tr>
+	        <%	}else{ %>
+	        <tr>
+	            <td class="admin"><%=getTran(request,"web.assets","functionality",sWebLanguage)%></td>
+	            <td class="admin2">
+	                <select class="text" id="searchAssetFunctionality" name="searchAssetFunctionality">
+	                    <option/>
+	                    <%=ScreenHelper.writeSelect(request,"assets.functionality","",sWebLanguage)%>
+	                </select>
+	            </td>
+	            <td class="admin"><%=getTran(request,"web.assets","supplier",sWebLanguage)%></td>
+	            <td class="admin2">
+	            	<input type="hidden" id="searchAssetStatus" name="searchAssetStatus"/>
+	                <input type="text" class="text" name="searchSupplierUID" id="searchSupplierUID" size="30" value="">
+	            </td>
+	        </tr>
+	        <%	} %>
 	        <%-- search COMPONENTS --%>
 	        <tr id='trcomponents'>
 	            <td class="admin"><%=getTran(request,"web.assets","components",sWebLanguage)%></td>
@@ -96,7 +121,7 @@
 	                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="SearchForm.FindCompNomenclatureCode.value='';SearchForm.compnomenclature.value='';">
 	                <input type="hidden" name="FindCompNomenclatureCode" id="FindCompNomenclatureCode" value="">&nbsp;
 	            </td>                        
-	            <td class="admin"><%=getTran(request,"web.assets","components",sWebLanguage)%> - <%=getTran(request,"web.assets","status",sWebLanguage)%></td>
+	            <td class="admin"><%=getTran(request,"web.assets","components",sWebLanguage)%> - <%=getTran(request,"web.assets","infrastructure.status",sWebLanguage)%></td>
 	            <td class="admin2">
 	                <select class="text" id="searchComponentStatus" name="searchComponentStatus">
 	                    <option/>
@@ -256,6 +281,8 @@
 			       "&serviceuid="+encodeURIComponent(SearchForm.serviceuid.value)+
                    "&serialnumber="+encodeURIComponent(SearchForm.searchSerialnumber.value)+
                    "&assetStatus="+encodeURIComponent(SearchForm.searchAssetStatus.value)+
+                   "&assetFunctionality="+encodeURIComponent(SearchForm.searchAssetFunctionality.value)+
+                   "&assetType=<%=checkString(request.getParameter("assetType"))%>"+
                    "&componentStatus="+encodeURIComponent(SearchForm.searchComponentStatus.value)+
                    "&supplierUID="+encodeURIComponent(SearchForm.searchSupplierUID.value)+
                    "&purchasePeriodBegin="+encodeURIComponent(SearchForm.searchPurchaseBegin.value)+
@@ -335,9 +362,7 @@
 		else{
 			asset.setLockedBy(-1);
 		}
-		asset.store(activeUser.userid);
 		bNewAsset=true;
-		System.out.println("sAssetType="+sAssetType);
 		if(sAssetType.equalsIgnoreCase("infrastructure")){
 			assetType=Asset.INFRASTRUCTURE;
 		}
@@ -377,7 +402,7 @@
     %>            
 
 	<script>
-		window.setTimeout("loadComponents();loadDocuments();",500);
+		window.setTimeout("loadComponents('<%=asset==null?"":asset.getUid()%>');loadDocuments();",500);
 	</script>
 <% 
 	session.setAttribute("activeAsset", asset);
@@ -689,7 +714,7 @@
 		  document.getElementById("nomenclature").focus();
 		  return false;
 	  }
-	  else if(document.getElementById("comment7").value.length == 0 ){
+	  else if('<%=SH.c(request.getParameter("assetType"))%>'=='equipment' && document.getElementById("comment7").value.length == 0 ){
 		  document.getElementById("comment7").focus();
 		  return false;
 	  }
@@ -705,7 +730,7 @@
 		  document.getElementById("serviceuid").focus();
 		  return false;
 	  }
-	  else if('<%=SH.c(request.getParameter("assetType"))%>'=='equipment' && (document.getElementById("purchasePrice").value.length == 0 || isNaN(document.getElementById("purchasePrice").value) || document.getElementById("purchasePrice").value*1<=0)){
+	  else if(document.getElementById("purchasePrice").value.length == 0 || isNaN(document.getElementById("purchasePrice").value) || document.getElementById("purchasePrice").value*1<=0){
 		  document.getElementById("purchasePrice").focus();
 		  return false;
 	  }
@@ -752,7 +777,7 @@
     });
   }
   
-  function deleteComponent(id){
+  function deleteComponent(id,assetuid){
       if(yesnoDeleteDialog()){
     	    document.getElementById("componentsDiv").innerHTML = "<img src='<%=sCONTEXTPATH%>/_img/themes/<%=sUserTheme%>/ajax-loader.gif'/><br>Loading..";
     	    
@@ -761,7 +786,7 @@
     	      method: "GET",
     	      parameters: "componentuid="+id,
     	      onSuccess: function(resp){
-    	    	  loadComponents();
+    	    	  loadComponents(assetuid);
     	      },
     	      onFailure: function(resp){
     	        $("divMessage").innerHTML = "Error in 'assets/deleteComponent.jsp' : "+resp.responseText.trim();
@@ -780,13 +805,13 @@
 }
 
   <%-- LOAD (all) ASSETS --%>
-  function loadComponents(){
+  function loadComponents(assetuid){
     document.getElementById("componentsDiv").innerHTML = "<img src='<%=sCONTEXTPATH%>/_img/themes/<%=sUserTheme%>/ajax-loader.gif'/><br>Loading..";
     
     var url = "<c:url value='/assets/ajax/asset/getComponents.jsp'/>?ts="+new Date().getTime();
     new Ajax.Request(url,{
       method: "GET",
-      parameters: "assetuid=<%=asset==null?"":asset.getUid()%>",
+      parameters: "assetuid="+assetuid,
       onSuccess: function(resp){
         $("componentsDiv").innerHTML = resp.responseText;
         if(resp.responseText.indexOf("<tr>")>-1){

@@ -145,6 +145,7 @@
 			alert('<%=getTranNoLink("web","datamissing",sWebLanguage)%>');
 		}
 		else{
+			document.getElementById("paymentButton").disabled= true;
 		    var params = 	"prestations="+prestationlist+
 		    				"&wicketuid="+document.getElementById('wicketuid').value+
 		    				"&amount="+document.getElementById('amount').value+

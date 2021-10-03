@@ -1,35 +1,25 @@
-<%@page import="be.openclinic.archiving.ArchiveDocument"%>
+<%@page import="java.io.*,org.apache.commons.io.*"%>
+<%@page import="be.openclinic.archiving.ArchiveDocument,be.openclinic.system.*"%>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
-<%@page import="java.util.Hashtable,
-                javazoom.upload.UploadFile,
-                javazoom.upload.MultipartFormDataRequest"%>
-                
-<jsp:useBean id="upBean" scope="page" class="javazoom.upload.UploadBean">
-    <jsp:setProperty name="upBean" property="folderstore" value='<%=MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")%>'/>
-    <jsp:setProperty name="upBean" property="parsertmpdir" value='<%=MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")%>'/>
-    <jsp:setProperty name="upBean" property="parser" value="<%=MultipartFormDataRequest.CFUPARSER%>"/>
-</jsp:useBean>
+
 
 <%
-	String SCANDIR_BASE = MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_basePath","/var/tomcat/webapps/openclinic/scan");
-    String sFolderStore = SCANDIR_BASE+"/"+MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_dirFrom","from");
-    Debug.println("sFolderStore : "+sFolderStore);
     String sDocumentId = "";
 
-    String sFileName = "";
-    String sAssetUID="";
     String sUDI="";
-    if(MultipartFormDataRequest.isMultipartFormData(request)){
-    	
-        // Uses MultipartFormDataRequest to parse the HTTP request
-        MultipartFormDataRequest mrequest = new MultipartFormDataRequest(request);
+    
+    Hashtable hParameters = SH.getMultipartFormParameters(request);
+    String sAssetUID = (String)hParameters.get("assetuid");
+    String sDocumentName = (String)hParameters.get("name");
+    String sUrl = (String)hParameters.get("url");
+    String sMaintenancePlanUid = (String)hParameters.get("maintenanceplanuid");
+    FormFile formFile = (FormFile)hParameters.get("filename");
+    if(formFile!=null){
         try{
-            Hashtable files = mrequest.getFiles();
-            if(files!=null && !files.isEmpty()){
-                UploadFile file = (UploadFile) files.get("filename");
-                sFileName = file.getFileName();
-                if(!SH.isAcceptableUploadFileExtension(sFileName)){
+            if(formFile!=null){
+        	    String sFileName = formFile.getFilename();
+                if(formFile.isAcceptableUploadFileExtension()){
                 	%>
                 	<script>
                 		alert("<%=getTranNoLink("web","forbiddenfiletype",sWebLanguage)%>");
@@ -37,7 +27,7 @@
                 	</script>
                 	<%
                 }
-                else if(checkString(mrequest.getParameter("assetuid")).length()>0){
+                else if(sAssetUID.length()>0){
 	                if(sFileName.trim().length()>0){
 		                //We creëren een nieuw archiving document
 		             	String sSql = "INSERT INTO arch_documents (arch_document_serverid, arch_document_objectid, arch_document_udi,"+
@@ -56,26 +46,19 @@
 		                }
 		                ps.setInt(2,objectId);
 		                ps.setString(3,sUDI);
-		                ps.setString(4,mrequest.getParameter("name"));
+		                ps.setString(4,sDocumentName);
 		                ps.setString(5,"asset");
 		                ps.setTimestamp(6, new Timestamp(new java.util.Date().getTime()));
-		                ps.setString(7,"asset."+mrequest.getParameter("assetuid"));
+		                ps.setString(7,"asset."+sAssetUID);
 		                ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
 						ps.setString(9,activeUser.userid);
 						ps.execute();
 						ps.close();
 						conn.close();
-						String sUid=sUDI+sFileName.substring(sFileName.lastIndexOf("."));
-		                file.setFileName(sUid);
-		                Debug.println("sFileID : "+sUid);
-		                Debug.println("--> fileSize : "+file.getFileSize()+" bytes"); 
-		                
-		                upBean.setFolderstore(sFolderStore);
-		                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
-		                upBean.store(mrequest, "filename");
+						String sUid=sUDI+"."+FilenameUtils.getExtension(sFileName);
+						formFile.store(SH.getScanDirectoryFromPath()+"/"+sUid);
 	                }
 	                else{
-	                	String url = mrequest.getParameter("url");
 		                //We creëren een nieuw archiving document
 		             	String sSql = "INSERT INTO arch_documents (arch_document_serverid, arch_document_objectid, arch_document_udi,"+
 		              	"  arch_document_title, arch_document_category,arch_document_date, arch_document_reference, arch_document_storagename,"+
@@ -93,11 +76,11 @@
 		                }
 						ps.setInt(2,objectId);
 		                ps.setString(3,sUDI);
-		                ps.setString(4,mrequest.getParameter("name"));
+		                ps.setString(4,sDocumentName);
 		                ps.setString(5,"asset");
 		                ps.setTimestamp(6, new Timestamp(new java.util.Date().getTime()));
-		                ps.setString(7,"asset."+mrequest.getParameter("assetuid"));
-		                ps.setString(8,url);
+		                ps.setString(7,"asset."+sAssetUID);
+		                ps.setString(8,sUrl);
 		                ps.setTimestamp(9, new Timestamp(new java.util.Date().getTime()));
 						ps.setString(10,activeUser.userid);
 						ps.execute();
@@ -105,7 +88,7 @@
 						conn.close();
 	                }
             	}
-            	else if(checkString(mrequest.getParameter("maintenanceplanuid")).length()>0){
+            	else if(sMaintenancePlanUid.length()>0){
 	                if(sFileName.trim().length()>0){
 		                //We creëren een nieuw archiving document
 		             	String sSql = "INSERT INTO arch_documents (arch_document_serverid, arch_document_objectid, arch_document_udi,"+
@@ -124,26 +107,19 @@
 		                }
 		                ps.setInt(2,objectId);
 		                ps.setString(3,sUDI);
-		                ps.setString(4,mrequest.getParameter("name"));
+		                ps.setString(4,sDocumentName);
 		                ps.setString(5,"maintenanceplan");
 		                ps.setTimestamp(6, new Timestamp(new java.util.Date().getTime()));
-		                ps.setString(7,"maintenanceplan."+mrequest.getParameter("maintenanceplanuid"));
+		                ps.setString(7,"maintenanceplan."+sMaintenancePlanUid);
 		                ps.setTimestamp(8, new Timestamp(new java.util.Date().getTime()));
 						ps.setString(9,activeUser.userid);
 						ps.execute();
 						ps.close();
 						conn.close();
-						String sUid=sUDI+sFileName.substring(sFileName.lastIndexOf("."));
-		                file.setFileName(sUid);
-		                Debug.println("sFileID : "+sUid);
-		                Debug.println("--> fileSize : "+file.getFileSize()+" bytes"); 
-		                
-		                upBean.setFolderstore(sFolderStore);
-		                upBean.setParsertmpdir(application.getRealPath("/")+"/"+MedwanQuery.getInstance().getConfigString("tempdir","/tmp/"));
-		                upBean.store(mrequest, "filename");
+						String sUid=sUDI+"."+FilenameUtils.getExtension(sFileName);
+						formFile.store(SH.getScanDirectoryFromPath()+"/"+sUid);
 	                }
 	                else {
-	                	String url = mrequest.getParameter("url");
 		                //We creëren een nieuw archiving document
 		             	String sSql = "INSERT INTO arch_documents (arch_document_serverid, arch_document_objectid, arch_document_udi,"+
 		              	"  arch_document_title, arch_document_category,arch_document_date, arch_document_reference, arch_document_storagename,"+
@@ -161,11 +137,11 @@
 		                }
 		                ps.setInt(2,objectId);
 		                ps.setString(3,sUDI);
-		                ps.setString(4,mrequest.getParameter("name"));
+		                ps.setString(4,sDocumentName);
 		                ps.setString(5,"maintenanceplan");
 		                ps.setTimestamp(6, new Timestamp(new java.util.Date().getTime()));
-		                ps.setString(7,"maintenanceplan."+mrequest.getParameter("maintenanceplanuid"));
-		                ps.setString(8,url);
+		                ps.setString(7,"maintenanceplan."+sMaintenancePlanUid);
+		                ps.setString(8,sUrl);
 		                ps.setTimestamp(9, new Timestamp(new java.util.Date().getTime()));
 						ps.setString(10,activeUser.userid);
 						ps.execute();

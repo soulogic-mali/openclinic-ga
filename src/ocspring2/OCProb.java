@@ -143,7 +143,7 @@ public class OCProb {
     	try {
     		ResultSet rs = Db.conn.createStatement().executeQuery((mysql));
     		int diagCount = 0;
-    		if (rs.first()) {
+    		if (rs.next()) {
     			int nrzOld = 0;
     			do {
     				if (nrzOld != rs.getInt("NRZ")) {

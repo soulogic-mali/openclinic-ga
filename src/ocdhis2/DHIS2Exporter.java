@@ -3553,19 +3553,43 @@ public class DHIS2Exporter {
 		Vector items = new Vector();
 		Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
 		try{
-			String sSql = 	"select personid,gender,dateofbirth,oc_encounter_begindate,oc_encounter_enddate,oc_encounter_outcome,"
-							+ " oc_encounter_type,oc_encounter_origin,oc_encounter_objectid,oc_encounter_serviceuid,oc_encounter_situation"
+			//First load empty encounters
+			HashSet emptyEncounters = new HashSet();
+			String sSql =    "SELECT * FROM oc_encounters e,healthrecord h"
+					+ " WHERE"
+					+ " e.oc_encounter_patientuid=h.personid AND"
+					+ "	NOT EXISTS (SELECT * FROM transactions t,items i where"
+					+ "		h.healthRecordId=t.healthrecordid AND"
+					+ "		t.transactionid=i.transactionid AND"
+					+ "		t.serverid=i.serverid AND"
+					+ "		i.value='1.'||e.oc_encounter_objectid) AND"
+					+ "	(oc_encounter_enddate>=? and oc_encounter_begindate<?)";
+			PreparedStatement ps = conn.prepareStatement(sSql);
+			ps.setDate(1, new java.sql.Date(begin.getTime()));
+			ps.setDate(2, new java.sql.Date(end.getTime()));
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				emptyEncounters.add(rs.getString("oc_encounter_serverid")+"."+rs.getString("oc_encounter_objectid"));
+			}
+			rs.close();
+			ps.close();
+			
+			sSql = 	"select personid,gender,dateofbirth,oc_encounter_begindate,oc_encounter_enddate,oc_encounter_outcome,"
+							+ " oc_encounter_type,oc_encounter_origin,oc_encounter_serverid,oc_encounter_objectid,oc_encounter_serviceuid,oc_encounter_situation"
 							+ " from adminview a,oc_encounters_view b"
 							+ " where"
 							+ " a.personid=b.oc_encounter_patientuid and"
 							+ " a.dateofbirth>'1900-01-01' and"
 							+ " (oc_encounter_enddate>=? and oc_encounter_begindate<?)";
 			
-			PreparedStatement ps = conn.prepareStatement(sSql);
+			ps = conn.prepareStatement(sSql);
 			ps.setDate(1, new java.sql.Date(begin.getTime()));
 			ps.setDate(2, new java.sql.Date(end.getTime()));
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			while(rs.next()){
+				if(emptyEncounters.contains(rs.getString("oc_encounter_serverid")+"."+rs.getString("oc_encounter_objectid"))) {
+					continue;
+				}
 				String item = rs.getString("personid")+";"
 						+rs.getString("oc_encounter_objectid")+";"
 						+rs.getString("gender")+";"
@@ -3951,7 +3975,7 @@ public class DHIS2Exporter {
 							+ " from adminview a,requestedlabanalyses b,labanalysis c"
 							+ " where"
 							+ " a.personid=b.patientid and"
-							+ " b.resultuserid is not null and"
+							+ " b.finalvalidator is not null and"
 							+ " (b.resultdate>=? and b.resultdate<?) and"
 							+ " b.analysiscode=c.labcode and"
 							+ " c.dhis2code is not null and"

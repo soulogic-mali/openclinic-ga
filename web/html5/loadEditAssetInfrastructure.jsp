@@ -30,13 +30,13 @@
 	</tr>
 	<tr>
 		<td class='mobileadmin' style='font-size:4vw;'>
-			<%=getTranNoLink("web","nomenclature",sWebLanguage)%>
+			<%=getTranNoLink("web","nomenclature",sWebLanguage)%>&nbsp;*
 		</td>
 		<td class='mobileadmin2' style='font-size:4vw;'>
 	       	<select name='nomenclature' id='nomenclature' style='width: 95% !important;font-size: 4vw;height: 6vw;'>
 	       		<option style='font-size:4vw;'/>
 	       		<%
-	       			PreparedStatement ps = conn.prepareStatement("select * from oc_labels where oc_label_type='admin.nomenclature.asset' and oc_label_language=? and oc_label_id like 'i%' order by oc_label_value");
+	       			PreparedStatement ps = conn.prepareStatement("select * from oc_labels where oc_label_type='admin.nomenclature.asset' and oc_label_language=? and oc_label_id like 'i%' order by oc_label_id");
 	       			ps.setString(1,sWebLanguage);
 	       			ResultSet rs = ps.executeQuery();
 	       			while(rs.next()){
@@ -50,7 +50,7 @@
 	</tr>
 	<tr>
 		<td class='mobileadmin' style='font-size:4vw;'>
-			<%=getTranNoLink("web","code",sWebLanguage)%>
+			<%=getTranNoLink("web","code",sWebLanguage)%>&nbsp;*
 		</td>
 		<td class='mobileadmin2' style='font-size:4vw;'>
 			<input type='text' style='width: 95% !important;font-size: 4vw;height: 6vw;' name='code' id='code' size='10' value='<%=asset.getCode()%>'/>
@@ -58,7 +58,7 @@
 	</tr>
 	<tr>
 		<td class='mobileadmin' style='font-size:4vw;'>
-			<%=getTranNoLink("web","description",sWebLanguage)%>
+			<%=getTranNoLink("web","description",sWebLanguage)%>&nbsp;*
 		</td>
 		<td class='mobileadmin2' style='font-size:4vw;'>
 			<input type='text' style='width: 95% !important;font-size: 4vw;height: 6vw;' name='description' id='description' size='10' value='<%=asset.getDescription()%>'/>
@@ -74,25 +74,14 @@
 	</tr>
 	<tr>
 		<td class='mobileadmin' style='font-size:4vw;'>
-			<%=getTranNoLink("web.assets","status",sWebLanguage)%>
+			<%=getTranNoLink("web.assets","infrastructure.status",sWebLanguage)%>&nbsp;*
 		</td>
 		<td class='mobileadmin2' style='font-size:4vw;'>
 	       	<select name='comment9' id='comment9' style='width: 95% !important;font-size: 4vw;height: 6vw;'>
 	       		<option style='font-size:4vw;'/>
                 <%=ScreenHelper.writeSelectWithStyle(request,"assets.status",checkString(asset.getComment9()),sWebLanguage,"font-size: 4vw;")%>
             </select>
-		</td>
-	</tr>
-
-	<tr>
-		<td class='mobileadmin' style='font-size:4vw;'>
-			<%=getTranNoLink("web.assets","functionality",sWebLanguage)%>
-		</td>
-		<td class='mobileadmin2' style='font-size:4vw;'>
-	       	<select name='comment7' id='comment7' style='width: 95% !important;font-size: 4vw;height: 6vw;'>
-	       		<option style='font-size:4vw;'/>
-                <%=ScreenHelper.writeSelectWithStyle(request,"assets.functionality",checkString(asset.getComment7()),sWebLanguage,"font-size: 4vw;")%>
-            </select>
+            <input type='hidden' name='comment7' id='comment7'/>
 		</td>
 	</tr>
 	<tr>
@@ -137,7 +126,7 @@
 	</tr>
 	<tr>
 		<td class='mobileadmin' style='font-size:4vw;'>
-			<%=getTranNoLink("web.assets","datedelivered",sWebLanguage)%>
+			<%=getTranNoLink("web.assets","infrastructure.deliverydate",sWebLanguage)%>&nbsp;*
 		</td>
 		<td class='mobileadmin2' style='font-size:4vw;'>
 			<input style='width: 80% !important;padding:4px; font-size: 4vw;' type='date' name='comment12' id='comment12' value='<%=SH.c(asset.getComment12()).length()==0||SH.parseDate(asset.getComment12(),"yyyy-MM-dd")==null?"":asset.getComment12() %>' size='10'/>
@@ -153,7 +142,7 @@
 	</tr>
 	<tr>
 		<td class='mobileadmin' style='font-size:4vw;'>
-			<%=getTranNoLink("web.assets","purchasePrice",sWebLanguage)%>
+			<%=getTranNoLink("web.assets","purchasePrice",sWebLanguage)%>&nbsp;*
 		</td>
 		<td class='mobileadmin2' style='font-size:4vw;'>
 			<input type='text' style='width: 95% !important;font-size: 4vw;height: 6vw;' name='purchaseprice' id='purchaseprice' size='10' value='<%=asset.getPurchasePrice()%>'/>
@@ -161,7 +150,7 @@
 	</tr>
 	<tr>
 		<td class='mobileadmin' style='font-size:4vw;'>
-			<%=getTranNoLink("web.assets","fundingsource",sWebLanguage)%>
+			<%=getTranNoLink("web.assets","fundingsource",sWebLanguage)%>&nbsp;*
 		</td>
 		<td class='mobileadmin2' style='font-size:4vw;'>
 			<input type='text' style='width: 95% !important;font-size: 4vw;height: 6vw;' name='comment6' id='comment6' size='10' value='<%=asset.getComment6()%>'/>

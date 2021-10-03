@@ -1,3 +1,4 @@
+<%@page import="be.openclinic.knowledge.SPT"%>
 <%@page import="org.dom4j.DocumentHelper"%>
 <%@page import="be.mxs.common.util.system.Pointer"%>
 <%@page errorPage="/includes/error.jsp"%>
@@ -36,54 +37,13 @@
 
 	Hashtable<String,String> concepts = new Hashtable();
 
-	if(SH.c(request.getParameter("download")).equalsIgnoreCase("1")){
-		String loc_sDoc = MedwanQuery.getInstance().getConfigString("templateSource") + "/"+MedwanQuery.getInstance().getConfigString("clinicalPathwayFiles","pathways.bi.xml");
-		SAXReader loc_reader = new SAXReader(false);
-		Document loc_document = loc_reader.read(new URL(loc_sDoc));
-		Element loc_root = loc_document.getRootElement();
-		Document document = DocumentHelper.createDocument();
-		Element root = document.addElement("spt");
-		root.addAttribute("server", SH.cs("datacenterServerId",""));
-		root.addAttribute("version", loc_root.attributeValue("version"));
-		String patientuid="";
-		Element patient = null;
-		Connection conn = SH.getOpenclinicConnection();
-		PreparedStatement ps = conn.prepareStatement("select * from SPT_SIGNS where SPT_SIGN_UPDATETIME>=? and SPT_SIGN_UPDATETIME<? order by SPT_SIGN_PATIENTUID,SPT_SIGN_UPDATETIME");
-		ps.setDate(1,new java.sql.Date(start.getTime()));
-		ps.setDate(2,new java.sql.Date(end.getTime()));
-		ResultSet rs = ps.executeQuery();
-		while(rs.next()){
-			String puid = rs.getString("SPT_SIGN_PATIENTUID");
-			String personid = Pointer.getPointer("sptreverseidentifier."+puid);
-			if(personid.length()>0){
-				if(!puid.equalsIgnoreCase(patientuid)){
-					patient=root.addElement("patient");
-					patient.addAttribute("id", puid);
-					AdminPerson person = AdminPerson.get(personid);
-					patient.addAttribute("ageinmonths", person.getAgeInMonths()+"");
-					patient.addAttribute("gender", person.gender.toLowerCase());
-					patientuid=puid;
-				}
-				Element status = patient.addElement("status");
-				status.addAttribute("datetime", new SimpleDateFormat("yyyyMMddHHmmss").format(rs.getTimestamp("SPT_SIGN_UPDATETIME")));
-				status.addAttribute("user", rs.getString("SPT_SIGN_UPDATEUID"));
-				String treatment = rs.getString("SPT_SIGN_TREATMENT");
-				if(treatment!=null){
-					status.addAttribute("treatment", treatment);
-				}
-				status.setText(SH.c(rs.getString("SPT_SIGN_SIGNS")));
-			}
-		}
-		rs.close();
-		ps.close();
-		conn.close();
-		
+	if(SH.c(request.getParameter("download")).equalsIgnoreCase("1")){		
 	    response.setContentType("application/octet-stream; charset=windows-1252");
 	    response.setHeader("Content-Disposition", "Attachment;Filename=\"SPT_"+new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date())+".xml\"");
 	   
 	    ServletOutputStream os = response.getOutputStream();
 
-		byte[] b = document.asXML().getBytes();
+		byte[] b = SPT.extractSigns(start,end).asXML().getBytes();
 	    for(int n=0; n<b.length; n++){
 	        os.write(b[n]);
 	    }
@@ -105,7 +65,7 @@
 		}
 		HashSet patients = new HashSet();
 		Hashtable<String,HashSet> patientstrategies = new Hashtable<String,HashSet>();
-		Hashtable<String,Demographics> strategies = new Hashtable<String,Demographics>();
+		SortedMap<String,Demographics> strategies = new TreeMap<String,Demographics>();
 		Demographics totalDemographics = new Demographics();
 		Connection conn = SH.getOpenclinicConnection();
 		PreparedStatement ps = conn.prepareStatement("select * from SPT_SIGNS where SPT_SIGN_UPDATETIME>=? and SPT_SIGN_UPDATETIME<? order by SPT_SIGN_PATIENTUID,SPT_SIGN_UPDATETIME");
@@ -116,7 +76,7 @@
 			String patientuid=rs.getString("SPT_SIGN_PATIENTUID");
 			String[] signs = SH.c(rs.getString("SPT_SIGN_SIGNS")).split(";");
 			for(int n=0;n<signs.length;n++){
-				if(signs[n].endsWith(".1=yes")){
+				if(signs[n].split("\\.").length==2 && signs[n].endsWith(".1=yes")){
 					String strategy=signs[n].split("=")[0];
 					if(strategies.get(strategy)==null){
 						strategies.put(strategy,new Demographics());

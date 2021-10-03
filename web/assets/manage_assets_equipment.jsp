@@ -109,23 +109,15 @@
         </tr>
         <tr>
 	        <%-- ASSET STATUS (*) --%>
-            <td class="admin">	        
-            	<%=getTran(request,"web.assets","status",sWebLanguage)%>
-            </td>
-            <td class="admin2">
-                <select class="text" id="comment9" name="comment9">
-                    <option/>
-                    <%=ScreenHelper.writeSelect(request,"assets.status",checkString(asset.getComment9()),sWebLanguage)%>
-                </select>
-            </td>
             <td class="admin">
             	<%=getTran(request,"web.assets","functionality",sWebLanguage)%>&nbsp;*&nbsp;
             </td>
-            <td class="admin2">
+            <td class="admin2" colspan='3'>
                 <select class="text" id="comment7" name="comment7">
                     <option/>
                     <%=ScreenHelper.writeSelect(request,"assets.functionality",checkString(asset.getComment7()),sWebLanguage)%>
                 </select>
+                <input type='hidden' name='comment9' id='comment9' value='<%=checkString(asset.getComment9())%>'/>
             </td>
             <td class="admin"><%=getTran(request,"web","details",sWebLanguage)%></td>
             <td class="admin2">
@@ -283,7 +275,7 @@
             <td class="admin2" nowrap>
                 <%=writeDateField("comment11","EditForm",checkString(asset.getComment11()),sWebLanguage)%>        
             </td>                        
-            <td class="admin"><%=getTran(request,"web.assets","equipment.deliverydate",sWebLanguage)%>&nbsp;</td>
+            <td class="admin"><%=getTran(request,"web.assets","equipment.deliverydate",sWebLanguage)%>&nbsp;*</td>
             <td class="admin2" nowrap>
                 <%=writeDateField("comment12","EditForm",checkString(asset.getComment12()),sWebLanguage,"getRemainingValue();")%>        
             </td>                        
@@ -299,7 +291,7 @@
             <td class="admin2">
                 <input type="text" class="text" id="purchasePrice" name="purchasePrice" size="15" maxLength="15" value="<%=asset.getPurchasePrice() %>" onKeyUp="isNumber(this);" onBlur="if(isNumber(this))setDecimalLength(this,2,true);getRemainingValue();"> <%=MedwanQuery.getInstance().getConfigParam("currency","€")%>&nbsp;
             </td>
-            <td class="admin"><%=getTran(request,"web.assets","fundingsource",sWebLanguage)%>&nbsp;</td>
+            <td class="admin"><%=getTran(request,"web.assets","fundingsource",sWebLanguage)%>&nbsp;*</td>
             <td class="admin2">
                 <input type="text" class="text" id="comment6" name="comment6" size="20" maxLength="255" value="<%=asset.getComment6() %>" />
             </td>
@@ -711,7 +703,7 @@
 				<%if(!bLocked && activeUser.getAccessRight("assets.delete")){ %>
                 <input class="button" type="button" name="buttonDelete" id="buttonDelete" value="<%=getTranNoLink("web","delete",sWebLanguage)%>" onclick="deleteAsset();" >&nbsp;
 				<%} %>
-                <input class="button" type="button" name="buttonList" id="buttonList" value="<%=getTranNoLink("web","list",sWebLanguage)%>" onclick="listAssets();">&nbsp;
+                <input class="button" type="button" name="buttonList" id="buttonList" value="<%=getTranNoLink("web","list",sWebLanguage)%>" onclick="listAssets('equipment');">&nbsp;
                 <input class="button" type="button" name="buttonSpareParts" id="buttonSpareParts" value="<%=getTranNoLink("web","spareparts",sWebLanguage)%>" onclick="showSpareParts('<%=asset.getUid()%>');">&nbsp;
                 <input class="button" type="button" name="buttonMaintenance" id="buttonMaintenance" value="<%=getTranNoLink("web","maintenanceplans",sWebLanguage)%>" onclick="listMaintenancePlans();">&nbsp;
                 <input class="button" type="button" name="buttonOperations" id="buttonOperations" value="<%=getTranNoLink("web","operations",sWebLanguage)%>" onclick="listMaintenanceOperations();">&nbsp;

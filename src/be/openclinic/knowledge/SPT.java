@@ -20,12 +20,19 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.Pointer;
+import be.openclinic.system.OCHttpClient;
 import be.openclinic.system.SH;
+import net.admin.AdminPerson;
 
 public class SPT {
 	static class Sheet {
@@ -58,6 +65,110 @@ public class SPT {
 			return "";
 		}
 		return s;
+	}
+	
+	public static boolean hasSPTDataToPost() {
+		java.util.Date end = new java.util.Date();
+		java.util.Date lastSPTStatusPosted=new java.util.Date();
+		try {
+			lastSPTStatusPosted = new SimpleDateFormat("yyyyMMddHHmmss").parse(SH.cs("sptLastStatusPosted", "1900010100000000"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Document document = extractSigns(lastSPTStatusPosted, end);
+		Element root = document.getRootElement();
+		return root.elements("patient").size()>0;
+	}
+	
+	public static boolean postSPTData() {
+		boolean bSuccess = false;
+		if(SH.isHostReachable(SH.cs("sptCentralHost", "localhost"))) {
+			java.util.Date end = new java.util.Date();
+			java.util.Date lastSPTStatusPosted=new java.util.Date();
+			try {
+				lastSPTStatusPosted = new SimpleDateFormat("yyyyMMddHHmmss").parse(SH.cs("sptLastStatusPosted", "1900010100000000"));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Document document = extractSigns(lastSPTStatusPosted, end);
+			Element root = document.getRootElement();
+			if(SH.c(root.attributeValue("server")).equalsIgnoreCase("-1")) {
+				System.out.println("Warning: trying to post SPT data for unconfigured datacenterserverid (=-1)!");
+			}
+			if(root.elements("patient").size()>0) {
+				OCHttpClient client = new OCHttpClient();
+				client.addByteArrayParam("sptdata", document.asXML().getBytes());
+				try {
+					HttpResponse response = client.post(SH.cs("sptCentralHostPostURL", "http://localhost/openclinic/ikirezi/postSPTData.jsp"));
+					String responseMessage =new BasicResponseHandler().handleResponse(response);
+					if(responseMessage.contains("<OK>")){
+						bSuccess = true;
+						MedwanQuery.getInstance().setConfigString("sptLastStatusPosted", new SimpleDateFormat("yyyyMMddHHmmss").format(end));
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return bSuccess;
+	}
+	
+	public static Document extractSigns(java.util.Date begin, java.util.Date end) {
+		Connection conn = SH.getOpenclinicConnection();
+		Document document = DocumentHelper.createDocument();
+		try {
+			String loc_sDoc = SH.cs("templateSource","") + "/"+SH.cs("clinicalPathwayFiles","pathways.bi.xml");
+			SAXReader loc_reader = new SAXReader(false);
+			Document loc_document = loc_reader.read(new URL(loc_sDoc));
+			Element loc_root = loc_document.getRootElement();
+			Element root = document.addElement("spt");
+			root.addAttribute("server", SH.cs("datacenterServerId",""));
+			root.addAttribute("version", loc_root.attributeValue("version"));
+			String patientuid="";
+			Element patient = null;
+			PreparedStatement ps = conn.prepareStatement("select * from SPT_SIGNS where SPT_SIGN_UPDATETIME>=? and SPT_SIGN_UPDATETIME<? order by SPT_SIGN_PATIENTUID,SPT_SIGN_UPDATETIME");
+			ps.setTimestamp(1,new java.sql.Timestamp(begin.getTime()));
+			ps.setTimestamp(2,new java.sql.Timestamp(end.getTime()));
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String puid = rs.getString("SPT_SIGN_PATIENTUID");
+				String personid = Pointer.getPointer("sptreverseidentifier."+puid);
+				if(personid.length()>0){
+					if(!puid.equalsIgnoreCase(patientuid)){
+						patient=root.addElement("patient");
+						patient.addAttribute("id", puid);
+						AdminPerson person = AdminPerson.get(personid);
+						patient.addAttribute("ageinmonths", person.getAgeInMonths()+"");
+						patient.addAttribute("gender", person.gender.toLowerCase());
+						patientuid=puid;
+					}
+					Element status = patient.addElement("status");
+					status.addAttribute("datetime", new SimpleDateFormat("yyyyMMddHHmmss").format(rs.getTimestamp("SPT_SIGN_UPDATETIME")));
+					status.addAttribute("user", rs.getString("SPT_SIGN_UPDATEUID"));
+					String treatment = rs.getString("SPT_SIGN_TREATMENT");
+					if(treatment!=null){
+						status.addAttribute("treatment", treatment);
+					}
+					status.setText(SH.c(rs.getString("SPT_SIGN_SIGNS")));
+				}
+			}
+			rs.close();
+			ps.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				conn.close();
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return document;
 	}
 	
 	public static void logSigns(int personid,String signs,java.util.Date updatetime,int updateuid) {

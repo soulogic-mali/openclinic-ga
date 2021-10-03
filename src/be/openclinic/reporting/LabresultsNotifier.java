@@ -396,11 +396,15 @@ public class LabresultsNotifier {
 						String sResult=sHeader+result;
 						sResult+= "\n\n" + MedwanQuery.getInstance().getLabel("sendhtmlmail", "closingmail", user.language) + "\n\n" + MedwanQuery.getInstance().getLabel("sendhtmlmail", "closingmailname", user.language);
 						if(sendHtmlMail.sendSimpleMail(MedwanQuery.getInstance().getConfigString("PatientEdit.MailServer"), MedwanQuery.getInstance().getConfigString("labNotifierEmailSender","frank.verbeke@mxs.be"), sentto, sMailTitle + " " + transactionId, sResult)){
+							Debug.println("SimpleMail correctly sent transactionid "+transactionId+" to "+sentto);
 							setSpoolMessageSent(transactionId,transport);
+						}
+						else {
+							Debug.println("Error sending SimpleMail with transactionid "+transactionId+" to "+sentto);
 						}
 					}
 					catch(Exception m){
-						
+						Debug.println("Error sending SimpleMail with transactionid "+transactionId+" to "+sentto);
 					}
 				}
 				else if(transport.equalsIgnoreCase("htmlmail")){
@@ -425,10 +429,11 @@ public class LabresultsNotifier {
 						sResult=HTMLEntities.htmlentities(sResult);
 						String sLogo = MedwanQuery.getInstance().getConfigString("projectLogo","/projects/openclinic/_img/projectlogo.jpg");	
 						sendHtmlMail.sendEmailWithImages(MedwanQuery.getInstance().getConfigString("PatientEdit.MailServer"), MedwanQuery.getInstance().getConfigString("labNotifierEmailSender","frank.verbeke@mxs.be"), sentto, sMailTitle + " " + transactionId, sResult, sLogo);														
+						Debug.println("HTMLMail correctly sent transactionid "+transactionId+" to "+sentto);
 						setSpoolMessageSent(transactionId,transport);
 					}
 					catch(Exception m){
-						
+						Debug.println("Error sending HTMLMail with transactionid "+transactionId+" to "+sentto);
 					}
 				}
 				else if(transport.equalsIgnoreCase("attachedmail")){
@@ -482,10 +487,15 @@ public class LabresultsNotifier {
 							sNotification=sMailTitle + " " + transactionId;
 						}
 						if(sendHtmlMail.sendAttachEmail(MedwanQuery.getInstance().getConfigString("PatientEdit.MailServer"), MedwanQuery.getInstance().getConfigString("labNotifierEmailSender","frank.verbeke@mxs.be"), sentto, sMailTitle, sNotification, sAttachment, sFileName)){
+							Debug.println("AttachedMail correctly sent transactionid "+transactionId+" to "+sentto);
 							setSpoolMessageSent(transactionId,transport);
+						}
+						else {
+							Debug.println("Error sending AttachedMail with transactionid "+transactionId+" to "+sentto);
 						}
 					}
 					catch(Exception m){
+						Debug.println("Error sending AttachedMail with transactionid "+transactionId+" to "+sentto);
 						m.printStackTrace();
 					}
 				}

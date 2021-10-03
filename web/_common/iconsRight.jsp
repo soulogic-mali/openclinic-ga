@@ -294,7 +294,7 @@
 		        %><img style='cursor:pointer;padding: 0px 2px 0px;vertical-align: top' onclick="clickMenuItem('<c:url value="/html5/login.jsp?page=getPatient.jsp&searchpersonid="/><%=activePatient.personid %>');" border='0' height='16px' src="<c:url value='/_img/icons/mobile/android.png'/>" title="<%=getTranNoLink("web","mobile.interface",sWebLanguage)%>"/>&nbsp;<%
 			}
 			else{
-                %><img style='cursor:pointer;padding: 0px 2px 0px;vertical-align: top' onclick="clickMenuItem('<c:url value="/html5/findPatient.jsp"/>');" border='0' height='16px' src="<c:url value='/_img/icons/mobile/android.png'/>" title="<%=getTranNoLink("web","mobile.interface",sWebLanguage)%>"/>&nbsp;<%
+                %><img style='cursor:pointer;padding: 0px 2px 0px;vertical-align: top' onclick="clickMenuItem('<c:url value="/html5/login.jsp?page=findPatient.jsp"/>');" border='0' height='16px' src="<c:url value='/_img/icons/mobile/android.png'/>" title="<%=getTranNoLink("web","mobile.interface",sWebLanguage)%>"/>&nbsp;<%
 			}
         
         if(bMenu && activeUser.getAccessRight("labos.fastresults.select")){

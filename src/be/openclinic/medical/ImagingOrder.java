@@ -152,7 +152,7 @@ public class ImagingOrder extends OC_Object {
 		s+="<orderdatetime>"+SH.c(orderDateTime)+"</orderdatetime>";
 		s+="<executiondatetime>"+SH.c(executionDateTime)+"</executiondatetime>";
 		s+="<reportdatetime>"+SH.c(reportDateTime)+"</reportdatetime>";
-		s+="<requestinguser id='"+SH.c(requestingUser)+"'>";
+		s+="<requestinguser id='"+SH.cx(requestingUser)+"'>";
 		if(bExtended) {
 			try {
 				User user = User.get(Integer.parseInt(requestingUser));
@@ -166,14 +166,14 @@ public class ImagingOrder extends OC_Object {
 		}
 		s+="</requestinguser>";
 		s+=imagingExam.toXml();
-		s+="<ordercomment>"+SH.c(orderComment)+"</ordercomment>";
+		s+="<ordercomment>"+SH.cx(orderComment)+"</ordercomment>";
 		s+="<orderurgent>"+(orderUrgent?1:0)+"</orderurgent>";
-		s+="<orderreason>"+SH.c(orderReason)+"</orderreason>";
+		s+="<orderreason>"+SH.cx(orderReason)+"</orderreason>";
 		s+="<ordermodified>"+(orderModified?1:0)+"</ordermodified>";
-		s+="<ordermodifiedreason>"+SH.c(orderModifiedReason)+"</ordermodifiedreason>";
+		s+="<ordermodifiedreason>"+SH.cx(orderModifiedReason)+"</ordermodifiedreason>";
 		s+="<orderexecuted>"+(orderExecuted?1:0)+"</orderexecuted>";
-		s+="<orderexecutioncomment>"+SH.c(orderExecutionComment)+"</orderexecutioncomment>";
-		s+="<orderreport>"+SH.c(orderReport)+"</orderreport>";
+		s+="<orderexecutioncomment>"+SH.cx(orderExecutionComment)+"</orderexecutioncomment>";
+		s+="<orderreport>"+SH.cx(orderReport)+"</orderreport>";
 		s+="<orderabnormality>"+(abnormality?1:0)+"</orderabnormality>";
 		s+="<radiologists>";
 		for(int n=0;n<radiologists.size();n++) {
