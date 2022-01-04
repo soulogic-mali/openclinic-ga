@@ -100,7 +100,18 @@
 					<%=getTran(request,"web.userprofile","changepassword",sWebLanguage) %>
 				</td>
 			</tr>
-			<%if(SH.hasSPTDataToPost()){ %>
+			<tr onclick="window.location.href='<%=sCONTEXTPATH%>/html5/setDate.jsp';">
+				<td style='font-size:6vw;text-align:right;padding:10px'>
+					<img src='<%=sCONTEXTPATH%>/_img/icons/mobile/calendar.png'/>
+				</td>
+				<td style='font-size:6vw;text-align:left;padding:10px'>
+					<%=getTran(request,"web.userprofile","setdate",sWebLanguage) %>
+				</td>
+			</tr>
+			<%
+			  boolean bReachable=SH.isHostReachable(SH.cs("sptCentralHost", "cloud.hnrw.org"));
+			  boolean bDataToPost=bReachable && SH.hasSPTDataToPost();
+			  if(bReachable && bDataToPost){ %>
 				<tr onclick="window.location.href='<%=sCONTEXTPATH%>/html5/postSPTData.jsp';">
 					<td style='font-size:6vw;text-align:right;padding:10px'>
 						<img src='<%=sCONTEXTPATH%>/_img/icons/mobile/uploadcloud.png'/>
@@ -109,13 +120,22 @@
 						<%=getTran(request,"web","postsptdata",sWebLanguage) %>
 					</td>
 				</tr>
-			<%}else{ %>
+			<%}else{ 
+				String sMessage="";
+				if(!bReachable){
+					sMessage=SH.cs("sptCentralHost", "cloud.hnrw.org")+" "+getTran(request,"web","isunreachable",sWebLanguage);
+				}
+				else{
+					sMessage=getTran(request,"web","nonewdatatopost",sWebLanguage);
+				}
+				%>
 				<tr>
 					<td style='font-size:6vw;text-align:right;padding:10px'>
 						<img src='<%=sCONTEXTPATH%>/_img/icons/mobile/uploadcloud.png'/>
 					</td>
 					<td style='color:lightgrey;font-size:6vw;text-align:left;padding:10px'>
 						<%=getTran(request,"web","postsptdata",sWebLanguage) %>
+						<span style='font-size:4vw;color: darkgrey'><br/>[<%=sMessage %>]</span>
 					</td>
 				</tr>
 			<%} %>
@@ -189,6 +209,6 @@
 			function openUser(){
 				window.location.href='getUser.jsp';
 			}
-		</script>
-	</body>
+			window.parent.parent.scrollTo(0,0);
+		</script>	</body>
 </html>

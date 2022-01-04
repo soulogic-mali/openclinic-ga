@@ -48,7 +48,7 @@ public class BrokerScheduler implements Runnable{
 		thread.start();
 	}
 	
-	public static void runScheduler(){
+	public static void runScheduler(String uid){
 		if(lrNotifier==null){
 			lrNotifier = new LabresultsNotifier();
 		}
@@ -70,7 +70,7 @@ public class BrokerScheduler implements Runnable{
             int lastCentralOperationId=RemotePharmacy.getLastPharmacyOperation();
             if(lastCentralOperationId>-1 && lastCentralOperationId>SH.ci("lastCentralPharmacyOperationId", -1)) {
             	//Now make a list of all remote uids for which something has changed. We only want to get updates for those
-                Debug.println("Looking for new uids > "+SH.ci("lastCentralPharmacyOperationId", -1));
+                Debug.println(uid+": Looking for new uids > "+SH.ci("lastCentralPharmacyOperationId", -1));
             	HashSet newuids = new HashSet();
             	Element ni = RemotePharmacy.getLastPharmacyOperationsUids(SH.ci("lastCentralPharmacyOperationId", -1)+"");
             	Iterator<Element> iNewuids = ni.elementIterator("message");
@@ -94,6 +94,9 @@ public class BrokerScheduler implements Runnable{
 		            MedwanQuery.getInstance().setConfigString("lastCentralPharmacyOperationId", lastCentralOperationId+"");
             	}
             }
+            else {
+            	Debug.println("Pharmacy synchronisation is up to date");
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -101,10 +104,19 @@ public class BrokerScheduler implements Runnable{
 }
 	
 	public void run() {
+		String uid = SH.getRandomPassword(10);
         try {
         	while(!isStopped()){
-        		runScheduler();
-        		thread.sleep(MedwanQuery.getInstance().getConfigInt("brokerScheduleInterval",20000));
+        		//First check if no other active broker is running on this system
+        		String activeBroker = SH.cs("activeBroker", uid+";"+new java.util.Date().getTime());
+        		if(activeBroker.split(";")[0].equals(uid) || new java.util.Date().getTime()- Long.parseLong(activeBroker.split(";")[1]) > 2*SH.ci("brokerScheduleInterval",20000)) {
+        			MedwanQuery.getInstance().setConfigString("activeBroker", uid+";"+new java.util.Date().getTime());
+	        		runScheduler(uid);
+        		}
+        		else {
+        			Debug.println("Broker "+uid+" NOT started because broker "+activeBroker.split(";")[0]+" is already running on the same database");
+        		}
+        		thread.sleep(SH.ci("brokerScheduleInterval",20000));
         	}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

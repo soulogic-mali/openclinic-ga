@@ -194,6 +194,12 @@
         </tr>
 
         <tr>
+            <td class="admin"><%=getTran(request,"web", "pvvih", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=SH.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno", "ITEM_TYPE_PVVIH", sWebLanguage, false, "", "") %><%=getTran(request,"web","yes",sWebLanguage) %>&nbsp;
+            </td>
+        </tr>
+        <tr>
             <td class="admin"><%=getTran(request,"web", "withpartner", sWebLanguage)%></td>
             <td class="admin2">
             	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_WITHPARTNER", sWebLanguage, true, "", " ") %>
@@ -215,6 +221,12 @@
         	<td colspan='2'><%=getTran(request,"mspls", "sideeffects", sWebLanguage)%></td>
         </tr>
         <tr>
+            <td class="admin"><%=getTran(request,"web", "sideeffects", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultCheckBox((TransactionVO)transaction,request, "","ITEM_TYPE_FP_SIDEEFFECTS",  sWebLanguage,"") %><%=getTran(request,"web","yes",sWebLanguage) %>
+            </td>
+        </tr>
+        <tr>
             <td class="admin"><%=getTran(request,"web", "previousmethod", sWebLanguage)%></td>
             <td class="admin2">
             	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "mspls.pf.methods",  "ITEM_TYPE_FP_METHODPREVIOUS", sWebLanguage, true, "", " ") %>
@@ -229,7 +241,7 @@
         <tr>
             <td class="admin" rowspan="2"><%=getTran(request,"web", "consequence", sWebLanguage)%></td>
             <td class="admin2">
-            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "mspls.pf.consequence",  "ITEM_TYPE_FP_CONSEQUENCE", sWebLanguage, true, "", " ") %>
+            	<%=ScreenHelper.writeDefaultCheckBoxes((TransactionVO)transaction, request, "mspls.pf.consequence",  "ITEM_TYPE_FP_CONSEQUENCE", sWebLanguage, true, "", " ") %>
             </td>
         </tr>
         <tr>
@@ -246,9 +258,13 @@
             </td>
         </tr>
         <tr>
-            <td class="admin"><%=getTran(request,"web", "quantitytpd", sWebLanguage)%></td>
+        	<td colspan='2'><hr/></td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"web", "injectionbytps", sWebLanguage)%></td>
             <td class="admin2">
-            	<%=ScreenHelper.writeDefaultNumericInput(session, (TransactionVO)transaction, "ITEM_TYPE_FP_QUANTITYTPD", 5, 0, 20, sWebLanguage) %>
+            	<%=ScreenHelper.writeDefaultCheckBox((TransactionVO)transaction,request, "","ITEM_TYPE_FP_DMPAIM",  sWebLanguage,"") %><%=getTran(request,"web","dmpaim",sWebLanguage) %>
+            	<%=ScreenHelper.writeDefaultCheckBox((TransactionVO)transaction,request, "","ITEM_TYPE_FP_DMPASC",  sWebLanguage,"") %><%=getTran(request,"web","dmpasc",sWebLanguage) %>
             </td>
         </tr>
         <tr>

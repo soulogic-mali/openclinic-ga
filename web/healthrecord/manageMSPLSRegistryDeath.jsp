@@ -193,9 +193,32 @@
             </td>
         </tr>
         <tr>
+            <td class="admin"><%=getTran(request,"web", "cause", sWebLanguage)%> (DHIS2)</td>
+            <td class="admin2">
+				<table width='100%'>
+					<tr>
+						<td>
+							<%=ScreenHelper.writeDefaultSelect(null, (TransactionVO)transaction, "ITEM_TYPE_LAB_DIAGNOSISDHIS1","cds.morbidity", sWebLanguage, "") %>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<%=ScreenHelper.writeDefaultSelect(null, (TransactionVO)transaction, "ITEM_TYPE_LAB_DIAGNOSISDHIS2","cds.morbidity", sWebLanguage, "") %>
+						</td>
+					</tr>
+				</table>
+            </td>
+        </tr>
+        <tr>
             <td class="admin"><%=getTran(request,"web", "cause", sWebLanguage)%></td>
             <td class="admin2">
-            	<%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_CAUSE", 60, 1) %>
+				<table width='100%'>
+					<tr>
+						<td>
+			            	<%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_CAUSE", 68, 1) %>
+						</td>
+					</tr>
+				</table>
             </td>
         </tr>
         <tr>

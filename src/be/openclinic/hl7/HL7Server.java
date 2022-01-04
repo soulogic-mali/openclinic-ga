@@ -1,5 +1,6 @@
 package be.openclinic.hl7;
 
+import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,9 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
-import be.mxs.common.model.vo.healthrecord.TransactionVO;
-import be.mxs.common.util.db.MedwanQuery;
-import be.openclinic.medical.Labo;
+import be.openclinic.system.SH;
 import ca.uhn.hl7v2.DefaultHapiContext;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.HapiContext;
@@ -23,28 +22,23 @@ import ca.uhn.hl7v2.app.ConnectionListener;
 import ca.uhn.hl7v2.app.HL7Service;
 import ca.uhn.hl7v2.model.DataTypeException;
 import ca.uhn.hl7v2.model.Message;
-import ca.uhn.hl7v2.model.v251.group.OML_O21_SPECIMEN;
 import ca.uhn.hl7v2.model.v251.group.OML_O33_OBSERVATION_REQUEST;
 import ca.uhn.hl7v2.model.v251.group.OML_O33_ORDER;
 import ca.uhn.hl7v2.model.v251.group.OML_O33_SPECIMEN;
 import ca.uhn.hl7v2.model.v251.message.OML_O33;
 import ca.uhn.hl7v2.model.v251.segment.OBR;
-import ca.uhn.hl7v2.model.v251.segment.OBX;
 import ca.uhn.hl7v2.model.v251.segment.ORC;
 import ca.uhn.hl7v2.model.v251.segment.SPM;
 import ca.uhn.hl7v2.parser.CanonicalModelClassFactory;
 import ca.uhn.hl7v2.parser.Parser;
 import ca.uhn.hl7v2.protocol.ReceivingApplicationExceptionHandler;
 import ca.uhn.hl7v2.util.Terser;
+import uk.org.primrose.GeneralException;
+import uk.org.primrose.vendor.standalone.PrimroseLoader;
 
 public class HL7Server {
 	private HL7Service server;
-	static String url = null;
 
-	public static void setConnection(String urlValue) throws SQLException {
-	    url=urlValue;
-	}
-	
 	public void start(int port) throws InterruptedException {
 		boolean useTls = false; // Should we use TLS/SSL?
 		HapiContext context = new DefaultHapiContext();
@@ -99,51 +93,27 @@ public class HL7Server {
 		}
     }
     
-    public static void storeTransaction(TransactionVO transaction) throws SQLException {
-    	java.sql.Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
-    	PreparedStatement ps;
-		try {
-			ps = conn.prepareStatement("select * from OC_HL7OUT where OC_HL7OUT_SERVERID=? and OC_HL7OUT_TRANSACTIONID=? and OC_HL7OUT_SENT IS NULL");
-	    	ps.setInt(1, transaction.getServerId());
-	    	ps.setInt(2, transaction.getTransactionId());
-	    	ResultSet rs =ps.executeQuery();
-	    	if(!rs.next()) {
-	    		rs.close();
-	    		ps.close();
-	    		ps = conn.prepareStatement("insert into OC_HL7OUT(OC_HL7OUT_SERVERID,OC_HL7OUT_TRANSACTIONID,OC_HL7OUT_VERSION,OC_HL7OUT_CREATED) values(?,?,?,?)");
-	    		ps.setInt(1, transaction.getServerId());
-	    		ps.setInt(2, transaction.getTransactionId());
-	    		ps.setInt(3, transaction.getVersion());
-	    		ps.setTimestamp(4, new java.sql.Timestamp(new java.util.Date().getTime()));
-	    		ps.execute();
-	    	}
-	    	else {
-	    		rs.close();
-	    	}
-	    	ps.close();
-	    	conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
     public static void storeReceivedMessage(String messageType, Message message) {
     	PreparedStatement ps;
 		try {
-	    	java.sql.Connection conn =DriverManager.getConnection(url);
-			HapiContext context = new DefaultHapiContext();
-    		Parser p = context.getPipeParser();
-    		String msg = p.encode(message);
-    		ps = conn.prepareStatement("insert into OC_HL7IN(OC_HL7IN_ID,OC_HL7IN_TYPE, OC_HL7IN_RECEIVED, OC_HL7IN_MESSAGE) values(?,?,?,?)");
-            Terser terser = new Terser(message);
-            String id=terser.get("/.MSH-10");
-    		ps.setString(1, id);
-			ps.setString(2, messageType);
-			ps.setTimestamp(3, new java.sql.Timestamp(new java.util.Date().getTime()));
-	    	ps.setBytes(4, msg.getBytes());
-	    	ps.execute();
-	    	ps.close();
+	    	java.sql.Connection conn =SH.getOpenClinicConnection();
+	    	try {
+				HapiContext context = new DefaultHapiContext();
+	    		Parser p = context.getPipeParser();
+	    		String msg = p.encode(message);
+	    		ps = conn.prepareStatement("insert into OC_HL7IN(OC_HL7IN_ID,OC_HL7IN_TYPE, OC_HL7IN_RECEIVED, OC_HL7IN_MESSAGE) values(?,?,?,?)");
+	            Terser terser = new Terser(message);
+	            String id=terser.get("/.MSH-10");
+	    		ps.setString(1, id);
+				ps.setString(2, messageType);
+				ps.setTimestamp(3, new java.sql.Timestamp(new java.util.Date().getTime()));
+		    	ps.setBytes(4, msg.getBytes());
+		    	ps.execute();
+		    	ps.close();
+	    	}
+	    	catch(Exception a) {
+	    		a.printStackTrace();
+	    	}
 	    	conn.close();
 		}
 		catch(Exception e) {
@@ -152,25 +122,34 @@ public class HL7Server {
     }
     
     public static void storeReceivedMessageTransactionId(String messageid, int transactionId) {
+    	java.sql.Connection conn=null;
     	PreparedStatement ps;
 		try {
-	    	java.sql.Connection conn =DriverManager.getConnection(url);
+	    	conn =SH.getOpenClinicConnection();
     		ps = conn.prepareStatement("update OC_HL7IN set OC_HL7IN_TRANSACTIONID=? where OC_HL7IN_ID=?");
     		ps.setInt(1, transactionId);
 			ps.setString(2, messageid);
 	    	ps.execute();
 	    	ps.close();
-	    	conn.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		if(conn!=null) {
+			try {
+		    	conn.close();
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
     }
     
     public static void setReceivedMessageProcessed(Message message) {
+    	java.sql.Connection conn=null;
     	PreparedStatement ps;
 		try {
-	    	java.sql.Connection conn =DriverManager.getConnection(url);
+	    	conn =SH.getOpenClinicConnection();
 			HapiContext context = new DefaultHapiContext();
     		Parser p = context.getPipeParser();
     		String msg = p.encode(message);
@@ -181,11 +160,18 @@ public class HL7Server {
     		ps.setString(2, id);
 	    	ps.execute();
 	    	ps.close();
-	    	conn.close();
 	    	System.out.println("Message ID "+id+" was successfully processed");
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+		}
+		if(conn!=null) {
+			try {
+		    	conn.close();
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
     }
     
@@ -196,19 +182,24 @@ public class HL7Server {
 			long hour = 60*minute;
 			long day=24*hour;
 			long time = day*getConfigInt("purgeHL7MessagesOlderThanDays",365);
-	    	java.sql.Connection conn =DriverManager.getConnection(url);
-    		ps = conn.prepareStatement("delete from OC_HL7IN where OC_HL7IN_RECEIVED<?");
-			ps.setTimestamp(1, new java.sql.Timestamp(new java.util.Date().getTime()-time));
-	    	ps.execute();
-	    	ps.close();
-    		ps = conn.prepareStatement("delete from OC_HL7OUT where OC_HL7OUT_SENT<?");
-			ps.setTimestamp(1, new java.sql.Timestamp(new java.util.Date().getTime()-time));
-	    	ps.execute();
-	    	ps.close();
-    		ps = conn.prepareStatement("delete from OC_HL7OUT where OC_HL7OUT_CREATED<? and OC_HL7OUT_SENT is null");
-			ps.setTimestamp(1, new java.sql.Timestamp(new java.util.Date().getTime()-getConfigInt("purgeHL7UnsampledOrdersOlderThanDays",7)*day));
-	    	ps.execute();
-	    	ps.close();
+	    	java.sql.Connection conn =SH.getOpenClinicConnection();
+	    	try {
+	    		ps = conn.prepareStatement("delete from OC_HL7IN where OC_HL7IN_RECEIVED<?");
+				ps.setTimestamp(1, new java.sql.Timestamp(new java.util.Date().getTime()-time));
+		    	ps.execute();
+		    	ps.close();
+	    		ps = conn.prepareStatement("delete from OC_HL7OUT where OC_HL7OUT_SENT<?");
+				ps.setTimestamp(1, new java.sql.Timestamp(new java.util.Date().getTime()-time));
+		    	ps.execute();
+		    	ps.close();
+	    		ps = conn.prepareStatement("delete from OC_HL7OUT where OC_HL7OUT_CREATED<? and OC_HL7OUT_SENT is null");
+				ps.setTimestamp(1, new java.sql.Timestamp(new java.util.Date().getTime()-getConfigInt("purgeHL7UnsampledOrdersOlderThanDays",7)*day));
+		    	ps.execute();
+		    	ps.close();
+	    	}
+	    	catch(Exception a) {
+	    		a.printStackTrace();
+	    	}
 	    	conn.close();
 		}
 		catch(Exception e) {
@@ -217,7 +208,7 @@ public class HL7Server {
     }
     
     public static void closeTransaction(int serverid,int transactionid) throws SQLException {
-    	java.sql.Connection conn =DriverManager.getConnection(url);
+    	java.sql.Connection conn =SH.getOpenClinicConnection();
     	PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement("update OC_HL7OUT set OC_HL7OUT_SENT=? where OC_HL7OUT_SERVERID=? and OC_HL7OUT_TRANSACTIONID=? and OC_HL7OUT_SENT IS NULL");
@@ -226,15 +217,15 @@ public class HL7Server {
 	    	ps.setInt(3, transactionid);
 	    	ps.execute();
 	    	ps.close();
-	    	conn.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+    	conn.close();
     }
     
     public static void setTransactionID(int serverid,int transactionid,String ID) throws SQLException {
-    	java.sql.Connection conn = DriverManager.getConnection(url);;
+    	java.sql.Connection conn = SH.getOpenClinicConnection();;
     	PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement("update OC_HL7OUT set OC_HL7OUT_ID=? where OC_HL7OUT_SERVERID=? and OC_HL7OUT_TRANSACTIONID=? and OC_HL7OUT_SENT IS NULL");
@@ -243,15 +234,15 @@ public class HL7Server {
 	    	ps.setInt(3, transactionid);
 	    	ps.execute();
 	    	ps.close();
-	    	conn.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+    	conn.close();
     }
     
     public static void setTransactionACK(String ID,java.util.Date date) throws SQLException {
-    	java.sql.Connection conn = DriverManager.getConnection(url);;
+    	java.sql.Connection conn = SH.getOpenClinicConnection();;
     	PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement("update OC_HL7OUT set OC_HL7OUT_ACK=? where OC_HL7OUT_ID=?");
@@ -259,15 +250,15 @@ public class HL7Server {
 			ps.setString(2, ID);
 			ps.execute();
 	    	ps.close();
-	    	conn.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+    	conn.close();
     }
     
     public static void setTransactionError(String ID,String error) throws SQLException {
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement("update OC_HL7OUT set OC_HL7OUT_ERROR=? where OC_HL7OUT_ID=?");
@@ -275,15 +266,15 @@ public class HL7Server {
 			ps.setString(2, ID);
 			ps.execute();
 	    	ps.close();
-	    	conn.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+    	conn.close();
     }
     
     public static void setTransactionError(int serverid, int transactionid,String error) throws SQLException {
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement("update OC_HL7OUT set OC_HL7OUT_ERROR=? where OC_HL7OUT_SERVERID=? and OC_HL7OUT_TRANSACTIONID=?");
@@ -292,11 +283,11 @@ public class HL7Server {
 			ps.setInt(3, transactionid);
 			ps.execute();
 	    	ps.close();
-	    	conn.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+    	conn.close();
     }
     
     public static String checkString(String s){
@@ -310,38 +301,48 @@ public class HL7Server {
     
     public static boolean existsRequestedLabanalysis(int serverid,int transactionid, String labcode) throws SQLException {
     	boolean exists=false;
-    	java.sql.Connection conn = DriverManager.getConnection(url);
-    	PreparedStatement ps = conn.prepareStatement("select * from RequestedLabanalyses where serverid=? and transactionid=? and analysiscode=?");
-    	ps.setInt(1, serverid);
-    	ps.setInt(2, transactionid);
-    	ps.setString(3, labcode);
-    	ResultSet rs = ps.executeQuery();
-    	if(rs.next()) {
-    		exists=true;;
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
+    	try {
+	    	PreparedStatement ps = conn.prepareStatement("select * from RequestedLabanalyses where serverid=? and transactionid=? and analysiscode=?");
+	    	ps.setInt(1, serverid);
+	    	ps.setInt(2, transactionid);
+	    	ps.setString(3, labcode);
+	    	ResultSet rs = ps.executeQuery();
+	    	if(rs.next()) {
+	    		exists=true;;
+	    	}
+	    	rs.close();
+	    	ps.close();
     	}
-    	rs.close();
-    	ps.close();
+    	catch(Exception a) {
+    		a.printStackTrace();
+    	}
     	conn.close();
     	return exists;
     }
     
     public static void updateRequestedLabanalysis(int serverid, int transactionid, String labcode, String field, Object value) throws SQLException {
-    	java.sql.Connection conn = DriverManager.getConnection(url);
-    	String sql="update RequestedLabanalyses set "+field+"=? where serverid=? and transactionid=? and analysiscode=?";
-    	PreparedStatement ps = conn.prepareStatement(sql);
-    	ps.setObject(1, value);
-    	ps.setInt(2, serverid);
-    	ps.setInt(3, transactionid);
-    	ps.setString(4, labcode);
-    	ps.execute();
-    	ps.close();
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
+    	try {
+	    	String sql="update RequestedLabanalyses set "+field+"=? where serverid=? and transactionid=? and analysiscode=?";
+	    	PreparedStatement ps = conn.prepareStatement(sql);
+	    	ps.setObject(1, value);
+	    	ps.setInt(2, serverid);
+	    	ps.setInt(3, transactionid);
+	    	ps.setString(4, labcode);
+	    	ps.execute();
+	    	ps.close();
+    	}
+    	catch(Exception a) {
+    		a.printStackTrace();
+    	}
     	conn.close();
     }
     
     
     public static int getTransactionPersonId(int serverid,int transactionid) throws SQLException {
     	int personid=-1;
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select personid from transactions t,healthrecord h where t.healthrecordid=h.healthrecordid and t.serverid=? and t.transactionid=?");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -357,23 +358,28 @@ public class HL7Server {
     
     public static int getTransactionVersion(int serverid,int transactionid) throws SQLException {
     	int version=1;
-    	java.sql.Connection conn = DriverManager.getConnection(url);
-    	PreparedStatement ps = conn.prepareStatement("select version from transactions where serverid=? and transactionid=?");
-    	ps.setInt(1, serverid);
-    	ps.setInt(2, transactionid);
-    	ResultSet rs = ps.executeQuery();
-    	if(rs.next()) {
-    		version = rs.getInt("version");
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
+    	try {
+	    	PreparedStatement ps = conn.prepareStatement("select version from transactions where serverid=? and transactionid=?");
+	    	ps.setInt(1, serverid);
+	    	ps.setInt(2, transactionid);
+	    	ResultSet rs = ps.executeQuery();
+	    	if(rs.next()) {
+	    		version = rs.getInt("version");
+	    	}
+	    	rs.close();
+	    	ps.close();
     	}
-    	rs.close();
-    	ps.close();
+    	catch(Exception a) {
+    		a.printStackTrace();
+    	}
     	conn.close();
     	return version;
     }
     
     public static int getTransactionUserId(int serverid,int transactionid) throws SQLException {
     	int userid=1;
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select userid from transactions where serverid=? and transactionid=?");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -389,7 +395,7 @@ public class HL7Server {
     
     public static String getTransactionType(int serverid,int transactionid) throws SQLException {
     	String type="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select transactionType from transactions where serverid=? and transactionid=?");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -405,7 +411,7 @@ public class HL7Server {
     
     public static String getEncounterType(int serverid,int transactionid) throws SQLException {
     	String type="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select value from items i where serverid=? and transactionid=? and type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -432,7 +438,7 @@ public class HL7Server {
     
     public static String getEncounterUID(int serverid,int transactionid) throws SQLException {
     	String uid="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select value from items i where serverid=? and transactionid=? and type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -448,7 +454,7 @@ public class HL7Server {
     
     public static String getEncounterManagerUid(int serverid,int transactionid) throws SQLException {
     	String userid="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select value from items i where serverid=? and transactionid=? and type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -475,7 +481,7 @@ public class HL7Server {
     
     public static java.util.Date getEncounterBegin(int serverid,int transactionid) throws SQLException {
     	java.util.Date begin=null;
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select value from items i where serverid=? and transactionid=? and type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID'");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -502,7 +508,7 @@ public class HL7Server {
     
     public static String getUserLastname(String userid) throws SQLException {
     	String name="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select lastname from usersview u,adminview a where u.personid=a.personid and userid=?");
     	ps.setString(1, userid);
     	ResultSet rs = ps.executeQuery();
@@ -517,7 +523,7 @@ public class HL7Server {
     
     public static String getUserFirstname(String userid) throws SQLException {
     	String name="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select firstname from usersview u,adminview a where u.personid=a.personid and userid=?");
     	ps.setString(1, userid);
     	ResultSet rs = ps.executeQuery();
@@ -532,7 +538,7 @@ public class HL7Server {
     
     public static java.util.Date getTransactionDateOfBirth(int serverid,int transactionid) throws SQLException {
     	java.util.Date dob=null;
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select dateofbirth from transactions t,healthrecord h,adminview a where t.healthrecordid=h.healthrecordid and h.personid=a.personid and t.serverid=? and t.transactionid=?");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -548,7 +554,7 @@ public class HL7Server {
     
     public static String getTransactionGender(int serverid,int transactionid) throws SQLException {
     	String gender="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select gender from transactions t,healthrecord h,adminview a where t.healthrecordid=h.healthrecordid and h.personid=a.personid and t.serverid=? and t.transactionid=?");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -564,7 +570,7 @@ public class HL7Server {
     
     public static String getTransactionLastname(int serverid,int transactionid) throws SQLException {
     	String name="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select lastname from transactions t,healthrecord h,adminview a where t.healthrecordid=h.healthrecordid and h.personid=a.personid and t.serverid=? and t.transactionid=?");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -580,7 +586,7 @@ public class HL7Server {
     
     public static String getDefaultInsuranceNumber(String insuid) throws SQLException {
     	String uid="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select * from oc_insurances where oc_insurance_serverid=? and oc_insurance_objectid=?");
     	ps.setString(1, insuid.split("\\.")[0]);
     	ps.setString(2, insuid.split("\\.")[1]);
@@ -596,7 +602,7 @@ public class HL7Server {
     
     public static String getDefaultInsuranceCategory(String insuid) throws SQLException {
     	String uid="A";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select * from oc_insurances where oc_insurance_serverid=? and oc_insurance_objectid=?");
     	ps.setString(1, insuid.split("\\.")[0]);
     	ps.setString(2, insuid.split("\\.")[1]);
@@ -612,7 +618,7 @@ public class HL7Server {
     
     public static String getDefaultInsurarUid(String insuid) throws SQLException {
     	String uid="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select * from oc_insurances where oc_insurance_serverid=? and oc_insurance_objectid=?");
     	ps.setString(1, insuid.split("\\.")[0]);
     	ps.setString(2, insuid.split("\\.")[1]);
@@ -628,7 +634,7 @@ public class HL7Server {
     
     public static String getDefaultInsurarName(String insuid) throws SQLException {
     	String name="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select * from oc_insurances,oc_insurars where oc_insurar_objectid=replace(oc_insurance_insuraruid,'1.','') and oc_insurance_serverid=? and oc_insurance_objectid=?");
     	ps.setString(1, insuid.split("\\.")[0]);
     	ps.setString(2, insuid.split("\\.")[1]);
@@ -644,7 +650,7 @@ public class HL7Server {
     
     public static String getDefaultInsurance(int personid) throws SQLException {
     	String uid="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select * from oc_insurances where oc_insurance_patientuid=? and (oc_insurance_stop is null OR oc_insurance_stop>?)");
     	ps.setInt(1, personid);
     	ps.setDate(2, new java.sql.Date(new java.util.Date().getTime()));
@@ -663,7 +669,7 @@ public class HL7Server {
     
     public static String getTransactionFirstname(int serverid,int transactionid) throws SQLException {
     	String name="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select firstname from transactions t,healthrecord h,adminview a where t.healthrecordid=h.healthrecordid and h.personid=a.personid and t.serverid=? and t.transactionid=?");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -679,7 +685,7 @@ public class HL7Server {
     
     public static java.util.Date getTransactionUpdateTime(int serverid,int transactionid) throws SQLException {
     	java.util.Date date = null;
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select updatetime from transactions where serverid=? and transactionid=?");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -695,7 +701,7 @@ public class HL7Server {
     
     public static java.util.Date getSpecimenReceivedDateTime(int serverid,int transactionid, String analysis) throws SQLException {
     	java.util.Date date = null;
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select samplereceptiondatetime from requestedlabanalyses where serverid=? and transactionid=? and analysiscode=?");
     	ps.setInt(1, serverid);
     	ps.setInt(2, transactionid);
@@ -712,7 +718,7 @@ public class HL7Server {
     
     public static String getLabCodeByMedidocCode(String medidoccode) throws SQLException {
     	String labcode="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select labcode from labanalysis where medidoccode=?");
     	ps.setString(1, medidoccode);
     	ResultSet rs = ps.executeQuery();
@@ -727,7 +733,7 @@ public class HL7Server {
     
     public static String getLabCode(String code) throws SQLException {
     	String labcode="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select labcode from labanalysis where labcode=?");
     	ps.setString(1, code);
     	ResultSet rs = ps.executeQuery();
@@ -742,7 +748,7 @@ public class HL7Server {
     
     public static String getLabCodeByAnalyserCode(String analysercode) throws SQLException {
     	String labcode="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select labcode from labanalysis where alertvalue=?");
     	ps.setString(1, analysercode);
     	ResultSet rs = ps.executeQuery();
@@ -755,9 +761,139 @@ public class HL7Server {
     	return labcode;
     }
     
+    public static String getLabBarcode(String specimenid, boolean bCreate) throws SQLException {
+    	String barcodeid=null;
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("select * from OC_LABBARCODES where OC_LABBARCODE_SAMPLEID=?");
+    		ps.setString(1, specimenid);
+    		ResultSet rs = ps.executeQuery();
+    		if(rs.next()) {
+    			barcodeid=rs.getString("OC_LABBARCODE_BARCODEID");
+    		}
+    		else if(bCreate){
+    			barcodeid=createLabBarcode(specimenid,conn);
+    		}
+    		rs.close();
+    		ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	conn.close();
+    	return barcodeid;
+    }
+
+    public static String createLabBarcode(String specimenid, java.sql.Connection conn) throws SQLException {
+    	String barcodeid=getOpenclinicCounter("LabBarcodeId",0,conn)+"";
+    	return setLabBarcode(specimenid, "9"+"000000000".substring(barcodeid.length())+barcodeid);
+    }
+    
+    public static String setLabBarcode(String specimenid,String barcodeid) throws SQLException {
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
+    	try {
+    		if(getLabSpecimenId(barcodeid)==null) {
+	    		PreparedStatement ps = conn.prepareStatement("delete from OC_LABBARCODES where OC_LABBARCODE_SAMPLEID=?");
+	    		ps.setString(1, specimenid);
+	    		ps.execute();
+	    		ps.close();
+	    		ps=conn.prepareStatement("insert into OC_LABBARCODES(OC_LABBARCODE_SAMPLEID,OC_LABBARCODE_BARCODEID) values(?,?)");
+	    		ps.setString(1, specimenid);
+	    		ps.setString(2, barcodeid);
+	    		ps.execute();
+    		}
+    		else {
+    			barcodeid="USED";
+    		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			conn.close();
+			return null;
+		}
+		conn.close();
+    	return barcodeid;
+    }
+
+    public static String getLabSpecimenId(String barcodeid) throws SQLException {
+    	String specimenid=null;
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("select * from OC_LABBARCODES where OC_LABBARCODE_BARCODEID=?");
+    		ps.setString(1, barcodeid);
+    		ResultSet rs = ps.executeQuery();
+    		if(rs.next()) {
+    			specimenid=rs.getString("OC_LABBARCODE_SAMPLEID");
+    		}
+    		rs.close();
+    		ps.close();
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	conn.close();
+    	return specimenid;
+    }
+    
+
+    public static int getOpenclinicCounter(String name,int mincounter,java.sql.Connection conn){
+        int newCounter = 0;
+        PreparedStatement ps=null;
+        ResultSet rs=null;
+        try{
+        	ps = conn.prepareStatement("select OC_COUNTER_VALUE from OC_COUNTERS where OC_COUNTER_NAME=?");
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                newCounter = rs.getInt("OC_COUNTER_VALUE");
+                if(newCounter==0){
+                	newCounter=1;
+                }
+                if(newCounter<mincounter){
+                	newCounter=mincounter;
+                }
+                rs.close();
+                ps.close();
+            } 
+            else{
+                rs.close();
+                ps.close();
+                newCounter = 1;
+                if(newCounter<mincounter){
+                	newCounter=mincounter;
+                }
+                ps = conn.prepareStatement("insert into OC_COUNTERS(OC_COUNTER_NAME,OC_COUNTER_VALUE) values(?,1)");
+                ps.setString(1, name);
+                ps.execute();
+                ps.close();
+            }
+            ps = conn.prepareStatement("update OC_COUNTERS set OC_COUNTER_VALUE=? where OC_COUNTER_NAME=?");
+            ps.setInt(1, newCounter+1);
+            ps.setString(2, name);
+            ps.execute();
+            ps.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally{
+        	try{
+        		if(rs!=null) rs.close();
+        		if(ps!=null) ps.close();
+        	}
+        	catch(Exception e2){
+        		e2.printStackTrace();
+        	}
+        }
+      
+        return newCounter;
+    }
+
+
     public static String getMedidocCodeByLabCode(String labcode) throws SQLException {
     	String code="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select medidoccode from labanalysis where labcode=?");
     	ps.setString(1, labcode);
     	ResultSet rs = ps.executeQuery();
@@ -785,7 +921,7 @@ public class HL7Server {
     
     public static String getAnalyserCodeByLabCode(String labcode) throws SQLException {
     	String code="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps = conn.prepareStatement("select alertvalue from labanalysis where labcode=? and deletetime is null and unavailable=0");
     	ps.setString(1, labcode);
     	ResultSet rs = ps.executeQuery();
@@ -813,15 +949,20 @@ public class HL7Server {
     
     public static String getSpecimenTypeByLabCode(String labcode) throws SQLException {
     	String type="";
-    	java.sql.Connection conn = DriverManager.getConnection(url);
-    	PreparedStatement ps = conn.prepareStatement("select monster from labanalysis where labcode=?");
-    	ps.setString(1, labcode);
-    	ResultSet rs = ps.executeQuery();
-    	if(rs.next()) {
-    		type = rs.getString("monster");
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
+    	try {
+	    	PreparedStatement ps = conn.prepareStatement("select monster from labanalysis where labcode=?");
+	    	ps.setString(1, labcode);
+	    	ResultSet rs = ps.executeQuery();
+	    	if(rs.next()) {
+	    		type = rs.getString("monster");
+	    	}
+	    	rs.close();
+	    	ps.close();
     	}
-    	rs.close();
-    	ps.close();
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
     	conn.close();
     	return type;
     }
@@ -874,7 +1015,7 @@ public class HL7Server {
     }
     
     public static void sendTransactions() throws SQLException {
-    	java.sql.Connection conn = DriverManager.getConnection(url);
+    	java.sql.Connection conn = SH.getOpenClinicConnection();
     	PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement("select * from OC_HL7OUT where OC_HL7OUT_SENT IS NULL and OC_HL7OUT_ERROR IS NULL and exists (select * from RequestedLabanalyses where serverid=OC_HL7OUT_SERVERID and transactionid=OC_HL7OUT_TRANSACTIONID and worklisteddatetime is null and samplereceptiondatetime is not null)");
@@ -906,7 +1047,16 @@ public class HL7Server {
 				    			}
 				    			else {
 				    				bSendError=true;
+				    				System.out.println("Error sending message");
 				    				System.out.println("Message "+order.getMessage()+" NOT correctly sent!!!");
+				    				try {
+				    					System.out.println("XXXXXXX Closing connection");
+				    					conn.close();
+				    				}
+				    				catch(Exception r) {
+				    					r.printStackTrace();
+				    				}
+				    				System.exit(0);
 				    			}
 				    			break;
 	    					}
@@ -926,27 +1076,38 @@ public class HL7Server {
 	    		}
 	    	}
 	    	ps.close();
-	    	conn.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			System.out.println("XXXXXXX Closing connection");
+	    	conn.close();
+		}
+		catch(Exception e) {
 			e.printStackTrace();
 		}
     }
     
     public static String getConfigString(String parameter, String defaultValue) throws SQLException {
-    	java.sql.Connection conn =  DriverManager.getConnection(url);
+    	java.sql.Connection conn =  SH.getOpenClinicConnection();
     	String returnValue=defaultValue;
-    	PreparedStatement ps = conn.prepareStatement("select * from oc_config where oc_key=?");
-    	ps.setString(1, parameter);
-    	ResultSet rs = ps.executeQuery();
-    	if(rs.next()) {
-    		returnValue=rs.getString("oc_value");
-    		if(returnValue==null || returnValue.length()==0) {
-    			returnValue=defaultValue;
-    		}
+    	try {
+	    	PreparedStatement ps = conn.prepareStatement("select * from oc_config where oc_key=?");
+	    	ps.setString(1, parameter);
+	    	ResultSet rs = ps.executeQuery();
+	    	if(rs.next()) {
+	    		returnValue=rs.getString("oc_value");
+	    		if(returnValue==null || returnValue.length()==0) {
+	    			returnValue=defaultValue;
+	    		}
+	    	}
+	    	rs.close();
+	    	ps.close();
     	}
-    	rs.close();
-    	ps.close();
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
     	conn.close();
     	return returnValue;
     }
@@ -968,177 +1129,199 @@ public class HL7Server {
     }
     
     public static int getConfigInt(String parameter, int defaultValue) throws SQLException {
-    	java.sql.Connection conn =  DriverManager.getConnection(url);
+    	java.sql.Connection conn =  SH.getOpenClinicConnection();
     	int returnValue=defaultValue;
-    	PreparedStatement ps = conn.prepareStatement("select * from oc_config where oc_key=?");
-    	ps.setString(1, parameter);
-    	ResultSet rs = ps.executeQuery();
-    	if(rs.next()) {
-    		try {
-    			returnValue=Integer.parseInt(rs.getString("oc_value"));
-    		}
-    		catch(Exception e) {
-    			e.printStackTrace();
-    		}
+    	try {
+	    	PreparedStatement ps = conn.prepareStatement("select * from oc_config where oc_key=?");
+	    	ps.setString(1, parameter);
+	    	ResultSet rs = ps.executeQuery();
+	    	if(rs.next()) {
+	    		try {
+	    			returnValue=Integer.parseInt(rs.getString("oc_value"));
+	    		}
+	    		catch(Exception e) {
+	    			e.printStackTrace();
+	    		}
+	    	}
+	    	rs.close();
+	    	ps.close();
     	}
-    	rs.close();
-    	ps.close();
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
     	conn.close();
     	return returnValue;
     }
     
     public static HashSet getSpecimensReceived(int serverid, int transactionid) throws SQLException {
-    	java.sql.Connection conn =  DriverManager.getConnection(url);
+    	java.sql.Connection conn =  SH.getOpenClinicConnection();
     	HashSet specimens = new HashSet();
-    	PreparedStatement ps = conn.prepareStatement("select distinct monster from RequestedLabAnalyses a, LabAnalysis b where a.analysiscode=b.labcode and b.deletetime is null and serverid=? and transactionid=? and samplereceptiondatetime is not null");
-    	ps.setInt(1, serverid);
-    	ps.setInt(2, transactionid);
-    	ResultSet rs = ps.executeQuery();
-    	while(rs.next()) {
-    		specimens.add(rs.getString("monster"));
+    	try {
+	    	PreparedStatement ps = conn.prepareStatement("select distinct monster from RequestedLabAnalyses a, LabAnalysis b where a.analysiscode=b.labcode and b.deletetime is null and serverid=? and transactionid=? and samplereceptiondatetime is not null");
+	    	ps.setInt(1, serverid);
+	    	ps.setInt(2, transactionid);
+	    	ResultSet rs = ps.executeQuery();
+	    	while(rs.next()) {
+	    		specimens.add(rs.getString("monster"));
+	    	}
+	    	rs.close();
+	    	ps.close();
     	}
-    	rs.close();
-    	ps.close();
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
     	conn.close();
     	return specimens;
     }
     
     public static HashSet getSpecimensUnreceived(int serverid, int transactionid) throws SQLException {
-    	java.sql.Connection conn =  DriverManager.getConnection(url);
+    	java.sql.Connection conn =  SH.getOpenClinicConnection();
     	HashSet specimens = new HashSet();
-    	PreparedStatement ps = conn.prepareStatement("select distinct monster from RequestedLabAnalyses a, LabAnalysis b where a.analysiscode=b.labcode and b.deletetime is null and serverid=? and transactionid=? and samplereceptiondatetime is null");
-    	ps.setInt(1, serverid);
-    	ps.setInt(2, transactionid);
-    	ResultSet rs = ps.executeQuery();
-    	while(rs.next()) {
-    		specimens.add(rs.getString("monster"));
+    	try {
+	    	PreparedStatement ps = conn.prepareStatement("select distinct monster from RequestedLabAnalyses a, LabAnalysis b where a.analysiscode=b.labcode and b.deletetime is null and serverid=? and transactionid=? and samplereceptiondatetime is null");
+	    	ps.setInt(1, serverid);
+	    	ps.setInt(2, transactionid);
+	    	ResultSet rs = ps.executeQuery();
+	    	while(rs.next()) {
+	    		specimens.add(rs.getString("monster"));
+	    	}
+	    	rs.close();
+	    	ps.close();
     	}
-    	rs.close();
-    	ps.close();
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
     	conn.close();
     	return specimens;
     }
     
 	public static HashSet setLabRequest(int serverid, int transactionid, OML_O33 message) throws SQLException, DataTypeException {
-		java.sql.Connection conn = DriverManager.getConnection(url);
+		java.sql.Connection conn = SH.getOpenClinicConnection();
 		HashSet exportedAnalyses = new HashSet();
-
-		//We first organize the labanalyses according to their sample specification
-		//Only received and not yet sent samples are taken into account (new samples)
-		PreparedStatement ps = conn.prepareStatement("select * from requestedlabanalyses where analysiscode is not null and analysiscode<>'' and serverid=? and transactionid=? and worklisteddatetime is null and samplereceptiondatetime is not null");
-		System.out.println("Reading analyses for transaction id "+transactionid);
-		ps.setInt(1,serverid);
-		ps.setInt(2,transactionid);
-		ResultSet rs = ps.executeQuery();
-		Hashtable r_analyses = new Hashtable();
-		Hashtable r_reversanalyses = new Hashtable();
-		Hashtable specimendates = new Hashtable();
-		HashSet receivedSpecimens=getSpecimensReceived(serverid, transactionid);
-		while(rs.next()) {
-			String labcode=rs.getString("analysiscode");
-			String specimencode = HL7Server.getSpecimenTypeByLabCode(labcode, conn);
-			specimendates.put(specimencode,rs.getTimestamp("samplereceptiondatetime"));
-			System.out.println("Specimencode = "+specimencode+" for labcode = "+labcode);
-			String analysercode = "";
-			if(getConfigString("labanalysercodemapping","loinc").equalsIgnoreCase("loinc")) {
-				analysercode = HL7Server.getMedidocCodeByLabCode(labcode, conn);
-				if(analysercode.length()==0) {
-					if(getConfigInt("labanalysercodemappingallowmismatches",0)==1) {
-						analysercode=labcode+";L"; //L = Local coding system
+		
+		try {
+			//We first organize the labanalyses according to their sample specification
+			//Only received and not yet sent samples are taken into account (new samples)
+			PreparedStatement ps = conn.prepareStatement("select * from requestedlabanalyses where analysiscode is not null and analysiscode<>'' and serverid=? and transactionid=? and worklisteddatetime is null and samplereceptiondatetime is not null");
+			System.out.println("Reading analyses for transaction id "+transactionid);
+			ps.setInt(1,serverid);
+			ps.setInt(2,transactionid);
+			ResultSet rs = ps.executeQuery();
+			Hashtable r_analyses = new Hashtable();
+			Hashtable r_reversanalyses = new Hashtable();
+			Hashtable specimendates = new Hashtable();
+			HashSet receivedSpecimens=getSpecimensReceived(serverid, transactionid);
+			while(rs.next()) {
+				String labcode=rs.getString("analysiscode");
+				String specimencode = HL7Server.getSpecimenTypeByLabCode(labcode);
+				specimendates.put(specimencode,rs.getTimestamp("samplereceptiondatetime"));
+				System.out.println("Specimencode = "+specimencode+" for labcode = "+labcode);
+				String analysercode = "";
+				if(getConfigString("labanalysercodemapping","loinc").equalsIgnoreCase("loinc")) {
+					analysercode = HL7Server.getMedidocCodeByLabCode(labcode);
+					if(analysercode.length()==0) {
+						if(getConfigInt("labanalysercodemappingallowmismatches",0)==1) {
+							analysercode=labcode+";L"; //L = Local coding system
+						}
+					}
+					else {
+						analysercode+=";LN"; //LN = LOINC coding system
 					}
 				}
 				else {
-					analysercode+=";LN"; //LN = LOINC coding system
-				}
-			}
-			else {
-				analysercode = HL7Server.getAnalyserCodeByLabCode(labcode, conn);
-				if(analysercode.length()==0) {
-					if(getConfigInt("labanalysercodemappingmismatchesreplacebylocalcode",0)==1) {
-						analysercode=labcode;
+					analysercode = HL7Server.getAnalyserCodeByLabCode(labcode);
+					if(analysercode.length()==0) {
+						if(getConfigInt("labanalysercodemappingmismatchesreplacebylocalcode",0)==1) {
+							analysercode=labcode;
+						}
+					}
+					else {
+						analysercode+=";L"; //L = Local coding system
 					}
 				}
+				System.out.println("Found analyzer code = "+analysercode+" for labcode = "+labcode);
+				if(checkString(analysercode).length()>0 && labcode.length()>0) {
+					if(r_analyses.get(specimencode)==null) {
+						r_analyses.put(specimencode, new Vector());
+					}
+					Vector v_analyses = (Vector)r_analyses.get(specimencode);
+					v_analyses.add(analysercode);
+					System.out.println("Number of analyses for specimencode "+specimencode+" = "+v_analyses.size());
+					exportedAnalyses.add(labcode+";"+specimencode);
+					r_reversanalyses.put(analysercode, labcode);
+				}
 				else {
-					analysercode+=";L"; //L = Local coding system
+					System.out.println("HL7-OML_O33 ERROR: Missing Analyser code for lab analysis '"+labcode+"'");
+					exportedAnalyses.add(labcode);
 				}
 			}
-			System.out.println("Found analyzer code = "+analysercode+" for labcode = "+labcode);
-			if(checkString(analysercode).length()>0 && labcode.length()>0) {
-				if(r_analyses.get(specimencode)==null) {
-					r_analyses.put(specimencode, new Vector());
-				}
-				Vector v_analyses = (Vector)r_analyses.get(specimencode);
-				v_analyses.add(analysercode);
-				System.out.println("Number of analyses for specimencode "+specimencode+" = "+v_analyses.size());
-				exportedAnalyses.add(labcode+";"+specimencode);
-				r_reversanalyses.put(analysercode, labcode);
-			}
-			else {
-				System.out.println("HL7-OML_O33 ERROR: Missing Analyser code for lab analysis '"+labcode+"'");
-				exportedAnalyses.add(labcode);
-			}
-		}
-		rs.close();
-		ps.close();
-		System.out.println("Number of specimens in order: "+r_analyses.size());
-		Enumeration e_specimens = r_analyses.keys();
-		int counter=0;
-		while(e_specimens.hasMoreElements()) {
-			String spec = (String)e_specimens.nextElement();
-			System.out.println("Exporting specimen = "+counter+"/"+spec);
-			
-			if(spec.length()>0) {
-				String barcodeid=Labo.getLabBarcode(serverid+"."+transactionid+"."+spec,true,conn);
-				OML_O33_SPECIMEN omlspm = message.getSPECIMEN(counter);
-				SPM spm = omlspm.getSPM();
-				spm.getSetIDSPM().setValue(counter+"");
-				spm.getSpecimenID().getPlacerAssignedIdentifier().getEntityIdentifier().setValue(barcodeid);
-				spm.getSpecimenType().getIdentifier().setValue(spec);
-				if(specimendates.get(spec)!=null) {
-					spm.getSpecimenCollectionDateTime().getRangeStartDateTime().getTime().setValue((Timestamp)specimendates.get(spec));
-				}
+			rs.close();
+			ps.close();
+			conn.close();
+			System.out.println("Number of specimens in order: "+r_analyses.size());
+			Enumeration e_specimens = r_analyses.keys();
+			int counter=0;
+			while(e_specimens.hasMoreElements()) {
+				String spec = (String)e_specimens.nextElement();
+				System.out.println("Exporting specimen = "+counter+"/"+spec);
 				
-				Vector v_analyses = (Vector)r_analyses.get(spec);
-				System.out.println("Number of analyses in specimen "+spec+" = "+v_analyses.size());
-				for(int n=0;n<v_analyses.size();n++) {
-					String analysercode = (String)v_analyses.elementAt(n);
-					if(analysercode.length()>0) {
-						System.out.println("Exporting analyser code = "+analysercode);
-						OML_O33_ORDER omlorder = omlspm.getORDER(n);
-						ORC orc = omlorder.getORC();
-						int version = HL7Server.getTransactionVersion(serverid, transactionid);
-						if(version==1) {
-							orc.getOrderControl().setValue("NW");
-						}
-						else {
-							orc.getOrderControl().setValue("RP");
-						}
-						orc.getDateTimeOfTransaction().getTime().setValue(HL7Server.getTransactionUpdateTime(serverid, transactionid));
-						orc.getQuantityTiming(0).getQuantity().getCq1_Quantity().setValue("1");
-						String userid = HL7Server.getTransactionUserId(serverid, transactionid)+"";
-						if(userid.length()>0) {
-							orc.getOrderingProvider(0).getIDNumber().setValue(userid);
-							orc.getOrderingProvider(0).getFamilyName().getSurname().setValue(HL7Server.getUserLastname(userid));
-							orc.getOrderingProvider(0).getGivenName().setValue(HL7Server.getUserFirstname(userid));
-						}
-						orc.getPlacerOrderNumber().getEntityIdentifier().setValue(serverid+"."+transactionid);		
-						orc.getFillerOrderNumber().getEntityIdentifier().setValue(serverid+"."+transactionid);
-						
-						OML_O33_OBSERVATION_REQUEST omlobr = omlorder.getOBSERVATION_REQUEST();
-						OBR obr = omlobr.getOBR();
-						obr.getSetIDOBR().setValue("1");
-						obr.getPlacerOrderNumber().getEntityIdentifier().setValue(serverid+"."+transactionid);		
-						obr.getFillerOrderNumber().getEntityIdentifier().setValue(serverid+"."+transactionid);
-						obr.getSpecimenReceivedDateTime().getTime().setValue(HL7Server.getSpecimenReceivedDateTime(serverid,transactionid,(String)r_reversanalyses.get(analysercode)));
-						obr.getUniversalServiceIdentifier().getIdentifier().setValue(analysercode.split(";")[0]);
+				if(spec.length()>0) {
+					conn = SH.getOpenClinicConnection();
+					String barcodeid=getLabBarcode(serverid+"."+transactionid+"."+spec,true);
+					conn.close();
+					OML_O33_SPECIMEN omlspm = message.getSPECIMEN(counter);
+					SPM spm = omlspm.getSPM();
+					spm.getSetIDSPM().setValue(counter+"");
+					spm.getSpecimenID().getPlacerAssignedIdentifier().getEntityIdentifier().setValue(barcodeid);
+					spm.getSpecimenType().getIdentifier().setValue(spec);
+					if(specimendates.get(spec)!=null) {
+						spm.getSpecimenCollectionDateTime().getRangeStartDateTime().getTime().setValue((Timestamp)specimendates.get(spec));
 					}
+					
+					Vector v_analyses = (Vector)r_analyses.get(spec);
+					System.out.println("Number of analyses in specimen "+spec+" = "+v_analyses.size());
+					for(int n=0;n<v_analyses.size();n++) {
+						String analysercode = (String)v_analyses.elementAt(n);
+						if(analysercode.length()>0) {
+							System.out.println("Exporting analyser code = "+analysercode);
+							OML_O33_ORDER omlorder = omlspm.getORDER(n);
+							ORC orc = omlorder.getORC();
+							int version = HL7Server.getTransactionVersion(serverid, transactionid);
+							if(version==1) {
+								orc.getOrderControl().setValue("NW");
+							}
+							else {
+								orc.getOrderControl().setValue("RP");
+							}
+							orc.getDateTimeOfTransaction().getTime().setValue(HL7Server.getTransactionUpdateTime(serverid, transactionid));
+							orc.getQuantityTiming(0).getQuantity().getCq1_Quantity().setValue("1");
+							String userid = HL7Server.getTransactionUserId(serverid, transactionid)+"";
+							if(userid.length()>0) {
+								orc.getOrderingProvider(0).getIDNumber().setValue(userid);
+								orc.getOrderingProvider(0).getFamilyName().getSurname().setValue(HL7Server.getUserLastname(userid));
+								orc.getOrderingProvider(0).getGivenName().setValue(HL7Server.getUserFirstname(userid));
+							}
+							orc.getPlacerOrderNumber().getEntityIdentifier().setValue(serverid+"."+transactionid);		
+							orc.getFillerOrderNumber().getEntityIdentifier().setValue(serverid+"."+transactionid);
+							
+							OML_O33_OBSERVATION_REQUEST omlobr = omlorder.getOBSERVATION_REQUEST();
+							OBR obr = omlobr.getOBR();
+							obr.getSetIDOBR().setValue("1");
+							obr.getPlacerOrderNumber().getEntityIdentifier().setValue(serverid+"."+transactionid);		
+							obr.getFillerOrderNumber().getEntityIdentifier().setValue(serverid+"."+transactionid);
+							obr.getSpecimenReceivedDateTime().getTime().setValue(HL7Server.getSpecimenReceivedDateTime(serverid,transactionid,(String)r_reversanalyses.get(analysercode)));
+							obr.getUniversalServiceIdentifier().getIdentifier().setValue(analysercode.split(";")[0]);
+						}
+					}
+					System.out.println("End of export for specimen "+spec);
+					counter++;
 				}
-				System.out.println("End of export for specimen "+spec);
-				counter++;
+				System.out.println("End of export for transaction id "+transactionid);
 			}
-			System.out.println("End of export for transaction id "+transactionid);
 		}
-		conn.close();
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		return exportedAnalyses;
 	}
 }

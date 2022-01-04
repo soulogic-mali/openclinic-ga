@@ -205,9 +205,17 @@
         <tr>
             <td class="admin"><%=getTran(request,"web", "admissiontype", sWebLanguage)%></td>
             <td class="admin2">
-            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_ADMISSIONTYPE", "mspls.sta.admissiontype", sWebLanguage, "") %>
+            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_ADMISSIONTYPE_STA", "mspls.sta.admissiontype", sWebLanguage, "") %>
             </td>
         </tr>
+        <% if(SH.c(activePatient.gender).toLowerCase().equalsIgnoreCase("f") && activePatient.getAge()>=10){ %>
+        <tr>
+            <td class="admin"><%=getTran(request,"mspls", "pregnancyrelated", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "mspls.ssn.pregnancyrelated",  "ITEM_TYPE_PREGNANCYRELATED", sWebLanguage, true,"","") %>
+            </td>
+        </tr>
+        <% } %>
         <tr>
             <td class="admin"><%=getTran(request,"web", "brachialcircimference", sWebLanguage)%></td>
             <td class="admin2">
@@ -239,93 +247,9 @@
             </td>
         </tr>
         <tr>
-            <td class="admin"><%=getTran(request,"mspls", "admissioncriteria", sWebLanguage)%></td>
-            <td class="admin2">
-            	<%=ScreenHelper.writeDefaultCheckBoxes((TransactionVO)transaction, request, "mspls.sta.admissioncriteria2",  "ITEM_TYPE_ADMISSIONCRITERIA", sWebLanguage, true) %>
-            </td>
-        </tr>
-        <tr>
             <td class="admin"><%=getTran(request,"mspls", "hivrelatedmalnutrition", sWebLanguage)%></td>
             <td class="admin2">
             	<%=ScreenHelper.writeDefaultCheckBoxes((TransactionVO)transaction, request, "mspls.sta.hivrelatedmalnutrition",  "ITEM_TYPE_HIVRELATEDMALNUTRITION", sWebLanguage, true) %>
-            </td>
-        </tr>
-		<tr class='admin'>
-			<td colspan="2"><%=getTran(request,"mspls", "discharge", sWebLanguage)%></td>
-		</tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"web", "date", sWebLanguage)%></td>
-            <td class="admin2">
-            	<%=ScreenHelper.writeDefaultDateInput(session, (TransactionVO)transaction, "ITEM_TYPE_DISCHARGEDATE", sWebLanguage, sCONTEXTPATH) %>
-            </td>
-        </tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"web", "weight", sWebLanguage)%></td>
-            <td class="admin2">
-            	<%=ScreenHelper.writeDefaultNumericInput(session, (TransactionVO) transaction, "ITEM_TYPE_DISCHARGEWEIGHT", 5, 2, 150, sWebLanguage,"calculateWeightOverHeight();") %> kg
-            </td>
-        </tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"web", "height", sWebLanguage)%></td>
-            <td class="admin2">
-            	<%=ScreenHelper.writeDefaultNumericInput(session, (TransactionVO) transaction, "ITEM_TYPE_DISCHARGEHEIGHT", 5, 20, 250, sWebLanguage,"calculateWeightOverHeight();") %> cm
-            </td>
-        </tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"web", "weightoverlength", sWebLanguage)%></td>
-            <td class="admin2">
-            	<%=ScreenHelper.writeDefaultTextInputReadonly(session, (TransactionVO)transaction, "ITEM_TYPE_DISCHARGEWEIGHTOVERHEIGHT", 5) %>
-            </td>
-        </tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"web", "weightoverlengthz", sWebLanguage)%></td>
-            <td class="admin2">
-            	<%=ScreenHelper.writeDefaultTextInputReadonly(session, (TransactionVO)transaction, "ITEM_TYPE_DISCHARGEWEIGHTOVERHEIGHTZ", 5) %>
-            </td>
-        </tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"web", "oedema", sWebLanguage)%></td>
-            <td class="admin2">
-            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_DISCHARGEOEDEMA", "mspls.sta.oedema", sWebLanguage, "") %>
-            </td>
-        </tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"web", "brachialcircimference", sWebLanguage)%></td>
-            <td class="admin2">
-            	<%=ScreenHelper.writeDefaultNumericInput(session, (TransactionVO) transaction, "ITEM_TYPE_DISCHARGEBRACHIALCIRCUMFERENCE", 5, 10, 1000, sWebLanguage) %> mm
-            </td>
-        </tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"web", "dischargetype", sWebLanguage)%></td>
-            <td class="admin2">
-            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_DISCHARGETYPE", "mspls.sta.dischargetype", sWebLanguage, "") %>
-            </td>
-        </tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"web", "transfer", sWebLanguage)%></td>
-            <td class="admin2">
-            	<%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_TRANSFER", 60, 1) %>
-            </td>
-        </tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"mspls", "diagnosisobservations", sWebLanguage)%></td>
-            <td class="admin2">
-				<table width='100%'>
-					<tr>
-						<td width='40%'><%=ScreenHelper.writeDefaultTextInput(session, (TransactionVO)transaction, "ITEM_TYPE_DIAGNOSIS1",80) %></td>
-						<td><%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_DIAGNOSIS1CONFIRMED","mspls.diagnosis.confirmed", sWebLanguage, "") %></td>
-					</tr>
-					<tr>
-						<td><%=ScreenHelper.writeDefaultTextInput(session, (TransactionVO)transaction, "ITEM_TYPE_DIAGNOSIS2",80) %> </td>
-						<td><%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_DIAGNOSIS2CONFIRMED","mspls.diagnosis.confirmed", sWebLanguage, "") %></td>
-					</tr>
-				</table>
-            </td>
-        </tr>
-        <tr>
-            <td class="admin"><%=getTran(request,"web", "distributedkit", sWebLanguage)%></td>
-            <td class="admin2">
-            	<%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_KIT", 60, 1) %>
             </td>
         </tr>
         <tr>

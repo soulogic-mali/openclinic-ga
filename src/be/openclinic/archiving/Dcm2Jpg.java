@@ -279,7 +279,9 @@ public class Dcm2Jpg {
 
     private void encodeByJPEGEncoder(BufferedImage bi, ServletOutputStream dest) {
         try {
-        	writeJpeg(bi,ImageIO.createImageOutputStream(dest));
+        	ImageOutputStream ios = ImageIO.createImageOutputStream(dest);
+        	writeJpeg(bi,ios);
+        	CloseUtils.safeClose(ios);
         } 
         catch(Exception e){
         	e.printStackTrace();
@@ -345,6 +347,7 @@ public class Dcm2Jpg {
             }
             writer.write(null, new IIOImage(bi, null, null), iwparam);
         } finally {
+            CloseUtils.safeClose(out);
             writer.dispose();
         }
     }

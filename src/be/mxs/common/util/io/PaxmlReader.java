@@ -38,11 +38,24 @@ public class PaxmlReader {
 	public static void main(String[] args) throws GeneralException, IOException {
 		String processid=ManagementFactory.getRuntimeMXBean().getName();
 		System.out.println(processid+" - Loading primrose configuration "+args[0]);
-		PrimroseLoader.load(args[0], true);
-		System.out.println(processid+" - Primrose loaded");
-		MedwanQuery.getInstance(false);
-		ScanDirectoryMonitor.loadConfig();
-		System.out.println(processid+" - ScanDirectoryMonitor configured");
+		try {
+			PrimroseLoader.load(args[0], true);
+			System.out.println(processid+" - Primrose loaded");
+		}
+		catch(Exception e) {
+			System.out.println(processid+" - Error - Closing system");
+			System.exit(0);
+		}
+		System.out.println(processid+" - Configuring ScanDirectoryMonitor");
+		try {
+			MedwanQuery.getInstance(false);
+			ScanDirectoryMonitor.loadConfig();
+			System.out.println(processid+" - ScanDirectoryMonitor configured");
+		}
+		catch(Exception e) {
+			System.out.println(processid+" - Error - Closing system");
+			System.exit(0);
+		}
 		Collection<File> files = FileUtils.listFiles(new File(args[1]), new WildcardFileFilter("*.paxml"), null);
 		System.out.println(processid+" - Found "+files.size()+" files");
 		Iterator<File> iFiles = files.iterator();

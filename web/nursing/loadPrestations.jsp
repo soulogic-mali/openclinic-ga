@@ -26,7 +26,7 @@
 			ps.setString(1,sKey);
 		}
 		long day = 24*3600*1000;
-		ps.setDate(2,new java.sql.Date(new java.util.Date().getTime()-90*day));
+		ps.setDate(2,new java.sql.Date(new java.util.Date().getTime()-SH.ci("nursingPrestationsSearchablePeriod",365)*day));
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()){
 			if(ScreenHelper.parseDate(ScreenHelper.formatDate(encounter.getBegin())).after(rs.getDate("OC_NURSINGDEBET_DATE"))){

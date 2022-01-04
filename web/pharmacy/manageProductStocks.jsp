@@ -118,7 +118,13 @@
                changeLevelOutTran = getTranNoLink("Web.manage","changeLevelOut",sWebLanguage);
 
         // run thru found productstocks
-        HashSet opendeliveries = ProductStockOperation.getOpenProductStockDeliveries();
+        Vector opendeliveries = new Vector();
+        if(objects.size()>0){
+        	ProductStock productStock = (ProductStock)objects.get(0);
+        	opendeliveries=ProductStockOperation.getOpenProductStockDeliveries(productStock.getServiceStockUid(), SH.getTimeYear());
+        	System.out.println("opendeliveries="+opendeliveries.size());
+        }
+        ProductStockOperation.getOpenProductStockDeliveries();
         Hashtable productnames = Product.getProductNames();
         Hashtable openquantities = ProductOrder.getOpenOrderedQuantity();
         ProductStock productStock;
@@ -151,8 +157,10 @@
             html.append("<tr class='list"+sClass+"'>")
                  .append("<td width='16'>"+(activeUser.getAccessRight("pharmacy.manageproductstocks.delete") && (productStock.getServiceStock()!=null && productStock.getServiceStock().getStockManagerUid().equalsIgnoreCase(activeUser.userid))?"<img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' class='link' alt='"+deleteTran+"' onclick=\"doDelete('"+sStockUid+"');\" title='"+deleteTran+"'></td>":"</td>"))
 		         .append("<td width='16'>"+(activeUser.getAccessRight("pharmacy.viewproductstockfiches.select")?"<img src='"+sCONTEXTPATH+"/_img/icons/icon_edit.png' class='link' onclick=\"printFiche('"+sStockUid+"');\" title='"+ficheTran+"'></td>":"<td/>"));
-            if(opendeliveries.contains(productStock.getServiceStockUid()+"$"+productStock.getProductUid())){
-                html.append("<td width='16'><img src='"+sCONTEXTPATH+"/_img/icons/icon_incoming.gif' class='link' alt='"+incomingTran+"' onclick='javascript:receiveProduct(\""+sStockUid+"\",\""+sProductName+"\");'/>&nbsp;</td>");
+            System.out.println("productStock.getProductUid()="+productStock.getProductUid());
+            System.out.println("opendeliveries.contains="+opendeliveries.contains(productStock.getProductUid()));
+            if(opendeliveries.contains(productStock.getProductUid())){
+                html.append("<td width='16'><img src='"+sCONTEXTPATH+"/_img/icons/icon_incoming.gif' class='link' alt='"+incomingTran+"' onclick='javascript:receiveProduct(\""+sStockUid+"\",\""+sProductName+"\");'/></td>");
             }
             else {
             	html.append("<td/>");

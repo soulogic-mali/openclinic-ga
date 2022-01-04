@@ -28,7 +28,6 @@
 				</td>
 			</tr>
 		<%
-			System.out.println("!!!!!");
 			if(SPT.postSPTData()){
 		%>
 			<td style='font-size:6vw;text-align:center;padding:10px'>

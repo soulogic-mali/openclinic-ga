@@ -1,7 +1,10 @@
 package be.openclinic.pharmacy;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.Vector;
@@ -9,17 +12,56 @@ import java.util.Vector;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 
 import be.mxs.common.util.db.MedwanQuery;
+import be.mxs.common.util.system.Debug;
 import be.openclinic.common.ObjectReference;
+import be.openclinic.system.OCHttpClient;
 import be.openclinic.system.SH;
 import net.admin.Service;
 
 public class RemotePharmacy {
+	public static final int ERROR_FAILED_INITIALIZATION_EXISTING_OPERATIONS = 1;
+	public static final int INFO_INITIALIZATION_PERFORMED = 2;
+	public static final int INFO_NEW_PRODUCT_CREATED = 3;
+	public static final int INFO_NEW_PRODUCTSTOCK_CREATED = 4;
+	public static final int INFO_NEW_BATCH_CREATED = 5;
+	public static final int INFO_NEW_OPERATION_CREATED = 6;
+	
+	public static void log(int error, String serviceStockUid) {
+		log(error,serviceStockUid,"");
+	}
+	
+	public static void log(int error, String serviceStockUid, String comment) {
+		Connection conn = SH.getOpenClinicConnection();
+		try {
+			PreparedStatement ps = conn.prepareStatement("insert into oc_pharmasyncerrors(oc_error_code,oc_error_servicestockuid,oc_error_updatetime,oc_error_comment) values(?,?,?,?)");
+			ps.setInt(1, error);
+			ps.setString(2, serviceStockUid);
+			ps.setTimestamp(3, SH.getSQLTime());
+			ps.setString(4, comment);
+			ps.execute();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public static Element getPharmacyOperations(String serviceStockUid) {
 		ServiceStock stock = ServiceStock.get(serviceStockUid);
 		if(stock!=null) {
@@ -29,6 +71,7 @@ public class RemotePharmacy {
 	}
 	
 	public static void getPharmacyOperations(ServiceStock stock, String userid) {
+		Debug.println("Getting remote operations from "+SH.cs("remoteSyncId."+stock.getUid(),"")+ " for service stock "+stock.getUid());
 		Element messages = getPharmacyOperations(SH.cs("remoteSyncId."+stock.getUid(),""),SH.ci("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+stock.getUid(),""), -1)+"");
 		Iterator<Element> iMessages = messages.elementIterator("message");
 		while(iMessages.hasNext()){
@@ -58,32 +101,16 @@ public class RemotePharmacy {
 				ProductStock productStock = productStocks.elementAt(n);
 				message.add(productStock.getInitElement());
 			}
-			HttpClient client = new HttpClient();
-			PostMethod method = new PostMethod(SH.cs("pharmaSyncServerURL",""));
-			NameValuePair[] nvp = new NameValuePair[3];
-			nvp[0]= new NameValuePair("uid",SH.cs("serviceStockUID."+stock.getUid(),""));
-			nvp[1]= new NameValuePair("xml",message.asXML());
-			nvp[2]= new NameValuePair("operation","store");
-			method.setQueryString(nvp);
-			String authStr = SH.cs("pharmaSyncServerURLUsername", "nil") + ":" + SH.cs("pharmaSyncServerURLPassword", "nil");
-			String authEncoded = Base64.getEncoder().encodeToString(authStr.getBytes());
-		    method.setRequestHeader("Authorization", "Basic "+authEncoded);
-			try{
-				int statusCode = client.executeMethod(method);
-				String sResponse=method.getResponseBodyAsString();
-				Document doc = org.dom4j.DocumentHelper.parseText(sResponse);
-				Element eResponse = doc.getRootElement();
-				if(eResponse.attributeValue("type").equalsIgnoreCase("pharmasync")){
-					//Operation was succesfull
-					bSuccess=true;
-				}
-				else if(eResponse.attributeValue("type").equalsIgnoreCase("error")){
-					//Operation was NOT succesfull
-				}
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-			}
+			OCHttpClient oc_client = new OCHttpClient();
+			oc_client.addStringParam("uid", SH.cs("serviceStockUID."+stock.getUid(),""));
+			oc_client.addStringParam("xml",message.asXML());
+			oc_client.addStringParam("operation","store");
+			CloseableHttpResponse resp = oc_client.postAuthenticated(SH.cs("pharmaSyncServerURL",""),SH.cs("pharmaSyncServerURLUsername", "nil"), SH.cs("pharmaSyncServerURLPassword", "nil"));
+			HttpEntity entity = resp.getEntity();
+		    if(entity!=null){
+		    	System.out.println(EntityUtils.toString(entity));
+		    	bSuccess= true;
+		    }
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -95,25 +122,28 @@ public class RemotePharmacy {
 		if(SH.cs("pharmaSyncServerURL","").length()==0) {
 			return null;
 		}
-		HttpClient client = new HttpClient();
-		PostMethod method = new PostMethod(SH.cs("pharmaSyncServerURL",""));
-		NameValuePair[] nvp = new NameValuePair[3];
-		nvp[0]= new NameValuePair("uid",uid);
-		nvp[1]= new NameValuePair("lastupdateid",lastupdateid);
-		nvp[2]= new NameValuePair("operation","retrieve");
-		method.setQueryString(nvp);
-		String authStr = SH.cs("pharmaSyncServerURLUsername", "nil") + ":" + SH.cs("pharmaSyncServerURLPassword", "nil");
-		String authEncoded = Base64.getEncoder().encodeToString(authStr.getBytes());
-	    method.setRequestHeader("Authorization", "Basic "+authEncoded);
-		try{
-			int statusCode = client.executeMethod(method);
-			String sResponse=method.getResponseBodyAsString();
-			Document doc = org.dom4j.DocumentHelper.parseText(sResponse);
-			return doc.getRootElement();
+		Debug.println("Requesting messages from "+SH.cs("pharmaSyncServerURL","")+" sent by "+uid+" after "+lastupdateid);
+		OCHttpClient oc_client = new OCHttpClient();
+		oc_client.addStringParam("uid",uid);
+		oc_client.addStringParam("lastupdateid",lastupdateid);
+		oc_client.addStringParam("operation","retrieve");
+		try {
+			CloseableHttpResponse resp = oc_client.postAuthenticated(SH.cs("pharmaSyncServerURL",""),SH.cs("pharmaSyncServerURLUsername", "nil"), SH.cs("pharmaSyncServerURLPassword", "nil"));
+			HttpEntity entity = resp.getEntity();
+		    if(entity!=null){
+		    	try {
+			    	Document doc = org.dom4j.DocumentHelper.parseText(EntityUtils.toString(entity));
+			    	return doc.getRootElement();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+		    }
 		}
-		catch(Exception e) {
-			e.printStackTrace();
+		catch(Exception x) {
+			x.printStackTrace();
 		}
+
 		return null;
 	}
 	
@@ -121,22 +151,23 @@ public class RemotePharmacy {
 		if(SH.cs("pharmaSyncServerURL","").length()==0) {
 			return -1;
 		}
-		HttpClient client = new HttpClient();
-		PostMethod method = new PostMethod(SH.cs("pharmaSyncServerURL",""));
-		NameValuePair[] nvp = new NameValuePair[1];
-		nvp[0]= new NameValuePair("operation","getlastid");
-		method.setQueryString(nvp);
-		String authStr = SH.cs("pharmaSyncServerURLUsername", "nil") + ":" + SH.cs("pharmaSyncServerURLPassword", "nil");
-		String authEncoded = Base64.getEncoder().encodeToString(authStr.getBytes());
-	    method.setRequestHeader("Authorization", "Basic "+authEncoded);
-		try{
-			int statusCode = client.executeMethod(method);
-			String sResponse=method.getResponseBodyAsString();
-			Document doc = org.dom4j.DocumentHelper.parseText(sResponse);
-			return Integer.parseInt(doc.getRootElement().attributeValue("lastid"));
+		OCHttpClient oc_client = new OCHttpClient();
+		oc_client.addStringParam("operation","getlastid");
+		try {
+			CloseableHttpResponse resp = oc_client.postAuthenticated(SH.cs("pharmaSyncServerURL",""),SH.cs("pharmaSyncServerURLUsername", "nil"), SH.cs("pharmaSyncServerURLPassword", "nil"));
+			HttpEntity entity = resp.getEntity();
+		    if(entity!=null){
+		    	try {
+			    	Document doc = org.dom4j.DocumentHelper.parseText(EntityUtils.toString(entity));
+			    	return Integer.parseInt(doc.getRootElement().attributeValue("lastid"));
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+		    }
 		}
-		catch(Exception e) {
-			e.printStackTrace();
+		catch(Exception x) {
+			x.printStackTrace();
 		}
 		return -1;
 	}
@@ -145,24 +176,26 @@ public class RemotePharmacy {
 		if(SH.cs("pharmaSyncServerURL","").length()==0) {
 			return null;
 		}
-		HttpClient client = new HttpClient();
-		PostMethod method = new PostMethod(SH.cs("pharmaSyncServerURL",""));
-		NameValuePair[] nvp = new NameValuePair[2];
-		nvp[0]= new NameValuePair("operation","getnewuids");
-		nvp[1]= new NameValuePair("lastupdateid",lastupdateid);
-		method.setQueryString(nvp);
-		String authStr = SH.cs("pharmaSyncServerURLUsername", "nil") + ":" + SH.cs("pharmaSyncServerURLPassword", "nil");
-		String authEncoded = Base64.getEncoder().encodeToString(authStr.getBytes());
-	    method.setRequestHeader("Authorization", "Basic "+authEncoded);
-		try{
-			int statusCode = client.executeMethod(method);
-			String sResponse=method.getResponseBodyAsString();
-			Document doc = org.dom4j.DocumentHelper.parseText(sResponse);
-			return doc.getRootElement();
+		OCHttpClient oc_client = new OCHttpClient();
+		oc_client.addStringParam("operation","getnewuids");
+		oc_client.addStringParam("lastupdateid",lastupdateid);
+		try {
+			CloseableHttpResponse resp = oc_client.postAuthenticated(SH.cs("pharmaSyncServerURL",""),SH.cs("pharmaSyncServerURLUsername", "nil"), SH.cs("pharmaSyncServerURLPassword", "nil"));
+			HttpEntity entity = resp.getEntity();
+		    if(entity!=null){
+		    	try {
+			    	Document doc = org.dom4j.DocumentHelper.parseText(EntityUtils.toString(entity));
+			    	return doc.getRootElement();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+		    }
 		}
-		catch(Exception e) {
-			e.printStackTrace();
+		catch(Exception x) {
+			x.printStackTrace();
 		}
+
 		return null;
 	}
 	
@@ -215,6 +248,7 @@ public class RemotePharmacy {
 						prod.setUpdateUser(updateuser);
 						prod.setVersion(1);
 						prod.store();
+						log(INFO_NEW_PRODUCT_CREATED,serviceStockUid,prod.getUid()+": "+name);
 					}
 					else {
 						prod=p.elementAt(0);
@@ -235,6 +269,7 @@ public class RemotePharmacy {
 							productStock.setUpdateUser(updateuser);
 							productStock.setVersion(1);
 							productStock.store();
+							log(INFO_NEW_PRODUCTSTOCK_CREATED,serviceStockUid,productStock.getUid()+": "+name);
 						}
 						Batch batch = null;
 						String batchuid="";
@@ -256,6 +291,7 @@ public class RemotePharmacy {
 								batch.setUpdateUser(updateuser);
 								batch.setVersion(1);
 								batch.store();
+								log(INFO_NEW_BATCH_CREATED,serviceStockUid,batch.getUid()+": "+number+" ["+name+"]");
 							}
 							batchuid=batch.getUid();
 						}
@@ -309,6 +345,7 @@ public class RemotePharmacy {
 				        operation.setUpdateUser(updateuser);
 				        operation.setValidated(1);
 						operation.store(false,false);
+						log(INFO_NEW_OPERATION_CREATED,serviceStockUid,operation.getUid()+": "+operationtype+" ["+name+"]");
 					}
 				}
 				
@@ -316,15 +353,39 @@ public class RemotePharmacy {
 				if(updateid>SH.ci("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+serviceStockUid,""), -1)) {
 					MedwanQuery.getInstance().setConfigString("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+serviceStockUid,""), updateid+"");
 				}
+				Debug.println("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+serviceStockUid,"")+" set to "+updateid);
 			}
 			else if(SH.cs("remoteSyncId."+serviceStockUid,"").length()>0 && message.attributeValue("objecttype").equalsIgnoreCase("initialize")) {
-				//Remove existing product stocks from the service stock
+				//If there are existing product stock operations, then we cannot perform the initialize command
 				Connection conn = SH.getOpenClinicConnection();
-				PreparedStatement pst = conn.prepareStatement("delete from oc_productstocks where oc_stock_servicestockuid=?");
+				PreparedStatement pst = conn.prepareStatement("select oc_operation_objectid from oc_productstockoperations,oc_productstocks where oc_stock_objectid=replace(oc_operation_productstockuid,'"+SH.getServerId()+".','') and ((oc_operation_srcdesttype='servicestock' and oc_operation_srcdestuid=?) or oc_stock_servicestockuid=?)");
+				pst.setString(1, serviceStockUid);
+				pst.setString(2, serviceStockUid);
+				ResultSet rst = pst.executeQuery();
+				if(rst.next()) {
+					//Operations already exist. Cannot perform initialization command
+					rst.close();
+					pst.close();
+					conn.close();
+					int updateid = Integer.parseInt(message.attributeValue("id"));
+					if(updateid>SH.ci("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+serviceStockUid,""), -1)) {
+						MedwanQuery.getInstance().setConfigString("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+serviceStockUid,""), updateid+"");
+					}
+					//Log failed initialization
+					log(ERROR_FAILED_INITIALIZATION_EXISTING_OPERATIONS,serviceStockUid);
+					return true;
+				}
+				rst.close();
+				pst.close();
+				conn.close();
+				//Remove existing product stocks from the service stock
+				conn = SH.getOpenClinicConnection();
+				pst = conn.prepareStatement("delete from oc_productstocks where oc_stock_servicestockuid=?");
 				pst.setString(1, serviceStockUid);
 				pst.execute();
 				pst.close();
 				conn.close();
+				Debug.println("Product stocks from service stock "+serviceStockUid+" deleted");
 				Iterator<Element> iProductStocks = message.elementIterator("productstock");
 				while(iProductStocks.hasNext()) {
 					Element productStock = iProductStocks.next();
@@ -339,6 +400,7 @@ public class RemotePharmacy {
 						String rxnormcode = SH.c(product.attributeValue("rxnormcode"));
 						String dose = SH.c(product.elementText("dose"));
 						String name = SH.c(product.elementText("name"));
+						Debug.println("Importing product "+code+" - "+name);
 						String unit = SH.c(product.elementText("unit"));
 						int packageunits=1;
 						try {
@@ -350,8 +412,10 @@ public class RemotePharmacy {
 						} catch(Exception o) {}
 						Product prod=null;
 						if(code.length()>0) {
+							Debug.println("Searching for existing product");
 							Vector<Product> p = Product.findWithCode(code, "", "", "", "", "", "", "", "", "OC_PRODUCT_OBJECTID", "");
 							if(p.size()==0) {
+								Debug.println("Product does not exist");
 								//The product does not exist, so we must create it
 								prod=new Product();
 								prod.setUid("-1");
@@ -371,6 +435,7 @@ public class RemotePharmacy {
 							}
 							else {
 								prod=p.elementAt(0);
+								Debug.println("Product exists with UID: "+prod.getUid());
 							}
 							//Add the product stock
 							ProductStock ps = new ProductStock();
@@ -393,6 +458,7 @@ public class RemotePharmacy {
 							ps.setUpdateUser(updateuser);
 							ps.setVersion(1);
 							ps.store();
+							Debug.println("Product stock added to service stock");
 							int nBatchedQuantity=0;
 							Iterator<Element> iBatches = productStock.elementIterator("batch");
 							while(iBatches.hasNext()) {
@@ -455,14 +521,17 @@ public class RemotePharmacy {
 						}
 					}
 				}
+				log(INFO_INITIALIZATION_PERFORMED,serviceStockUid);
+				int updateid = Integer.parseInt(message.attributeValue("id"));
+				if(updateid>SH.ci("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+serviceStockUid,""), -1)) {
+					MedwanQuery.getInstance().setConfigString("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+serviceStockUid,""), updateid+"");
+				}
 			}
 			return true;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		
 		return bSuccess;
 	}
-
 }

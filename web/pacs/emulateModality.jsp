@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.io.FileUtils"%>
 <%@page import="org.dcm4che2.data.VR"%>
 <%@page import="org.dcm4che2.data.Tag"%>
 <%@page import="org.dcm4che2.data.DicomObject"%>
@@ -56,7 +57,9 @@
 							dcmFile = new File(fullFileName);
 						}
 						new File(MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")).mkdirs();
-						item.write(dcmFile);
+			        	InputStream is = item.getInputStream();
+			        	FileUtils.copyInputStreamToFile(is, dcmFile);
+			            is.close();
 						//Now we have the DICOM file in a local directory and should change the PatientID
 						DicomObject obj = Dicom.getDicomObject(fullFileName);
 						obj.putString(Tag.PatientID, VR.LO, patientid);

@@ -906,6 +906,21 @@ public class ScreenHelper {
     public static String getTran(HttpServletRequest request,String sType, String sID, String sLanguage){
         return getTran(request,sType,sID,sLanguage,false);
     }
+    
+    public static boolean isTimeout(String sName, long intervalInSeconds) {
+    	java.util.Date dLastValue = new java.util.Date();
+    	try{
+    		dLastValue=new SimpleDateFormat("yyyyMMddHHmmss").parse(SH.cs(sName,"19000101000000"));
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return new java.util.Date().getTime()-dLastValue.getTime()>1000*intervalInSeconds;
+    }
+    
+    public static void setTimer(String sName) {
+    	MedwanQuery.getInstance().setConfigString(sName, new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date()));
+    }
 
     public static String getTran(HttpServletRequest request,String sType, String sID, String sLanguage, boolean displaySimplePopup){
     	String labelValue = "";
@@ -3709,6 +3724,15 @@ public static String removeAccents(String sTest){
             sString = sString.trim();
         }
         return sString;
+    }
+
+    public static String checkString(StringBuffer sString){
+        // om geen 'null' weer te geven
+    	String s="";
+        if(sString!=null && !sString.toString().equalsIgnoreCase("null")){
+             s = sString.toString().trim();
+        }
+        return s;
     }
 
     //--- CHECK STRING ----------------------------------------------------------------------------

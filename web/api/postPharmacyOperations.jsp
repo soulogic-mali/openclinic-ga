@@ -3,9 +3,10 @@
 <%
 	String sResult="<response type='error' message='[0.0] Undefined error'/>";
 	try{
-		String operation = SH.c(request.getParameter("operation"));
-		String uid=request.getParameter("uid");
-		String xml=request.getParameter("xml");
+		Hashtable parameters = SH.getMultipartFormParameters(request);
+		String operation = SH.c((String)parameters.get("operation"));
+		String uid=SH.c((String)parameters.get("uid"));
+		String xml=SH.c((String)parameters.get("xml"));
 		int n=-1;
 		
 		if(operation.equalsIgnoreCase("store")){
@@ -23,7 +24,7 @@
 			sResult="<response type='pharmasync' updateid='"+n+"' message='Added sync data'/>";
 		}
 		else if(operation.equalsIgnoreCase("retrieve")){
-			String lastupdateid=request.getParameter("lastupdateid");
+			String lastupdateid=SH.c((String)parameters.get("lastupdateid"));
 			int nLastupdateid =0;
 			try{
 				nLastupdateid=Integer.parseInt(lastupdateid);
@@ -37,9 +38,14 @@
 			ps.setInt(2,nLastupdateid);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
-				Element message = DocumentHelper.parseText(rs.getString("OC_PHARMASYNC_XML")).getRootElement();
-				message.addAttribute("id", rs.getString("OC_PHARMASYNC_ID"));
-				r.add(message);
+				try{
+					Element message = DocumentHelper.parseText(rs.getString("OC_PHARMASYNC_XML")).getRootElement();
+					message.addAttribute("id", rs.getString("OC_PHARMASYNC_ID"));
+					r.add(message);
+				}
+				catch(Exception x){
+					x.printStackTrace();
+				}
 			}
 			rs.close();
 			ps.close();
@@ -60,7 +66,7 @@
 			sResult=r.asXML();
 		}
 		else if(operation.equalsIgnoreCase("getnewuids")){
-			String lastupdateid=request.getParameter("lastupdateid");
+			String lastupdateid=SH.c((String)parameters.get("lastupdateid"));
 			int nLastupdateid =0;
 			try{
 				nLastupdateid=Integer.parseInt(lastupdateid);

@@ -621,7 +621,7 @@ public class Encounter extends OC_Object {
     		PreparedStatement ps = conn.prepareStatement("select * from OC_RFE where OC_RFE_ENCOUNTERUID=?");
     		ps.setString(1, encounterUid);
     		ResultSet rs = ps.executeQuery();
-    		while (bNewCase && rs.next()){
+    		while (!bNewCase && rs.next()){
     			String flags = rs.getString("OC_RFE_FLAGS");
     			if(flags.contains("N")) {
     				bNewCase=true;

@@ -12,6 +12,43 @@ import org.apache.commons.io.FileUtils;
 
 public class DicomUtils {
 	
+	public static boolean compressDicomDefault(String filename) {
+		return compressDicom(filename, "--j2kr");
+	}
+	
+	public static boolean compressDicom(String filename,String compression) {
+		FileUtils.deleteQuietly(new File(filename+".z"));
+		FileUtils.deleteQuietly(new File(filename+".u"));
+		String[] args = {compression,filename,filename+".z"};
+		if (Dcm2dcm.main(args)) {
+			try {
+				FileUtils.moveFile(new File(filename), new File(filename+".u"));
+				try {
+					FileUtils.moveFile(new File(filename+".z"), new File(filename));
+					FileUtils.deleteQuietly(new File(filename+".u"));
+					return true;
+				} catch (IOException e) {
+					FileUtils.moveFile(new File(filename+".u"), new File(filename));
+					FileUtils.deleteQuietly(new File(filename+".z"));
+					e.printStackTrace();
+				}
+			} catch (IOException e) {
+				FileUtils.deleteQuietly(new File(filename+".z"));
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	public static boolean compressDicomDefault(String sourcefile, String destinationfile) {
+		return compressDicom(sourcefile,destinationfile, "--j2kr");
+	}
+	
+	public static boolean compressDicom(String sourcefile, String destinationfile, String compression) {
+		String[] args = {compression,sourcefile,destinationfile};
+		return Dcm2dcm.main(args);
+	}
+	
 	public static boolean exportToJpeg(String sourcefile, String destinationfile) {
 		Dcm2Jpg dcm2jpg = new Dcm2Jpg();
 		try {

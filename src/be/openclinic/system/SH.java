@@ -10,6 +10,9 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.text.RandomStringGenerator;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
@@ -74,6 +77,10 @@ public class SH extends ScreenHelper {
 	}
 	
 	public static String c(String s) {
+		return checkString(s);
+	}
+	
+	public static String c(StringBuffer s) {
 		return checkString(s);
 	}
 	
@@ -144,6 +151,10 @@ public class SH extends ScreenHelper {
     }
     
     public static boolean isHostReachable(String host) {
-    	return true;
+    	try {
+			return InetAddress.getByName(host).isReachable(2000);
+		} catch (Exception e) {
+			return false;
+		}
     }
 }

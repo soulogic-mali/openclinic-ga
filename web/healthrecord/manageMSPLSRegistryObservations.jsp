@@ -232,6 +232,12 @@
         </tr>
        	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/sptField.jsp"),pageContext);%>
         <tr>
+            <td class="admin"><%=getTran(request,"mspls", "pvvih", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_PVVIH", sWebLanguage, true, "", " ") %>
+            </td>
+        </tr>
+        <tr>
             <td class="admin"><%=getTran(request,"mspls", "outcome", sWebLanguage)%></td>
             <td class="admin2">
             	<%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_OUTCOME", 60, 1) %>

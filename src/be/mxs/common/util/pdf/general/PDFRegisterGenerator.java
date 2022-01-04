@@ -145,28 +145,33 @@ public class PDFRegisterGenerator extends PDFOfficialBasic {
                 			String concatval="";
             				String val="";
             				for(int i=0;i<column.attributeValue("source").split(";").length;i++){
-        	    				val=reg.getValue(column.attributeValue("source").split(";",-1)[i], column.attributeValue("name").split(";",-1)[i], checkString(column.attributeValue("translateresult")).split(";",-1)[i]);
-        	    				if(checkString(column.attributeValue("contains")).split(";",-1).length>i && checkString(column.attributeValue("contains")).split(";",-1)[i].length()>0){
-        	    					boolean bContains=false;
-        	    					for(int n=0;n<val.split(",").length;n++){
-        	    						if(val.split(",")[n].equals(column.attributeValue("contains").split(";",-1)[i])){
-        	    							bContains=true;
-        	    							break;
-        	    						}
-        	    					}
-        	    					if(!bContains){
-        	    						val="";
-        	    					}
-        	    				}
-        	    				if(val.length()>0 && checkString(column.attributeValue("concatenate")).equals("1")){
-        	    					if(concatval.length()>0){
-        	    						concatval+="\n";
-        	    					}
-        	    					concatval+=val;
-        	    				}
-        	    				else if(val.length()==0 && !checkString(column.attributeValue("concatenate")).equals("1")){
-        	    					break;
-        	    				}
+            					try {
+	        	    				val=reg.getValue(column.attributeValue("source").split(";",-1)[i], column.attributeValue("name").split(";",-1)[i], checkString(column.attributeValue("translateresult")).split(";",-1)[i]);
+	        	    				if(checkString(column.attributeValue("contains")).split(";",-1).length>i && checkString(column.attributeValue("contains")).split(";",-1)[i].length()>0){
+	        	    					boolean bContains=false;
+	        	    					for(int n=0;n<val.split(",").length;n++){
+	        	    						if(val.split(",")[n].equals(column.attributeValue("contains").split(";",-1)[i])){
+	        	    							bContains=true;
+	        	    							break;
+	        	    						}
+	        	    					}
+	        	    					if(!bContains){
+	        	    						val="";
+	        	    					}
+	        	    				}
+	        	    				if(val.length()>0 && checkString(column.attributeValue("concatenate")).equals("1")){
+	        	    					if(concatval.length()>0){
+	        	    						concatval+="\n";
+	        	    					}
+	        	    					concatval+=val;
+	        	    				}
+	        	    				else if(val.length()==0 && !checkString(column.attributeValue("concatenate")).equals("1")){
+	        	    					break;
+	        	    				}
+            					}
+            					catch(Exception e) {
+            						e.printStackTrace();
+            					}
             				}
             				if(concatval.length()>0){
             					val=concatval;

@@ -296,13 +296,13 @@
 					 Prestation prestation = Prestation.get(stock.getProduct().getPrestationcode());
 					 if(prestation!=null){
 						 if(SH.c(insurance.getExtraInsurarUid()).length()==0){
-							 dPat=stock.getProduct().getPrestationquantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter());
+							 dPat=nBatch*stock.getProduct().getPrestationquantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter());
 							 dPatient+=dPat;
 						 }
 						 else{
-							 dExtraInsurer+=stock.getProduct().getPrestationquantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter());
+							 dExtraInsurer+=nBatch*stock.getProduct().getPrestationquantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter());
 						 }
-						 dInsurer+=stock.getProduct().getPrestationquantity()*prestation.getInsurarPrice(insurance, insurance.getInsuranceCategoryLetter());
+						 dInsurer+=nBatch*stock.getProduct().getPrestationquantity()*prestation.getInsurarPrice(insurance, insurance.getInsuranceCategoryLetter());
 					 }
 				 }
 

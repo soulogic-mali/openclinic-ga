@@ -373,20 +373,26 @@
 	else if(sAction.equalsIgnoreCase("edit")){
 		asset=Asset.get(sEditAssetUID);
 		sEditServiceUid=asset.getServiceuid();
-    	if(asset.getNomenclature().toUpperCase().startsWith("E")){
+		Nomenclature nom = Nomenclature.get("asset",asset.getNomenclature());
+		System.out.println("id = "+nom.getId());
+		System.out.println("parentid = "+nom.getParentId());
+		System.out.println("full code = "+nom.getFullyQualifiedIDGeneric());
+		System.out.println("root code = "+nom.getFullyQualifiedIDGeneric().split(";")[0]);
+    	if(SH.cs("assetEquipmentRootCodes","E").contains(nom.getFullyQualifiedIDGeneric().split(";")[0])){
     		assetType=Asset.EQUIPMENT;
     	}
-    	else if(asset.getNomenclature().toUpperCase().startsWith("I")){
+    	if(SH.cs("assetInfrastructureRootCodes","I").contains(nom.getFullyQualifiedIDGeneric().split(";")[0])){
     		assetType=Asset.INFRASTRUCTURE;
     	}
 	}
 	else if(sAction.equalsIgnoreCase("history")){
 		asset=Asset.getHistory(sEditAssetUID,SH.parseDate(SH.p(request,"timestamp"), "yyyyMMddHHmmssSSS"));
 		sEditServiceUid=asset.getServiceuid();
-    	if(asset.getNomenclature().toUpperCase().startsWith("E")){
+		Nomenclature nom = Nomenclature.get("asset",asset.getNomenclature());
+    	if(SH.cs("assetEquipmentRootCodes","E").contains(nom.getFullyQualifiedIDGeneric().split(";")[0])){
     		assetType=Asset.EQUIPMENT;
     	}
-    	else if(asset.getNomenclature().toUpperCase().startsWith("I")){
+    	if(SH.cs("assetInfrastructureRootCodes","I").contains(nom.getFullyQualifiedIDGeneric().split(";")[0])){
     		assetType=Asset.INFRASTRUCTURE;
     	}
 	}

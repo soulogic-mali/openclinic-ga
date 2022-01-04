@@ -68,7 +68,6 @@
 			if(hosts.contains(uid)){
 				continue;
 			}
-			//totalusers+=systemInfo.getUsersConnected();
 			if(viewAll.equalsIgnoreCase("1") || systemInfo.getVpnDomain().equalsIgnoreCase(vpnDomain)){
 				if(!bInit){
 					%>
@@ -86,6 +85,7 @@
 					<%
 					bInit=true;
 				}
+
 				//Host
 				long delay = (new java.util.Date().getTime()-rs.getTimestamp("dc_monitorparameter_updatetime").getTime())/1000;
 				String cls = "admingreen";
@@ -95,15 +95,21 @@
 				else if(delay>1800){
 					cls="adminyellow";
 				}
+
 				String version="",version2="",diskspace="";
 				PreparedStatement ps2 = conn.prepareStatement("select * from dc_monitorservers where dc_monitorserver_serveruid=?");
 				ps2.setString(1,rs.getString("dc_monitorparameter_serveruid"));
 				ResultSet rs2 = ps2.executeQuery();
 				if(rs2.next()){
 					version=rs2.getString("dc_monitorserver_softwareversion");
-					version2=Integer.parseInt(version)/1000000+"."+Integer.parseInt(version.substring(version.length()-6,version.length()-3))+"."+Integer.parseInt(version.substring(version.length()-3));
-					if(Integer.parseInt(version)<5170005){
-						version2+=" <img height='14px' title='This version has security vulnerabilities. Please upgrade to at least version 5.170.5.' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>";
+					try{
+						version2=Integer.parseInt(version)/1000000+"."+Integer.parseInt(version.substring(version.length()-6,version.length()-3))+"."+Integer.parseInt(version.substring(version.length()-3));
+						if(Integer.parseInt(version)<5170005){
+							version2+=" <img height='14px' title='This version has security vulnerabilities. Please upgrade to at least version 5.170.5.' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>";
+						}
+					}
+					catch(Exception e){
+						e.printStackTrace();
 					}
 				}
 				long ndiskspace=systemInfo.getDiskSpace()/(1024*1024);
@@ -111,7 +117,7 @@
 				if(ndiskspace<1000){
 					diskspace+=" <img height='14px' title='Low diskspace' src='"+sCONTEXTPATH+"/_img/icons/icon_blinkwarning.gif'/>";
 				}
-				
+
 				rs2.close();
 				ps2.close();
 				counter++;

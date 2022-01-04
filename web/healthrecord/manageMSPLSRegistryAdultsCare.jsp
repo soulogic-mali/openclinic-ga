@@ -251,9 +251,38 @@
             </td>
         </tr>
         <tr>
+            <td class="admin"><%=getTran(request,"mspls", "pvvih", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_PVVIH", sWebLanguage, true, "", " ") %>
+            </td>
+        </tr>
+        <tr>
             <td class="admin"><%=getTran(request,"mspls", "weeksamenorrhea", sWebLanguage)%></td>
             <td class="admin2">
             	<%=ScreenHelper.writeDefaultNumericInput(session,(TransactionVO)transaction, "ITEM_TYPE_AMENORRHEA", 10,1,45,sWebLanguage) %>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"mspls", "diagnosis", sWebLanguage)%> (DHIS2)</td>
+            <td class="admin2">
+				<table width='100%'>
+					<tr>
+						<td width='1%' nowrap>
+							<%=ScreenHelper.writeDefaultSelect(null, (TransactionVO)transaction, "ITEM_TYPE_LAB_DIAGNOSISDHIS1","cds.morbidity", sWebLanguage, "") %>
+						</td>
+						<td>
+							<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "mspls.disease.surveillancestatus", "ITEM_TYPE_MSPLS_DISEASESURVEILLANCESTATUSDHIS1", sWebLanguage, false, "","") %>
+						</td>
+					</tr>
+					<tr>
+						<td width='1%' nowrap>
+							<%=ScreenHelper.writeDefaultSelect(null, (TransactionVO)transaction, "ITEM_TYPE_LAB_DIAGNOSISDHIS2","cds.morbidity", sWebLanguage, "") %>
+						</td>
+						<td>
+							<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "mspls.disease.surveillancestatus", "ITEM_TYPE_MSPLS_DISEASESURVEILLANCESTATUSDHIS2", sWebLanguage, false, "","") %>
+						</td>
+					</tr>
+				</table>
             </td>
         </tr>
         <tr>
@@ -261,16 +290,29 @@
             <td class="admin2">
 				<table width='100%'>
 					<tr>
-						<td width='40%'><%=ScreenHelper.writeDefaultTextInput(session, (TransactionVO)transaction, "ITEM_TYPE_LAB_DIAGNOSIS1",80) %></td>
-						<td><%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_LAB_DIAGNOSIS1CONFIRMED","mspls.diagnosis.confirmed", sWebLanguage, "") %></td>
+						<td width='1%' nowrap><%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_LAB_DIAGNOSIS1",68,1) %></td>
+						<td>
+							<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "mspls.disease.surveillancestatus", "ITEM_TYPE_MSPLS_DISEASESURVEILLANCESTATUS1", sWebLanguage, false, "","") %>
+						</td>
 					</tr>
 					<tr>
-						<td><%=ScreenHelper.writeDefaultTextInput(session, (TransactionVO)transaction, "ITEM_TYPE_LAB_DIAGNOSIS2",80) %> </td>
-						<td><%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_LAB_DIAGNOSIS2CONFIRMED","mspls.diagnosis.confirmed", sWebLanguage, "") %></td>
+						<td width='1%' nowrap><%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_LAB_DIAGNOSIS2",68,1) %></td>
+						<td>
+							<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "mspls.disease.surveillancestatus", "ITEM_TYPE_MSPLS_DISEASESURVEILLANCESTATUS2", sWebLanguage, false, "","") %>
+						</td>
 					</tr>
 				</table>
             </td>
         </tr>
+        <% if(SH.c(activePatient.gender).equalsIgnoreCase("f") && activePatient.getAge()>=10){ %>
+	        <tr>
+	            <td class="admin"><%=getTran(request,"mspls", "maternaldeath", sWebLanguage)%></td>
+	            <td class="admin2">
+					<%=ScreenHelper.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_MSPLS_MATERNALDEATH", "") %>
+					<%= getTran(request,"web","yes",sWebLanguage) %>
+	            </td>
+	        </tr>
+        <%} %>
        	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/sptField.jsp"),pageContext);%>
         <tr>
             <td class="admin"><%=getTran(request,"mspls", "minorsurgery", sWebLanguage)%></td>

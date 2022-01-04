@@ -120,7 +120,7 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
 	            if(serviceStock.getNosync()==0){
 	                html.append("&nbsp;<img src='"+sCONTEXTPATH+"/_img/icons/icon_sync.gif' class='link' alt='"+getTranNoLink("web","sync",sWebLanguage)+"'/>");
 	            }
-	            if(serviceStock.hasOpenDeliveries()){
+	            if(serviceStock.isReceivingUser(activeUser.userid) && serviceStock.hasOpenDeliveries()){
 	                html.append("&nbsp;<img src='"+sCONTEXTPATH+"/_img/icons/icon_incoming.gif' class='link' alt='"+getTranNoLink("web","incoming",sWebLanguage)+"'' onclick='javascript:bulkReceive(\""+serviceStock.getUid()+"\");'/></a>");
 	            }
 	            if(serviceStock.hasOpenOrders()){
@@ -555,6 +555,7 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
             sSelectedDefaultSupplierName = sEditDefaultSupplierName;
         }
         else if(sAction.equals("showDetailsNew")){
+        	sEditStockUid = "";
             // default defaultSupplier is centralPharmacy
             if(sEditDefaultSupplierUid.length()==0) sEditDefaultSupplierUid = centralPharmacyCode;
 
@@ -958,7 +959,7 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
                     
                     <%-- Nosync --%>
                     <tr>
-                        <td class="admin" nowrap><%=getTran(request,"Web.manage","nosync",sWebLanguage)%> *</td>
+                        <td class="admin" nowrap><%=getTran(request,"Web.manage","nosync",sWebLanguage)%></td>
                         <td class="admin2">
                             <input type="checkbox" name="EditNosync" class="hand" <%=sSelectedNosync!=null && sSelectedNosync.equalsIgnoreCase("1")?"checked":""%> value="1" onKeyUp="isInteger(this);">
                         </td>
@@ -966,7 +967,7 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
                     
                     <%-- Hidden --%>
                     <tr>
-                        <td class="admin" nowrap><%=getTran(request,"Web.manage","hidden",sWebLanguage)%> *</td>
+                        <td class="admin" nowrap><%=getTran(request,"Web.manage","hidden",sWebLanguage)%></td>
                         <td class="admin2">
                             <input type="checkbox" name="EditHidden" class="hand" <%=sSelectedHidden!=null && sSelectedHidden.equalsIgnoreCase("1")?"checked":""%> value="1" onKeyUp="isInteger(this);">
                         </td>
@@ -974,7 +975,7 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
                     
                     <%-- ValidateOutgoing --%>
                     <tr>
-                        <td class="admin" nowrap><%=getTran(request,"Web.manage","validateoutgoing",sWebLanguage)%> *</td>
+                        <td class="admin" nowrap><%=getTran(request,"Web.manage","validateoutgoing",sWebLanguage)%></td>
                         <td class="admin2">
                             <input type="checkbox" name="EditValidateOutgoing" class="hand" <%=sSelectedValidateOutgoing!=null && sSelectedValidateOutgoing.equalsIgnoreCase("1")?"checked":""%> value="1" onKeyUp="isInteger(this);">
                         </td>

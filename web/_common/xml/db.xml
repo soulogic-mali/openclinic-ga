@@ -734,28 +734,10 @@
 		</indexes>
 	</table>
 	
-	<table name="SPT_SIGNS" db="openclinic" sync="none">
-		<columns>
-			<column name="SPT_SIGN_PATIENTUID" dbtype="bigint" javatype="integer"/>
-			<column name="SPT_SIGN_SIGNS" dbtype="varchar" javatype="string" size="1000"/>
-			<column name="SPT_SIGN_TREATMENT" dbtype="varchar" javatype="string" size="1000"/>
-			<column name="SPT_SIGN_UPDATETIME" dbtype="datetime" javatype="date"/>
-			<column name="SPT_SIGN_UPDATEUID" dbtype="int" javatype="integer"/>
-		</columns>
-		<indexes>
-	    	<index name="SPT_SIGN_PATIENTUID">
-	    		<indexcolumn order="ASC" name="SPT_SIGN_PATIENTUID"/>
-	    	</index>
-	    	<index name="SPT_SIGN_UPDATETIME">
-	    		<indexcolumn order="ASC" name="SPT_SIGN_UPDATETIME"/>
-	    	</index>
-		</indexes>
-	</table>
-
-	<table name="SPT_SIGNS" db="stats" sync="none">
+	<table name="SPT_SIGNS" db="stats" sync="NONE">
 		<columns>
 			<column name="SPT_SIGN_SERVERID" dbtype="int" javatype="integer"/>
-			<column name="SPT_SIGN_PATIENTUID" dbtype="bigint" javatype="integer"/>
+			<column name="SPT_SIGN_PATIENTUID" dbtype="int" javatype="integer"/>
 			<column name="SPT_SIGN_PATIENTAGE" dbtype="int" javatype="integer"/>
 			<column name="SPT_SIGN_PATIENTGENDER" dbtype="char" javatype="string" size="1"/>
 			<column name="SPT_SIGN_SIGNS" dbtype="varchar" javatype="string" size="1000"/>
@@ -766,6 +748,24 @@
 		<indexes>
 	    	<index name="SPT_SIGN_PATIENTUID">
 	    		<indexcolumn order="ASC" name="SPT_SIGN_SERVERID"/>
+	    		<indexcolumn order="ASC" name="SPT_SIGN_PATIENTUID"/>
+	    	</index>
+	    	<index name="SPT_SIGN_UPDATETIME">
+	    		<indexcolumn order="ASC" name="SPT_SIGN_UPDATETIME"/>
+	    	</index>
+		</indexes>
+	</table>
+	
+	<table name="SPT_SIGNS" db="openclinic" sync="NONE">
+		<columns>
+			<column name="SPT_SIGN_PATIENTUID" dbtype="int" javatype="integer"/>
+			<column name="SPT_SIGN_SIGNS" dbtype="varchar" javatype="string" size="1000"/>
+			<column name="SPT_SIGN_TREATMENT" dbtype="varchar" javatype="string" size="1000"/>
+			<column name="SPT_SIGN_UPDATETIME" dbtype="datetime" javatype="date"/>
+			<column name="SPT_SIGN_UPDATEUID" dbtype="int" javatype="integer"/>
+		</columns>
+		<indexes>
+	    	<index name="SPT_SIGN_PATIENTUID">
 	    		<indexcolumn order="ASC" name="SPT_SIGN_PATIENTUID"/>
 	    	</index>
 	    	<index name="SPT_SIGN_UPDATETIME">
@@ -1072,6 +1072,9 @@
 	    	</index>
 	    	<index name="OC_HL7IN_TRANSACTIONID">
 	    		<indexcolumn order="ASC" name="OC_HL7IN_TRANSACTIONID"/>
+	    	</index>
+	    	<index name="OC_HL7IN_ID">
+	    		<indexcolumn order="ASC" name="OC_HL7IN_ID"/>
 	    	</index>
     	</indexes>
     </table>
@@ -3324,6 +3327,9 @@
 	    	<index name="OC_EXPORT_CREATEDATETIME">
 	    		<indexcolumn order="ASC" name="OC_EXPORT_CREATEDATETIME"/>
 	    	</index>
+	    	<index name="OC_EXPORT_ID">
+	    		<indexcolumn order="ASC" name="OC_EXPORT_ID"/>
+	    	</index>
 	    </indexes>
 	</table>
 	<table name="OC_EXPORTREQUESTS" db="openclinic" sync="NONE">
@@ -3602,6 +3608,11 @@
 			<column name="OC_KEY" dbtype="varchar" javatype="string" size="255"/>
 			<column name="OC_VALUE" dbtype="varchar" javatype="string" size="255"/>
 		</columns>
+		<indexes>
+			<index name="OC_KEY">
+				<indexcolumn order="ASC" name="OC_KEY"/>
+			</index>
+		</indexes>
 	</table>
 	<table name="OC_PRESTATION_GROUPS" db="openclinic" sync="NONE">
 		<columns>
@@ -4641,6 +4652,19 @@
 		</columns>
 	</table>
 
+    <table name="OC_PHARMASYNCERRORS" db="openclinic" sync="NONE">
+    	<columns>
+			<column name="OC_ERROR_CODE" dbtype="int" javatype="integer" primary="1" nulls="0"/>
+			<column name="OC_ERROR_SERVICESTOCKUID" dbtype="varchar" javatype="string" size="20"/>
+			<column name="OC_ERROR_UPDATETIME" dbtype="datetime" javatype="date"/>
+			<column name="OC_ERROR_COMMENT" dbtype="varchar" javatype="string" size="255"/>
+    	</columns>
+		<indexes>
+			<index name="OC_ERROR_SERVICESTOCKUID">
+				<indexcolumn order="ASC" name="OC_ERROR_SERVICESTOCKUID"/>
+			</index>
+		</indexes>
+    </table>
     <table name="OC_PHARMASYNC" db="openclinic" sync="NONE">
     	<columns>
 			<column name="OC_PHARMASYNC_ID" dbtype="int" javatype="integer" primary="1" nulls="0"/>
@@ -5533,6 +5557,9 @@
 			</index>
 			<index name="ENCOUNTERSERVICES_ENDDATE">
 				<indexcolumn order="ASC" name="OC_ENCOUNTER_SERVICEBEGINDATE"/>
+			</index>
+			<index name="ENCOUNTERSERVICES_ENDDATE2">
+				<indexcolumn order="ASC" name="OC_ENCOUNTER_SERVICEENDDATE"/>
 			</index>
 		</indexes>
     </table>
@@ -7336,6 +7363,11 @@
 			<column name="OC_COUNTER_NAME" dbtype="varchar" javatype="string" size="255" primary="1"/>
 			<column name="OC_COUNTER_VALUE" dbtype="int" javatype="integer"/>
 		</columns>
+        <indexes>
+            <index name="OC_COUNTER_NAME">
+                <indexcolumn name="OC_COUNTER_NAME" order="ASC"/>
+            </index>
+        </indexes>
 	</table>
 	<table name="counters" db="openclinic" sync="NONE">
 		<columns>

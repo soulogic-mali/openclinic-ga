@@ -3,9 +3,15 @@ package be.openclinic.archiving;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.management.ManagementFactory;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.file.FileSystems;
+import java.nio.file.StandardOpenOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,6 +39,7 @@ import be.mxs.common.util.io.MessageReader.User;
 import be.mxs.common.util.system.Debug;
 import be.mxs.common.util.system.PdfBarcode;
 import be.mxs.common.util.system.ScreenHelper;
+import be.openclinic.system.SH;
 import net.admin.AdminPerson;
 
 public class ScanDirectoryMonitor implements Runnable{
@@ -40,6 +47,7 @@ public class ScanDirectoryMonitor implements Runnable{
 	private int runCounter;
 	private Thread thread;
 	private java.util.Date created;
+	private long myScanDirectoryMonitor;
 	
 	
 	public java.util.Date getCreated() {
@@ -69,6 +77,8 @@ public class ScanDirectoryMonitor implements Runnable{
 	
 	//--- ACTIVATE --------------------------------------------------------------------------------
 	public void activate(){
+		myScanDirectoryMonitor=new java.util.Date().getTime();
+    	MedwanQuery.getInstance().setConfigString("lastScanDirectoryMonitor", myScanDirectoryMonitor+"");
 		OK_TO_START = true;
 		loadConfig();
 		
@@ -722,18 +732,23 @@ public class ScanDirectoryMonitor implements Runnable{
 	
 			    		String filename=ArchiveDocument.generateUDI(MedwanQuery.getInstance().getOpenclinicCounter("ARCH_DOCUMENTS"));
 		    			filename = acceptIncomingDICOMFile(filename, file);
-		    			Debug.println("DICOM image "+filename+" for patient "+person.getFullName()+" ["+person.personid+"] stored.");
-		    			ps=conn.prepareStatement("insert into OC_PACS(OC_PACS_STUDYUID,OC_PACS_SERIES,OC_PACS_SEQUENCE,OC_PACS_FILENAME,OC_PACS_UPDATETIME) values(?,?,?,?,?)");
-		    			Debug.println("studyUid="+studyUid);
-		    			Debug.println("seriesUid="+seriesUid);
-		    			Debug.println("sequence="+sequence);
-		    			Debug.println("filename="+filename);
-		    			ps.setString(1, studyUid);
-			    		ps.setString(2, seriesUid);
-			    		ps.setString(3, sequence);
-			    		ps.setString(4, filename);
-			    		ps.setTimestamp(5, new java.sql.Timestamp(new java.util.Date().getTime()));
-			    		ps.execute();
+		    			if(new File(SCANDIR_BASE+"/"+SCANDIR_TO+"/"+filename).exists()) {
+			    			Debug.println("DICOM image "+filename+" for patient "+person.getFullName()+" ["+person.personid+"] stored.");
+			    			ps=conn.prepareStatement("insert into OC_PACS(OC_PACS_STUDYUID,OC_PACS_SERIES,OC_PACS_SEQUENCE,OC_PACS_FILENAME,OC_PACS_UPDATETIME) values(?,?,?,?,?)");
+			    			Debug.println("studyUid="+studyUid);
+			    			Debug.println("seriesUid="+seriesUid);
+			    			Debug.println("sequence="+sequence);
+			    			Debug.println("filename="+filename);
+			    			ps.setString(1, studyUid);
+				    		ps.setString(2, seriesUid);
+				    		ps.setString(3, sequence);
+				    		ps.setString(4, filename);
+				    		ps.setTimestamp(5, new java.sql.Timestamp(new java.util.Date().getTime()));
+				    		ps.execute();
+		    			}
+		    			else {
+		    				Debug.println("Target file has not been created (file already moved by another process?)");
+		    			}
 			    		err=1;
 		    		}
 		    		rs.close();
@@ -1114,7 +1129,6 @@ public class ScanDirectoryMonitor implements Runnable{
 			Debug.println("--> "+filesMoved+" files with extensions in '"+MedwanQuery.getInstance().getConfigString("scanDirectoryMonitor_notScannableFileExtensions","").toLowerCase()+"'"+
 			              " moved to 'scanDirectoryMonitor_dirError' : "+SCANDIR_BASE+"/"+SCANDIR_ERR);
         }
-        
     	return filesMoved;
     }
      	
@@ -1122,8 +1136,13 @@ public class ScanDirectoryMonitor implements Runnable{
 	public void run(){		
         try{
         	while(!isStopped()){
+        		//If a more recent Thread has been started, then stop this one
+        		long lastScanDirectory = Long.parseLong(SH.cs("lastScanDirectoryMonitor", "0"));
+        		if(myScanDirectoryMonitor<lastScanDirectory) {
+        			break;
+        		}
         		if(MedwanQuery.getInstance().getConfigInt("scanDirectoryMonitorEnabled",1)==1){
-	        		Debug.println("Running scan-directory-monitor.. ("+(++runCounter)+")");
+	        		Debug.println(myScanDirectoryMonitor+" - Running scan-directory-monitor.. ("+(++runCounter)+")");
         			runScheduler();
         		}
         		Thread.sleep(MedwanQuery.getInstance().getConfigInt("scanDirectoryMonitor_interval",30*1000)); // default : each 30 seconds

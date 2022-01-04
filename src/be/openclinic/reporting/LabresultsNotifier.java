@@ -97,8 +97,11 @@ public class LabresultsNotifier {
 	}
 
 	public void sendNewLabs(){
-		String sSendMode = "attachedmail";
-		sendNewLabs(sSendMode);
+		//We only want to send this once every x minutes
+		if(SH.isTimeout("lastLabSender", SH.ci("labSenderInterval", 300))) {
+			String sSendMode = "attachedmail";
+			sendNewLabs(sSendMode);
+		}
 	}
 	
 	public void sendNewLabs(String sSendMode){
@@ -446,23 +449,16 @@ public class LabresultsNotifier {
 						String sNotification="";
 						if(result.equalsIgnoreCase("covidrbc")) {
 							UpdateSystem.reloadSingletonNoSession();
-			                System.out.println(0+": "+patient.language);
 							sMailTitle = MedwanQuery.getInstance().getLabel("covidrbc", "certificatemessagetitle", patient.language.toLowerCase()).replace("#transactionid#", transactionId+"").replaceAll("<br>", "\n").replace("#patient#", patient.getFullName()).replace("#date#", SH.formatDate(transactionVO.getUpdateTime()));
 							sNotification = MedwanQuery.getInstance().getLabel("covidrbc", "certificatemessagecontent", patient.language.toLowerCase()).replace("#transactionid#", transactionId+"").replaceAll("<br>", "\n").replace("#patient#", patient.getFullName()).replace("#date#", SH.formatDate(transactionVO.getUpdateTime()));
 							sFileName = "Transaction"+ new SimpleDateFormat("ddMMyyyy-HHmmss").format(new java.util.Date())+"_Tid"+transactionId+".pdf";
 			                sAttachment = MedwanQuery.getInstance().getConfigString("tempDirectory","/tmp")+"/"+sFileName;		
 							//Write pdf file to attachment
-			                System.out.println(1);
 			                PDFCovidCertificateGenerator pdfGenerator = new PDFCovidCertificateGenerator(User.get(transactionVO.getUser().userId), SH.cs("defaultProject","openclinic"), patient.language.toLowerCase(), "");
-			                System.out.println(2);
 			                ByteArrayOutputStream baosPDF = pdfGenerator.generatePDFDocumentBytes(transactionVO.getTransactionId());
-			                System.out.println(3);
 			                FileOutputStream fos = new FileOutputStream(new File(sAttachment));
-			                System.out.println(4);
 			                baosPDF.writeTo(fos);
-			                System.out.println(5);
 			                fos.flush();
-			                System.out.println(6);
 						}
 						else {
 							sHeader = "<html><body style='font-family: arial, sans-serif;height:100%;background-color: #DCEDFF'>"+

@@ -1713,6 +1713,35 @@ public class Asset extends OC_Object {
     	return -1;
     }
     
+    public static Asset getAssetByFieldValue(String field, String value) {
+    	Asset asset = null;
+    	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+    	PreparedStatement ps=null;
+    	ResultSet rs=null;
+    	try{
+        	ps=conn.prepareStatement("select * from oc_assets where "+field+"=?");
+        	ps.setString(1, value);
+        	rs=ps.executeQuery();
+        	if(rs.next()){
+        		asset = Asset.get(rs.getString("oc_asset_serverid")+"."+rs.getString("oc_asset_objectid"));
+        	}
+    	}
+        catch(Exception e){
+        	e.printStackTrace();
+        }
+        finally{
+            try{
+                if(rs!=null) rs.close();
+                if(ps!=null) ps.close();
+                conn.close();
+            }
+            catch(SQLException se){
+            	se.printStackTrace();
+            }
+        }
+    	return asset;
+    }
+    
     public boolean existDefaultMaintenancePlans(){
     	boolean bExist =false;
     	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
@@ -2752,10 +2781,13 @@ public class Asset extends OC_Object {
                 sSql+= " AND OC_ASSET_COMMENT9 = '"+findItem.comment9+"'";
             }
             if(ScreenHelper.checkString(findItem.nomenclature).length() > 0){
-                sSql+= " AND OC_ASSET_NOMENCLATURE LIKE '"+findItem.nomenclature+"%'";
-            }
-            if(ScreenHelper.checkString(findItem.nomenclature).length() > 0){
-                sSql+= " AND OC_ASSET_NOMENCLATURE LIKE '"+findItem.nomenclature+"%'";
+            	Vector codes = Nomenclature.getAllChildren("asset", findItem.nomenclature);
+            	String sCodes="'"+findItem.nomenclature+"'";
+            	for(int n=0;n<codes.size();n++) {
+            		Nomenclature nom = (Nomenclature)codes.elementAt(n);
+            		sCodes+=",'"+nom.getId()+"'";
+            	}
+                sSql+= " AND OC_ASSET_NOMENCLATURE in ("+sCodes+")";
             }
             if(ScreenHelper.checkString(findItem.comment15).length() > 0){
                 sSql+= " AND OC_ASSET_COMMENT15 LIKE '%"+findItem.comment15+";%'";

@@ -170,7 +170,7 @@
 	                        catch(Exception e){
 	                            adminVal = 0;
 	                        }
-	                        if(activeUser.getAccessRightNoSA("nursing.edit") && !day.before(new java.util.Date(new java.util.Date().getTime()-MedwanQuery.getInstance().getConfigInt("maximumNursingDataEditableHours",48)*lHour-((KeyValue)line.getTimeQuantities().elementAt(i)).getKeyInt()*lHour)) && val > 0){
+	                        if(activeUser.getAccessRightNoSA("nursing.edit") && (activeUser.getAccessRightNoSA("nursingforceedit.edit") || (!day.before(new java.util.Date(new java.util.Date().getTime()-MedwanQuery.getInstance().getConfigInt("maximumNursingDataEditableHours",48)*lHour-((KeyValue)line.getTimeQuantities().elementAt(i)).getKeyInt()*lHour))) && val > 0)){
 	
 	                            sClass = "textbold";
 	                            if(adminVal ==0){

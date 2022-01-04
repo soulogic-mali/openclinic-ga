@@ -205,6 +205,30 @@
             </td>
         </tr>
         <tr>
+            <td class="admin"><%=getTran(request,"mspls", "hivscreening", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_HIVSCREENING", "posneg", sWebLanguage, "", " ") %>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"mspls", "ptme", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_PTME", sWebLanguage, true,"","") %>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"mspls", "reference", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultCheckBoxes((TransactionVO)transaction, request, "mspls.youth.reference",  "ITEM_TYPE_REFERENCE", sWebLanguage, true,"","") %>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"mspls", "pec", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultCheckBoxes((TransactionVO)transaction, request, "mspls.youth.pec",  "ITEM_TYPE_PEC", sWebLanguage, true,"","") %>
+            </td>
+        </tr>
+        <tr>
         	<td colspan='2'><%ScreenHelper.setIncludePage(customerInclude("healthrecord/diagnosesEncoding.jsp"),pageContext);%></td>
         </tr>
     </table>

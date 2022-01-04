@@ -3,6 +3,7 @@ import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.Debug;
 import be.mxs.common.util.system.ScreenHelper;
 import be.openclinic.common.OC_Object;
+import be.openclinic.system.SH;
 import net.admin.AdminPerson;
 import net.admin.Service;
 import net.admin.User;
@@ -17,14 +18,14 @@ public class ServiceStock extends OC_Object{
     private Date begin;
     private Date end;
     private AdminPerson stockManager;
-    private Vector authorizedUsers;
-    private String authorizedUserIds;
-    private Vector receivingUsers;
-    private String receivingUserIds;
-    private Vector dispensingUsers;
-    private String dispensingUserIds;
-    private Vector validationUsers;
-    private String validationUserIds;
+    private Vector authorizedUsers = new Vector();
+    private String authorizedUserIds="";
+    private Vector receivingUsers = new Vector();
+    private String receivingUserIds="";
+    private Vector dispensingUsers = new Vector();
+    private String dispensingUserIds="";
+    private Vector validationUsers = new Vector();
+    private String validationUserIds="";
     private Service defaultSupplier;
     private int orderPeriodInMonths = -1;
     private int nosync=1;
@@ -203,7 +204,12 @@ public class ServiceStock extends OC_Object{
         this.dispensingUsers = dispensingUsers;
     }
     public void addDispensingUser(User user){
-        this.dispensingUsers.addElement(user);
+    	if(!this.dispensingUsers.contains(user)) {
+    		this.dispensingUsers.addElement(user);
+    		if(!this.dispensingUserIds.contains(user.userid+"$")) {
+    			this.dispensingUserIds+=user.userid+"$";
+    		}
+    	}
     }
     public void removeDispensingUser(User user){
         this.dispensingUsers.removeElement(user);
@@ -216,7 +222,12 @@ public class ServiceStock extends OC_Object{
     }
     
     public void addValidationUser(User user){
-        this.validationUsers.addElement(user);
+    	if(!this.validationUsers.contains(user)) {
+    		this.validationUsers.addElement(user);
+    		if(!this.validationUserIds.contains(user.userid+"$")) {
+    			this.validationUserIds+=user.userid+"$";
+    		}
+    	}
     }
     public void removeValidationUser(User user){
         this.validationUsers.removeElement(user);
@@ -286,7 +297,12 @@ public class ServiceStock extends OC_Object{
         this.authorizedUsers = authorizedUsers;
     }
     public void addAuthorizedUser(User user){
-        this.authorizedUsers.addElement(user);
+    	if(!this.authorizedUsers.contains(user)) {
+    		this.authorizedUsers.addElement(user);
+    		if(!this.authorizedUserIds.contains(user.userid)) {
+    			this.authorizedUserIds+=user.userid+"$";
+    		}
+    	}
     }
     public void removeAuthorizedUser(User user){
         this.authorizedUsers.removeElement(user);
@@ -327,7 +343,12 @@ public class ServiceStock extends OC_Object{
         this.receivingUsers = receivingUsers;
     }
     public void addReceivingUser(User user){
-        this.receivingUsers.addElement(user);
+    	if(!this.receivingUsers.contains(user)) {
+    		this.receivingUsers.addElement(user);
+    		if(!this.receivingUserIds.contains(user.userid+"$")) {
+    			this.receivingUserIds+=user.userid+"$";
+    		}
+    	}
     }
     public void removeReceivingUser(User user){
         this.receivingUsers.removeElement(user);
@@ -624,20 +645,23 @@ public class ServiceStock extends OC_Object{
                 // stockManagerUid
                 if(this.getStockManagerUid()!=null) ps.setString(7,this.getStockManagerUid());
                 else                                       ps.setNull(7,Types.VARCHAR);
-
+                Debug.println("U1");
                 // authorized users
+                /*
                 User user;
-                StringBuffer authorizedUserIds = new StringBuffer();
-                for(int i=0; i<this.getAuthorizedUsers().size(); i++){
-                    user = (User)this.getAuthorizedUsers().elementAt(i);
-                    authorizedUserIds.append(user.userid+"$");
+                StringBuffer newIds = new StringBuffer();
+                getAuthorizedUsers();
+                for(int i=0; i<this.authorizedUsers.size(); i++){
+                    user = (User)this.authorizedUsers.elementAt(i);
+                    newIds.append(user.userid+"$");
                 }
-                
-                if(authorizedUserIds.length() > 0) ps.setString(8,authorizedUserIds.toString());
+                Debug.println("U2");
+                */
+                if(SH.c(this.authorizedUserIds).length() > 0) ps.setString(8,this.authorizedUserIds);
                 else                               ps.setNull(8,Types.VARCHAR);
 
                 // default supplier
-                if(this.getDefaultSupplierUid().length() > 0) ps.setString(9,this.getDefaultSupplierUid());
+                if(SH.c(this.getDefaultSupplierUid()).length() > 0) ps.setString(9,this.getDefaultSupplierUid());
                 else                                          ps.setNull(9,Types.VARCHAR);
 
                 // orderPeriodInMonths
@@ -652,37 +676,41 @@ public class ServiceStock extends OC_Object{
                 ps.setInt(15, this.getHidden());
                 
                 // Dispensing users
-                StringBuffer dispensingUserIds = new StringBuffer();
+                /*
+                newIds = new StringBuffer();
                 for(int i=0; i<this.getDispensingUsers().size(); i++){
                     user = (User)this.getDispensingUsers().elementAt(i);
-                    dispensingUserIds.append(user.userid+"$");
+                    newIds.append(user.userid+"$");
                 }
-                
-                if(dispensingUserIds.length() > 0) ps.setString(16,dispensingUserIds.toString());
+                */
+                if(SH.c(this.dispensingUserIds).length() > 0) ps.setString(16,dispensingUserIds);
                 else                               ps.setNull(16,Types.VARCHAR);
                 ps.setInt(17, this.getValidateoutgoingtransactions());
                 
                 // Validation users
-                StringBuffer validationUserIds = new StringBuffer();
+                /*
+                newIds = new StringBuffer();
                 for(int i=0; i<this.getValidationUsers().size(); i++){
                     user = (User)this.getValidationUsers().elementAt(i);
-                    validationUserIds.append(user.userid+"$");
+                    newIds.append(user.userid+"$");
                 }
+                */
                 
-                if(validationUserIds.length() > 0) ps.setString(18,validationUserIds.toString());
+                if(SH.c(this.validationUserIds).length() > 0) ps.setString(18,this.validationUserIds);
                 else                               ps.setNull(18,Types.VARCHAR);
 
                 // Receiving users
-                StringBuffer receivingUserIds = new StringBuffer();
+                /*
+                newIds = new StringBuffer();
                 for(int i=0; i<this.getReceivingUsers().size(); i++){
                     user = (User)this.getReceivingUsers().elementAt(i);
-                    receivingUserIds.append(user.userid+"$");
+                    newIds.append(user.userid+"$");
                 }
-
-                if(receivingUserIds.length() > 0) ps.setString(19,receivingUserIds.toString());
+				*/
+                if(SH.c(receivingUserIds).length() > 0) ps.setString(19,receivingUserIds);
                 else                               ps.setNull(19,Types.VARCHAR);
 
-                if(virtualInvoicingAccount.length() > 0) ps.setString(20,virtualInvoicingAccount.toString());
+                if(SH.c(virtualInvoicingAccount).length() > 0) ps.setString(20,virtualInvoicingAccount.toString());
                 else                               ps.setNull(20,Types.VARCHAR);
 
                 ps.executeUpdate();
@@ -711,21 +739,26 @@ public class ServiceStock extends OC_Object{
                 else               ps.setNull(4,Types.TIMESTAMP);
 
                 // stockManagerUid
-                if(this.getStockManagerUid().length() > 0) ps.setString(5,this.getStockManagerUid());
+                if(SH.c(this.getStockManagerUid()).length() > 0) ps.setString(5,this.getStockManagerUid());
                 else                                       ps.setNull(5,Types.VARCHAR);
 
+                Debug.println("U1");
                 // authorized users
+                /*
                 User user;
-                StringBuffer authorizedUserIds = new StringBuffer();
-                for(int i=0; i<this.getAuthorizedUsers().size(); i++){
-                    user = (User)this.getAuthorizedUsers().elementAt(i);
-                    authorizedUserIds.append(user.userid+"$");
-                }                
-                if(authorizedUserIds.length() > 0) ps.setString(6,authorizedUserIds.toString());
+                StringBuffer newIds = new StringBuffer();
+                getAuthorizedUsers();
+                for(int i=0; i<this.authorizedUsers.size(); i++){
+                    user = (User)this.authorizedUsers.elementAt(i);
+                    newIds.append(user.userid+"$");
+                }
+                Debug.println("U2");
+				*/
+                if(SH.c(this.authorizedUserIds).length() > 0) ps.setString(6,this.authorizedUserIds);
                 else                               ps.setNull(6,Types.VARCHAR);
 
                 // default supplier
-                if(this.getDefaultSupplierUid().length() > 0) ps.setString(7,this.getDefaultSupplierUid());
+                if(SH.c(this.getDefaultSupplierUid()).length() > 0) ps.setString(7,this.getDefaultSupplierUid());
                 else                                          ps.setNull(7,Types.VARCHAR);
 
                 // orderPeriodInMonths
@@ -739,37 +772,41 @@ public class ServiceStock extends OC_Object{
                 ps.setInt(12, this.getHidden());
                 
                 // Dispensing users
-                StringBuffer dispensingUserIds = new StringBuffer();
+                /*
+                newIds = new StringBuffer();
                 for(int i=0; i<this.getDispensingUsers().size(); i++){
                     user = (User)this.getDispensingUsers().elementAt(i);
-                    dispensingUserIds.append(user.userid+"$");
+                    newIds.append(user.userid+"$");
                 }
-                
-                if(dispensingUserIds.length() > 0) ps.setString(13,dispensingUserIds.toString());
+                */
+                if(SH.c(dispensingUserIds).length() > 0) ps.setString(13,dispensingUserIds);
                 else                               ps.setNull(13,Types.VARCHAR);
 
                 ps.setInt(14, this.getValidateoutgoingtransactions());
                 
                 // Validation users
-                StringBuffer validationUserIds = new StringBuffer();
+                /*
+                newIds = new StringBuffer();
                 for(int i=0; i<this.getValidationUsers().size(); i++){
                     user = (User)this.getValidationUsers().elementAt(i);
-                    validationUserIds.append(user.userid+"$");
+                    newIds.append(user.userid+"$");
                 }
-                
-                if(validationUserIds.length() > 0) ps.setString(15,validationUserIds.toString());
+                */
+                if(SH.c(validationUserIds).length() > 0) ps.setString(15,validationUserIds);
                 else                               ps.setNull(15,Types.VARCHAR);
 
                 // receiving users
-                StringBuffer receivingUserIds = new StringBuffer();
+                /*
+                newIds = new StringBuffer();
                 for(int i=0; i<this.getReceivingUsers().size(); i++){
                     user = (User)this.getReceivingUsers().elementAt(i);
-                    receivingUserIds.append(user.userid+"$");
-                }                
-                if(receivingUserIds.length() > 0) ps.setString(16,receivingUserIds.toString());
+                    newIds.append(user.userid+"$");
+                }            
+                */    
+                if(SH.c(receivingUserIds).length() > 0) ps.setString(16,receivingUserIds);
                 else                               ps.setNull(16,Types.VARCHAR);
                 
-                if(virtualInvoicingAccount.length() > 0) ps.setString(17,virtualInvoicingAccount.toString());
+                if(SH.c(virtualInvoicingAccount).length() > 0) ps.setString(17,virtualInvoicingAccount.toString());
                 else                               ps.setNull(17,Types.VARCHAR);
                 
                 ps.setInt(18,Integer.parseInt(this.getUid().substring(0,this.getUid().indexOf("."))));

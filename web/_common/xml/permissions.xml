@@ -263,6 +263,7 @@
     </application>
     <application type="Web" id="nursing">
         <permission type="web" id="nursing">nursing</permission>
+        <permission type="web" id="nursingforceedit">nursingforceedit</permission>
     </application>
     <application type="Web" id="statistics">
         <permission type="web" id="statistics">statistics</permission>

@@ -265,11 +265,19 @@ public class Monitor implements Runnable{
 	}
 	
 	public void run() {
+		String uid = SH.getRandomPassword(10);
         try {
         	while(!isStopped()){
-        		if(MedwanQuery.getInstance().getConfigInt("globalhealthbarometerEnabled",1)==1){
-	        		Debug.println("Running monitor...");
-        			runScheduler();
+        		//First check if no other active broker is running on this system
+        		String activeMonitor = SH.cs("activeMonitor", uid+";"+new java.util.Date().getTime());
+        		if(activeMonitor.split(";")[0].equals(uid) || new java.util.Date().getTime()- Long.parseLong(activeMonitor.split(";")[1]) > 2*SH.ci("globalhealthbarometerMonitorInterval",200000)) {
+	        		if(MedwanQuery.getInstance().getConfigInt("globalhealthbarometerEnabled",1)==1){
+		        		Debug.println("Running monitor...");
+	        			runScheduler();
+	        		}
+        		}
+        		else {
+        			Debug.println("Monitor "+uid+" NOT started because monitor "+activeMonitor.split(";")[0]+" is already running on the same database");
         		}
         		Thread.sleep(MedwanQuery.getInstance().getConfigInt("globalhealthbarometerMonitorInterval",200000));
         	}

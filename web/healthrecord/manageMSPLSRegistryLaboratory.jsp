@@ -234,7 +234,8 @@
             <td class="admin"><%=getTran(request,"web", "thicksmear", sWebLanguage)%></td>
             <td class="admin2">
             	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_LAB_THIKSMEAR","posnegna",  sWebLanguage, "") %>
-            	<%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO) transaction, "ITEM_TYPE_LAB_THIKSMEARTEXT", 40,1) %>
+            	<%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO) transaction, "ITEM_TYPE_LAB_THIKSMEARTEXT", 40,1) %><br/>
+            	<%=ScreenHelper.writeDefaultCheckBoxes((TransactionVO)transaction, request, "mspls.malariaparasites", "ITEM_TYPE_MALARIAPARASITES", sWebLanguage, true) %>
             </td>
         </tr>
         <tr>
@@ -298,6 +299,41 @@
             <td class="admin2">
             	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_LAB_HB","posnegna",  sWebLanguage, "") %>
             	<%=ScreenHelper.writeDefaultTextInput(session, (TransactionVO) transaction, "ITEM_TYPE_LAB_HBTEXT", 5) %>g/dl
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"web", "pcr", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_LAB_PCR","posnegna",  sWebLanguage, "") %>
+            	<%=ScreenHelper.writeDefaultTextInput(session, (TransactionVO) transaction, "ITEM_TYPE_LAB_PCRTEXT", 40) %>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"web", "cv", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_LAB_CV","posnegna",  sWebLanguage, "") %>
+            	<%=ScreenHelper.writeDefaultTextInput(session, (TransactionVO) transaction, "ITEM_TYPE_LAB_CVTEXT", 40) %>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"web", "hepatitisb", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_LAB_HEPATITISB","posnegna",  sWebLanguage, "") %>
+            	<%=ScreenHelper.writeDefaultTextInput(session, (TransactionVO) transaction, "ITEM_TYPE_LAB_HEPATITISBTEXT", 40) %>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"web", "hepatitisc", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_LAB_HEPATITISC","posnegna",  sWebLanguage, "") %>
+            	<%=ScreenHelper.writeDefaultTextInput(session, (TransactionVO) transaction, "ITEM_TYPE_LAB_HEPATITISCTEXT", 40) %>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"web", "otherexams", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_LAB_OTHEREXAMS","posnegna",  sWebLanguage, "") %>
+            	<%=ScreenHelper.writeDefaultTextInput(session, (TransactionVO) transaction, "ITEM_TYPE_LAB_OTHEREXAMSTEXT", 40) %>
             </td>
         </tr>
         <tr>

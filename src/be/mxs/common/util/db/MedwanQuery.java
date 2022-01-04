@@ -39,7 +39,12 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.file.FileSystems;
+import java.nio.file.StandardOpenOption;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -1294,12 +1299,14 @@ public class MedwanQuery {
             if(labelValue == null || labelValue.length() == 0){
                 labelValue = ScreenHelper.getTranDb(type, id, lang);
                 labelsCache.put(uid, labelValue);
+                /*
                 labelsCacheDates.put(new Date(), uid);
                 if(labelsCacheDates.size() > 1000){
                     String oldestLabel = (String) labelsCacheDates.get(labelsCacheDates.firstKey());
                     labelsCacheDates.remove(labelsCacheDates.firstKey());
                     labelsCache.remove(oldestLabel);
                 }
+                */
             }
         }
         else{
@@ -2904,7 +2911,6 @@ public class MedwanQuery {
                 sQuery = " select distinct code as code from ICD10 where "+label+" like '%"+ScreenHelper.normalizeSpecialCharacters(keys[n].toLowerCase()).toUpperCase()+"%' or code like '%"+ScreenHelper.normalizeSpecialCharacters(keys[n].toLowerCase()).toUpperCase()+"%'";
                 sQuery += " union select distinct b.icd10 as code from Concepts b,Keywords c where c.language='"+language+"' and b.icd10 is not null and b.concept=c.concept and c.keyword like '"+ScreenHelper.normalizeSpecialCharacters(keys[n].toLowerCase()).toUpperCase()+"%'";
                 sQuery += " order by code";
-                System.out.println(sQuery);
                 PreparedStatement ps;
                 Connection OccupdbConnection;
                 try{
@@ -2921,7 +2927,6 @@ public class MedwanQuery {
                                 counters.put(c, new Integer(((Integer) counters.get(c)).intValue()+1));
                             }
                         }
-                        System.out.println(c+": "+counters.get(c));
                     }
                     rs.close();
                     ps.close();
@@ -4327,6 +4332,146 @@ public class MedwanQuery {
 	        	rs.close();
 	        	ps.close();
 	        	if(!bHasItem){
+	        		break;
+	        	}
+        	}
+        	conn.close();
+        }
+        catch(Exception e){
+        	e.printStackTrace();
+        }
+        return bHasItem;	
+    }
+    
+    public boolean hasItem(String encounterUid,String itemType,String itemValue, String transactionType){
+        boolean bHasItem=false;
+        Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        try{
+        	String[] transactionTypes = transactionType.split(";");
+        	String[] types = itemType.split(";");
+        	String[] values = itemValue.split(";");
+        	for(int i=0;i<transactionTypes.length;i++){
+	            for(int n=0;n<types.length;n++){
+		        	String sSql="select i.* from items i,items i2, transactions t, oc_encounters e, healthrecord h"
+		        			+ " where "
+		        			+ " e.oc_encounter_objectid=? and"
+		        			+ " h.personid="+MedwanQuery.getInstance().convert("int", "e.oc_encounter_patientuid")+" and"
+		        			+ " t.healthrecordid=h.healthrecordid and"
+		        			+ " i2.serverid=t.serverid and"
+		        			+ " i2.transactionid=t.transactionid and"
+		        			+ " i2.type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID' and"
+		        			+ " i2.value=? and"
+		        			+ " i.serverid=t.serverid and"
+		        			+ " i.transactionid=t.transactionid and"
+		        			+ " i.type=?";
+		        	if(values.length>n && values[n].length()>0){
+		        		if(values[n].startsWith("{lessthan}")){
+		        			sSql+=" and i.value*1<?";
+		        		}
+		        		else if(values[n].startsWith("{morethan}")){
+		        			sSql+=" and i.value*1>?";
+		        		}
+		        		else if(values[n].startsWith("{like}")){
+		        			sSql+=" and i.value like '%'||?||'%'";
+		        		}
+		        		else{
+		        			sSql+=" and i.value=?";
+		        		}
+		        	}
+		        	if(SH.c(transactionTypes[i]).length()>0) {
+	        			sSql+=" and t.transactiontype='"+transactionTypes[i]+"'";
+		        	}
+		        	PreparedStatement ps = conn.prepareStatement(sSql);
+		        	ps.setInt(1, Integer.parseInt(encounterUid.split("\\.")[1]));
+		        	ps.setString(2, encounterUid);
+		        	ps.setString(3, types[n]);
+		        	if(values.length>n && values[n].length()>0){
+		        		ps.setString(4, values[n].replaceAll("\\{lessthan\\}","").replaceAll("\\{morethan\\}","").replaceAll("\\{like\\}","").replaceAll("\\{sem\\}",";"));
+		        	}
+		        	ResultSet rs = ps.executeQuery();
+		        	if(rs.next()){
+		        		bHasItem=true;
+		        	}
+		        	else{
+		        		bHasItem=false;
+		        	}
+		        	rs.close();
+		        	ps.close();
+		        	if(!bHasItem){
+		        		break;
+		        	}
+	        	}
+        	}
+        	conn.close();
+        }
+        catch(Exception e){
+        	e.printStackTrace();
+        }
+        return bHasItem;	
+    }
+    public boolean hasSingleItem(String encounterUid,String itemType,String itemValue, String transactionType){
+        boolean bHasItem=false;
+        Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+        try{
+        	String[] transactionTypes = transactionType.split(";");
+        	String[] types = itemType.split(";");
+        	String[] values = itemValue.split(";");
+        	for(int i=0;i<transactionTypes.length;i++){
+	            for(int n=0;n<types.length;n++){
+		        	String sSql="select i.* from items i,items i2, transactions t, oc_encounters e, healthrecord h"
+		        			+ " where "
+		        			+ " e.oc_encounter_objectid=? and"
+		        			+ " h.personid="+MedwanQuery.getInstance().convert("int", "e.oc_encounter_patientuid")+" and"
+		        			+ " t.healthrecordid=h.healthrecordid and"
+		        			+ " i2.serverid=t.serverid and"
+		        			+ " i2.transactionid=t.transactionid and"
+		        			+ " i2.type='be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_CONTEXT_ENCOUNTERUID' and"
+		        			+ " i2.value=? and"
+		        			+ " i.serverid=t.serverid and"
+		        			+ " i.transactionid=t.transactionid and"
+		        			+ " i.type=?";
+		        	String theValue=values[0];
+		        	if(values.length>n && values[n].length()>0){
+		        		theValue=values[n];
+		        	}
+		        	if(theValue.length()>0) {
+		        		if(theValue.startsWith("{lessthan}")){
+		        			sSql+=" and i.value*1<?";
+		        		}
+		        		else if(theValue.startsWith("{morethan}")){
+		        			sSql+=" and i.value*1>?";
+		        		}
+		        		else if(theValue.startsWith("{like}")){
+		        			sSql+=" and i.value like '%'||?||'%'";
+		        		}
+		        		else{
+		        			sSql+=" and i.value=?";
+		        		}
+		        	}
+		        	if(SH.c(transactionTypes[i]).length()>0) {
+	        			sSql+=" and t.transactiontype='"+transactionTypes[i]+"'";
+		        	}
+		        	PreparedStatement ps = conn.prepareStatement(sSql);
+		        	ps.setInt(1, Integer.parseInt(encounterUid.split("\\.")[1]));
+		        	ps.setString(2, encounterUid);
+		        	ps.setString(3, types[n]);
+		        	if(theValue.length()>0){
+		        		ps.setString(4, theValue.replaceAll("\\{lessthan\\}","").replaceAll("\\{morethan\\}","").replaceAll("\\{like\\}","").replaceAll("\\{sem\\}",";"));
+		        	}
+		        	ResultSet rs = ps.executeQuery();
+		        	if(rs.next()){
+		        		bHasItem=true;
+		        	}
+		        	else{
+		        		bHasItem=false;
+		        	}
+		        	rs.close();
+		        	ps.close();
+		        	if(bHasItem){
+		        		break;
+		        	}
+	        	}
+	        	if(bHasItem){
 	        		break;
 	        	}
         	}

@@ -34,7 +34,6 @@
 	java.util.Date end = SH.parseDate(request.getParameter("end"));
 	long day = 24*3600*1000;
 	end=new java.util.Date(end.getTime()+day);
-
 	Hashtable<String,String> concepts = new Hashtable();
 
 	if(SH.c(request.getParameter("download")).equalsIgnoreCase("1")){		

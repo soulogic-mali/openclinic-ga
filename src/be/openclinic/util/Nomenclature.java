@@ -49,6 +49,16 @@ public class Nomenclature {
     	}
     	return name;
     }
+    public String getFullyQualifiedIDGeneric(){
+    	String theid = id;
+    	if(parentId!=null && parentId.length()>0){
+    		Nomenclature parentNomenclature = Nomenclature.get(type,parentId);
+    		if(parentNomenclature!=null){
+    			theid=parentNomenclature.getFullyQualifiedIDGeneric()+";"+id;
+    		}
+    	}
+    	return theid;
+    }
     public String getFullyQualifiedNameLibrary(String language){
     	String name=ScreenHelper.getTran(type, id, language);
     	if(parentId!=null && parentId.length()>0){
@@ -195,6 +205,9 @@ public class Nomenclature {
         return vCategoryIDs;
     }
 
+    public static String getRootNomenclatureCode(string code) {
+    	
+    }
 
 	public static Vector<Nomenclature> getRootElements(String type){
 		Vector<Nomenclature> nomenclatures = new Vector<Nomenclature>();

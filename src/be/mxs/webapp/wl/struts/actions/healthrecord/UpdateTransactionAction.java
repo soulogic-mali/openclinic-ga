@@ -50,6 +50,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -511,7 +512,7 @@ public class UpdateTransactionAction extends org.apache.struts.action.Action {
                     	}
                     	if(MedwanQuery.getInstance().getConfigInt("enableHL7",0)==1){
                     		try {
-								HL7Server.storeTransaction(returnedTransactionVO);
+								storeHL7Transaction(returnedTransactionVO);
 							} catch (SQLException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -734,6 +735,35 @@ public class UpdateTransactionAction extends org.apache.struts.action.Action {
         return actionForward;
     }
 
+    public static void storeHL7Transaction(TransactionVO transaction) throws SQLException {
+    	java.sql.Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
+    	PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement("select * from OC_HL7OUT where OC_HL7OUT_SERVERID=? and OC_HL7OUT_TRANSACTIONID=? and OC_HL7OUT_SENT IS NULL");
+	    	ps.setInt(1, transaction.getServerId());
+	    	ps.setInt(2, transaction.getTransactionId());
+	    	ResultSet rs =ps.executeQuery();
+	    	if(!rs.next()) {
+	    		rs.close();
+	    		ps.close();
+	    		ps = conn.prepareStatement("insert into OC_HL7OUT(OC_HL7OUT_SERVERID,OC_HL7OUT_TRANSACTIONID,OC_HL7OUT_VERSION,OC_HL7OUT_CREATED) values(?,?,?,?)");
+	    		ps.setInt(1, transaction.getServerId());
+	    		ps.setInt(2, transaction.getTransactionId());
+	    		ps.setInt(3, transaction.getVersion());
+	    		ps.setTimestamp(4, new java.sql.Timestamp(new java.util.Date().getTime()));
+	    		ps.execute();
+	    	}
+	    	else {
+	    		rs.close();
+	    	}
+	    	ps.close();
+	    	conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     public static void saveDiagnosesToTable(Hashtable ICPCCodes,Hashtable ICD10Codes,Hashtable DSM4Codes,java.util.Date updatetime, String sTransactionUID,SessionContainerWO sessionContainerWO,Encounter encounter){
 
         Enumeration enumeration;

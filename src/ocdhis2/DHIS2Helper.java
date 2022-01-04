@@ -89,12 +89,14 @@ public class DHIS2Helper {
         
         try {
             System.out.println("Sending dataValueSet to DHIS2 server " + DHIS2_SERVER_URI);
-            Response postResponse = server.sendToServer(cleanDataValueSet(dataValueSet));
-            System.out.println("Status: " + postResponse.getStatus());
-            System.out.println("Content: " + postResponse.getStatusInfo().getReasonPhrase());
+            String postResponse = server.sendToServer(cleanDataValueSet(dataValueSet));
+            Document document = DocumentHelper.parseText(postResponse);
+            Element root = document.getRootElement();
+            System.out.println("Status: " + root.elementText("status"));
+            System.out.println("Content: " + root.element("importCount").asXML());
     		try {
     			if(jspWriter!=null){
-	    			jspWriter.print("<b>"+postResponse.getStatusInfo().getReasonPhrase()+"</b><br/>");
+	    			jspWriter.print("<b>"+root.elementText("status")+"</b><br/>");
 	    			jspWriter.flush();
     			}
     		} catch (IOException e) {
@@ -102,14 +104,6 @@ public class DHIS2Helper {
     			e.printStackTrace();
     		}
             
-            if(postResponse.hasEntity())
-            {
-                ImportSummary importSummary = postResponse.readEntity(ImportSummary.class);
-                // elements of importSummary can also be read individually, and put on a feedback page for example
-                // a feedback should be given especially if conflicts are reported
-                System.out.println("Import summary: ");
-                System.out.println(importSummary);
-            }
             sError+="<p/><img src='"+MedwanQuery.getInstance().getConfigString("imageSource","")+"/_img/icons/icon_check.gif'> <b>"+dataSetName+": SUCCESS</b><br/>";
         }
         catch (Exception e)

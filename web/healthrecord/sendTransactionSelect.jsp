@@ -93,7 +93,6 @@
 							</tr>
 							<tr style='display: none' id='other_tr'><td><table width='100%'>
 						<%
-						System.out.println(2);
 						for(int n=0;n<transactions.size();n++){
 							TransactionVO transaction = (TransactionVO)transactions.elementAt(n);
 							System.out.println(3);

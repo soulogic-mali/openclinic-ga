@@ -5,6 +5,7 @@ import be.openclinic.common.OC_Object;
 import be.openclinic.common.ObjectReference;
 import be.openclinic.medical.Prescription;
 import be.openclinic.reporting.MessageNotifier;
+import be.openclinic.system.OCHttpClient;
 import be.openclinic.system.SH;
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.Pointer;
@@ -22,6 +23,9 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -659,8 +663,7 @@ public class ProductStockOperation extends OC_Object{
     
     public boolean postOperationToSyncServer() {
 		//Send data to destination server
-		HttpClient client = new HttpClient();
-		PostMethod method = new PostMethod(SH.cs("pharmaSyncServerURL",""));
+		OCHttpClient oc_client = new OCHttpClient();
 
 		Element message = DocumentHelper.createElement("message");
 		message.addAttribute("objecttype", "operation");
@@ -699,38 +702,37 @@ public class ProductStockOperation extends OC_Object{
         	}
         }
         
-		NameValuePair[] nvp = new NameValuePair[3];
-		nvp[0]= new NameValuePair("uid",SH.cs("serviceStockUID."+this.getProductStock().getServiceStock().getUid(),""));
-		nvp[1]= new NameValuePair("xml",message.asXML());
-		nvp[2]= new NameValuePair("operation","store");
-		method.setQueryString(nvp);
-		String authStr = SH.cs("pharmaSyncServerURLUsername", "nil") + ":" + SH.cs("pharmaSyncServerURLPassword", "nil");
-		String authEncoded = Base64.getEncoder().encodeToString(authStr.getBytes());
-	    method.setRequestHeader("Authorization", "Basic "+authEncoded);
-		try{
-			int statusCode = client.executeMethod(method);
-			String sResponse=method.getResponseBodyAsString();
-			Document doc = org.dom4j.DocumentHelper.parseText(sResponse);
-			Element eResponse = doc.getRootElement();
-			if(eResponse.attributeValue("type").equalsIgnoreCase("pharmasync")){
-				//Operation was succesful
-			}
-			else if(eResponse.attributeValue("type").equalsIgnoreCase("error")){
-				//Operation was NOT succesful
-				return false;
-			}
+		oc_client.addStringParam("uid",SH.cs("serviceStockUID."+this.getProductStock().getServiceStock().getUid(),""));
+		oc_client.addStringParam("xml",message.asXML());
+		oc_client.addStringParam("operation","store");
+		try {
+			CloseableHttpResponse resp = oc_client.postAuthenticated(SH.cs("pharmaSyncServerURL",""),SH.cs("pharmaSyncServerURLUsername", "nil"), SH.cs("pharmaSyncServerURLPassword", "nil"));
+			HttpEntity entity = resp.getEntity();
+		    if(entity!=null){
+		    	try {
+			    	Document doc = org.dom4j.DocumentHelper.parseText(EntityUtils.toString(entity));
+					Element eResponse = doc.getRootElement();
+					if(eResponse.attributeValue("type").equalsIgnoreCase("error")){
+						//Operation was NOT succesful
+						return false;
+					}
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+		    }
 		}
-		catch(Exception e) {
-			e.printStackTrace();
+		catch(Exception x) {
+			x.printStackTrace();
 		}
+
 		return true;
     }
     
     public static boolean postOperationToSyncServer(String productStockOperationUid) throws Exception {
     	ProductStockOperation operation = ProductStockOperation.get(productStockOperationUid);
 		//Send data to destination server
-		HttpClient client = new HttpClient();
-		PostMethod method = new PostMethod(SH.cs("pharmaSyncServerURL",""));
+		OCHttpClient oc_client = new OCHttpClient();
 
 		Element message = DocumentHelper.createElement("message");
 		message.addAttribute("objecttype", "operation");
@@ -774,22 +776,29 @@ public class ProductStockOperation extends OC_Object{
         	}
         }
         Debug.println("XML = "+message.asXML());
-        
-		NameValuePair[] nvp = new NameValuePair[3];
-		nvp[0]= new NameValuePair("uid",SH.cs("serviceStockUID."+operation.getProductStock().getServiceStock().getUid(),""));
-		nvp[1]= new NameValuePair("xml",message.asXML());
-		nvp[2]= new NameValuePair("operation","store");
-		method.setQueryString(nvp);
-		String authStr = SH.cs("pharmaSyncServerURLUsername", "nil") + ":" + SH.cs("pharmaSyncServerURLPassword", "nil");
-		String authEncoded = Base64.getEncoder().encodeToString(authStr.getBytes());
-	    method.setRequestHeader("Authorization", "Basic "+authEncoded);
-		client.executeMethod(method);
-		String sResponse=method.getResponseBodyAsString();
-		Document doc = org.dom4j.DocumentHelper.parseText(sResponse);
-		Element eResponse = doc.getRootElement();
-		if(eResponse.attributeValue("type").equalsIgnoreCase("error")){
-			//Operation was NOT succesful
-			return false;
+
+		oc_client.addStringParam("uid",SH.cs("serviceStockUID."+operation.getProductStock().getServiceStock().getUid(),""));
+		oc_client.addStringParam("xml",message.asXML());
+		oc_client.addStringParam("operation","store");
+		try {
+			CloseableHttpResponse resp = oc_client.postAuthenticated(SH.cs("pharmaSyncServerURL",""),SH.cs("pharmaSyncServerURLUsername", "nil"), SH.cs("pharmaSyncServerURLPassword", "nil"));
+			HttpEntity entity = resp.getEntity();
+		    if(entity!=null){
+		    	try {
+			    	Document doc = org.dom4j.DocumentHelper.parseText(EntityUtils.toString(entity));
+					Element eResponse = doc.getRootElement();
+					if(eResponse.attributeValue("type").equalsIgnoreCase("error")){
+						//Operation was NOT succesful
+						return false;
+					}
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+		    }
+		}
+		catch(Exception x) {
+			x.printStackTrace();
 		}
 		return true;
     }
@@ -2270,6 +2279,39 @@ public class ProductStockOperation extends OC_Object{
             rs = ps.executeQuery();
             while(rs.next()){
             	deliveries.add(rs.getString("OC_OPERATION_SRCDESTUID")+"$"+rs.getString("OC_OPERATION_PRODUCTSTOCKUID"));
+            }
+        }
+        catch (Exception e){
+        	e.printStackTrace();
+        }
+        finally{
+            try{
+                if(rs!=null) rs.close();
+                if(ps!=null) ps.close();
+                oc_conn.close();
+            }
+            catch(SQLException se){
+                se.printStackTrace();
+            }
+        }
+        return deliveries;
+    }
+    public static Vector getOpenProductStockDeliveries(String destinationServiceStockUid,long time) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Vector deliveries = new Vector();
+        String sSelect = "SELECT distinct OC_STOCK_PRODUCTUID FROM OC_PRODUCTSTOCKOPERATIONS,OC_PRODUCTSTOCKS where " +
+        		" OC_STOCK_OBJECTID=replace(OC_OPERATION_PRODUCTSTOCKUID,'"+SH.getServerId()+".','') AND"+
+        		" OC_OPERATION_DESCRIPTION LIKE 'medicationdelivery.%' AND OC_OPERATION_SRCDESTTYPE='servicestock' AND " +
+        		" OC_OPERATION_UNITSRECEIVED<OC_OPERATION_UNITSCHANGED and OC_OPERATION_SRCDESTUID=? and oc_operation_updatetime>?";
+        Connection oc_conn=MedwanQuery.getInstance().getOpenclinicConnection();
+        try{
+        	ps=oc_conn.prepareStatement(sSelect);
+        	ps.setString(1, destinationServiceStockUid);
+        	ps.setTimestamp(2, new java.sql.Timestamp(new java.util.Date().getTime()-time));
+            rs = ps.executeQuery();
+            while(rs.next()){
+            	deliveries.add(rs.getString("OC_STOCK_PRODUCTUID"));
             }
         }
         catch (Exception e){

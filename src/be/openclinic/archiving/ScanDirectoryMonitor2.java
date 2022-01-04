@@ -688,18 +688,23 @@ public class ScanDirectoryMonitor2 implements Runnable{
 	
 			    		String filename=ArchiveDocument.generateUDI(MedwanQuery.getInstance().getOpenclinicCounter("ARCH_DOCUMENTS"));
 		    			filename = acceptIncomingDICOMFile(filename, file);
-		    			Debug.println("DICOM image "+filename+" for patient "+person.getFullName()+" ["+person.personid+"] stored.");
-		    			ps=conn.prepareStatement("insert into OC_PACS(OC_PACS_STUDYUID,OC_PACS_SERIES,OC_PACS_SEQUENCE,OC_PACS_FILENAME,OC_PACS_UPDATETIME) values(?,?,?,?,?)");
-		    			Debug.println("studyUid="+studyUid);
-		    			Debug.println("seriesUid="+seriesUid);
-		    			Debug.println("sequence="+sequence);
-		    			Debug.println("filename="+filename);
-		    			ps.setString(1, studyUid);
-			    		ps.setString(2, seriesUid);
-			    		ps.setString(3, sequence);
-			    		ps.setString(4, filename);
-			    		ps.setTimestamp(5, new java.sql.Timestamp(new java.util.Date().getTime()));
-			    		ps.execute();
+		    			if(new File(SCANDIR_BASE+"/"+SCANDIR_TO+"/"+filename).exists()) {
+			    			Debug.println("DICOM image "+filename+" for patient "+person.getFullName()+" ["+person.personid+"] stored.");
+			    			ps=conn.prepareStatement("insert into OC_PACS(OC_PACS_STUDYUID,OC_PACS_SERIES,OC_PACS_SEQUENCE,OC_PACS_FILENAME,OC_PACS_UPDATETIME) values(?,?,?,?,?)");
+			    			Debug.println("studyUid="+studyUid);
+			    			Debug.println("seriesUid="+seriesUid);
+			    			Debug.println("sequence="+sequence);
+			    			Debug.println("filename="+filename);
+			    			ps.setString(1, studyUid);
+				    		ps.setString(2, seriesUid);
+				    		ps.setString(3, sequence);
+				    		ps.setString(4, filename);
+				    		ps.setTimestamp(5, new java.sql.Timestamp(new java.util.Date().getTime()));
+				    		ps.execute();
+		    			}
+		    			else {
+		    				Debug.println("Target file has not been created (file already moved by another process?)");
+		    			}
 			    		err=1;
 		    		}
 		    		rs.close();

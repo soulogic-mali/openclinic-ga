@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.io.FileUtils"%>
 <%@page import="java.io.*,be.openclinic.archiving.*,org.dcm4che2.data.*,org.apache.commons.fileupload.servlet.*,org.apache.commons.fileupload.disk.*,org.apache.commons.fileupload.*" %>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
@@ -29,18 +30,20 @@ HashSet errors = new HashSet();
            FileItem item = (FileItem) itr.next();
            if (item.isFormField()) {
            } else {
-           try {
-              String fn=SCANDIR_BASE+"/from/"+filename+"_"+i;
-        	   File savedFile = new File(fn);
-              item.write(savedFile);
-              DicomObject obj = Dicom.getDicomObject(savedFile);
-              if(obj==null){
-            	  errors.add(item.getName());
-              }
-              else{
-            	  patients.add(obj.getString(Tag.PatientID));
-            	  studies.add(obj.getString(Tag.StudyID)+"</td><td>"+obj.getString(Tag.StudyDescription).replaceAll("\\^", ", "));
-              }
+	           try {
+	              String fn=SCANDIR_BASE+"/from/"+filename+"_"+i;
+	        	  File savedFile = new File(fn);
+	        	  InputStream is = item.getInputStream();
+	        	  FileUtils.copyInputStreamToFile(is, savedFile);
+	              is.close();
+	              DicomObject obj = Dicom.getDicomObject(savedFile);
+	              if(obj==null){
+	            	  errors.add(item.getName());
+	              }
+	              else{
+	            	  patients.add(obj.getString(Tag.PatientID));
+	            	  studies.add(obj.getString(Tag.StudyID)+"</td><td>"+obj.getString(Tag.StudyDescription).replaceAll("\\^", ", "));
+	              }
               } catch (Exception e) {
                    e.printStackTrace();
               }

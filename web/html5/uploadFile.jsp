@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.io.FileUtils"%>
 <%@page import="java.io.*,be.openclinic.archiving.*,org.dcm4che2.data.*,org.apache.commons.fileupload.servlet.*,org.apache.commons.fileupload.disk.*,org.apache.commons.fileupload.*" %>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
@@ -22,12 +23,13 @@ try {
       while (itr.hasNext()) {
            FileItem item = (FileItem) itr.next();
            if(!item.isFormField() && item.getName()!=null){
-              System.out.println("File name = "+item.getName());
         	  File savedFile = new File(directory+"/"+item.getName());
         	  if(savedFile.exists()){
         		  savedFile.delete();
         	  }
-              item.write(savedFile);
+        	  InputStream is = item.getInputStream();
+        	  FileUtils.copyInputStreamToFile(is, savedFile);
+              is.close();
            }
 		}
    	}	

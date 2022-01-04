@@ -22,7 +22,7 @@
   var snoozeTimeInMillis = "<%=snoozeTimeInMillis%>",
       checkTimeInMillis = "<%=checkTimeInMillis%>";
   var interval,heartbeat;   
-  heartbeat = window.setTimeout("heartBeat()",100);
+  heartbeat = window.setTimeout("heartBeat()",500);
   <%
       Long snoozeDueTime = 0L;
   	  if(ScreenHelper.getTranExists("systemMessages","mainMessage","en").length()==0){

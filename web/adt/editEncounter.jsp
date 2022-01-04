@@ -154,7 +154,7 @@
 	        tmpEncounter.setOutcome(sEditEncounterOutcome);
 	        tmpEncounter.setSituation(sEditEncounterSituation);
 	        tmpEncounter.setCategories(sEditEncounterCategories);
-			if(MedwanQuery.getInstance().getConfigInt("enableEncounterReference",0)==1){
+			if(MedwanQuery.getInstance().getConfigInt("enableEncounterReference",0)>=1){
 				tmpEncounter.setEtiology(sEditEncounterReference);
 			}
 			tmpEncounter.setEscortName(sEditEncounterEscortName);
@@ -477,7 +477,7 @@
 	            <td class="admin2">
 	                <select class="text" name="EditEncounterOrigin">
 	                    <option/>
-	                    <%=ScreenHelper.writeSelect(request,"urgency.origin",sEditEncounterOrigin,sWebLanguage)%>
+	                    <%=ScreenHelper.writeSelect(request,MedwanQuery.getInstance().getConfigString("encounterOrigin","urgency.origin"),sEditEncounterOrigin,sWebLanguage)%>
 	                </select>
 	            </td>
 	        </tr>
@@ -585,7 +585,7 @@
 	                			out.println("<option/>");
 	                		}
 	                	%>
-	                    <%=ScreenHelper.writeSelectUnsorted(request,"encounter.situation",sEditEncounterSituation,sWebLanguage)%>
+	                    <%=ScreenHelper.writeSelectUnsorted(request,MedwanQuery.getInstance().getConfigString("encounterSituation","encounter.situation"),sEditEncounterSituation,sWebLanguage)%>
 	                </select>
 	            </td>
 	        </tr>
@@ -594,10 +594,19 @@
 	        <tr>
 	            <td class="admin"><%=getTran(request,"web","outcome",sWebLanguage)%></td>
 	            <td class="admin2">
-	                <select class="text" name="EditEncounterOutcome" style="vertical-align:top;">
+	                <select class="text" name="EditEncounterOutcome" style="vertical-align:middle;">
 	                    <option value=""><%=getTran(request,"web","choose",sWebLanguage)%></option>
 	                    <%=ScreenHelper.writeSelectUnsorted(request,MedwanQuery.getInstance().getConfigString("encounterOutcomeType","encounter.outcome"),sEditEncounterOutcome,sWebLanguage)%>
 	                </select>
+			        <%
+					if(MedwanQuery.getInstance().getConfigInt("enableEncounterReference",0)==2){
+					%>
+			        <%-- AMBULANCE --%>
+						<input type='checkbox' class='text' id='EditEncounterReference' name='EditEncounterReference' <%=sEditEncounterReference.equalsIgnoreCase("medwan.common.true")?"checked":"" %> value='medwan.common.true'/>
+			            <%=getTran(request,"web","byambulance",sWebLanguage)%>
+			        <%
+					}
+			        %>
 	            </td>
 	        </tr>
 	        
@@ -622,7 +631,6 @@
 	                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTran(null,"web","clear",sWebLanguage)%>" onclick="EditEncounterForm.EditEncounterDestination.value='';EditEncounterForm.EditEncounterDestinationName.value='';">
 	            </td>
 	        </tr>
-	        
 	        <%-- CATEGORY --%>
 	        <tr id="Category" style="visibility:visible;">
 	            <td class="admin"><%=getTran(request,"web","category",sWebLanguage)%></td>
@@ -659,7 +667,7 @@
 	            </td>
 	        </tr>
 			<%
-				if(MedwanQuery.getInstance().getConfigInt("enableEncounterReference",0)==1){
+			if(MedwanQuery.getInstance().getConfigInt("enableEncounterReference",0)==1){
 			%>
 	        <%-- REFERENCE --%>
 	        <tr id="Reference" style="visibility:visible;">
@@ -669,7 +677,7 @@
 	            </td>
 	        </tr>
 	        <%
-				}
+			}
 	        %>
 	        <%-- ALREADY ACCOUNTED ACCOMODATION --%>
 	        <%

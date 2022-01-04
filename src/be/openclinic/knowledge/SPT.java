@@ -83,7 +83,7 @@ public class SPT {
 	
 	public static boolean postSPTData() {
 		boolean bSuccess = false;
-		if(SH.isHostReachable(SH.cs("sptCentralHost", "localhost"))) {
+		if(SH.isHostReachable(SH.cs("sptCentralHost", "cloud.hnrw.org"))) {
 			java.util.Date end = new java.util.Date();
 			java.util.Date lastSPTStatusPosted=new java.util.Date();
 			try {
@@ -101,7 +101,7 @@ public class SPT {
 				OCHttpClient client = new OCHttpClient();
 				client.addByteArrayParam("sptdata", document.asXML().getBytes());
 				try {
-					HttpResponse response = client.post(SH.cs("sptCentralHostPostURL", "http://localhost/openclinic/ikirezi/postSPTData.jsp"));
+					HttpResponse response = client.post(SH.cs("sptCentralHostPostURL", "http://cloud.hnrw.org/openclinic/ikirezi/postSPTData.jsp"));
 					String responseMessage =new BasicResponseHandler().handleResponse(response);
 					if(responseMessage.contains("<OK>")){
 						bSuccess = true;

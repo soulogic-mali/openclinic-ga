@@ -11,6 +11,7 @@ import java.util.Map;
 import be.mxs.common.util.db.MedwanQuery;
 import be.openclinic.medical.Labo;
 import be.openclinic.medical.RequestedLabAnalysis;
+import be.openclinic.system.SH;
 import ca.uhn.hl7v2.AcknowledgmentCode;
 import ca.uhn.hl7v2.DefaultHapiContext;
 import ca.uhn.hl7v2.HL7Exception;
@@ -68,13 +69,15 @@ public class HL7Receiver implements ReceivingApplication {
         	OUL_R22 labresults = (OUL_R22)message;
         	String personid = labresults.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getIDNumber().getValue();
         	List specimens = labresults.getSPECIMENAll();
+        	System.out.println("Total number of specimen: "+specimens.size());
         	Iterator iSpecimens = specimens.iterator();
         	while(iSpecimens.hasNext()) {
         		OUL_R22_SPECIMEN specimen = (OUL_R22_SPECIMEN)iSpecimens.next();
         		String barcodeid = HL7Server.checkString(specimen.getSPM().getSpecimenID().getPlacerAssignedIdentifier().getEi1_EntityIdentifier().getValue());
+            	System.out.println("BarcodeID: "+barcodeid);
         		String specimenid="";
         		try {
-					java.sql.Connection conn = DriverManager.getConnection(HL7Server.url);
+					java.sql.Connection conn = SH.getOpenClinicConnection();
 	        		specimenid = Labo.getLabSpecimenId(barcodeid,conn);
 	        		conn.close();
 				} catch (SQLException e2) {
@@ -94,6 +97,7 @@ public class HL7Receiver implements ReceivingApplication {
                     String id=terser.get("/.MSH-10");
         			System.out.println("Setting transactionId = "+transactionid+" for message "+id+" in OC_HL7IN");
         			HL7Server.storeReceivedMessageTransactionId(id, Integer.parseInt(transactionid));
+                	System.out.println("TransactionId stored");
         		}
         		catch(Exception e) {
         			e.printStackTrace();
@@ -162,7 +166,7 @@ public class HL7Receiver implements ReceivingApplication {
 			        				analysis.setTransactionId(transactionid);
 			        				analysis.setUpdatetime(new java.sql.Date(new java.util.Date().getTime()));
 			        				analysis.setObjectid(-1);
-			        		    	java.sql.Connection conn =DriverManager.getConnection(HL7Server.url);
+			        		    	java.sql.Connection conn =SH.getOpenClinicConnection();
 			        				analysis.store(false, conn);
 			        				conn.close();
 			        			}
@@ -310,10 +314,15 @@ public class HL7Receiver implements ReceivingApplication {
 									else {
 										System.out.println("Missing resultmodifier");
 									}
-			        		    	java.sql.Connection conn =DriverManager.getConnection(HL7Server.url);
-				        			RequestedLabAnalysis analysis = RequestedLabAnalysis.get(Integer.parseInt(serverid), Integer.parseInt(transactionid), labcode,conn);
-				        			analysis.calculateModifier(true,conn);
-				        			System.out.println("Calculated resultmodifier: "+analysis.getUnverifiedResultModifier());
+			        		    	java.sql.Connection conn =SH.getOpenClinicConnection();
+			        		    	try {
+					        			RequestedLabAnalysis analysis = RequestedLabAnalysis.get(Integer.parseInt(serverid), Integer.parseInt(transactionid), labcode,conn);
+					        			analysis.calculateModifier(true,conn);
+					        			System.out.println("Calculated resultmodifier: "+analysis.getUnverifiedResultModifier());
+			        		    	}
+			        		    	catch(Exception q) {
+			        		    		q.printStackTrace();
+			        		    	}
 				        			conn.close();
 								}
 								else {

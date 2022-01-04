@@ -259,9 +259,11 @@
             <td class="admin2">
             	<table width='100%'>
             		<tr>
-            			<td><%=getTran(request,"mspls", "premature", sWebLanguage)%></td>
+            			<td width='1%' nowrap rowspan='3'><%=getTran(request,"mspls", "bornalive", sWebLanguage)%></td>
+            			<td rowspan='3'><%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction,request, "yesno","ITEM_TYPE_LIVEBORN", sWebLanguage,false,"","") %></td>
+            			<td width='1%' nowrap><%=getTran(request,"mspls", "premature", sWebLanguage)%></td>
             			<td><%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction,request, "yesno","ITEM_TYPE_PREMATURE", sWebLanguage,false,"","") %></td>
-            			<td><%=getTran(request,"mspls", "lowweight", sWebLanguage)%></td>
+            			<td width='1%' nowrap><%=getTran(request,"mspls", "lowweight", sWebLanguage)%></td>
             			<td><%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction,request, "yesno","ITEM_TYPE_LOWWEIGHT", sWebLanguage,false,"onchange='document.getElementById(\"ITEM_TYPE_NORMALWEIGHT.0\").checked=!document.getElementById(\"ITEM_TYPE_LOWWEIGHT.0\").checked;document.getElementById(\"ITEM_TYPE_NORMALWEIGHT.1\").checked=!document.getElementById(\"ITEM_TYPE_LOWWEIGHT.1\").checked;document.getElementById(\"ITEM_TYPE_NORMALWEIGHT.1\").onclick();'","") %></td>
             		</tr>
             		<tr>
@@ -288,6 +290,12 @@
             </td>
         </tr>
         <tr>
+            <td class="admin"><%=getTran(request,"mspls", "otherproblems", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultCheckBoxes((TransactionVO)transaction, request, "mspls.acc.otherproblems", "ITEM_TYPE_OTHERPROBLEMS", sWebLanguage, true) %>
+            </td>
+        </tr>
+        <tr>
             <td class="admin" rowspan='2'><%=getTran(request,"mspls", "deaths", sWebLanguage)%></td>
             <td class="admin2">
             	<%=ScreenHelper.writeDefaultCheckBoxes((TransactionVO)transaction, request, "mspls.acc.deaths", "ITEM_TYPE_DEATHS", sWebLanguage, true) %>
@@ -305,6 +313,18 @@
             </td>
         </tr>
         <tr>
+            <td class="admin"><%=getTran(request,"mspls", "ptmefollowup", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "mspls.acc.ptmefollowup", "ITEM_TYPE_PTMEFOLLOWUP", sWebLanguage, true,"","") %>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"mspls", "infections", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultCheckBoxes((TransactionVO)transaction, request, "mspls.acc.infections", "ITEM_TYPE_INFECTIONS", sWebLanguage, true,"","") %>
+            </td>
+        </tr>
+        <tr>
             <td class="admin"><%=getTran(request,"mspls", "breastfeeding1hour", sWebLanguage)%></td>
             <td class="admin2">
             	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_BREASTFEEDING", sWebLanguage, true, "", " ") %>
@@ -319,6 +339,7 @@
         <tr>
             <td class="admin"><%=getTran(request,"mspls", "contraception", sWebLanguage)%></td>
             <td class="admin2">
+            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_RECEIVEDCONTRACEPTION", sWebLanguage, true, "", " ") %>
             	<%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_CONTRACEPTION", 60, 1) %>
             </td>
         </tr>

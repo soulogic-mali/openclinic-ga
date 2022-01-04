@@ -2,7 +2,6 @@
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/includes/validateUser.jsp"%>
 <%
-System.out.println(1);
 	if(request.getParameter("showWaitingQueuePatientName")!=null){
 		session.setAttribute("showWaitingQueuePatientName", "1");
 	}
@@ -13,7 +12,6 @@ System.out.println(1);
 	if(request.getParameter("verticalFrames")!=null){
 		verticalFrames=Integer.parseInt(request.getParameter("verticalFrames"));
 	}
-System.out.println("2");
 %>
 <head>
     <%=sCSSNORMAL%>
@@ -31,7 +29,6 @@ System.out.println("2");
 		<tr class='admin'>
 			<td colspan='2'>
 			<%
-			System.out.println("3: "+checkString((String)session.getAttribute("activequeue")));
 			try{
 			%>
 				<select class='text' name='queue' id='queue' onchange='loadtickets();'>
@@ -42,7 +39,6 @@ System.out.println("2");
 			catch(Exception e){
 				e.printStackTrace();
 			}
-			System.out.println("4");
 			%>
 				<input type='checkbox' name='showWaitingQueuePatientName' value='1' onchange="transactionForm.submit();" <%="1".equals(((String)session.getAttribute("showWaitingQueuePatientName")))?"checked":"" %>/>
 				<%= getTran(request,"web","showpatientnames",sWebLanguage) %>

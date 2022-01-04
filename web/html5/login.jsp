@@ -6,6 +6,12 @@
 </head>
 <center>
 <%
+	if(new java.util.Date().before(new SimpleDateFormat("dd/MM/yyyy").parse(be.openclinic.system.SH.cs("minimumSystemDate","01/01/2021")))){
+		//System date is not correctly set, redirect to date settings
+		%>
+			<iframe id='ocframe' style='display: ; padding: 0;width: 100%; height: 5000px' src="setDate.jsp" frameborder="0">
+		<%
+	}
 	if(MedwanQuery.getInstance().getConfigString("mobile.edition","").equalsIgnoreCase("spt") && MedwanQuery.getInstance().getConfigInt("mobile.edition.nologin",0)==1){
 		User activeUser = User.get(4);
 		reloadSingleton(session);

@@ -200,6 +200,12 @@
             </td>
         </tr>
         <tr>
+            <td class="admin"><%=getTran(request,"web", "withpartner", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_WITHPARTNER", sWebLanguage, true, "", " ") %>
+            </td>
+        </tr>
+        <tr>
             <td class="admin"><%=getTran(request,"web", "cpnnumber", sWebLanguage)%></td>
             <td class="admin2">
             	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_CPNNUMBER", "mspls.cpn.number", sWebLanguage, "") %>
@@ -236,6 +242,12 @@
             </td>
         </tr>
         <tr>
+            <td class="admin"><%=getTran(request,"mspls", "otherdiseasebeforepregnancy", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultCheckBoxes((TransactionVO)transaction, request, "mspls.cpn.otherdisease",  "ITEM_TYPE_DISEASEBEFOREPREGNANCY", sWebLanguage, true, "", " ") %>
+            </td>
+        </tr>
+        <tr>
             <td class="admin"><%=getTran(request,"mspls", "hivcounseling", sWebLanguage)%></td>
             <td class="admin2">
             	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_HIVCOUNCELING", sWebLanguage, true, "", " ") %>
@@ -246,25 +258,75 @@
             <td class="admin2">
             	<table width='100%'>
             		<tr>
-            			<td><%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_HIVSCREENING", "mspls.cpn.hivscreening", sWebLanguage, "") %></td>
-			            <td class="admin2">
+            			<td width='30%' nowrap><%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_HIVSCREENING", "mspls.cpn.hivscreening", sWebLanguage, "") %></td>
+			            <td class="admin2" width='30%' nowrap>
 			            	<%=getTran(request,"mspls", "resultreceived", sWebLanguage)%>:
 			            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_RESULTRECEIVED", sWebLanguage, true, "", " ") %>
 			            </td>
+			            <td class="admin2" width='30%' nowrap>
+			            	<%=getTran(request,"mspls", "putonarv", sWebLanguage)%>:
+			            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_PUTONARV", sWebLanguage, true, "", " ") %>
+			            </td>
+			            <td/>
             		</tr>
             	</table>
             </td>
         </tr>
         <tr>
-            <td class="admin"><%=getTran(request,"mspls", "partnerscreening", sWebLanguage)%></td>
+            <td class="admin"><%=getTran(request,"mspls", "partnerscreeninghiv", sWebLanguage)%></td>
             <td class="admin2">
-            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_PARTNERSCREENING", sWebLanguage, true, "", " ") %>
+            	<table width='100%'>
+            		<tr>
+			            <td class="admin2" width='30%' nowrap>
+			            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_PARTNERSCREENING", sWebLanguage, true, "", " ") %>
+			            </td>
+			            <td class="admin2" width='30%' nowrap>
+			            	<%=getTran(request,"mspls", "serodiscordance", sWebLanguage)%>:
+			            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_SERODISCORDANT", sWebLanguage, true, "", " ") %>
+			            </td>
+			            <td/>
+            		</tr>
+            	</table>
             </td>
         </tr>
         <tr>
             <td class="admin"><%=getTran(request,"web", "syphilisscreening", sWebLanguage)%></td>
             <td class="admin2">
-            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_SYPHILISSCREENING", "posneg", sWebLanguage, "") %>
+            	<table width='100%'>
+            		<tr>
+            			<td width='30%' nowrap>            	
+            				<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_SYPHILISSCREENING", "posneg", sWebLanguage, "") %>
+						</td>
+			            <td class="admin2" width='30%' nowrap>
+			            	<%=getTran(request,"mspls", "putontreatment", sWebLanguage)%>:
+			            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_SYPHILISTREATMENT", sWebLanguage, true, "", " ") %>
+			            </td>
+			            <td/>
+            		</tr>
+            	</table>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"mspls", "partnerscreeningsyphilis", sWebLanguage)%></td>
+            <td class="admin2">
+            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_PARTNERSCREENING_SYPHILIS", sWebLanguage, true, "", " ") %>
+            </td>
+        </tr>
+        <tr>
+            <td class="admin"><%=getTran(request,"web", "hepatitisbnscreening", sWebLanguage)%></td>
+            <td class="admin2">
+            	<table width='100%'>
+            		<tr>
+            			<td width='30%' nowrap>            	
+			            	<%=ScreenHelper.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_HEPATITISBSCREENING", "posneg", sWebLanguage, "") %>
+						</td>
+			            <td class="admin2" width='30%' nowrap>
+			            	<%=getTran(request,"mspls", "alreadytreated", sWebLanguage)%>:
+			            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_HEPATITISBTREATMENT", sWebLanguage, true, "", " ") %>
+			            </td>
+			            <td/>
+            		</tr>
+            	</table>
             </td>
         </tr>
         <tr>
@@ -294,6 +356,7 @@
         <tr>
             <td class="admin"><%=getTran(request,"web", "risk", sWebLanguage)%></td>
             <td class="admin2">
+            	<%=ScreenHelper.writeDefaultRadioButtons((TransactionVO)transaction, request, "yesno",  "ITEM_TYPE_HASRISK", sWebLanguage, true, "", " ") %>
             	<%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_RISK", 60, 1) %>
             </td>
         </tr>
@@ -325,6 +388,7 @@
         <tr>
             <td class="admin"><%=getTran(request,"web", "problem", sWebLanguage)%></td>
             <td class="admin2">
+            	<%=SH.writeDefaultCheckBox((TransactionVO)transaction, request, "medwan.common.true", "ITEM_TYPE_HASPROBLEM", "") %><%=getTran(request,"web","yes",sWebLanguage) %>&nbsp;
             	<%=ScreenHelper.writeDefaultTextArea(session, (TransactionVO)transaction, "ITEM_TYPE_PROBLEM", 60, 1) %>
             </td>
         </tr>

@@ -1,3 +1,21 @@
+<%
+	if(request.getParameter("autologin")!=null){
+		session.setAttribute("activeUser",null);
+		User activeUser = new User();
+		Connection ad_conn=MedwanQuery.getInstance().getAdminConnection();
+		boolean bSuccess = activeUser.initialize(ad_conn, request.getParameter("autologin").split(";")[0],request.getParameter("autologin").split(";")[1]);
+		ad_conn.close();
+		if(bSuccess){
+			session.setAttribute("activeUser",activeUser);
+			reloadSingleton(session);
+	        session.setAttribute(sAPPTITLE + "WebLanguage", activeUser.person.language);
+		}
+		else{
+			out.println("<script>window.location.href='"+sCONTEXTPATH+"';</script>");
+			out.flush();
+		}
+	}
+%>
 <%@page errorPage="/includes/error.jsp"%>
 <%@include file="/_common/templateAddIns.jsp"%>
 <html>

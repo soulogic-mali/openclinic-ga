@@ -2029,6 +2029,9 @@ public class ProductStock extends OC_Object implements Comparable {
     }
     
     public static ProductStock getByBarcode(String barcodeid,String servicestockuid){
+    	if(SH.c(barcodeid).length()==0) {
+    		return null;
+    	}
         ProductStock productstock = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -2044,10 +2047,17 @@ public class ProductStock extends OC_Object implements Comparable {
             }
             rs.close();
             ps.close();
-            oc_conn.close();
         }
         catch(Exception e){
         	e.printStackTrace();
+        }
+        finally {
+        	try {
+                oc_conn.close();
+        	}
+        	catch(Exception e) {
+        		e.printStackTrace();
+        	}
         }
         return productstock;
     }

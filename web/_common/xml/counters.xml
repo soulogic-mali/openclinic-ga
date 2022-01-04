@@ -77,4 +77,5 @@
     <counter name="OC_PRODUCTIONORDERMATERIAL_ID" table="OC_PRODUCTIONORDERMATERIALS" field="OC_MATERIAL_ID" bd='openclinic'/>
     <counter server="MySQL" name="ARCH_DOCUMENTS" table="ARCH_DOCUMENTS;OC_PACS" field="ARCH_DOCUMENT_OBJECTID;substring(SUBSTRING_INDEX(oc_pacs_filename, '/', -1),1,9)" bd='openclinic'/>
     <counter server="Microsoft SQL Server" name="ARCH_DOCUMENTS" table="ARCH_DOCUMENTS;OC_PACS" field="ARCH_DOCUMENT_OBJECTID;substring(RIGHT(oc_pacs_filename, CHARINDEX('/',REVERSE(oc_pacs_filename))-1),1,9)" bd='openclinic'/>
+    <counter name="PHARMASYNC" table="OC_PHARMASYNC" field="OC_PHARMASYNC_ID" bd='openclinic'/>
 </counters>
