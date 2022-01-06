@@ -206,7 +206,7 @@ public class ServiceStock extends OC_Object{
     public void addDispensingUser(User user){
     	if(!this.dispensingUsers.contains(user)) {
     		this.dispensingUsers.addElement(user);
-    		if(!this.dispensingUserIds.contains(user.userid+"$")) {
+    		if(!this.dispensingUserIds.contains("$"+user.userid+"$") && !this.dispensingUserIds.startsWith(user.userid+"$")) {
     			this.dispensingUserIds+=user.userid+"$";
     		}
     	}
@@ -224,7 +224,7 @@ public class ServiceStock extends OC_Object{
     public void addValidationUser(User user){
     	if(!this.validationUsers.contains(user)) {
     		this.validationUsers.addElement(user);
-    		if(!this.validationUserIds.contains(user.userid+"$")) {
+    		if(!this.validationUserIds.contains("$"+user.userid+"$") && !this.validationUserIds.startsWith(user.userid+"$")) {
     			this.validationUserIds+=user.userid+"$";
     		}
     	}
@@ -299,7 +299,7 @@ public class ServiceStock extends OC_Object{
     public void addAuthorizedUser(User user){
     	if(!this.authorizedUsers.contains(user)) {
     		this.authorizedUsers.addElement(user);
-    		if(!this.authorizedUserIds.contains(user.userid)) {
+    		if(!this.authorizedUserIds.contains("$"+user.userid+"$") && !this.authorizedUserIds.startsWith(user.userid+"$")) {
     			this.authorizedUserIds+=user.userid+"$";
     		}
     	}
@@ -345,7 +345,7 @@ public class ServiceStock extends OC_Object{
     public void addReceivingUser(User user){
     	if(!this.receivingUsers.contains(user)) {
     		this.receivingUsers.addElement(user);
-    		if(!this.receivingUserIds.contains(user.userid+"$")) {
+    		if(!this.receivingUserIds.contains("$"+user.userid+"$") && !this.receivingUserIds.startsWith(user.userid+"$")) {
     			this.receivingUserIds+=user.userid+"$";
     		}
     	}
@@ -913,6 +913,7 @@ public class ServiceStock extends OC_Object{
             if(this.getStockManagerUid().length() > 0) ps.setString(questionmarkIdx++, this.getStockManagerUid());
             else                                       ps.setNull(questionmarkIdx++,Types.VARCHAR);
 
+            /*
             // authorized users
             User user;
             StringBuffer authorizedUserIds = new StringBuffer();
@@ -920,7 +921,7 @@ public class ServiceStock extends OC_Object{
                 user = (User)this.getAuthorizedUsers().elementAt(i);
                 authorizedUserIds.append(user.userid+"$");
             }
-            
+            */
             if(authorizedUserIds.length() > 0) ps.setString(questionmarkIdx++,authorizedUserIds.toString());
             else                               ps.setNull(questionmarkIdx++,Types.VARCHAR);
 

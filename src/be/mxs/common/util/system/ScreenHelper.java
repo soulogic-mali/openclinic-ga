@@ -4122,6 +4122,10 @@ public static String removeAccents(String sTest){
         return new java.sql.Timestamp(parseDate(sTime).getTime()); // now
     }
 
+    public static java.sql.Timestamp getSQLTimestamp(java.util.Date date){
+        return new java.sql.Timestamp(date.getTime()); // now
+    }
+
     //--- GET SQL TIME STAMP ----------------------------------------------------------------------
     public static String getSQLTimeStamp(java.sql.Timestamp timeStamp){
         String ts = "";

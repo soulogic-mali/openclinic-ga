@@ -4652,8 +4652,9 @@
 		</columns>
 	</table>
 
-    <table name="OC_PHARMASYNCERRORS" db="openclinic" sync="NONE">
+    <table name="OC_PHARMASYNCLOGS" db="openclinic" sync="NONE">
     	<columns>
+			<column name="OC_ERROR_ID" dbtype="int" javatype="integer"/>
 			<column name="OC_ERROR_CODE" dbtype="int" javatype="integer" primary="1" nulls="0"/>
 			<column name="OC_ERROR_SERVICESTOCKUID" dbtype="varchar" javatype="string" size="20"/>
 			<column name="OC_ERROR_UPDATETIME" dbtype="datetime" javatype="date"/>
@@ -4662,6 +4663,9 @@
 		<indexes>
 			<index name="OC_ERROR_SERVICESTOCKUID">
 				<indexcolumn order="ASC" name="OC_ERROR_SERVICESTOCKUID"/>
+			</index>
+			<index name="OC_ERROR_ID">
+				<indexcolumn order="ASC" name="OC_ERROR_ID"/>
 			</index>
 		</indexes>
     </table>

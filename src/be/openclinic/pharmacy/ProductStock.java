@@ -265,6 +265,9 @@ public class ProductStock extends OC_Object implements Comparable {
     public Vector getBatches(){
     	return Batch.getBatches(this.getUid());
     }
+    public Vector getAllBatches(){
+    	return Batch.getAllBatches(this.getUid());
+    }
     public Vector getActiveBatches(){
     	return Batch.getActiveBatches(this.getUid());
     }
@@ -1890,13 +1893,13 @@ public class ProductStock extends OC_Object implements Comparable {
                              "  FROM OC_PRODUCTSTOCKOPERATIONS"+
                              " WHERE OC_OPERATION_DESCRIPTION LIKE 'medicationreceipt.%'" +
                              " and OC_OPERATION_PRODUCTSTOCKUID='"+getUid()+"'"+
-                             " AND OC_OPERATION_DATE < ?"+
+                             " AND OC_OPERATION_DATE <= ?"+
                              " UNION"+
                              " SELECT -sum(OC_OPERATION_UNITSCHANGED) level"+
                              "  FROM OC_PRODUCTSTOCKOPERATIONS"+
                              " WHERE OC_OPERATION_DESCRIPTION LIKE 'medicationdelivery.%'" +
                              " and OC_OPERATION_PRODUCTSTOCKUID='"+getUid()+"'"+
-                             " AND OC_OPERATION_DATE < ?) z";
+                             " AND OC_OPERATION_DATE <= ?) z";
 
             ps = oc_conn.prepareStatement(sSelect);
             ps.setTimestamp(1,new java.sql.Timestamp(dateUntill.getTime()));

@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -156,5 +159,31 @@ public class SH extends ScreenHelper {
 		} catch (Exception e) {
 			return false;
 		}
+    }
+    
+    public static void close(Connection conn, PreparedStatement ps, ResultSet rs) {
+    	try {
+    		if(rs!=null) rs.close();
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	close(conn,ps);
+    }
+    
+    public static void close(Connection conn, PreparedStatement ps) {
+    	try {
+    		if(ps!=null) ps.close();
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	finally {
+    		try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+    	}
     }
 }

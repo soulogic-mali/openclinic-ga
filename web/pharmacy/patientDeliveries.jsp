@@ -271,7 +271,6 @@ if(request.getParameter("modifyquantityoperation")!=null){
 
 <%=ScreenHelper.alignButtonsStart()%>
     <input type="button" name="printButton" class="button" value="<%=getTranNoLink("web","print",sWebLanguage)%>" onclick="printlist();">
-    <input type="button" name="closeButton" class="button" value="<%=getTranNoLink("web","close",sWebLanguage)%>" onclick="window.close();">
 <%=ScreenHelper.alignButtonsStop()%>
 
 <script>

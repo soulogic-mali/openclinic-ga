@@ -563,7 +563,7 @@
 <form name="merge" method="post">
     <table width="100%" class="list" cellspacing="1">
         <tr>
-            <td colspan="2"><%=writeTableHeader("Web.Occup","medwan.common.db-management","N","main.jsp?Page=system/menu.jsp")%></td>
+            <td colspan="2"><%=writeTableHeader("Web.Occup","medwan.common.db-management","en","main.jsp?Page=system/menu.jsp")%></td>
         </tr>
         <tr><td width="<%=sTDAdminWidth%>" class="admin">Local database type</td><td class="admin2" colspan="2"><b><%=sLocalDbType%></b> version <b><%=sLocalDbVersion.replaceAll(sLocalDbType,"")%></b></td></tr>
         <tr><td class="admin">Model document</td><td class="admin2" colspan="2"><b><%=sDoc%></b></td></tr>
@@ -576,9 +576,9 @@
         <tr>
             <td class="admin"/>
             <td class="admin2">
-                <input class="button" type="submit" name="submit" value="execute"/>
-                <input class="button" type="submit" name="reload" value="reload model"/>
-                <input class="button" type="button" name="cancel" value='<%=MedwanQuery.getInstance().getLabel("Web","Back","N")%>' OnClick='javascript:window.location.href="main.jsp?Page=system/menu.jsp"'>
+                <input class="button" type="submit" name="submit" value="<%=MedwanQuery.getInstance().getLabel("web","execute","en")%>"/>
+                <input class="button" type="submit" name="reload" value="<%=MedwanQuery.getInstance().getLabel("web","reload","en")%>"/>
+                <input class="button" type="button" name="cancel" value='<%=MedwanQuery.getInstance().getLabel("web","back","en")%>' OnClick='javascript:window.location.href="main.jsp?Page=system/menu.jsp"'>
             </td>
         </tr>
     </table>
@@ -1874,6 +1874,6 @@
   }
 </script>
 <br>
-<input class="button" type="button" name="cancel" value='<%=MedwanQuery.getInstance().getLabel("Web","Back","N")%>' OnClick='javascript:window.location.href="main.jsp?Page=system/menu.jsp"'>
+<input class="button" type="button" name="cancel" value='<%=MedwanQuery.getInstance().getLabel("web","back","en")%>' OnClick='javascript:window.location.href="main.jsp?Page=system/menu.jsp"'>
 <a href="#topp" class="topbutton">&nbsp;</a>
 </form>

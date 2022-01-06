@@ -159,7 +159,7 @@
 		         .append("<td width='16'>"+(activeUser.getAccessRight("pharmacy.viewproductstockfiches.select")?"<img src='"+sCONTEXTPATH+"/_img/icons/icon_edit.png' class='link' onclick=\"printFiche('"+sStockUid+"');\" title='"+ficheTran+"'></td>":"<td/>"));
             System.out.println("productStock.getProductUid()="+productStock.getProductUid());
             System.out.println("opendeliveries.contains="+opendeliveries.contains(productStock.getProductUid()));
-            if(opendeliveries.contains(productStock.getProductUid())){
+            if(productStock.getServiceStock().isReceivingUser(activeUser.userid) &&  opendeliveries.contains(productStock.getProductUid())){
                 html.append("<td width='16'><img src='"+sCONTEXTPATH+"/_img/icons/icon_incoming.gif' class='link' alt='"+incomingTran+"' onclick='javascript:receiveProduct(\""+sStockUid+"\",\""+sProductName+"\");'/></td>");
             }
             else {

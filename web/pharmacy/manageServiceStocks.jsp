@@ -118,16 +118,16 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
 	            }
 	            
 	            if(serviceStock.getNosync()==0){
-	                html.append("&nbsp;<img src='"+sCONTEXTPATH+"/_img/icons/icon_sync.gif' class='link' alt='"+getTranNoLink("web","sync",sWebLanguage)+"'/>");
+	                html.append("&nbsp;<img src='"+sCONTEXTPATH+"/_img/icons/icon_sync.gif' class='link' title='"+getTranNoLink("web","sync",sWebLanguage)+"' onclick='javascript:syncDetails(\""+serviceStock.getUid()+"\");'/>");
 	            }
 	            if(serviceStock.isReceivingUser(activeUser.userid) && serviceStock.hasOpenDeliveries()){
-	                html.append("&nbsp;<img src='"+sCONTEXTPATH+"/_img/icons/icon_incoming.gif' class='link' alt='"+getTranNoLink("web","incoming",sWebLanguage)+"'' onclick='javascript:bulkReceive(\""+serviceStock.getUid()+"\");'/></a>");
+	                html.append("&nbsp;<img src='"+sCONTEXTPATH+"/_img/icons/icon_incoming.gif' class='link' title='"+getTranNoLink("web","incoming",sWebLanguage)+"'' onclick='javascript:bulkReceive(\""+serviceStock.getUid()+"\");'/>");
 	            }
 	            if(serviceStock.hasOpenOrders()){
-	                html.append("&nbsp;<img src='"+sCONTEXTPATH+"/_img/icons/icon_order.gif' class='link' alt='"+getTranNoLink("web","orders",sWebLanguage)+"'' onclick='javascript:acceptOrders(\""+serviceStock.getUid()+"\");'/></a>");
+	                html.append("&nbsp;<img src='"+sCONTEXTPATH+"/_img/icons/icon_order.gif' class='link' title='"+getTranNoLink("web","orders",sWebLanguage)+"'' onclick='javascript:acceptOrders(\""+serviceStock.getUid()+"\");'/>");
 	            }
 	            if(serviceStock.isValidationUser(activeUser.userid) && serviceStock.hasUnvalidatedDeliveries(activeUser.userid)){
-	                html.append("&nbsp;<img src='"+sCONTEXTPATH+"/_img/icons/icon_validate.png' class='link' alt='"+getTranNoLink("web","validate",sWebLanguage)+"'' onclick='javascript:validateDeliveries(\""+serviceStock.getUid()+"\");'/></a>");
+	                html.append("&nbsp;<img src='"+sCONTEXTPATH+"/_img/icons/icon_validate.png' class='link' title='"+getTranNoLink("web","validate",sWebLanguage)+"'' onclick='javascript:validateDeliveries(\""+serviceStock.getUid()+"\");'/>");
 	            }
 	            html.append("</td>");
 	            
@@ -1795,6 +1795,9 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
 
   function acceptOrders(serviceStockUid){
 	    openPopup("pharmacy/popups/acceptOrders.jsp&ServiceStockUid="+serviceStockUid+"&ts=<%=getTs()%>",700,400);
+	}
+  function syncDetails(serviceStockUid){
+	    openPopup("pharmacy/popups/syncDetails.jsp&ServiceStockUid="+serviceStockUid+"&ts=<%=getTs()%>",1000,400);
 	}
   function doPatientPrescription(serviceStockUid){
 		openPopup("pharmacy/viewUndeliveredPrescriptions.jsp&ts=<%=getTs()%>&FindServiceStockUid="+serviceStockUid,800,300);

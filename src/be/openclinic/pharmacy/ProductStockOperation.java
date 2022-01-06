@@ -761,8 +761,8 @@ public class ProductStockOperation extends OC_Object{
         Debug.println("Posting for operation "+operation.getUid());
         Debug.println("Operation description = "+operation.getDescription());
         Debug.println("Operation objecttype = "+operation.getSourceDestination().getObjectType());
-        if(operation.getDescription().indexOf("delivery") > -1 && operation.getSourceDestination().getObjectType().equalsIgnoreCase("patient") && operation.getSourceDestination().getObjectUid().length()>0) {
-        	//This is a delivery to a patient, also register the patient information
+        if(operation.getSourceDestination().getObjectType().equalsIgnoreCase("patient") && operation.getSourceDestination().getObjectUid().length()>0) {
+        	//This is a delivery to or a receipt from a patient, also register the patient information
         	AdminPerson patient = AdminPerson.getAdminPerson(operation.getSourceDestination().getObjectUid());
         	System.out.println("Adding patient "+patient.personid);
         	if(patient!=null && SH.c(patient.personid).length()>0) {
@@ -976,14 +976,20 @@ public class ProductStockOperation extends OC_Object{
                 //Add the batch units to this batch if it exists
                 if(getBatchUid()!=null && getBatchUid().length()>0){
                 	destinationBatchUid=Batch.copyBatch(getBatchUid(), productStock.getUid());
-                	Batch.updateBatchLevel(destinationBatchUid,this.getUnitsChanged());
+                	
+                	//********** Source of all evil??????
+                	//Batch.updateBatchLevel(destinationBatchUid,this.getUnitsChanged());
+                	
                 }
                 else if(getBatchNumber()!=null && getBatchNumber().length()>0){
                 	Batch sourceBatch = Batch.getByBatchNumber(getProductStockUid(), getBatchNumber());
                 	if(sourceBatch!=null){
                 		setBatchUid(sourceBatch.getUid());
                     	destinationBatchUid=Batch.copyBatch(getBatchUid(), productStock.getUid());
-                    	Batch.updateBatchLevel(destinationBatchUid,this.getUnitsChanged());
+                    	
+                    	//********** Source of all evil??????
+                    	//Batch.updateBatchLevel(destinationBatchUid,this.getUnitsChanged());
+                    	
                 	}
                 }
             }
@@ -1002,7 +1008,7 @@ public class ProductStockOperation extends OC_Object{
             
            	BatchOperation.storeOperation(this.getUid(), sourceBatchUid, destinationBatchUid, this.getUnitsChanged(),new java.util.Date());
             
-            if(bStoreRemote && productStock.getServiceStock().getNosync()==0 && SH.cs("pharmaSyncServerURL","").length()>0) {
+            if(isnew && bStoreRemote && productStock.getServiceStock().getNosync()==0 && SH.cs("pharmaSyncServerURL","").length()>0) {
             	//Put the operation in a processing queue
             	MessageNotifier.SpoolMessage("http",this.getUid(),SH.cs("pharmaSyncServerURL",""),"pharmasync","en");
             }

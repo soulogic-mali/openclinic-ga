@@ -13,17 +13,17 @@
 		if(batch==null){
 			//the batch doesn't exist yet, create it 
 			batch = new Batch();
-			batch.setBatchNumber(sBatchNumber);
-			batch.setComment(sBatchComment);
 			batch.setCreateDateTime(new java.util.Date());
-			batch.setEnd(ScreenHelper.parseDate(sBatchEnd));
 			batch.setLevel(0);
 			batch.setProductStockUid(operation.getProductStockUid());
 			batch.setUpdateDateTime(new java.util.Date());
 			batch.setUpdateUser(activeUser.userid);
 			batch.setVersion(1);
-			batch.store();
 		}
+		batch.setBatchNumber(sBatchNumber);
+		batch.setComment(sBatchComment);
+		batch.setEnd(ScreenHelper.parseDate(sBatchEnd));
+		batch.store();
 		String sOldBatchUid = checkString(operation.getBatchUid());
 		operation.setBatchUid(batch.getUid());
         operation.setBatchComment(sBatchComment);

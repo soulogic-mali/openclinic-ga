@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -35,6 +36,8 @@ public class RemotePharmacy {
 	public static final int INFO_NEW_PRODUCTSTOCK_CREATED = 4;
 	public static final int INFO_NEW_BATCH_CREATED = 5;
 	public static final int INFO_NEW_OPERATION_CREATED = 6;
+	public static final int INFO_INITIALIZATION_CORRECTION_PERFORMED = 7;
+	public static final int INFO_NEW_BATCHOPERATION_CREATED = 8;
 	
 	public static void log(int error, String serviceStockUid) {
 		log(error,serviceStockUid,"");
@@ -43,11 +46,12 @@ public class RemotePharmacy {
 	public static void log(int error, String serviceStockUid, String comment) {
 		Connection conn = SH.getOpenClinicConnection();
 		try {
-			PreparedStatement ps = conn.prepareStatement("insert into oc_pharmasyncerrors(oc_error_code,oc_error_servicestockuid,oc_error_updatetime,oc_error_comment) values(?,?,?,?)");
+			PreparedStatement ps = conn.prepareStatement("insert into oc_pharmasynclogs(oc_error_code,oc_error_servicestockuid,oc_error_updatetime,oc_error_comment,oc_error_id) values(?,?,?,?,?)");
 			ps.setInt(1, error);
 			ps.setString(2, serviceStockUid);
 			ps.setTimestamp(3, SH.getSQLTime());
 			ps.setString(4, comment);
+			ps.setInt(5, MedwanQuery.getInstance().getOpenclinicCounter("PHARMASYNCLOGS"));
 			ps.execute();
 			ps.close();
 		} catch (SQLException e) {
@@ -304,14 +308,16 @@ public class RemotePharmacy {
 				        operation.setEncounterUID("");
 				        operation.setComment("");
 				        ObjectReference sourceDestination = new ObjectReference();
+				        String sPatient="";
 				        if(patient==null) {
 					        sourceDestination.setObjectType("servicestock");
 					        sourceDestination.setObjectUid(serviceStockUid);
 				        }
 				        else {
+				        	sPatient=SH.c(patient.elementText("lastname")).toUpperCase()+", "+SH.capitalize(SH.c(patient.elementText("firstname")))+" - "+SH.c(patient.elementText("gender")).toUpperCase()+" - "+SH.c(patient.elementText("dateofbirth"));
 					        sourceDestination.setObjectType("remotepatient");
 					        sourceDestination.setObjectUid(SH.c(patient.attributeValue("localid")));
-					        operation.setComment(SH.c(patient.elementText("lastname")).toUpperCase()+", "+SH.capitalize(SH.c(patient.elementText("firstname")))+" - "+SH.c(patient.elementText("gender")).toUpperCase()+" - "+SH.c(patient.elementText("dateofbirth")));
+					        operation.setComment(sPatient);
 					        //store the remote patient reference for this operation here
 					        Connection conn = SH.getOpenClinicConnection();
 					        PreparedStatement ps = conn.prepareStatement("delete from OC_REMOTEPATIENTBATCHDELIVERIES where OC_DELIVERY_BATCHNUMBER=? and"
@@ -345,7 +351,12 @@ public class RemotePharmacy {
 				        operation.setUpdateUser(updateuser);
 				        operation.setValidated(1);
 						operation.store(false,false);
-						log(INFO_NEW_OPERATION_CREATED,serviceStockUid,operation.getUid()+": "+operationtype+" ["+name+"]");
+						if(operationtype.contains("delivery")) {
+							log(INFO_NEW_OPERATION_CREATED,serviceStockUid,operation.getUid()+": "+SH.getTranNoLink("productstockoperation.medicationdelivery",operationtype,"en")+" ["+name+"] "+sPatient);
+						}
+						else {
+							log(INFO_NEW_OPERATION_CREATED,serviceStockUid,operation.getUid()+": "+SH.getTranNoLink("productstockoperation.medicationreceipt",operationtype,"en")+" ["+name+"] "+sPatient);
+						}
 					}
 				}
 				
@@ -357,6 +368,7 @@ public class RemotePharmacy {
 			}
 			else if(SH.cs("remoteSyncId."+serviceStockUid,"").length()>0 && message.attributeValue("objecttype").equalsIgnoreCase("initialize")) {
 				//If there are existing product stock operations, then we cannot perform the initialize command
+				int newproducts=0,newproductstocks=0,newbatches=0,newoperations=0;
 				Connection conn = SH.getOpenClinicConnection();
 				PreparedStatement pst = conn.prepareStatement("select oc_operation_objectid from oc_productstockoperations,oc_productstocks where oc_stock_objectid=replace(oc_operation_productstockuid,'"+SH.getServerId()+".','') and ((oc_operation_srcdesttype='servicestock' and oc_operation_srcdestuid=?) or oc_stock_servicestockuid=?)");
 				pst.setString(1, serviceStockUid);
@@ -367,12 +379,266 @@ public class RemotePharmacy {
 					rst.close();
 					pst.close();
 					conn.close();
+					HashSet hBatches=new HashSet(),hProductStocks=new HashSet();
+					//Log failed initialization
+					log(ERROR_FAILED_INITIALIZATION_EXISTING_OPERATIONS,serviceStockUid);
+					//Now we register corrective operations to synchronize stocklevels with remote stock
+					//**** First synchronize remote product stocks with this side
+					Iterator<Element> iProductStocks = message.elementIterator("productstock");
+					while(iProductStocks.hasNext()) {
+						Element productStock = iProductStocks.next();
+						String level = SH.c(productStock.attributeValue("level"));
+						String minimumlevel = SH.c(productStock.attributeValue("minimumlevel"));
+						String maximumlevel = SH.c(productStock.attributeValue("maximumlevel"));
+						String orderlevel = SH.c(productStock.attributeValue("orderlevel"));
+						Element product = productStock.element("product");
+						if(product!=null) {
+							String code = product.attributeValue("code");
+							String atccode = SH.c(product.attributeValue("atccode"));
+							String rxnormcode = SH.c(product.attributeValue("rxnormcode"));
+							String dose = SH.c(product.elementText("dose"));
+							String name = SH.c(product.elementText("name"));
+							Debug.println("Importing product "+code+" - "+name);
+							String unit = SH.c(product.elementText("unit"));
+							int packageunits=1;
+							try {
+								packageunits=Integer.parseInt(SH.c(product.elementText("packageunits")));
+							} catch(Exception o) {}
+							double unitprice=0;
+							try {
+								unitprice=Double.parseDouble(SH.c(product.elementText("unitprice")));
+							} catch(Exception o) {}
+							Product prod=null;
+							if(code.length()>0) {
+								hProductStocks.add(code);
+								Debug.println("Searching for existing product");
+								Vector<Product> p = Product.findWithCode(code, "", "", "", "", "", "", "", "", "OC_PRODUCT_OBJECTID", "");
+								if(p.size()==0) {
+									Debug.println("Product does not exist");
+									//The product does not exist, so we must create it
+									prod=new Product();
+									prod.setUid("-1");
+									prod.setAtccode(atccode);
+									prod.setCode(code);
+									prod.setCreateDateTime(new java.util.Date());
+									prod.setDose(dose);
+									prod.setName(name);
+									prod.setPackageUnits(packageunits);
+									prod.setRxnormcode(rxnormcode);
+									prod.setUnit(unit);
+									prod.setUnitPrice(unitprice);
+									prod.setUpdateDateTime(new java.util.Date());
+									prod.setUpdateUser(updateuser);
+									prod.setVersion(1);
+									prod.store();
+									log(INFO_NEW_PRODUCT_CREATED,serviceStockUid,prod.getUid()+" ["+name+"]");
+									newproducts++;
+								}
+								else {
+									prod=p.elementAt(0);
+									Debug.println("Product exists with UID: "+prod.getUid());
+								}
+								
+								ProductStock pStock=ProductStock.get(prod.getUid(), serviceStockUid);
+								if(pStock==null) {
+									//Add the product stock
+									pStock = new ProductStock();
+									pStock.setUid("-1");
+									pStock.setBegin(new java.util.Date());
+									pStock.setCreateDateTime(new java.util.Date());
+									pStock.setLevel(0);
+									try {
+										pStock.setMinimumLevel(Integer.parseInt(minimumlevel));
+									}catch(Exception r) {}
+									try {
+										pStock.setMaximumLevel(Integer.parseInt(maximumlevel));
+									}catch(Exception r) {}
+									try {
+										pStock.setOrderLevel(Integer.parseInt(orderlevel));
+									}catch(Exception r) {}
+									pStock.setProductUid(prod.getUid());
+									pStock.setServiceStockUid(serviceStockUid);
+									pStock.setUpdateDateTime(new java.util.Date());
+									pStock.setUpdateUser(updateuser);
+									pStock.setVersion(1);
+									pStock.store();
+									log(INFO_NEW_PRODUCTSTOCK_CREATED,serviceStockUid,pStock.getUid()+" ["+name+"]");
+									newproductstocks++;
+									Debug.println("Product stock added to service stock");
+								}
+								else {
+									Debug.println("Product stock exists with UID: "+pStock.getUid());
+								}
+								int nBatchedQuantity=0;
+								Iterator<Element> iBatches = productStock.elementIterator("batch");
+								while(iBatches.hasNext()) {
+									Element batch = iBatches.next();
+									String number = batch.attributeValue("number");
+									String expiry = batch.attributeValue("expiry");
+									String batchlevel = batch.attributeValue("level");
+									if(number.length()>0) {
+										hBatches.add(code+";"+number);
+										Batch b = Batch.getByBatchNumber(pStock.getUid(), number);
+										if(b==null) {
+											b = new Batch();
+											b.setUid("-1");
+											b.setBatchNumber(number);
+											b.setCreateDateTime(new java.util.Date());
+											b.setEnd(SH.parseDate(expiry));
+											b.setLevel(0);
+											b.setProductStockUid(pStock.getUid());
+											b.setUpdateDateTime(new java.util.Date());
+											b.setUpdateUser(updateuser);
+											b.setVersion(1);
+											b.setComment("");
+											b.store();
+											log(INFO_NEW_BATCH_CREATED,serviceStockUid,pStock.getUid()+" ["+number+"]");
+											newbatches++;
+											System.out.println("batch "+b.getUid()+" created with level "+b.getLevel());
+										}
+										else {
+											System.out.println("batch "+b.getUid()+" level before update = "+b.getLevel());
+											Batch.calculateBatchLevel(b.getUid());
+											b = Batch.get(b.getUid());
+											System.out.println("batch "+b.getUid()+" level after update = "+b.getLevel());
+										}
+										System.out.println("remote batch level = "+Integer.parseInt(batchlevel));
+										//If the remote batch level is different from this batch level, create a corrective operation
+										if(b.getLevel()!=Integer.parseInt(batchlevel)) {
+											ProductStockOperation po =new ProductStockOperation();
+											po.setComment("REMOTE INIT CORRECTION");
+											po.setCreateDateTime(new java.util.Date());
+											po.setDate(new java.util.Date());
+											po.setBatchUid(b.getUid());
+											if(b.getLevel()>Integer.parseInt(batchlevel)) {
+												po.setDescription("medicationdelivery.99");
+											}
+											else {
+												po.setDescription("medicationreceipt.99");
+											}
+											System.out.println("operation "+po.getDescription()+" of "+Math.abs(Integer.parseInt(batchlevel)-b.getLevel())+" units for batch uid "+b.getUid());
+											po.setProductStockUid(pStock.getUid());
+											po.setSourceDestination(new ObjectReference("supplier", "REMOTE INIT CORRECTION"));
+											po.setUid("-1");
+											po.setUnitsChanged(Math.abs(Integer.parseInt(batchlevel)-b.getLevel()));
+											po.setUnitsReceived(0);
+											po.setUpdateDateTime(new java.util.Date());
+											po.setUpdateUser(updateuser);
+											po.setVersion(1);
+											po.store(false,false);
+											log(INFO_NEW_BATCHOPERATION_CREATED,serviceStockUid,po.getUid()+" ["+(Integer.parseInt(batchlevel)-b.getLevel())+"] ["+number+" - REMOTE INIT BATCH CORRECTION]");
+											newoperations++;
+										}
+									}
+								}
+								System.out.println("stock "+pStock.getUid()+" level before update = "+pStock.getLevel());
+								pStock.setLevel(pStock.getLevel(new java.util.Date()));
+								pStock.store();
+								System.out.println("stock "+pStock.getUid()+" level after update = "+pStock.getLevel());
+								//If the remote product stock level is different from this product stock level, create a corrective operation
+								System.out.println("remote stock level = "+Integer.parseInt(level));
+								if(pStock.getLevel()!=Integer.parseInt(level)) {
+									ProductStockOperation po =new ProductStockOperation();
+									po.setComment("REMOTE INIT CORRECTION");
+									po.setCreateDateTime(new java.util.Date());
+									po.setDate(new java.util.Date());
+									if(pStock.getLevel()>Integer.parseInt(level)) {
+										po.setDescription("medicationdelivery.99");
+									}
+									else {
+										po.setDescription("medicationreceipt.99");
+									}
+									System.out.println("operation "+po.getDescription()+" of "+Math.abs(Integer.parseInt(level)-pStock.getLevel())+" units for batch null");
+									po.setProductStockUid(pStock.getUid());
+									po.setSourceDestination(new ObjectReference("supplier", "REMOTE INIT CORRECTION"));
+									po.setUid("-1");
+									po.setUnitsChanged(Math.abs(Integer.parseInt(level)-pStock.getLevel()));
+									po.setUnitsReceived(0);
+									po.setUpdateDateTime(new java.util.Date());
+									po.setUpdateUser(updateuser);
+									po.setVersion(1);
+									po.store(false,false);
+									log(INFO_NEW_OPERATION_CREATED,serviceStockUid,po.getUid()+" ["+(Integer.parseInt(level)-pStock.getLevel())+"] ["+name+" - REMOTE INIT CORRECTION]");
+									newoperations++;
+									pStock.setLevel(pStock.getLevel(new java.util.Date()));
+									pStock.store();
+								}
+							}
+						}
+					}
+					//Now clear all productstocks and batches from this servicestock which do not exist on the remote side 
+					Vector<ProductStock> pStocks = ServiceStock.getProductStocks(serviceStockUid);
+					for(int n=0;n<pStocks.size();n++) {
+						ProductStock pStock = pStocks.elementAt(n);
+						//First clear the batches
+						Vector<Batch> batches = pStock.getAllBatches();
+						for(int i=0;i<batches.size();i++) {
+							Batch b = batches.elementAt(i);
+							Batch.calculateBatchLevel(b.getUid());
+							if(b.getLevel()!=0 && !hBatches.contains(pStock.getProduct().getCode()+";"+b.getBatchNumber())) {
+								//This batch does not exist remotely, reset it to zero
+								ProductStockOperation po =new ProductStockOperation();
+								po.setComment("REMOTE INIT CORRECTION");
+								po.setCreateDateTime(new java.util.Date());
+								po.setDate(new java.util.Date());
+								po.setBatchUid(b.getUid());
+								if(b.getLevel()>0) {
+									po.setDescription("medicationdelivery.99");
+								}
+								else {
+									po.setDescription("medicationreceipt.99");
+								}
+								po.setProductStockUid(pStock.getUid());
+								po.setSourceDestination(new ObjectReference("supplier", "REMOTE INIT CORRECTION"));
+								po.setUid("-1");
+								po.setUnitsChanged(Math.abs(b.getLevel()));
+								po.setUnitsReceived(0);
+								po.setUpdateDateTime(new java.util.Date());
+								po.setUpdateUser(updateuser);
+								po.setVersion(1);
+								po.store(false,false);
+								log(INFO_NEW_BATCHOPERATION_CREATED,serviceStockUid,b.getUid()+" ["+(-b.getLevel())+"] ["+b.getBatchNumber()+" - REMOTE UNKNOWN BATCH CORRECTION]");
+								newoperations++;
+							}
+						}
+						pStock.setLevel(pStock.getLevel(new java.util.Date()));
+						pStock.store();
+						if(pStock.getLevel()!=0 && !hProductStocks.contains(pStock.getProduct().getCode())) {
+							//This product stock does not exist remotely, reset it to zero
+							ProductStockOperation po =new ProductStockOperation();
+							po.setComment("REMOTE UNKNOWN PRODUCT STOCK CORRECTION");
+							po.setCreateDateTime(new java.util.Date());
+							po.setDate(new java.util.Date());
+							if(pStock.getLevel()>0) {
+								po.setDescription("medicationdelivery.99");
+							}
+							else {
+								po.setDescription("medicationreceipt.99");
+							}
+							po.setProductStockUid(pStock.getUid());
+							po.setSourceDestination(new ObjectReference("supplier", "REMOTE INIT CORRECTION"));
+							po.setUid("-1");
+							po.setUnitsChanged(Math.abs(pStock.getLevel()));
+							po.setUnitsReceived(0);
+							po.setUpdateDateTime(new java.util.Date());
+							po.setUpdateUser(updateuser);
+							po.setVersion(1);
+							po.store(false,false);
+							newoperations++;
+							log(INFO_NEW_OPERATION_CREATED,serviceStockUid,po.getUid()+" ["+(-pStock.getLevel())+"] ["+pStock.getProduct().getName()+" - REMOTE UNKNOWN PRODUCT STOCK CORRECTION]");
+						}
+					}
+					if(newproducts+newbatches+newproductstocks+newoperations>0) {
+						log(INFO_INITIALIZATION_CORRECTION_PERFORMED,serviceStockUid,"Added "+newproducts+" products, "+newbatches+" batches, "+newproductstocks+" product stocks and "+newoperations+" inventory operations");
+					}
+					else {
+						log(INFO_INITIALIZATION_CORRECTION_PERFORMED,serviceStockUid,"Synchronisation was already up to date, no action needed");
+					}
+
 					int updateid = Integer.parseInt(message.attributeValue("id"));
 					if(updateid>SH.ci("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+serviceStockUid,""), -1)) {
 						MedwanQuery.getInstance().setConfigString("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+serviceStockUid,""), updateid+"");
 					}
-					//Log failed initialization
-					log(ERROR_FAILED_INITIALIZATION_EXISTING_OPERATIONS,serviceStockUid);
 					return true;
 				}
 				rst.close();
@@ -432,6 +698,7 @@ public class RemotePharmacy {
 								prod.setUpdateUser(updateuser);
 								prod.setVersion(1);
 								prod.store();
+								newproducts++;
 							}
 							else {
 								prod=p.elementAt(0);
@@ -458,6 +725,7 @@ public class RemotePharmacy {
 							ps.setUpdateUser(updateuser);
 							ps.setVersion(1);
 							ps.store();
+							newproductstocks++;
 							Debug.println("Product stock added to service stock");
 							int nBatchedQuantity=0;
 							Iterator<Element> iBatches = productStock.elementIterator("batch");
@@ -472,13 +740,14 @@ public class RemotePharmacy {
 									b.setBatchNumber(number);
 									b.setCreateDateTime(new java.util.Date());
 									b.setEnd(SH.parseDate(expiry));
-									b.setLevel(Integer.parseInt(batchlevel));
+									b.setLevel(0);
 									b.setProductStockUid(ps.getUid());
 									b.setUpdateDateTime(new java.util.Date());
 									b.setUpdateUser(updateuser);
 									b.setVersion(1);
 									b.setComment("");
 									b.store();
+									newbatches++;
 									//Add productstockoperation here
 									ProductStockOperation po =new ProductStockOperation();
 									po.setBatchComment(b.getComment());
@@ -499,6 +768,7 @@ public class RemotePharmacy {
 									po.setUpdateUser(updateuser);
 									po.setVersion(1);
 									po.store(false,false);
+									newoperations++;
 									nBatchedQuantity+=Integer.parseInt(batchlevel);
 								}
 							}
@@ -517,11 +787,12 @@ public class RemotePharmacy {
 								po.setUpdateUser(updateuser);
 								po.setVersion(1);
 								po.store(false,false);
+								newoperations++;
 							}
 						}
 					}
 				}
-				log(INFO_INITIALIZATION_PERFORMED,serviceStockUid);
+				log(INFO_INITIALIZATION_PERFORMED,serviceStockUid,"Added "+newproducts+" products, "+newbatches+" batches, "+newproductstocks+" product stocks and "+newoperations+" inventory operations");
 				int updateid = Integer.parseInt(message.attributeValue("id"));
 				if(updateid>SH.ci("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+serviceStockUid,""), -1)) {
 					MedwanQuery.getInstance().setConfigString("remotePharmacySyncLastUpdateId."+SH.cs("remoteSyncId."+serviceStockUid,""), updateid+"");

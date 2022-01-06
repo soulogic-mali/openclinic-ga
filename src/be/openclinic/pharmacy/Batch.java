@@ -13,6 +13,7 @@ import be.mxs.common.util.system.Debug;
 import be.mxs.common.util.system.ScreenHelper;
 import be.openclinic.common.OC_Object;
 import be.openclinic.common.ObjectReference;
+import be.openclinic.system.SH;
 
 public class Batch extends OC_Object{
 	private String productStockUid;
@@ -370,7 +371,7 @@ public class Batch extends OC_Object{
         	sSelect="select sum(oc_batchoperation_quantity) total from oc_batchoperations where oc_batchoperation_destinationuid=? and oc_batchoperation_updatetime<=?";
         	ps=oc_conn.prepareStatement(sSelect);
         	ps.setString(1, getUid());
-        	ps.setDate(2, new java.sql.Date(date.getTime()));
+        	ps.setTimestamp(2, SH.getSQLTimestamp(date));
         	rs=ps.executeQuery();
         	if(rs.next()){
         		in=rs.getInt("total");
@@ -380,7 +381,7 @@ public class Batch extends OC_Object{
         	sSelect="select sum(oc_batchoperation_quantity) total from oc_batchoperations where oc_batchoperation_sourceuid=? and oc_batchoperation_updatetime<=?";
         	ps=oc_conn.prepareStatement(sSelect);
         	ps.setString(1, getUid());
-        	ps.setDate(2, new java.sql.Date(date.getTime()));
+        	ps.setTimestamp(2, SH.getSQLTimestamp(date));
         	rs=ps.executeQuery();
         	if(rs.next()){
         		out=rs.getInt("total");
@@ -401,6 +402,7 @@ public class Batch extends OC_Object{
                 se.printStackTrace();
             }
         }
+        Debug.println(in-out);
         return in-out;
     }
     

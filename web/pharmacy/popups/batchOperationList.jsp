@@ -41,6 +41,7 @@ String productStockUid=checkString(request.getParameter("productStockUid"));
 		String date=ScreenHelper.formatDate(operation.getDate());
 		String thirdparty=checkString(operation.getThirdParty());
 		if(operation != null && operation.getType()!=null){
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+operation.getType()+"*");
 			if(operation.getType().equalsIgnoreCase("receipt")){
 				//Incoming 
 				if(productStockOperation!=null){
@@ -60,6 +61,9 @@ String productStockUid=checkString(request.getParameter("productStockUid"));
 						if(person!=null){
 							thirdparty="[<b>"+person.personid+"</b>] "+person.lastname.toUpperCase()+", "+person.firstname.toUpperCase();
 						}
+					}
+					else{
+						thirdparty=	productStockOperation.getSourceDestination().getObjectUid();
 					}
 					out.println("<tr><td class='admin2'>&lt;- "+getTranNoLink("productstockoperation.medicationreceipt",productStockOperation.getDescription(),sWebLanguage)+"</td>");
 					out.println("<td class='admin2'>"+date+"</td>");
@@ -96,6 +100,7 @@ String productStockUid=checkString(request.getParameter("productStockUid"));
 					}
 					else if(productStockOperation.getSourceDestination()!=null && productStockOperation.getSourceDestination().getObjectType()!=null && productStockOperation.getSourceDestination().getObjectType().equalsIgnoreCase("supplier")){
 						thirdparty=	productStockOperation.getSourceDestination().getObjectUid();
+						out.println("<tr><td class='admin2'>-&gt; "+getTranNoLink("productstockoperation.medicationdelivery",productStockOperation.getDescription(),sWebLanguage)+"</td>");
 					}
 					else {
 						out.println("<tr><td class='admin2'>-&gt; "+getTranNoLink("productstockoperation.medicationdelivery",productStockOperation.getDescription(),sWebLanguage)+"</td>");
