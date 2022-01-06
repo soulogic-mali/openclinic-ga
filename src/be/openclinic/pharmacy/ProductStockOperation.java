@@ -764,7 +764,6 @@ public class ProductStockOperation extends OC_Object{
         if(operation.getSourceDestination().getObjectType().equalsIgnoreCase("patient") && operation.getSourceDestination().getObjectUid().length()>0) {
         	//This is a delivery to or a receipt from a patient, also register the patient information
         	AdminPerson patient = AdminPerson.getAdminPerson(operation.getSourceDestination().getObjectUid());
-        	System.out.println("Adding patient "+patient.personid);
         	if(patient!=null && SH.c(patient.personid).length()>0) {
         		Element person = message.addElement("patient");
         		person.addAttribute("localid", patient.personid);

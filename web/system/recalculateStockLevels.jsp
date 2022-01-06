@@ -23,7 +23,6 @@
 		Batch batch = Batch.get(rs.getInt("OC_BATCH_SERVERID")+"."+rs.getInt("OC_BATCH_OBJECTID"));
 		if(batch!=null){
 			int newlevel = batch.getLevel(new java.util.Date());
-			System.out.println(batch.getUid()+" = "+newlevel);
 			if(newlevel!=batch.getLevel()){
 				batch.setLevel(newlevel);
 				batch.store();

@@ -112,7 +112,6 @@ public class RemotePharmacy {
 			CloseableHttpResponse resp = oc_client.postAuthenticated(SH.cs("pharmaSyncServerURL",""),SH.cs("pharmaSyncServerURLUsername", "nil"), SH.cs("pharmaSyncServerURLPassword", "nil"));
 			HttpEntity entity = resp.getEntity();
 		    if(entity!=null){
-		    	System.out.println(EntityUtils.toString(entity));
 		    	bSuccess= true;
 		    }
 		}
@@ -494,15 +493,11 @@ public class RemotePharmacy {
 											b.store();
 											log(INFO_NEW_BATCH_CREATED,serviceStockUid,pStock.getUid()+" ["+number+"]");
 											newbatches++;
-											System.out.println("batch "+b.getUid()+" created with level "+b.getLevel());
 										}
 										else {
-											System.out.println("batch "+b.getUid()+" level before update = "+b.getLevel());
 											Batch.calculateBatchLevel(b.getUid());
 											b = Batch.get(b.getUid());
-											System.out.println("batch "+b.getUid()+" level after update = "+b.getLevel());
 										}
-										System.out.println("remote batch level = "+Integer.parseInt(batchlevel));
 										//If the remote batch level is different from this batch level, create a corrective operation
 										if(b.getLevel()!=Integer.parseInt(batchlevel)) {
 											ProductStockOperation po =new ProductStockOperation();
@@ -516,7 +511,6 @@ public class RemotePharmacy {
 											else {
 												po.setDescription("medicationreceipt.99");
 											}
-											System.out.println("operation "+po.getDescription()+" of "+Math.abs(Integer.parseInt(batchlevel)-b.getLevel())+" units for batch uid "+b.getUid());
 											po.setProductStockUid(pStock.getUid());
 											po.setSourceDestination(new ObjectReference("supplier", "REMOTE INIT CORRECTION"));
 											po.setUid("-1");
@@ -531,12 +525,9 @@ public class RemotePharmacy {
 										}
 									}
 								}
-								System.out.println("stock "+pStock.getUid()+" level before update = "+pStock.getLevel());
 								pStock.setLevel(pStock.getLevel(new java.util.Date()));
 								pStock.store();
-								System.out.println("stock "+pStock.getUid()+" level after update = "+pStock.getLevel());
 								//If the remote product stock level is different from this product stock level, create a corrective operation
-								System.out.println("remote stock level = "+Integer.parseInt(level));
 								if(pStock.getLevel()!=Integer.parseInt(level)) {
 									ProductStockOperation po =new ProductStockOperation();
 									po.setComment("REMOTE INIT CORRECTION");
@@ -548,7 +539,6 @@ public class RemotePharmacy {
 									else {
 										po.setDescription("medicationreceipt.99");
 									}
-									System.out.println("operation "+po.getDescription()+" of "+Math.abs(Integer.parseInt(level)-pStock.getLevel())+" units for batch null");
 									po.setProductStockUid(pStock.getUid());
 									po.setSourceDestination(new ObjectReference("supplier", "REMOTE INIT CORRECTION"));
 									po.setUid("-1");
