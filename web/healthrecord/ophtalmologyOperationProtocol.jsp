@@ -72,10 +72,10 @@
 			        <tr>
 			            <td class="admin"><%=getTran(request,"openclinic.chuk","surgeon",sWebLanguage)%></td>
 			            <td class="admin2" colspan="2">
-			                <input type="hidden" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPHTALMOLOGY_OPERATION_PROTOCOL_SURGEON" property="itemId"/>]>.value" value="<%=sTranSurgeon%>">
-			                <input class="text" type="text" name="surgeonName" readonly size="<%=sTextWidth%>" value="<%=sSurgeonName%>">
-			                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("Web","select",sWebLanguage)%>" onclick="searchSurgeon('currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPHTALMOLOGY_OPERATION_PROTOCOL_SURGEON" property="itemId"/>]>.value','surgeonName');">
-			                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="document.getElementsByName('currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPHTALMOLOGY_OPERATION_PROTOCOL_SURGEON" property="itemId"/>]>.value')[0].value='';transactionForm.surgeonName.value='';">
+			                <input type="hidden" id='surgeonid' name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OPHTALMOLOGY_OPERATION_PROTOCOL_SURGEON" property="itemId"/>]>.value" value="<%=sTranSurgeon%>">
+			                <input class="text" type="text" name="surgeonName" id="surgeonName" readonly size="<%=sTextWidth%>" value="<%=sSurgeonName%>">
+			                <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("Web","select",sWebLanguage)%>" onclick="searchSurgeon('surgeonid','surgeonName');">
+			                <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="document.getElementById('surgeonid').value='';transactionForm.surgeonName.value='';">
 			            </td>
 			        </tr>
 			

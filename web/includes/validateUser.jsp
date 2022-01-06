@@ -74,7 +74,7 @@
 	            reloadSingleton(session);
             }
             else{
-                response.sendRedirect("../relogin.do");
+                response.sendRedirect(sCONTEXTPATH+"/relogin.do");
             }
         }
         //*** no AutoUserName ***
@@ -82,14 +82,14 @@
             if(request.getRequestURI().indexOf("search") > -1){
                 // close search-popup and let its opener-window redirect to the login page.
                 out.print("<script>window.close();</script>");
-                out.print("<script>window.opener.location.href = '../relogin.do';</script>");
+                out.print("<script>window.opener.location.href = '"+sCONTEXTPATH+"/relogin.do';</script>");
                 out.flush();
             }
             else if(request.getRequestURI().indexOf("html5") > -1 || request.getRequestURI().indexOf("mobile") > -1){
                 response.sendRedirect("../html5/login.jsp");
             }
             else{
-                response.sendRedirect("../relogin.do");
+                response.sendRedirect(sCONTEXTPATH+"/relogin.do");
             }
         }
     }
