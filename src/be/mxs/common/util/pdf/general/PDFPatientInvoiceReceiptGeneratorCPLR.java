@@ -139,10 +139,15 @@ public class PDFPatientInvoiceReceiptGeneratorCPLR extends PDFInvoiceGenerator {
 	        
 	        double totalCredit=0;
 	        String sPaymentCurrency="";
+	        String credits="";
 	        for(int n=0;n<invoice.getCredits().size();n++){
 	            PatientCredit credit = PatientCredit.get((String)invoice.getCredits().elementAt(n));
 	            totalCredit+=credit.getAmount();
 	            sPaymentCurrency=credit.getCurrency();
+	            if(credits.length()>0) {
+	            	credits+=", ";
+	            }
+	            credits+=credit.getUid().split("\\.")[1];
 	        }
 	        double totalDebet=0,totalinsurardebet=0,totalextrainsurardebet=0;
 	        Hashtable services = new Hashtable(), insurances = new Hashtable(), extrainsurances = new Hashtable(), careproviders=new Hashtable();
@@ -335,10 +340,10 @@ public class PDFPatientInvoiceReceiptGeneratorCPLR extends PDFInvoiceGenerator {
 	        table.addCell(cell);
 
 	        //Total général
-	        cell = createValueCell(ScreenHelper.getTran(null,"web","total.general",sPrintLanguage), 25,new Double(7*scaleFactor).intValue(),Font.NORMAL);
+	        cell = createValueCell(ScreenHelper.getTran(null,"web","total.general",sPrintLanguage), 50*MedwanQuery.getInstance().getConfigInt("patientInvoiceReceiptCareDeliveryColumnWidthPercent",60)/100,new Double(7*scaleFactor).intValue(),Font.NORMAL);
 	        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 	        table.addCell(cell);
-	        cell = createTotalPriceCell(totalDebet+totalextrainsurardebet+totalinsurardebet, 25,new java.util.Date(),sPaymentCurrency,new Double(7*scaleFactor).intValue());
+	        cell = createTotalPriceCell(totalDebet+totalextrainsurardebet+totalinsurardebet, 50-50*MedwanQuery.getInstance().getConfigInt("patientInvoiceReceiptCareDeliveryColumnWidthPercent",60)/100,new java.util.Date(),sPaymentCurrency,new Double(7*scaleFactor).intValue());
 	        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 	        table.addCell(cell);
 	        //Total patient
@@ -347,22 +352,22 @@ public class PDFPatientInvoiceReceiptGeneratorCPLR extends PDFInvoiceGenerator {
 	        if(sAlternateCurrency.length()>0){
 	        	sAlternateValue=" ("+new DecimalFormat(MedwanQuery.getInstance().getConfigString("AlternateCurrencyPriceFormat","# ##0.00")).format(totalDebet/ExportSAP_AR_INV.getExchangeRate(sAlternateCurrency, invoice.getDate()))+" "+sAlternateCurrency+")";
 	        }
-	        cell = createValueCell(ScreenHelper.getTran(null,"web","total.patient",sPrintLanguage)+": "+getTotalPriceString(totalDebet, false, new java.util.Date(), sPaymentCurrency), 25,new Double(7*scaleFactor).intValue(),Font.NORMAL);
+	        cell = createValueCell(ScreenHelper.getTran(null,"web","total.patient",sPrintLanguage)+": "+getTotalPriceString(totalDebet, false, new java.util.Date(), sPaymentCurrency), 50*MedwanQuery.getInstance().getConfigInt("patientInvoiceReceiptCareDeliveryColumnWidthPercent",60)/100,new Double(7*scaleFactor).intValue(),Font.NORMAL);
 	        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 	        table.addCell(cell);
 	        //Total assureur
-	        cell = createValueCell(ScreenHelper.getTran(null,"web","total.insurar",sPrintLanguage)+": "+getTotalPriceString(totalinsurardebet, false, new java.util.Date(), sPaymentCurrency), 25,new Double(7*scaleFactor).intValue(),Font.NORMAL);
+	        cell = createValueCell(ScreenHelper.getTran(null,"web","total.insurar",sPrintLanguage)+": "+getTotalPriceString(totalinsurardebet, false, new java.util.Date(), sPaymentCurrency), 50-50*MedwanQuery.getInstance().getConfigInt("patientInvoiceReceiptCareDeliveryColumnWidthPercent",60)/100,new Double(7*scaleFactor).intValue(),Font.NORMAL);
 	        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 	        table.addCell(cell);
 	        //Payé patient
 	        if(sAlternateCurrency.length()>0){
 	        	sAlternateValue=" ("+new DecimalFormat(MedwanQuery.getInstance().getConfigString("AlternateCurrencyPriceFormat","# ##0.00")).format(totalCredit/ExportSAP_AR_INV.getExchangeRate(sAlternateCurrency, invoice.getDate()))+" "+sAlternateCurrency+")";
 	        }
-	        cell = createValueCell(ScreenHelper.getTran(null,"web","payments",sPrintLanguage)+": "+getTotalPriceString(totalCredit, false, new java.util.Date(), sPaymentCurrency), 25,new Double(7*scaleFactor).intValue(),Font.NORMAL);
+	        cell = createValueCell(ScreenHelper.getTran(null,"web","payments",sPrintLanguage)+" ["+credits+"]: "+getTotalPriceString(totalCredit, false, new java.util.Date(), sPaymentCurrency), 50*MedwanQuery.getInstance().getConfigInt("patientInvoiceReceiptCareDeliveryColumnWidthPercent",60)/100,new Double(7*scaleFactor).intValue(),Font.NORMAL);
 	        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 	        table.addCell(cell);
 	        //Total assureur complémentaire
-	        cell = createValueCell(ScreenHelper.getTran(null,"web","total.extrainsurar",sPrintLanguage)+": "+getTotalPriceString(totalextrainsurardebet, false, new java.util.Date(), sPaymentCurrency), 25,new Double(7*scaleFactor).intValue(),Font.NORMAL);
+	        cell = createValueCell(ScreenHelper.getTran(null,"web","total.extrainsurar",sPrintLanguage)+": "+getTotalPriceString(totalextrainsurardebet, false, new java.util.Date(), sPaymentCurrency), 50-50*MedwanQuery.getInstance().getConfigInt("patientInvoiceReceiptCareDeliveryColumnWidthPercent",60)/100,new Double(7*scaleFactor).intValue(),Font.NORMAL);
 	        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 	        table.addCell(cell);
 	        //Solde patient

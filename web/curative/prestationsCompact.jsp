@@ -29,12 +29,21 @@
 <script>
 	var prestationlist='';
 
-	var myautocompleter = new Ajax.Autocompleter('prestationname','autocomplete_prestation','curative/ajax/getPrestations.jsp',{
+	var myautocompleter = new Ajax.Autocompleter('prestationname','autocomplete_prestation','curative/ajax/getPrestations.jsp?encountertype='+document.getElementById("EditEncounterType").value+'&',{
 		  minChars:1,
 		  method:'post',
 		  afterUpdateElement:afterAutoComplete,
 		  callback:composeCallbackURL
 		});
+	
+	function setMyAutoCompleter(){
+		var myautocompleter = new Ajax.Autocompleter('prestationname','autocomplete_prestation','curative/ajax/getPrestations.jsp?encountertype='+document.getElementById("EditEncounterType").value+'&',{
+			  minChars:1,
+			  method:'post',
+			  afterUpdateElement:afterAutoComplete,
+			  callback:composeCallbackURL
+			});
+	}
 		
 	function afterAutoComplete(field,item){
 		var regex = new RegExp('[-0123456789.;]*-idcache','i');
@@ -113,7 +122,7 @@
 	    });
 	}
 	
-	function showPrestationList(){
+	function showPrestationList(keepEncounter){
 		var cost=0;
 		var html = "<table width='100%'>";
 		var prestations = prestationlist.split('|');
@@ -131,7 +140,7 @@
 			document.getElementById('amount').value=cost.toFixed(2);
 			document.getElementById('amounttext').innerHTML=cost.toFixed(2);
 		}
-		else{
+		else if(!keepEncounter){
 			document.getElementById('amount').value="0";
 			document.getElementById('amounttext').innerHTML="0.00";
       	    document.getElementById("EditEncounterService").value="";

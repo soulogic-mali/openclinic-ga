@@ -54,7 +54,7 @@ public class CsvStats {
                     	if(o.getClass().getName().indexOf("Date")>-1){
                     		result.append(ScreenHelper.formatDate((java.sql.Date)o));
                     	}
-                    	else if(o.getClass().getName().indexOf("Timestamp")>-1){
+                    	else if(o.getClass().getName().indexOf("Timestamp")>-1 || o.getClass().getName().indexOf("DateTime")>-1){
                     		result.append(new java.text.SimpleDateFormat("dd/MM/yyyy hh:MM:ss").format((java.sql.Timestamp)o));
                     	}
                     	else{

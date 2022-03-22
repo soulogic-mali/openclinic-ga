@@ -1038,14 +1038,14 @@ public class PDFPatientInvoiceGenerator extends PDFInvoiceGenerator {
             cell = createUnderlinedCell(getTran("web","type"),1);
             singleCellHeaderTable = new PdfPTable(1);
             singleCellHeaderTable.addCell(cell);
-            cell = createCell(new PdfPCell(singleCellHeaderTable),3,PdfPCell.ALIGN_CENTER,PdfPCell.NO_BORDER);
+            cell = createCell(new PdfPCell(singleCellHeaderTable),5,PdfPCell.ALIGN_CENTER,PdfPCell.NO_BORDER);
             cell.setPaddingRight(2);
             table.addCell(cell);
 
             cell = createUnderlinedCell(getTran("web","paymentcomment"),1);
             singleCellHeaderTable = new PdfPTable(1);
             singleCellHeaderTable.addCell(cell);
-            cell = createCell(new PdfPCell(singleCellHeaderTable),9,PdfPCell.ALIGN_CENTER,PdfPCell.NO_BORDER);
+            cell = createCell(new PdfPCell(singleCellHeaderTable),7,PdfPCell.ALIGN_CENTER,PdfPCell.NO_BORDER);
             cell.setPaddingRight(2);
             table.addCell(cell);
 
@@ -1229,8 +1229,8 @@ public class PDFPatientInvoiceGenerator extends PDFInvoiceGenerator {
 
         // row
         invoiceTable.addCell(createValueCell(sCreditDate,2));
-        invoiceTable.addCell(createValueCell(sCreditType,3));
-        invoiceTable.addCell(createValueCell(sCreditComment,9));
+        invoiceTable.addCell(createValueCell(sCreditType+" ["+credit.getUid().split("\\.")[1]+"]",5));
+        invoiceTable.addCell(createValueCell(sCreditComment,7));
         invoiceTable.addCell(createTotalPriceCell(creditAmount,false,3,credit.getDate(),sPaymentCurrency));
         invoiceTable.addCell(createEmptyCell(3));
     }

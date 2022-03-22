@@ -1214,24 +1214,20 @@
 	    var w = window.open("<c:url value='/util/versions.txt'/>");
   }
     
-  function showteleconsultation(){
-	  var key=window.prompt('<%=getTranNoLink("web","teleconsultationkey",sWebLanguage)%>');
-	  if(key.length>0){
-		  key='/r/'+key;
-	  }
-	  window.open("https://appr.tc"+key,"OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
-  }
-  
   function makeid(length) {
 	   var result           = '';
-	   var characters       = 'ABCEFGHJKLMNPQRSTUVWXYZ0123456789';
+	   var characters       = '0123456789';
 	   var charactersLength = characters.length;
 	   for ( var i = 0; i < length; i++ ) {
 	      result += characters.charAt(Math.floor(Math.random() * charactersLength));
 	   }
 	   return result;
-  }
+ }
  
+  function showteleconsultation(){
+	  window.open("https://webrtc.hnrw.org/demos/wizzeyeVideoroom.html","OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
+  }
+
   function showsmartglasses(){
 	  var key=window.prompt('<%=getTranNoLink("web","teleconsultationkey",sWebLanguage)%>');
 	  if(!key || key=='null'){
@@ -1257,9 +1253,9 @@
 
   function startWizzeyeSession(key){
 	  <%if(activePatient!=null && activePatient.isNotEmpty()){%>
-	  	  window.open("<%=SH.cs("wizzeyeserver","https://wizzeye.hnrw.org/room.jsp")%>?roomid="+key+"&user=<%=activeUser.userid%>&patient=<%=SH.removeAccents(activePatient.getFullName())%>&observerStorageURL=<%=(request.getProtocol().toLowerCase().startsWith("https")?"https":"http")+"://"+ request.getServerName()+":"+request.getServerPort()+sCONTEXTPATH+"/util/saveWizzeyeSnapshot.jsp"%>","OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
+	  	  window.open("<%=SH.cs("wizzeyeserver","https://webrtc.hnrw.org:448/room.jsp")%>?roomid="+key+"&user=<%=activeUser.userid%>&patient=<%=SH.removeAccents(activePatient.getFullName())%>&observerStorageURL=<%=(request.getProtocol().toLowerCase().startsWith("https")?"https":"http")+"://"+ request.getServerName()+":"+request.getServerPort()+sCONTEXTPATH+"/util/saveWizzeyeSnapshot.jsp"%>","OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
 	  <%} else {%>
-	  	  window.open("<%=SH.cs("wizzeyeserver","https://wizzeye.hnrw.org/room.jsp")%>?roomid="+key,"OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
+	  	  window.open("<%=SH.cs("wizzeyeserver","https://webrtc.hnrw.org:448/room.jsp")%>?roomid="+key,"OpenClinic-Teleconsultation","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
 	  <%}%>
   }
   
@@ -1308,4 +1304,42 @@
   function genericEventDateCallback(element,entry){
     return "search="+element.value;
   }
+  function openSADashboard(){
+	  openPopup('dashboards/systemAdministratorDashboard.jsp?language=<%=sWebLanguage%>',1024,800,'Dashboards');
+  }
+  function checkMandatoryFields(){
+	  <%	if(SH.ci("enforceCompleteClinicalDataEntry",0)==1){ %>
+			  	var nodelist= document.querySelectorAll("textarea,input");
+			  	for(n=0;n<nodelist.length;n++){
+			  		if(nodelist[n].dataset.mandatory && nodelist[n].dataset.mandatory=="1"){
+			  			var bOk=false;
+			  			if(nodelist[n].value.trim().length>0){
+			  				bOk=true;
+			  			}
+			  			else if(nodelist[n].dataset.alternateids){
+			  				var fields=nodelist[n].dataset.alternateids.split(",");
+			  				for(i=0;i<fields.length && !bOk;i++){
+			  					if(document.getElementById(fields[i]) && document.getElementById(fields[i]).value.length>0){
+			  						bOk=true;
+			  					}
+			  				}
+			  			}
+			  			if(!bOk){
+				  			alert("<%=getTranNoLink("web","datamissing",sWebLanguage)%>");
+				  			nodelist[n].focus();
+				  			return false;
+			  			}
+			  		}
+			  	}
+	  <%	}	  %>
+	  <%	if(SH.ci("enforceReasonForEncounterBeforeClinicalDataEntry",0)==1){ %>
+				if(document.getElementById("rfe") && document.getElementById("rfe").innerHTML && document.getElementById("rfe").innerHTML.trim().length==0){
+		  			alert("<%=getTranNoLink("web","reasonforencounterismandatory",sWebLanguage)%>");
+		  			document.getElementById("rfe").focus();
+		  			return false;
+				}
+	  <%	}	  %>
+	  return true;
+  }
+
 </script>

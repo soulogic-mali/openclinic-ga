@@ -205,8 +205,8 @@ public class Nomenclature {
         return vCategoryIDs;
     }
 
-    public static String getRootNomenclatureCode(string code) {
-    	
+    public static String getRootNomenclatureCode(String code) {
+    	return "";
     }
 
 	public static Vector<Nomenclature> getRootElements(String type){

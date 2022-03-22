@@ -112,6 +112,9 @@
         <permission type="examination" id="1130">msas.registry.abortion</permission>
         <permission type="examination" id="1131">msas.registry.sickchildren</permission>
         <permission type="examination" id="1132">msas.registry.admission</permission>
+        <permission type="examination" id="1222">msas.registry.uren</permission>
+        <permission type="examination" id="1223">msas.registry.cren</permission>
+        <permission type="examination" id="1224">msas.registry.familyplanning</permission>
         <permission type="examination" id="1133">occup.ccbrt.vvfscreening</permission>
         <permission type="examination" id="1134">occup.ccbrt.vvf6monthsurvey</permission>
         <permission type="examination" id="1135">occup.ccbrt.vvfsurgery</permission>
@@ -484,11 +487,13 @@
         <permission type="web" id="devices">system.devices</permission>
     </application>
     <application type="Web" id="pharmacy">
+    	<permission type="web" id="pharmacy.kits">pharmacy.kits</permission>
     	<permission type="web" id="pharmacy.mergeproducts">pharmacy.mergeproducts</permission>
     	<permission type="web" id="pharmacy.modifybatchoperations">pharmacy.modifybatchoperations</permission>
     	<permission type="web" id="fastdrugsprescription">fastdrugsprescription</permission>
     	<permission type="web" id="fastdrugsprescription.selectprescriber">fastdrugsprescription.selectprescriber</permission>
     	<permission type="web" id="fastdrugsdelivery">fastdrugsdelivery</permission>
+    	<permission type="web" id="fastdrugsdelivery.automaticinvoicing">fastdrugsdelivery.automaticinvoicing</permission>
     	<permission type="web" id="pharmacy.unconfirmedwaitinglist">pharmacy.unconfirmedwaitinglist</permission>
     	<permission type="web" id="pharmacy.issueproductsinpast">pharmacy.issueproductsinpast</permission>
     	<permission type="web" id="pharmacy.updateinventory">pharmacy.updateinventory</permission>

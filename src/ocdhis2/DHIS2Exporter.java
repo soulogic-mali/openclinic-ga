@@ -2061,7 +2061,7 @@ public class DHIS2Exporter {
 								}
 								if(matchval.length()>0){
 									try{
-										if(item.split(";")[8].length()==0 || Double.parseDouble(item.split(";")[8])!=Double.parseDouble(matchval)){
+										if(matchval.length()>0 && !matchval.equalsIgnoreCase(item.split(";")[8])){
 											continue;
 										}
 									}
@@ -2311,6 +2311,9 @@ public class DHIS2Exporter {
 								else if(ScreenHelper.checkString(dataelement.attributeValue("unique")).equalsIgnoreCase("encounters")){
 									uids.put(item.split(";")[1],nFound);
 								}
+								else if(ScreenHelper.checkString(dataelement.attributeValue("unique")).equalsIgnoreCase("transactions")){
+									uids.put(item.split(";")[11],nFound);
+								}
 								else if(ScreenHelper.checkString(dataelement.attributeValue("countall")).equals("1")){
 									uidcounter+=nFound;
 								}
@@ -2326,6 +2329,9 @@ public class DHIS2Exporter {
 							else if(ScreenHelper.checkString(dataelement.attributeValue("unique")).equalsIgnoreCase("encounters")){
 								uids.put(item.split(";")[1],1);
 							}
+							else if(ScreenHelper.checkString(dataelement.attributeValue("unique")).equalsIgnoreCase("transactions")){
+								uids.put(item.split(";")[11],1);
+							}
 							else{
 								uidcounter++;
 							}
@@ -2333,7 +2339,7 @@ public class DHIS2Exporter {
 					}
 				}
 			}
-			if(ScreenHelper.checkString(dataelement.attributeValue("unique")).equalsIgnoreCase("patients") || ScreenHelper.checkString(dataelement.attributeValue("unique")).equalsIgnoreCase("encounters")){
+			if(ScreenHelper.checkString(dataelement.attributeValue("unique")).equalsIgnoreCase("patients") || ScreenHelper.checkString(dataelement.attributeValue("unique")).equalsIgnoreCase("encounters") || ScreenHelper.checkString(dataelement.attributeValue("unique")).equalsIgnoreCase("transactions")){
 				if(ScreenHelper.checkString(dataelement.attributeValue("countall")).equals("1")){
 					uidcounter=0;
 					Enumeration eUids = uids.keys();

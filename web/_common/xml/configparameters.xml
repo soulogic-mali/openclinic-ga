@@ -1353,6 +1353,9 @@
 		<parameter name="momo.targetsystem" default="sandbox" type="radio" options="sandbox;production">
 		    <description language="en">Select "sandbox" to use the Mobile Money test environment. Select "production" to use the Mobile Money production environment.</description>
 		</parameter>
+		<parameter name="momo.targetenvironment" default="mtnrwanda">
+		    <description language="en">The MTN target environment</description>
+		</parameter>
 		<parameter name="momo.sandbox.disbursement.baseurl" default="https://sandbox.momodeveloper.mtn.com/disbursement/v1_0">
 		    <description language="en">Base URL used to call requesttopay command in production environment.</description>
 		</parameter>
@@ -1365,6 +1368,9 @@
 		<parameter name="momo.sandbox.token.baseurl" default="https://sandbox.momodeveloper.mtn.com/collection">
 		    <description language="en">Base URL used to call token command in production environment.</description>
 		</parameter>
+		<parameter name="momo.sandbox.disbursementtoken.baseurl" default="https://sandbox.momodeveloper.mtn.com/disbursement">
+		    <description language="en">Base URL used to call disbursement token command in production environment.</description>
+		</parameter>
 		<parameter name="momo.production.disbursement.baseurl" default="https://momo.mtn.com/disbursement/v1_0">
 		    <description language="en">Base URL used to call requesttopay command in production environment.</description>
 		</parameter>
@@ -1372,6 +1378,9 @@
 		    <description language="en">Base URL used to call requesttopay command in production environment.</description>
 		</parameter>
 		<parameter name="momo.production.token.baseurl" default="https://momo.mtn.com/collection">
+		    <description language="en">Base URL used to call token command in production environment.</description>
+		</parameter>
+		<parameter name="momo.production.disbursementtoken.baseurl" default="https://momo.mtn.com/disbursement">
 		    <description language="en">Base URL used to call token command in production environment.</description>
 		</parameter>
 		<parameter name="momo.merchantphonenumber" default="">
@@ -1627,6 +1636,26 @@
 		</parameter>
 		<parameter name="offlineLocalMySQLServerPassword" type="password" default="">
 		    <description language="en">Password for connecting to the local MySQL server</description>
+		</parameter>
+	</parametergroup>	
+	<parametergroup id="replication" name="Replication" class="advanced" sort="false">
+		<parameter name="replicationDatabaseDriver" default="com.mysql.jdbc.Driver">
+		    <description language="en">JDBC driver for connection to the replication server</description>
+		</parameter>
+		<parameter name="replicationServer" default="">
+		    <description language="en">Host name or ip address of replication server</description>
+		</parameter>
+		<parameter name="replicationPort" default="3306">
+		    <description language="en">Port of replication server</description>
+		</parameter>
+		<parameter name="replicationUser" default="root">
+		    <description language="en">User name for accessing the replication server</description>
+		</parameter>
+		<parameter name="replicationPassword" type="password" default="">
+		    <description language="en">Password for accessing the replication server</description>
+		</parameter>
+		<parameter name="replicationConnectionParameters" default="">
+		    <description language="en">Additionnal parameters to add to the connection URL</description>
 		</parameter>
 	</parametergroup>
 </parameters>

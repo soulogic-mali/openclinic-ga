@@ -1,4 +1,4 @@
-<%@page import="be.openclinic.pharmacy.*"%>
+<%@page import="be.openclinic.pharmacy.*,be.openclinic.finance.*"%>
 <%@include file="/includes/validateUser.jsp"%>
 <%@page errorPage="/includes/error.jsp"%>
 
@@ -107,6 +107,42 @@
             <td class='admin'><%=getTran(request,"web","comment",sWebLanguage)%></td>
             <td class='admin2'><input type='text' class='text' name='comment' id='comment' size='60' value=''/></td>
         </tr>
+        <%
+            String sEditCreditWicketUid = checkString((String)session.getAttribute("defaultwicket"));
+	        if(sEditCreditWicketUid.length()==0){
+	            sEditCreditWicketUid = activeUser.getParameter("defaultwicket");
+	        }
+        	Vector userWickets = Wicket.getWicketsForUser(activeUser.userid);
+            if(activeUser.getAccessRight("fastdrugsdelivery.automaticinvoicing.select") && userWickets.size() > 0){
+                %>
+                    <tr>
+                        <td class="admin"><%=getTran(request,"wicket","wicket",sWebLanguage)%>&nbsp;*</td>
+                        <td class="admin2">
+                            <select class="text" id="EditCreditWicketUid" name="EditCreditWicketUid">
+                                <option value="" selected><%=getTranNoLink("web","choose",sWebLanguage)%></option>
+                                <%
+                                    Iterator iter = userWickets.iterator();
+                                    Wicket wicket;
+
+                                    while(iter.hasNext()){
+                                        wicket = (Wicket)iter.next();
+
+                                        %>
+                                          <option value="<%=wicket.getUid()%>" <%=sEditCreditWicketUid.equals(wicket.getUid())?" selected":""%>>
+                                              <%=wicket.getUid()%>&nbsp;<%=getTranNoLink("service",wicket.getServiceUID(),sWebLanguage)%>
+                                          </option>
+                                        <%
+                                    }
+                                %>
+                            </select>
+                        </td>
+                    </tr>
+                <%
+            }
+            else{
+                %><input type="hidden" name="EditCreditWicketUid"/><%
+            }
+        %>
         
         <%-- BUTTONS --%>
         <tr>
@@ -123,6 +159,10 @@
                 <%} %>
             	<%if(activeUser.getAccessRight("prescriptions.drugs.select")){ %>
 	                <input type='button' class="button" name='prescriptionbutton' id='prescriptionbutton' value='<%=getTranNoLink("web","prescription",sWebLanguage)%>' onclick='printPaperPrescription();'/>
+                <%} %>
+            	<%if(activeUser.getAccessRight("fastdrugsdelivery.automaticinvoicing.select")){ %>
+	                <input type='button' class="redbutton" name='automaticinvoicingbutton' id='automaticinvoicingbutton' value='<%=getTranNoLink("web","patientquickinvoiceedit",sWebLanguage)%>' onclick='quickInvoice();'/>
+	                <input type='button' class="redbutton" name='automaticreceiptbutton' id='automaticreceiptbutton' value='<%=getTranNoLink("web","patientquickreceiptedit",sWebLanguage)%>' onclick='quickReceipt();'/>
                 <%} %>
             </td>
         </tr>
@@ -208,6 +248,52 @@
 	  document.getElementById('printPrescriptionForm').submit();
   }
   
+  function quickReceipt(){
+    var url = '<c:url value="/pharmacy/quickInvoiceDrugsOutBarcode.jsp"/>?ts='+new Date()+"&wicketuid="+document.getElementById('EditCreditWicketUid').value;
+    new Ajax.Request(url,{
+        method: "GET",
+        parameters: "",
+        onSuccess: function(resp){
+          var message=resp.responseText.trim();
+          if(message.split(";")[0]=="error"){
+        	  alert(message.split(";")[1]);
+          }
+          else if(message.split(";")[0]=="invoice"){
+        	  doPrintPatientReceiptPdf(message.split(";")[1]);
+        	  doAdd('yes');
+          }
+        }
+      });
+  }
+  
+  function doPrintPatientReceiptPdf(invoiceUid){
+      var url = "<c:url value='/financial/createPatientInvoiceReceiptPdf.jsp'/>?InvoiceUid="+invoiceUid+"&ts=<%=getTs()%>&PrintLanguage=<%=sWebLanguage%>";
+      window.open(url,"PatientInvoicePdf<%=new java.util.Date().getTime()%>","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
+  }
+
+  function quickInvoice(){
+    var url = '<c:url value="/pharmacy/quickInvoiceDrugsOutBarcode.jsp"/>?ts='+new Date()+"&wicketuid="+document.getElementById('EditCreditWicketUid').value;
+    new Ajax.Request(url,{
+        method: "GET",
+        parameters: "",
+        onSuccess: function(resp){
+          var message=resp.responseText.trim();
+          if(message.split(";")[0]=="error"){
+        	  alert(message.split(";")[1]);
+          }
+          else if(message.split(";")[0]=="invoice"){
+        	  doPrintPatientInvoicePdf(message.split(";")[1]);
+        	  doAdd('yes');
+          }
+        }
+      });
+  }
+	  
+  function doPrintPatientInvoicePdf(invoiceUid){
+    var url = "<c:url value='/financial/createPatientInvoicePdf.jsp'/>?Proforma=no&InvoiceUid="+invoiceUid+"&ts=<%=getTs()%>&PrintLanguage=<%=sWebLanguage%>&PrintModel=default";
+    printwindow=window.open(url,"PatientInvoicePdf<%=new java.util.Date().getTime()%>","height=600,width=900,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");
+  }
+
   <%-- DO DELETE --%>
   function doDelete(listuid){
     var url = '<c:url value="/pharmacy/deleteDrugsOutBarcode.jsp"/>?listuid='+listuid+'&ts='+new Date();
@@ -218,18 +304,11 @@
         var label = eval('('+resp.responseText+')');
         if(label.message && label.message.length>0){
           $("divDrugsOut").innerHTML = "<font color='red'>"+label.message+"</font>";
-          window.setTimeout('document.getElementById("quantity").value=0;doAdd("yes")',1000);
+          window.setTimeout('document.getElementById("quantity").value=0;doAdd("yes");',500);
         }
         else{
-          if(label.drugs.length > 0){
-            $('divDrugsOut').innerHTML = label.drugs;
-            if(document.getElementById('deliverbutton') && label.drugs.indexOf("<NODELIVERY>")>-1){
-            	document.getElementById('deliverbutton').style.visibility='hidden';
-            }
-            else if(document.getElementById('deliverbutton')){
-            	document.getElementById('deliverbutton').style.visibility='visible';
-            }
-          }
+            document.getElementById("quantity").value=0;
+            doAdd("yes");
         }
         checkForInteractions();
       }

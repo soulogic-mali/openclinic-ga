@@ -26,23 +26,34 @@
                 <script>writeTranDate();</script>
             </td>
         </tr>
-
+		<tr>
+			<td class='admin2' colspan='2'><%writeVitalSigns(pageContext); %></td>
+		</tr>	
         <%-- DESCRIPTION --%>
         <tr>
         	<td width="50%" valign='top'>
 	        	<table width='100%'>
 		        	<tr>
-			            <td class="admin"><%=getTran(request,"web","pregnantwomen",sWebLanguage)%>&nbsp;</td>
+			            <td class="admin" id='pregnantlabel'><%=getTran(request,"web","pregnantwomen",sWebLanguage)%>&nbsp;</td>
 			            <td class="admin2" colspan="3">
-			                <input type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CONS_PREGNANTWOMEN" property="itemId"/>]>.value" value="medwan.common.true"
+			                <input id='pregnant' type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CONS_PREGNANTWOMEN" property="itemId"/>]>.value" value="medwan.common.true"
 			                <mxs:propertyAccessorI18N name="transaction.items" scope="page"
 			                                          compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CONS_PREGNANTWOMEN;value=medwan.common.true"
 			                                          property="value" outputString="checked"/>><label><%=getTran(request,"web","yes",sWebLanguage) %></label>
-			                <input type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CONS_PREGNANTWOMEN" property="itemId"/>]>.value" value="medwan.common.false"
+			                <input id='notpregnant' type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CONS_PREGNANTWOMEN" property="itemId"/>]>.value" value="medwan.common.false"
 			                <mxs:propertyAccessorI18N name="transaction.items" scope="page"
 			                                          compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CONS_PREGNANTWOMEN;value=medwan.common.false"
 			                                          property="value" outputString="checked"/>><label><%=getTran(request,"web","no",sWebLanguage) %></label>
 			            </td>
+			            <% if(activePatient.gender.toLowerCase().startsWith("m")){ %>
+			            	<script>
+		            			document.getElementById("pregnant").checked=false;
+		            			document.getElementById("pregnant").disabled=true;
+		            			document.getElementById("notpregnant").checked=false;
+		            			document.getElementById("notpregnant").disabled=true;
+		            			document.getElementById("pregnantlabel").style='color: grey';
+			            	</script>
+			            <% } %>
 			        </tr>
 			        <tr>
 			            <td class="admin"><%=getTran(request,"web", "complaints.and.symptoms", sWebLanguage)%></td>
@@ -65,7 +76,7 @@
 			            </td>
 			        </tr>
 		        	<tr>
-			            <td class="admin"><%=getTran(request,"web","reference",sWebLanguage)%>&nbsp;</td>
+			            <td class="admin"><%=getTran(request,"web","referral",sWebLanguage)%>&nbsp;</td>
 			            <td class="admin2">
 			                <select class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CONS_REFERENCE" property="itemId"/>]>.value">
 			                	<option/>
@@ -107,7 +118,7 @@
 	            </table>
 	        </td>
 	        <%-- DIAGNOSES --%>
-	    	<td class="admin2">
+	    	<td valign='top'>
 		      	<%ScreenHelper.setIncludePage(customerInclude("healthrecord/diagnosesEncoding.jsp"),pageContext);%>
 	    	</td>
         </tr>

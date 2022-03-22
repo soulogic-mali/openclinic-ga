@@ -5,6 +5,7 @@
 	String type = SH.c(request.getParameter("type"));
 	String message = SH.c(request.getParameter("message"));
 	String sResult = "<ERROR>";
+	int serverid = -1;
 
 	if(type.equalsIgnoreCase("post")){
     	//Store the message in the oc_imports database here and delete it if successful
@@ -21,20 +22,27 @@
 			while(msgs.hasNext()){
 				Element data = (Element)msgs.next();
 		    	ImportMessage msg = new ImportMessage(data);
+		    	serverid=msg.getServerId();
 		    	Connection conn = SH.getOpenclinicConnection();
 		    	PreparedStatement ps = conn.prepareStatement("select * from dc_servers where dc_server_serverid=? and dc_server_key=?");
-		    	ps.setInt(1,msg.getServerId());
+		    	ps.setInt(1,serverid);
 		    	ps.setString(2,key);
 		    	ResultSet rs = ps.executeQuery();
 		    	if(rs.next()){
 		    		rs.close();
 		    		ps.close();
 		    		conn.close();
-					msg.setType(root.attributeValue("type"));
-			    	msg.setReceiveDateTime(new java.util.Date());
-			    	msg.setRef("HTTP:"+SH.getRemoteAddr(request));
-					msg.setAckDateTime(new java.util.Date());
-	    			msg.store();
+		    		try{
+						msg.setType(root.attributeValue("type"));
+				    	msg.setReceiveDateTime(new java.util.Date());
+				    	msg.setRef("HTTP:"+SH.getRemoteAddr(request));
+						msg.setAckDateTime(new java.util.Date());
+		    			msg.store();
+		    		}
+		    		catch(Exception e){
+		    			System.out.println("!!!!!!!!!!!! Error storing message of type "+msg.getType()+" from server "+serverid+" on "+SH.getRemoteAddr(request)+" !!!!!!!!!!!!");
+		    			e.printStackTrace();
+		    		}
 		    	}
 		    	else{
 		    		rs.close();
@@ -45,16 +53,19 @@
 		    	}
 			}
 			if(bOk){
-			    Debug.println("Sending ACK for received message ");
+			    Debug.println("Sending ACK for received message for key "+key);
 				sResult="<OK>";
 			}
 			else{ 
-			    Debug.println("Refusing received message");
+				if(serverid>=0){
+					System.out.println("Refusing received message from server "+serverid+" for key "+key);
+				}
 				sResult="<ERROR>";
 			}
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println(message);
 		    Debug.println("Document exception. Sending ACK for received message in order to not block further messages");
 			sResult="<OK>";
 		} catch (Exception e) {

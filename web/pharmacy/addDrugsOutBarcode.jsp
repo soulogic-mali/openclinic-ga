@@ -21,7 +21,7 @@
 	
 	String servicestock = checkString(request.getParameter("ServiceStock"));
 	String newPrescriptionUid="";
-	Insurance insurance = Insurance.getMostInterestingInsuranceForPatient(activePatient.personid);
+	Insurance insurance = Insurance.getDefaultInsuranceForPatient(activePatient.personid);
 	
 	
 
@@ -149,10 +149,20 @@
 							rs = ps.executeQuery();
 							
 							if(rs.next()){
+								int serverid = rs.getInt("OC_LIST_SERVERID");
+								int objectid = rs.getInt("OC_LIST_OBJECTID");
 								rs.close();
 								ps.close();
 								//There already is a batch request, update the requested level
-								ps = conn.prepareStatement("update OC_DRUGSOUTLIST set OC_LIST_QUANTITY=OC_LIST_QUANTITY+?"+
+								//First copy to history
+								ps=conn.prepareStatement("insert into OC_DRUGSOUTLISTHISTORY(OC_LIST_SERVERID,OC_LIST_OBJECTID,OC_LIST_PATIENTUID,OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER,OC_LIST_VERSION,OC_LIST_UPDATETIME)"+
+														 " select OC_LIST_SERVERID,OC_LIST_OBJECTID,OC_LIST_PATIENTUID,OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER,OC_LIST_VERSION,OC_LIST_UPDATETIME"+
+														 " from OC_DRUGSOUTLIST where OC_LIST_SERVERID=? and OC_LIST_OBJECTID=?");
+								ps.setInt(1,serverid);
+								ps.setInt(2,objectid);
+								ps.execute();
+								ps.close();
+								ps = conn.prepareStatement("update OC_DRUGSOUTLIST set OC_LIST_QUANTITY=OC_LIST_QUANTITY+?,OC_LIST_VERSION=OC_LIST_VERSION+1,OC_LIST_UPDATETIME=?"+
 								                           " where  OC_LIST_PATIENTUID=? AND OC_LIST_PRODUCTSTOCKUID=? and OC_LIST_BATCHUID=? and OC_LIST_ENCOUNTERUID=? and OC_LIST_PRESCRIPTIONUID=? and (OC_LIST_INVOICED is NULL OR OC_LIST_INVOICED=0)");
 								ps.setInt(1,nToDeliver);
 								ps.setString(2,activePatient.personid);
@@ -160,6 +170,7 @@
 								ps.setString(4,batch.getUid());
 								ps.setString(5,encounteruid);
 								ps.setString(6, prescriptionUid);
+								ps.setTimestamp(7,SH.getSQLTime());
 								ps.execute();
 								ps.close();
 							}
@@ -168,7 +179,7 @@
 								ps.close();
 								
 								ps = conn.prepareStatement("insert into OC_DRUGSOUTLIST(OC_LIST_SERVERID,OC_LIST_OBJECTID,OC_LIST_PATIENTUID,"+
-								                           "OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER) values(?,?,?,?,?,?,?,?,?,?)");
+								                           "OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER,OC_LIST_VERSION,OC_LIST_UPDATETIME) values(?,?,?,?,?,?,?,?,?,?,1,?)");
 								ps.setInt(1,MedwanQuery.getInstance().getConfigInt("serverId"));
 								ps.setInt(2,MedwanQuery.getInstance().getOpenclinicCounter("DRUGSOUT"));
 								ps.setString(3,activePatient.personid);
@@ -179,6 +190,7 @@
 								ps.setString(8,encounteruid);
 								ps.setString(9, prescriptionUid);
 								ps.setInt(10, prescriber.trim().length()==0?-1:Integer.parseInt(prescriber));
+								ps.setTimestamp(11,SH.getSQLTime());
 								ps.execute();
 								ps.close();
 							}
@@ -202,10 +214,21 @@
 						rs = ps.executeQuery();
 						
 						if(rs.next()){
+							int serverid = rs.getInt("OC_LIST_SERVERID");
+							int objectid = rs.getInt("OC_LIST_OBJECTID");
 							rs.close();
 							ps.close();
+							//There already is a batch request, update the requested level
+							//First copy to history
+							ps=conn.prepareStatement("insert into OC_DRUGSOUTLISTHISTORY(OC_LIST_SERVERID,OC_LIST_OBJECTID,OC_LIST_PATIENTUID,OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER,OC_LIST_VERSION,OC_LIST_UPDATETIME)"+
+													 " select OC_LIST_SERVERID,OC_LIST_OBJECTID,OC_LIST_PATIENTUID,OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER,OC_LIST_VERSION,OC_LIST_UPDATETIME"+
+													 " from OC_DRUGSOUTLIST where OC_LIST_SERVERID=? and OC_LIST_OBJECTID=?");
+							ps.setInt(1,serverid);
+							ps.setInt(2,objectid);
+							ps.execute();
+							ps.close();
 							
-							ps = conn.prepareStatement("update OC_DRUGSOUTLIST set OC_LIST_QUANTITY=OC_LIST_QUANTITY+?"+
+							ps = conn.prepareStatement("update OC_DRUGSOUTLIST set OC_LIST_QUANTITY=OC_LIST_QUANTITY+?,OC_LIST_VERSION=OC_LIST_VERSION+1,OC_LIST_UPDATETIME=?"+
 							                           " where OC_LIST_PATIENTUID=? AND OC_LIST_PRODUCTSTOCKUID=? and OC_LIST_BATCHUID=? and OC_LIST_ENCOUNTERUID=? and OC_LIST_PRESCRIPTIONUID=? and (OC_LIST_INVOICED is NULL OR OC_LIST_INVOICED=0)");
 							ps.setInt(1,tofind);
 							ps.setString(2,activePatient.personid);
@@ -213,6 +236,7 @@
 							ps.setString(4,"");
 							ps.setString(5,encounteruid);
 							ps.setString(6, prescriptionUid);
+							ps.setTimestamp(7,SH.getSQLTime());
 							ps.execute();
 							ps.close();
 						}
@@ -221,7 +245,7 @@
 							ps.close();
 							
 							ps = conn.prepareStatement("insert into OC_DRUGSOUTLIST(OC_LIST_SERVERID,OC_LIST_OBJECTID,OC_LIST_PATIENTUID,"+
-							                           " OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER) values(?,?,?,?,?,?,?,?,?,?)");
+							                           " OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER,OC_LIST_VERSION,OC_LIST_UPDATETIME) values(?,?,?,?,?,?,?,?,?,?,1,?)");
 							ps.setInt(1,MedwanQuery.getInstance().getConfigInt("serverId"));
 							ps.setInt(2,MedwanQuery.getInstance().getOpenclinicCounter("DRUGSOUT"));
 							ps.setString(3,activePatient.personid);
@@ -232,6 +256,7 @@
 							ps.setString(8,encounteruid);
 							ps.setString(9, prescriptionUid);
 							ps.setInt(10, prescriber.trim().length()==0?-1:Integer.parseInt(prescriber));
+							ps.setTimestamp(11,SH.getSQLTime());
 							ps.execute();
 							ps.close();
 						}
@@ -292,20 +317,21 @@
 				int nBatch=rs.getInt("OC_LIST_QUANTITY");
 				 //Calculate costs for this drug. Only works with automatic invoicing activated.
 				 double dPat=0;
+				 Encounter encounter = Encounter.get(checkString(rs.getString("OC_LIST_ENCOUNTERUID")));
 				 if(SH.c(stock.getProduct().getPrestationcode()).length()>0){
 					 Prestation prestation = Prestation.get(stock.getProduct().getPrestationcode());
 					 if(prestation!=null){
 						 if(SH.c(insurance.getExtraInsurarUid()).length()==0){
-							 dPat=nBatch*stock.getProduct().getPrestationquantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter());
+							 dPat=nBatch*stock.getProduct().getPrestationquantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter(),encounter==null?"":encounter.getType());
 							 dPatient+=dPat;
 						 }
 						 else{
-							 dExtraInsurer+=nBatch*stock.getProduct().getPrestationquantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter());
+							 dExtraInsurer+=nBatch*stock.getProduct().getPrestationquantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter(),encounter==null?"":encounter.getType());
 						 }
-						 dInsurer+=nBatch*stock.getProduct().getPrestationquantity()*prestation.getInsurarPrice(insurance, insurance.getInsuranceCategoryLetter());
+						 dInsurer+=nBatch*stock.getProduct().getPrestationquantity()*prestation.getInsurarPrice(insurance, insurance.getInsuranceCategoryLetter(),encounter==null?"":encounter.getType());
 					 }
 				 }
-
+				 String fontstyle=stock.getProduct().getPrestationcode().length()==0 || !stock.getProduct().isAutomaticInvoicing()?"color: white;background-color: red;font-size: 8;font-weight: bolder;text-decoration: line-through":"color: #606060;font-size: 8";
 				 drugs+= "<tr>"+
 				         "<td class='admin2'>"+
 				         (activeUser.getAccessRight("fastdrugsprescription.delete")?
@@ -315,7 +341,7 @@
 				         "</td>"+
 				         "<td class='admin2'>"+stock.getUid()+"</td>"+
 				         "<td class='admin2'><b>"+stock.getProduct().getCode()+"</b></td>"+
-				         "<td class='admin2'><b><span id='drugname."+stock.getUid()+"'>"+stock.getProduct().getName()+"<br><font style='color: #606060;font-size: 8'>"+(SH.c(stock.getProduct().getRoute()).length()==0?"":"["+getTranNoLink("product.route",stock.getProduct().getRoute(),sWebLanguage)+"] ")+"["+SH.getPriceFormat(dPat)+" "+SH.cs("currency","EUR")+"]</font></span></b>"+stocklabel+"</td>"+
+				         "<td class='admin2'><b><span id='drugname."+stock.getUid()+"'>"+stock.getProduct().getName()+"<br><font style='"+fontstyle+"'>"+(SH.c(stock.getProduct().getRoute()).length()==0?"":"["+getTranNoLink("product.route",stock.getProduct().getRoute(),sWebLanguage)+"] ")+"["+SH.getPriceFormat(dPat)+" "+SH.cs("currency","EUR")+"]</font></span></b>"+stocklabel+"</td>"+
 				         "<td class='admin2'><b>"+nBatch+(bInvoiced?" <img height='14px' src='"+sCONTEXTPATH+"/_img/icons/icon_money2.png'/>":"")+"</b></td>"+
 				         "<td class='admin2'>"+sBatch+"</td>"+
 				         "<td class='admin2'>"+level+(level<nBatch?" <NODELIVERY><img src='"+sCONTEXTPATH+"/_img/icons/icon_forbidden.png'/>":"")+"</td>"+

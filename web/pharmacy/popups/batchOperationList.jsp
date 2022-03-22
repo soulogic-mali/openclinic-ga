@@ -41,7 +41,6 @@ String productStockUid=checkString(request.getParameter("productStockUid"));
 		String date=ScreenHelper.formatDate(operation.getDate());
 		String thirdparty=checkString(operation.getThirdParty());
 		if(operation != null && operation.getType()!=null){
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>> "+operation.getType()+"*");
 			if(operation.getType().equalsIgnoreCase("receipt")){
 				//Incoming 
 				if(productStockOperation!=null){

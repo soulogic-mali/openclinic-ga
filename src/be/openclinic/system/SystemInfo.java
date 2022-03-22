@@ -1,5 +1,6 @@
 package be.openclinic.system;
 
+import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
@@ -200,5 +201,33 @@ public class SystemInfo {
 	public static int getActiveUserCount() {
 		int userCount = MedwanQuery.getSessions().size();
 		return userCount;
+	}
+	
+	public static int getAvailableProcessors() {
+		return ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+	}
+
+	public static double getSystemLoadAverage() {
+		return ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage();
+	}
+	
+	public static long getInitialMemory() {
+		return ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getInit();
+	}
+	
+	public static long getMaximumMemory() {
+		return ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getMax();
+	}
+	
+	public static long getUsedMemory() {
+		return ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed();
+	}
+	
+	public static long getCommittedMemory() {
+		return ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getCommitted();
+	}
+	
+	public static long getFreeMemory() {
+		return getMaximumMemory()-getUsedMemory();
 	}
 }

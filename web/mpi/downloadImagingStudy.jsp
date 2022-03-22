@@ -23,20 +23,13 @@
 		e.printStackTrace();
 	}
 	conn.close();
-	System.out.println("1");
 	ImagingStudySeriesComponent seriesComponent = PACS.getSeries(studyuid, seriesuid);
-	System.out.println("2: "+seriesComponent);
 	if(seriesComponent!=null && seriesComponent.getEndpoint()!=null){
-		System.out.println("3");
 		List<Reference> sequencesList = seriesComponent.getEndpoint();
-		System.out.println("4");
 		Iterator<Reference> iSequences = sequencesList.iterator();
 		while(iSequences.hasNext()){
-			System.out.println("5");
 			Reference reference = iSequences.next();
-			System.out.println("6");
 			if(reference.getId()!=null && reference.getType()!=null && reference.getType().equalsIgnoreCase("mpi.dicom.wado")){
-				System.out.println("7");
 				//Now we've got the WADO query for retrieving the list of downloadable files
 				String wadoQuery = reference.getId();
 		        SAXReader reader = new SAXReader(false);

@@ -112,7 +112,7 @@ private String addValidationUser(int userIdx, String userName, String sWebLangua
 	            html.append("<tr class='list"+sClass+"' title='"+detailsTran+"'>")
 	                 .append("<td>");
 	            
-	            if((serviceStock.isAuthorizedUser(activeUser.userid) || activeUser.getAccessRight("sa")) && activeUser.getAccessRight("pharmacy.manageservicestocks.delete")){
+	            if((serviceStock.isAuthorizedUser(activeUser.userid) || activeUser.getAccessRight("sa")) && activeUser.getAccessRightNoSA("pharmacy.manageservicestocks.delete")){
 	                html.append("<img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' class='link' onclick=\"doDelete('"+sServiceStockUid+"');\" title='"+deleteTran+"'/>").
 	                     append("<img src='"+sCONTEXTPATH+"/_img/icons/icon_edit.png' class='link' onclick=\"printFiche('"+sServiceStockUid+"','"+serviceStock.getName()+"');\" title='"+getTranNoLink("web","stockfiche",sWebLanguage)+"'/>");
 	            }

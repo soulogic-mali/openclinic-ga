@@ -33,7 +33,7 @@
 			<table class="list" width="100%" cellspacing="0" cellpadding="2">
 		      <tr class="admin">
 			    <td align="center">
-			    	<a href="javascript:openPopup('healthrecord/findRFE.jsp&field=rfe&encounterUid=<%=activeEncounterUid%>&ts=<%=getTs()%>',700,400);void(0);"><%=getTran(request,"openclinic.chuk","rfe",sWebLanguage)%> <%=getTran(request,"Web.Occup","ICPC-2",sWebLanguage)%>/<%=getTran(request,"Web.Occup","ICD-10",sWebLanguage)%></a>
+			    	<a href="javascript:openPopup('healthrecord/findRFE.jsp&field=rfe&encounterUid=<%=activeEncounterUid%>&ts=<%=getTs()%>',700,400);void(0);"><%=getTran(request,"openclinic.chuk","rfe",sWebLanguage)%> <%=getTran(request,"Web.Occup","ICPC-2",sWebLanguage)%>/<%=getTran(request,"Web.Occup","ICD-10",sWebLanguage)%></a> <%=SH.ci("enforceReasonForEncounterBeforeClinicalDataEntry",0)==1?"*":"" %>
 			    </td>
 			  </tr>
 			  <tr>

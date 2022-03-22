@@ -6,8 +6,9 @@
 <table width='100%'>
 	<tr class='admin'><td colspan='2'>Synchronizing offline data...</td></tr>
 <%
+boolean bComplete=true,bInitialized=false;
+try{
 	SortedMap hSync = new TreeMap();
-	boolean bComplete=true,bInitialized=false;;
 	Connection conn = SH.getOpenclinicConnection();
 	PreparedStatement ps = conn.prepareStatement("select * from oc_sync where processed is null order by created");
 	ResultSet rs = ps.executeQuery();
@@ -118,6 +119,10 @@
 	if(!bInitialized){
 		out.println("<tr><td class='admin2' colspan='2'>No data in synchronization queue.</td></tr>");	
 	}
+}
+catch(Exception a){
+	a.printStackTrace();
+}
 %>
 		<tr class='admin'><td colspan='2'>...End of synchronization</td></tr>
 </table>

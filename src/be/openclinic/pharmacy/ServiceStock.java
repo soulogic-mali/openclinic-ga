@@ -1001,7 +1001,7 @@ public class ServiceStock extends OC_Object{
         
         Connection oc_conn = MedwanQuery.getInstance().getOpenclinicConnection();
         try{
-            String sSelect = "insert into oc_productstocks_history select * FROM OC_PRODUCTSTOCKS"+
+            String sSelect = "insert into oc_productstocks_history(oc_stock_serverid,oc_stock_objectid,oc_stock_servicestockuid,oc_stock_productuid,oc_stock_level,oc_stock_minimumlevel,oc_stock_maximumlevel,oc_stock_orderlevel,oc_stock_begin,oc_stock_end,oc_stock_defaultimportance,oc_stock_createtime,oc_stock_updatetime,oc_stock_updateuid,oc_stock_version,oc_stock_supplieruid,oc_stock_location) select oc_stock_serverid,oc_stock_objectid,oc_stock_servicestockuid,oc_stock_productuid,oc_stock_level,oc_stock_minimumlevel,oc_stock_maximumlevel,oc_stock_orderlevel,oc_stock_begin,oc_stock_end,oc_stock_defaultimportance,oc_stock_createtime,oc_stock_updatetime,oc_stock_updateuid,oc_stock_version,oc_stock_supplieruid,oc_stock_location FROM OC_PRODUCTSTOCKS"+
                     " WHERE OC_STOCK_SERVICESTOCKUID = ?";
 		    ps = oc_conn.prepareStatement(sSelect);
 		    ps.setString(1,serviceStockUid);

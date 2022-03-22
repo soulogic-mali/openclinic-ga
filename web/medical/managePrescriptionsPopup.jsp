@@ -1640,8 +1640,8 @@ function doBack(){
 	    });
 	}
 	
-	calculateNumberOfDays();
 	window.setTimeout('document.getElementById("EditProductName").focus();',200);
+	calculateNumberOfDays();
 </script>
 
 <%=writeJSButtons("transactionForm","saveButton")%>

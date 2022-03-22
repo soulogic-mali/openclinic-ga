@@ -193,7 +193,7 @@
         <%-- BUTTONS --%>
         <%=ScreenHelper.setFormButtonsStart()%>
         <%if(sEditWicketOperationUID.length()==0 || activeUser.getAccessRight("existingwicketdebet.edit")){ %>
-            <input class='button' type="button" name="EditSaveButton" value='<%=getTranNoLink("Web","save",sWebLanguage)%>' onclick="doSave();">&nbsp;
+            <input class='button' type="button" name="EditSaveButton" id="EditSaveButton" value='<%=getTranNoLink("Web","save",sWebLanguage)%>' onclick="doSave();">&nbsp;
             <%}
                 if(sEditWicketOperationUID.length()>0){
                     %><input class="button" type="button" name="buttonPrint" value='<%=getTranNoLink("Web","print",sWebLanguage)%>' onclick="doPrintPdf(document.getElementById('EditWicketOperationUID').value);"><%
@@ -258,6 +258,7 @@
 
   <%-- DO SAVE --%>
   function doSave(){
+    EditForm.EditSaveButton.disabled = true;
 	if(EditForm.EditWicketOperationAmount.value*1>document.getElementById('maxAmount').value*1){
         window.showModalDialog?alertDialog("web","valueoutofrange"):alertDialogDirectText('<%=getTran(null,"web","valueoutofrange",sWebLanguage)%>');
 		EditForm.EditWicketOperationAmount.focus();
@@ -282,7 +283,6 @@
         window.showModalDialog?alertDialog("web.manage","source.and.target.cannot.be.the.same"):alertDialogDirectText('<%=getTranNoLink("web.manage","source.and.target.cannot.be.the.same",sWebLanguage)%>');
 	}
     else{
-      EditForm.EditSaveButton.disabled = true;
       var url = '<c:url value="/financial/wicket/manageWicketOperationDebetSave.jsp"/>?ts='+new Date();
       new Ajax.Request(url,{
         method: "POST",
@@ -304,9 +304,8 @@
           $('divMessage').innerHTML = "Error in function doSave() => AJAX";
         }
       });
-
-      EditForm.EditSaveButton.disabled = false;
     }
+    window.setTimeout('EditForm.EditSaveButton.disabled = false',500);
   }
 
   <%-- SEARCH WICKET --%>

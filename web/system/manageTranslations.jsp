@@ -182,6 +182,9 @@
             }
         %>
         $('EditShowLink').value = label.editShowLink;
+      },
+      onFailure: function(resp){
+    	  alert(resp.responseText);
       }
     });
   }

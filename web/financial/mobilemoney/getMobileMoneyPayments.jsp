@@ -70,14 +70,25 @@
 			<tr>
 				<td height='22px' class='admin2'><%=tranid%></td>
 				<td class='admin2'><%=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(rs.getTimestamp("oc_momo_createdatetime")) %></td>
-				<td class='admin2'><a href='javascript:openInvoice("<%=rs.getString("oc_momo_invoiceuid") %>")'><%=rs.getString("oc_momo_invoiceuid") %></a></td>
+				<% 	try{
+						int i = Integer.parseInt(rs.getString("oc_momo_invoiceuid"));
+						%><td class='admin2'><a href='javascript:openInvoice("<%=rs.getString("oc_momo_invoiceuid") %>")'><%=rs.getString("oc_momo_invoiceuid") %></a></td><%
+					}
+					catch(Exception e){
+						%><td class='admin2'><%=rs.getString("oc_momo_invoiceuid") %></td><%
+					}
+				%>
 				<%if(activePatient!=null && SH.c(rs.getString("personid")).equalsIgnoreCase(activePatient.personid)){ %>
 					<td class='admin'><%=SH.c(rs.getString("lastname")).toUpperCase()+", "+SH.c(rs.getString("firstname")) %></td>
 				<%}else{ %>
 					<td class='admin2'><a href='<%=sCONTEXTPATH%>/main.do?Page=curative/index.jsp&PersonID=<%=rs.getString("personid")%>'><%=rs.getString("personid")+" - "+SH.c(rs.getString("lastname")).toUpperCase()+", "+SH.c(rs.getString("firstname")) %></a></td>
 				<%} %>
 				<td  id='td_<%=rs.getString("oc_momo_financialtransactionid") %>' class='<%=!bCredited?"admin2":"red"%>'><font id='font_<%=rs.getString("oc_momo_financialtransactionid") %>' <%=!bCredited?"":"style='text-decoration: line-through" %>'><%=rs.getString("oc_momo_amount")+" "+rs.getString("oc_momo_currency") %></font></td>
-				<td class='<%=SH.c(rs.getString("oc_momo_status")).equalsIgnoreCase("failed")?"red":SH.c(rs.getString("oc_momo_status")).equalsIgnoreCase("successful")?"green":"admin2" %>'><%=rs.getString("oc_momo_status") %></td>
+				<td class='<%=SH.c(rs.getString("oc_momo_status")).equalsIgnoreCase("failed")?"red":SH.c(rs.getString("oc_momo_status")).equalsIgnoreCase("successful")?"green":"admin2" %>'><%=rs.getString("oc_momo_status") %>
+				<%	if(SH.c(rs.getString("oc_momo_status")).equalsIgnoreCase("pending")){ %>
+					<img id='image_<%=rs.getString("oc_momo_transactionid")%>' src='<%=sCONTEXTPATH %>/_img/icons/icon_reload.png' onclick="checkPaymentStatus('<%=rs.getString("oc_momo_transactionid")%>')"/>
+				<%	} %>
+				</td>
 				<td class='admin2'><%=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(rs.getTimestamp("oc_momo_updatetime")) %></td>
 				<td class='admin2'><%=rs.getString("oc_momo_operator") %></td>
 				<td class='admin2'><%=rs.getString("oc_momo_payerphone") %></td>

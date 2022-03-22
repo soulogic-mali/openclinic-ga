@@ -1,5 +1,8 @@
 <%@page import="be.openclinic.knowledge.*"%>
 <%
+System.out.println("height="+request.getParameter("height"));
+System.out.println("weight="+request.getParameter("weight"));
+System.out.println("gender="+request.getParameter("gender"));
 	double zindex=Growth.getZScoreWeightForLength(Double.parseDouble(request.getParameter("height")), Double.parseDouble(request.getParameter("weight")), request.getParameter("gender"));
 	double zindexLFA=0;
 	double zindexWFA=0;

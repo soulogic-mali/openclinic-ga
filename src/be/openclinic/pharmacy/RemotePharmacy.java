@@ -162,7 +162,12 @@ public class RemotePharmacy {
 		    if(entity!=null){
 		    	try {
 			    	Document doc = org.dom4j.DocumentHelper.parseText(EntityUtils.toString(entity));
-			    	return Integer.parseInt(doc.getRootElement().attributeValue("lastid"));
+			    	if(doc!=null && doc.getRootElement()!=null && SH.c(doc.getRootElement().attributeValue("lastid")).length()>0) {
+			    		return Integer.parseInt(doc.getRootElement().attributeValue("lastid"));
+			    	}
+			    	else {
+			    		Debug.println("Erroneous response from "+SH.cs("pharmaSyncServerURL",""));
+			    	}
 				}
 				catch(Exception e) {
 					e.printStackTrace();

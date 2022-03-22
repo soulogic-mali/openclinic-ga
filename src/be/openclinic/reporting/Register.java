@@ -299,6 +299,9 @@ public class Register {
 			if(name.equalsIgnoreCase("updatetime")){
 				s=ScreenHelper.formatDate(transaction.getUpdateTime());
 			}
+			else if(name.equalsIgnoreCase("user")){
+				s=transaction.getUser().getPersonVO().getFullName();
+			}
 			else {
 				if(name.split("=").length<2) {
 					s = ScreenHelper.checkString(transaction.getItemValue(name)).replaceAll(";", ",").replaceAll("\r", "").replaceAll("\n", " ");

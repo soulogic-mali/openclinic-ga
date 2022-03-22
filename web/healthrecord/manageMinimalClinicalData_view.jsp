@@ -39,7 +39,7 @@
     		        <tr>
 				        <td class="admin" width="<%=sTDAdminWidth%>" nowrap><%=getTran(request,"web","comment",sWebLanguage)%>&nbsp;</td>
 				        <td class="admin2">
-			            	<textarea id="focusField" onKeyup="resizeTextarea(this,10);limitChars(this,255);" <%=setRightClick(session,"ITEM_TYPE_MCD_COMMENT")%> class="text" cols="80" rows="5" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MCD_COMMENT" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MCD_COMMENT" property="value"/></textarea>
+			            	<textarea id="focusField" onKeyup="resizeTextarea(this,10);limitChars(this,4995);" <%=setRightClick(session,"ITEM_TYPE_MCD_COMMENT")%> class="text" cols="80" rows="5" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MCD_COMMENT" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MCD_COMMENT" property="value"/></textarea>
 			            </td>
 			        </tr>
 			    </table>	

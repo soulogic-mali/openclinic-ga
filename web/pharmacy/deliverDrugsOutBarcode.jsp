@@ -20,8 +20,8 @@
 	int count = 0;
 	
 	while(rs.next()){
-		String sBatchUid=checkString(rs.getString("OC_LIST_BATCHUID"));
 		int nQuantity=rs.getInt("OC_LIST_QUANTITY");
+		String sBatchUid=checkString(rs.getString("OC_LIST_BATCHUID"));
 		if(sBatchUid.length()>0){
 			Batch batch = Batch.get(sBatchUid);
 			if(batch.getLevel()<nQuantity){
@@ -47,7 +47,16 @@
 		operation.store();
 		
 		// Delete list
-		PreparedStatement ps2 = conn.prepareStatement("delete from OC_DRUGSOUTLIST where OC_LIST_SERVERID=? and OC_LIST_OBJECTID=?");
+		//First copy to history
+		PreparedStatement ps2=conn.prepareStatement("insert into OC_DRUGSOUTLISTHISTORY(OC_LIST_SERVERID,OC_LIST_OBJECTID,OC_LIST_PATIENTUID,OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER,OC_LIST_VERSION,OC_LIST_UPDATETIME)"+
+								 " select OC_LIST_SERVERID,OC_LIST_OBJECTID,OC_LIST_PATIENTUID,OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER,OC_LIST_VERSION,OC_LIST_UPDATETIME"+
+								 " from OC_DRUGSOUTLIST where OC_LIST_SERVERID=? and OC_LIST_OBJECTID=?");
+		ps2.setInt(1,rs.getInt("OC_LIST_SERVERID"));
+		ps2.setInt(2,rs.getInt("OC_LIST_OBJECTID"));
+		ps2.execute();
+		ps2.close();
+		
+		ps2 = conn.prepareStatement("delete from OC_DRUGSOUTLIST where OC_LIST_SERVERID=? and OC_LIST_OBJECTID=?");
 		ps2.setInt(1,rs.getInt("OC_LIST_SERVERID"));
 		ps2.setInt(2,rs.getInt("OC_LIST_OBJECTID"));
 		ps2.execute();

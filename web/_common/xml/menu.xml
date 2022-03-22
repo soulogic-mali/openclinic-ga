@@ -164,6 +164,9 @@
 			<Menu labelid="ddopp_vascular" curl="javascript:executeLocalDeviceCommand('ddopp','vascular')"/>
 			<Menu labelid="ddopp_general" patientselected="true" url="javascript:executeLocalDeviceCommand('ddopp','general')"/>
 		</Menu>
+		<Menu labelid="dashboards">
+			<Menu labelid="sysadmindaschboard" accessrights="sa.select" url="javascript:openSADashboard()"/>
+		</Menu>
 		<Menu labelid="system.os" accessrights="system.os.select">
 			<Menu labelid="system.shutdown" accessrights="system.shutdown.select" url="/main.do?Page=system/shutdown.jsp"/>
 		</Menu>

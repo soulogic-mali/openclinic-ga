@@ -97,6 +97,7 @@
                     hMenu.put(getTran(request,"web.manage","MonitorAccess",sWebLanguage),"main.do?Page=system/monitorAccess.jsp");
                     hMenu.put(getTran(request,"web.manage","ViewErrors",sWebLanguage),"main.do?Page=system/monitorErrors.jsp");
                     hMenu.put(getTran(request,"web.manage","processUpdateQueries",sWebLanguage),"main.do?Page=system/processUpdateQueries.jsp");
+                    hMenu.put(getTran(request,"web","replicationinfo",sWebLanguage),"main.do?Page=util/showReplicationInfo.jsp");
                     if(MedwanQuery.getInstance().getConfigString("serverId").equals("1")){
                         hMenu.put(getTran(request,"web.manage","merge_persons",sWebLanguage),"main.do?Page=system/mergePersons.jsp");
                     }

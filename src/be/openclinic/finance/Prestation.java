@@ -2,6 +2,7 @@ package be.openclinic.finance;
 
 import be.openclinic.common.ObjectReference;
 import be.openclinic.pharmacy.ProductStock;
+import be.openclinic.system.SH;
 import be.openclinic.common.IObjectReference;
 import be.openclinic.common.OC_Object;
 import be.openclinic.adt.Encounter;
@@ -903,12 +904,78 @@ public class Prestation extends OC_Object{
         return dPatientAmount;
     }
 
+    //--- GET PATIENT PRICE -----------------------------------------------------------------------
+    public double getPatientPrice(Insurance insurance, String category, Encounter encounter){
+    	return getPatientPrice(insurance, category, encounter==null?"":encounter.getType());
+    }
+    
+    //--- GET PATIENT PRICE -----------------------------------------------------------------------
+    public double getPatientPrice(Insurance insurance, String category, String encountertype){
+    	double dPatientAmount=getPrice("C")+getSupplement(),dInsurarAmount=0;
+        double dPrice = getPrice(category);
+        double dInsuranceMaxPrice = getInsuranceTariff(insurance.getInsurar().getUid(),insurance.getInsuranceCategoryLetter());
+        if(SH.c(encountertype).equalsIgnoreCase("admission") && getMfpAdmissionPercentage()>0) {
+        	dInsuranceMaxPrice = getInsuranceTariff(insurance.getInsurar().getUid(),"*H");
+        }
+        String sShare = ScreenHelper.checkString(getPatientShare(insurance)+"");
+        if(sShare.length() > 0){
+            dPatientAmount = dPrice * Double.parseDouble(sShare) / 100;
+            dInsurarAmount = dPrice - dPatientAmount;
+            if(dInsuranceMaxPrice>-1){
+            	dInsurarAmount = dInsuranceMaxPrice;
+           		dPatientAmount = dPrice - dInsurarAmount;
+            }
+            if(insurance.getInsurar().getNoSupplements()==1 || insurance.getInsurar().getCoverSupplements()==0) {
+            	dPatientAmount+= getSupplement();
+            }
+            else {
+            	dPatientAmount+= getSupplement() * Double.parseDouble(sShare) / 100;
+            	dInsurarAmount+= getSupplement() * (100-Double.parseDouble(sShare))/100;
+            }
+        }
+        
+        return dPatientAmount;
+    }
+
     //--- GET INSURAR PRICE -----------------------------------------------------------------------
     public double getInsurarPrice(Insurance insurance, String category){
     	double dPatientAmount = getPrice("C")+getSupplement(), dInsurarAmount = 0;
         double dPrice = getPrice(category);
         double dInsuranceMaxPrice = getInsuranceTariff(insurance.getInsurar().getUid(),insurance.getInsuranceCategoryLetter());
         
+        String sShare = ScreenHelper.checkString(getPatientShare(insurance)+"");
+        if(sShare.length() > 0){
+            dPatientAmount = dPrice * Double.parseDouble(sShare) / 100;
+            dInsurarAmount = dPrice - dPatientAmount;
+            if(dInsuranceMaxPrice>-1){
+            	dInsurarAmount=dInsuranceMaxPrice;
+           		dPatientAmount=dPrice - dInsurarAmount;
+            }
+            
+            if(insurance.getInsurar().getNoSupplements()==1 || insurance.getInsurar().getCoverSupplements()==0) {
+            	dPatientAmount+= getSupplement();
+            }
+            else {
+            	dPatientAmount+= getSupplement() * Double.parseDouble(sShare) / 100;
+            	dInsurarAmount+= getSupplement() * (100-Double.parseDouble(sShare))/100;
+            }
+        }
+        
+        return dInsurarAmount;
+    }
+
+    public double getInsurarPrice(Insurance insurance, String category, Encounter encounter){
+    	return getInsurarPrice(insurance, encounter==null?"":encounter.getType());
+    }
+    
+    //--- GET INSURAR PRICE -----------------------------------------------------------------------
+    public double getInsurarPrice(Insurance insurance, String category, String encountertype){
+    	double dPatientAmount = getPrice("C")+getSupplement(), dInsurarAmount = 0;
+        double dPrice = getPrice(category);
+        double dInsuranceMaxPrice = getInsuranceTariff(insurance.getInsurar().getUid(),insurance.getInsuranceCategoryLetter());
+        if(SH.c(encountertype).equalsIgnoreCase("admission") && getMfpAdmissionPercentage()>0) {
+        	dInsuranceMaxPrice = getInsuranceTariff(insurance.getInsurar().getUid(),"*H");
+        }
         String sShare = ScreenHelper.checkString(getPatientShare(insurance)+"");
         if(sShare.length() > 0){
             dPatientAmount = dPrice * Double.parseDouble(sShare) / 100;

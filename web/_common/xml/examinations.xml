@@ -2139,4 +2139,65 @@
 		<fr>Consultation ophtalmologique - modèle KABGAYI</fr>  
 		<en>Ophtalmology consultation - KABGAYI model</en> 
 	</Row>
+	<Row>
+		<id>1222</id>
+		<class>msas</class>
+		<transactiontype>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_UREN</transactiontype>
+		<fr>MSAS - Registre de suivi des enfants à l'UREN - admission</fr>
+		<en>MSAS - Register for follow-up of children at UREN - admission</en>
+		<es>MSAS - Registro de seguimento de los niños en UREN - admisión</es>
+	</Row>
+	<Row>
+		<id>1223</id>
+		<class>msas</class>
+		<transactiontype>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CREN</transactiontype>
+		<fr>MSAS - Registre de suivi des enfants au CREN - admission</fr>
+		<en>MSAS - Register for follow-up of children at CREN - admission</en>
+		<es>MSAS - Registro de seguimento de los niños en CREN - admisión</es>
+	</Row>
+	<Row>
+		<id>1224</id>
+		<class>msas</class>
+		<transactiontype>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_FAMILYPLANNING</transactiontype>
+		<fr>MSAS - Registre de planification familiale</fr>
+		<en>MSAS - Register for family planning</en>
+		<es>MSAS - Registro de planificatión familiar</es>
+	</Row>
+	<Row>
+		<id>1225</id>
+		<class>msas</class>
+		<transactiontype>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_UREN_FOLLOWUP</transactiontype>
+		<fr>MSAS - Registre de suivi des enfants à l'UREN - suivi</fr>
+		<en>MSAS - Register for follow-up of children at UREN - follow-up</en>
+		<es>MSAS - Registro de seguimento de los niños en UREN - seguimento</es>
+	</Row>
+	<Row>
+		<id>1226</id>
+		<class>msas</class>
+		<transactiontype>be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_CREN_EXIT</transactiontype>
+		<fr>MSAS - Registre de suivi des enfants au CREN - sortie</fr>
+		<en>MSAS - Register for follow-up of children at CREN - exit</en>
+		<es>MSAS - Registro de seguimento de los niños en CREN - salida</es>
+	</Row>
+	<Row>
+		<id>1227</id>
+		<class>neuropsychiatry</class>
+		<transactiontype>be.mxs.common.	model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CLEFS_ADULTS</transactiontype>
+		<fr>Dépistage des troubles de santé mentale chez les adultes (CLEFS)</fr>
+		<en>Mental health screening for adults (CLEFS)</en>
+	</Row>
+	<Row>
+		<id>1228</id>
+		<class>neuropsychiatry</class>
+		<transactiontype>be.mxs.common.	model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CLEFS_CHILDREN</transactiontype>
+		<fr>Dépistage des troubles de santé mentale chez les enfants et adolescents (CLEFS)</fr>
+		<en>Mental health screening for children and adolescents (CLEFS)</en>
+	</Row>
+	<Row>
+		<id>1229</id>
+		<class>neuropsychiatry</class>
+		<transactiontype>be.mxs.common.	model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CLEFS_PERINATAL</transactiontype>
+		<fr>Dépistage des troubles de santé mentale en période périnatale (CLEFS)</fr>
+		<en>Mental health screening in perinatal period (CLEFS)</en>
+	</Row>
 </Examinations>

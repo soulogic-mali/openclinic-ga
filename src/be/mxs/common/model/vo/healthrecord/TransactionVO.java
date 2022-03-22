@@ -86,6 +86,19 @@ public class TransactionVO extends IObjectReference implements Serializable, IId
         //Debug.println("New serverId="+this.serverId);
     }
     
+    public void initializeLastItemValue(String itemType) {
+    	if(getTransactionId()<0) {
+	    	ItemVO i = getItem(itemType);
+	    	if(i!=null && i.getValue().length()==0) {
+	    		i.setValue(MedwanQuery.getInstance().getLastItemValue(MedwanQuery.getInstance().getPersonIdFromHealthrecordId(this.getHealthrecordId()), itemType));
+	    	}
+    	}
+    }
+    
+    public int getPatientUid() {
+    	return MedwanQuery.getInstance().getPersonIdFromHealthrecordId(this.getHealthrecordId());
+    }
+    
     public AdminPerson getPatient() {
     	return AdminPerson.getAdminPerson(MedwanQuery.getInstance().getPersonIdFromHealthrecordId(this.getHealthrecordId())+"");
     }

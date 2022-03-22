@@ -472,5 +472,21 @@
     	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_GYNAE_CONSULTATION;
     	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_OBREPORT;
     	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CS_ACCOUCHEMENT;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_DELIVERIES;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_POSTNATAL;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_PRENATAL;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSAS_REGISTRY_ABORTION;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_REGISTRY_WOMENVACCINATION;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_REGISTRY_CPON;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_REGISTRY_DELIVERY;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_REGISTRY_CPN;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_MSPLS_REGISTRY_DELIVERIES;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CCBRT_VVFSURGERY;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CCBRT_VVF6MONTHSURVEY;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CCBRT_VVFSCREENING;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CCBRT_VVFRECORD;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CS_CPN;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_CS_ACCOUCHEMENT;
+    	be.mxs.common.model.vo.healthrecord.IConstants.TRANSACTION_TYPE_KIGUTU_OBSTETRICAL_ECHOGRAPHY;
     </parameter>
 </config>

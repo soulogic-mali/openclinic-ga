@@ -637,6 +637,10 @@
     public String customerInclude(String fileName){
         return ScreenHelper.customerInclude(fileName,sAPPFULLDIR,sAPPDIR);
     }
+    
+    public void writeVitalSigns(PageContext pageContext){
+    	ScreenHelper.setIncludePage(customerInclude("/healthrecord/vitalSigns.jsp"), pageContext);
+    }
 
     //--- GET WINDOW TITLE ------------------------------------------------------------------------
     public String getWindowTitle(HttpServletRequest request, String sWebLanguage){
@@ -1160,12 +1164,12 @@
 	            if(checkString(req.getParameter("be.mxs.healthrecord.server_id")).length()==0 || checkString(req.getParameter("be.mxs.healthrecord.server_id")).equalsIgnoreCase("1")){
 	                // print and save button
 	            	if(displayPrintButton){
-	                    html.append("<input class='button' type='button' name='saveAndPrintButton' id='saveAndPrintButton' value='").append(getTran(null,"Web.Occup","medwan.common.record-and-print",sWebLanguage)).append("' onclick='doSave(true);'/>&nbsp;\n");	
+	                    html.append("<input class='button' type='button' name='saveAndPrintButton' id='saveAndPrintButton' value='").append(getTran(null,"Web.Occup","medwan.common.record-and-print",sWebLanguage)).append("' onclick='if(checkMandatoryFields()){doSave(true);};'/>&nbsp;\n");	
 	            	}
 		            // save button
 		            if(MedwanQuery.getInstance().getConfigInt("enableArmyWeek",0)==0){
-		            	html.append("<input type='button' class='button' name='saveButton' id='saveButton' onclick='submitForm();' value='").append(getTran(null,"accesskey","save",sWebLanguage)).append("'/>&nbsp;\n");
-			            html.append("<button accesskey='").append(ScreenHelper.getAccessKey(getTranNoLink("accesskey","save",sWebLanguage))).append("' class='buttoninvisible' onclick='submitForm();'></button>\n");
+		            	html.append("<input type='button' class='button' name='saveButton' id='saveButton' onclick='if(checkMandatoryFields()){submitForm();}' value='").append(getTran(null,"accesskey","save",sWebLanguage)).append("'/>&nbsp;\n");
+			            html.append("<button accesskey='").append(ScreenHelper.getAccessKey(getTranNoLink("accesskey","save",sWebLanguage))).append("' class='buttoninvisible' onclick='if(checkMandatoryFields()){submitForm();}'></button>\n");
 			            if(activeUser.getAccessRight("sendmedicaldossier.select")){
 			                html.append("<input class='button' type='button' name='sendButton' id='sendButton' value='").append(getTran(null,"web","send",sWebLanguage)).append("' onclick='sendPdf();'/>&nbsp;\n");	
 			            }
@@ -1398,7 +1402,8 @@
     String sCANVAS  = "<script src='"+sCONTEXTPATH+"/_common/_script/canvas.js'></script>";
     String sCKEDITOR  = "<script src='"+sCONTEXTPATH+"/_common/_script/ckeditor/ckeditor.js'></script>";
     String sJSIFRAMERESIZER  = "<script src='"+sCONTEXTPATH+"/_common/_script/iframeResizer.js'></script>";
-    String sJSDWV  = "<script src='"+sCONTEXTPATH+"/_common/_script/dwv.js'></script>";
+    String sJSDWV  = "<script src='"+sCONTEXTPATH+"/_common/_script/dwv.js'></script><link";
+    String sJSVIS  = "<script src='"+sCONTEXTPATH+"/_common/_script/vis.js'></script><link href='"+sCONTEXTPATH+"/_common/_css/vis.css' rel='stylesheet' type='text/css'/><script src='"+sCONTEXTPATH+"/_common/_script/vis-timeline-graph2d.min.js'></script><link href='"+sCONTEXTPATH+"/_common/_css/vis-timeline-graph2d.min.css' rel='stylesheet' type='text/css'/>";
     String sJSNAV  = "<script src='"+sCONTEXTPATH+"/_common/_script/simply-nav.js'></script><script src='"+sCONTEXTPATH+"/_common/_script/navmain.js'></script>";
     String sJSPROTOCOL  = "<script src='"+sCONTEXTPATH+"/_common/_script/protocolcheck.js'></script>";
 	String sKHINFAVICON = "<link rel='icon' type='image/png' sizes='16x16' href='/openclinic/_img/icons/khinfavicon-16x16.png'><link rel='icon' type='image/png' sizes='32x32' href='/openclinic/_img/icons/khinfavicon-32x32.png'>";

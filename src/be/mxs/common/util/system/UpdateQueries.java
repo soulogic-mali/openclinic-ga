@@ -16,7 +16,7 @@ import be.mxs.common.util.db.MedwanQuery;
 public class UpdateQueries {
 	public static void updateQueries(javax.servlet.ServletContext application){
         String sDoc = MedwanQuery.getInstance().getConfigString("templateSource") + "updatequeries.xml";
-        if (Debug.enabled) Debug.println("login.jsp : processing update-queries file '" + sDoc + "'.");
+        Debug.println("login.jsp : processing update-queries file '" + sDoc + "'.");
         if (MedwanQuery.getInstance().getConfigInt("cacheDB") != 1) {
             // read xml file
             try {
@@ -42,6 +42,7 @@ public class UpdateQueries {
                             // execute query
                             if (conn != null) {
                                 String sLocalDbType = conn.getMetaData().getDatabaseProductName();
+                                System.out.println("sLocalDbType="+sLocalDbType);
                                 if (queryElem.attribute("dbserver") == null || queryElem.attribute("dbserver").getValue().equalsIgnoreCase(sLocalDbType)) {
                                 	sQuery = queryElem.getTextTrim().replaceAll("@admin@", MedwanQuery.getInstance().getConfigString("admindbName","ocadmin"));
 	                                sQuery = queryElem.getTextTrim().replaceAll("@openclinic@", MedwanQuery.getInstance().getConfigString("openclinicdbName","openclinic"));

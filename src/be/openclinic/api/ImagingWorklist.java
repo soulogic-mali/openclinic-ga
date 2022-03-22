@@ -62,7 +62,6 @@ public class ImagingWorklist extends API {
 							suffix=i+"";
 						}
 						if(transaction.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE"+suffix).length()>0 && transaction.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION"+suffix).length()==0) {
-							System.out.println("OK1."+i+" ("+transaction.getUid()+"."+i+")");
 							s+=toXml(ImagingOrder.get(transaction.getUid()+"."+i));
 						}
 					}
@@ -97,7 +96,6 @@ public class ImagingWorklist extends API {
 							suffix=i+"";
 						}
 						if(transaction.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE"+suffix).length()>0 && transaction.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION"+suffix).equalsIgnoreCase("medwan.common.no")) {
-							System.out.println("OK1."+i+" ("+transaction.getUid()+"."+i+")");
 							s+=toXml(ImagingOrder.get(transaction.getUid()+"."+i));
 						}
 					}
@@ -109,26 +107,22 @@ public class ImagingWorklist extends API {
 							suffix=i+"";
 						}
 						if(transaction.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE"+suffix).length()>0 && transaction.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_PRESTATION"+suffix).length()==0) {
-							System.out.println("OK1."+i+" ("+transaction.getUid()+"."+i+")");
 							s+=toXml(ImagingOrder.get(transaction.getUid()+"."+i));
 						}
 					}
 				}
 				else if(value("status","").equalsIgnoreCase("notreported")) {
 					for(int i=1;i<10;i++) {
-						System.out.println("2."+i);
 						String suffix="";
 						if(i>1) {
 							suffix=i+"";
 						}
 						if(transaction.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MIR2_TYPE"+suffix).length()>0 && !transaction.getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_OTHER_REQUESTS_VALIDATION").equalsIgnoreCase("medwan.common.true")) {
-							System.out.println("OK2."+i);
 							s+=toXml(ImagingOrder.get(transaction.getUid()+"."+i));
 						}
 					}
 				}
 				else {
-					System.out.println("3.");
 					s+=toXml(ImagingOrder.get(transaction.getUid()));
 				}
 			}

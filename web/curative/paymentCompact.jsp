@@ -4,7 +4,7 @@
 <table width='100%'>
 	<tr class='admin'><td colspan='2'><%=getTran(request,"web","payment",sWebLanguage) %></td></tr>
 	<tr>
-		<td class='admin'><%=getTran(request,"web","amount",sWebLanguage) %></td>
+		<td class='admin' width='20%'><%=getTran(request,"web","amount",sWebLanguage) %></td>
 		<td class='admin2'><input type='hidden' name='amount' id='amount'/><span style='font-size: 12px;color: red; font-weight: bolder' id='amounttext'>0.00</span> <font style='font-size: 12px;color: red; font-weight: bolder'><%=SH.cs("currency","EUR") %></font></td>
 	</tr>
 	<%
@@ -43,81 +43,22 @@
         else{
             %><input type="hidden" name="EditCreditWicketUid"/><%
         }
+        if(SH.ci("enableCompactPaymentReference",1)==1){
     %>
+		    <tr>
+			    <td class="admin"><%=getTran(request,"web.finance","otherreference",sWebLanguage)%> <%=SH.ci("patientInvoiceReferenceMandatory",0)==1?"*":"" %></td>
+			    <td class="admin2">
+			    	<input type='text' class='text' size='50' name='reference' id='reference' onkeyup='checkReference()'/>
+			    	<img id='referencewarning' style='display: none;vertical-align: middle' height='16px' src='<%=sCONTEXTPATH %>/_img/icons/icon_blinkwarning.gif' title='<%=getTranNoLink("web","referencealreadyused",sWebLanguage)%>'/>
+			    </td>
+		    </tr>
     <%
-    	String encounteruid="",encounterservice="",encounterservicename="",encountertype="",encountermanager="",encountermanagername="",encounterorigin=SH.cs("defaultOrigin","1");
-    	Encounter encounter = Encounter.getActiveEncounter(activePatient.personid);
-    	if(encounter!=null && encounter.getEnd()==null){
-    		encounterservice=encounter.getServiceUID();
-    		encounterservicename=encounter.getService().getLabel(sWebLanguage);
-    		encountertype=encounter.getType();
-    		encounterorigin=encounter.getOrigin();
-    		encounteruid=encounter.getUid();
-    		encountermanager=encounter.getManagerUID();
-    		if(encounter.getManager()!=null&& encounter.getManager().person!=null){
-    			encountermanagername=encounter.getManager().person.getFullName();
-    		}
-    	}
-    	else{
+        }
     %>
     <tr>
-    	<td colspan='2'><font style='font-weight: bold;color: red'><%=getTran(request,"web","encountermustbecreated",sWebLanguage) %></font></td>
-    </tr>
-    <%
-    	}
-    %>
-    <tr id='trMsg'><td colspan='2'></td></tr>
-    <tr>
-        <td class="admin"><%=getTran(request,"web","service",sWebLanguage)%> *</td>
-        <td class='admin2' nowrap>
-        	<input type='hidden' name='encounteruid' id='encounteruid' value='<%=encounteruid %>'/>
-            <input type="hidden" name="EditEncounterService" id="EditEncounterService" value="<%=encounterservice%>"/>
-            <input class="text" type="text" name="EditEncounterServiceName" id="EditEncounterServiceName" value="<%=encounterservicename%>" readonly size="50"/>
-            <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" title="<%=getTran(null,"web","select",sWebLanguage)%>" onclick="searchService('EditEncounterService','EditEncounterServiceName');">
-            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" title="<%=getTran(null,"web","clear",sWebLanguage)%>" onclick="EditEncounterService.value='';EditEncounterServiceName.value='';">
-            <%if(SH.c(encounteruid).length()>0){ %>
-            	<img id='imgCloseEncounter' src="<c:url value="/_img/icons/icon_locked.png"/>" class="link" title="<%=getTran(null,"web","close",sWebLanguage)%>" onclick="closeEncounter();">
-            <%} %>
-        </td>
-    </tr>
-    <tr>
-        <td class="admin"><%=getTran(request,"web","manager",sWebLanguage)%></td>
-        <td class="admin2" nowrap>
-            <input type="hidden" name="EditEncounterManager" id="EditEncounterManager" value="<%=encountermanager%>">
-            <input class="text" type="text" name="EditEncounterManagerName" id="EditEncounterManagerName" readonly size="50" value="<%=encountermanagername%>">
-           
-            <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTran(null,"web","select",sWebLanguage)%>" onclick="searchManager('EditEncounterManager','EditEncounterManagerName');">
-            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTran(null,"web","clear",sWebLanguage)%>" onclick="document.getElementById('EditEncounterManager').value='';document.getElementById('EditEncounterManagerName').value='';">
-        </td>
-    </tr>
-    <tr>
-        <td class="admin" width="<%=sTDAdminWidth%>"><%=getTran(request,"web","type",sWebLanguage)%> *</td>
-        <td class='admin2'>
-            <select class='text' id='EditEncounterType' name='EditEncounterType' onchange="checkEncounterType();">
-            	<option value=''></option>
-                <%
-                    String encountertypes = MedwanQuery.getInstance().getConfigString("encountertypes","visit,admission");
-                    String sOptions[] = encountertypes.split(",");
-
-                    for(int i=0;i<sOptions.length;i++){
-                        out.print("<option value='"+sOptions[i]+"' ");
-                        if(sOptions[i].equalsIgnoreCase(encountertype)){
-                        	out.print("selected");
-                        }
-                        out.print(">"+getTran(request,"web",sOptions[i],sWebLanguage)+"</option>");
-                    }
-                %>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td class="admin"><%=getTran(request,"openclinic.chuk","urgency.origin",sWebLanguage)%> *</td>
-        <td class="admin2">
-            <select class="text" name="EditEncounterOrigin" id="EditEncounterOrigin">
-                <option/>
-                <%=ScreenHelper.writeSelect(request,"urgency.origin",encounterorigin,sWebLanguage)%>
-            </select>
-        </td>
+    	<td colspan='2'>
+    		<table width='100%' id='encounterdiv'></table>
+    	</td>
     </tr>
 	<tr id='payment_tr'>
 		<td colspan='2'><center><input type='button' class='button' name='paymentButton' id='paymentButton' value='<%=getTranNoLink("web","paymentreceived",sWebLanguage) %>' onclick='doPayment();'/></center></td>
@@ -126,6 +67,7 @@
 		<td colspan='2'><center>
 			<input type='button' class='redbutton' name='printButton' id='printButton' value='<%=getTranNoLink("web","print",sWebLanguage)+" "+getTranNoLink("web","receipt",sWebLanguage).toLowerCase() %>' onclick='doPrintReceipt();'/>
 			<input type='button' class='redbutton' name='printInvoiceButton' id='printInvoiceButton' value='<%=getTranNoLink("web","print",sWebLanguage)+" "+getTranNoLink("web","invoice",sWebLanguage).toLowerCase() %>' onclick='doPrintInvoice();'/>
+			<input type='button' class='button' name='newButton' id='newButton' value='<%=getTranNoLink("web","new",sWebLanguage) %>' onclick='window.location.reload();'/>
 		</center></td>
 	</tr>
 </table>
@@ -139,6 +81,9 @@
 	function doPayment(){
 		if(	document.getElementById("prestationlist").innerHTML.length<40 ||
 			document.getElementById("wicketuid").value.length==0||
+			<% if(SH.ci("patientInvoiceReferenceMandatory",0)==1){%>
+				document.getElementById("reference").value.length==0||
+			<% }%>
 			document.getElementById("EditEncounterService").value.length==0||
 			document.getElementById("EditEncounterType").value.length==0||
 			document.getElementById("EditEncounterOrigin").value.length==0){
@@ -153,6 +98,7 @@
 		    				"&encounterserviceuid="+document.getElementById('EditEncounterService').value+
 		    				"&encountermanager="+document.getElementById('EditEncounterManager').value+
 		    				"&encountertype="+document.getElementById('EditEncounterType').value+
+		    				"&reference="+document.getElementById('reference').value+
 		    				"&encounterorigin="+document.getElementById('EditEncounterOrigin').value
 		    				;
 		    var url= '<c:url value="/curative/ajax/storeDebets.jsp"/>?ts='+new Date();
@@ -161,6 +107,7 @@
 		      parameters: params,
 		      onSuccess: function(resp){
 		    	  //Redirect to medical summary
+		    	  loadEncounter();
 		    	  var label = eval('('+resp.responseText+')');
 		    	  document.getElementById('invoiceuid').value=label.invoiceuid;
 		    	  document.getElementById('payment_tr').style.display='none';
@@ -199,15 +146,7 @@
 	      parameters: params,
 	      onSuccess: function(resp){
 	    	  if((resp.responseText).indexOf('<CLOSED>')>-1){
-		    	  document.getElementById('encounteruid').value='';
-		    	  document.getElementById('EditEncounterService').value='';
-		    	  document.getElementById('EditEncounterServiceName').value='';
-		    	  document.getElementById('EditEncounterManager').value='';
-		    	  document.getElementById('EditEncounterManagerName').value='';
-		    	  document.getElementById('EditEncounterType').value='';
-		    	  document.getElementById('EditEncounterOrigin').value='';
-		    	  document.getElementById('imgCloseEncounter').style.display='none';
-		    	  document.getElementById('trMsg').innerHTML='<td colspan="2"><font style="font-weight: bold;color: red"><%=getTran(request,"web","encountermustbecreated",sWebLanguage) %></font></td>';
+	    		  loadEncounter();
 	    	  }
 	      },
 		  onFailure: function(){
@@ -215,4 +154,46 @@
 	      }
 	    });
     }
+    function checkReference(){
+	    var url= '<c:url value="/curative/ajax/checkReference.jsp"/>?ts='+new Date();
+	    var params = 'reference='+document.getElementById('reference').value;
+	    new Ajax.Request(url,{
+		  method: "POST",
+	      parameters: params,
+	      onSuccess: function(resp){
+	    	  if((resp.responseText).indexOf('<EXISTS>')>-1){
+	    		  document.getElementById('paymentButton').style.display='none';
+	    		  document.getElementById('reference').style.color='white';
+	    		  document.getElementById('reference').style.backgroundColor='red';
+	    		  document.getElementById('referencewarning').style.display='';
+	    	  }
+	    	  else{
+	    		  document.getElementById('paymentButton').style.display='';
+	    		  document.getElementById('reference').style.color='black';
+	    		  document.getElementById('reference').style.backgroundColor='white';
+	    		  document.getElementById('referencewarning').style.display='none';
+	    	  }
+	      },
+		  onFailure: function(){
+		    alert('error');
+	      }
+	    });
+    }
+    function loadEncounter(){
+	    var url= '<c:url value="/curative/ajax/loadCompactEncounter.jsp"/>?ts='+new Date();
+	    var params = '';
+	    new Ajax.Request(url,{
+		  method: "POST",
+	      parameters: params,
+	      onSuccess: function(resp){
+	    	  document.getElementById("encounterdiv").innerHTML=resp.responseText;
+      	      setMyAutoCompleter();
+      	      checkEncounterType();
+	      },
+		  onFailure: function(){
+		    alert('error');
+	      }
+	    });
+    }
+    loadEncounter();
 </script>

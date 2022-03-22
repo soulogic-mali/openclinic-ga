@@ -4,7 +4,7 @@
 <%
 	String id=request.getParameter("id");
 	String user=request.getParameter("user");
-	String wizzeyeRoot = SH.cs("wizzeyeserver","https://wizzeye.hnrw.org/room.html").substring(0,SH.cs("wizzeyeserver","https://wizzeye.hnrw.org/room.html").lastIndexOf("/"));
+	String wizzeyeRoot = SH.cs("wizzeyeserver","https://webrtc.hnrw.org:448/room.html").substring(0,SH.cs("wizzeyeserver","https://webrtc.hnrw.org:448/room.html").lastIndexOf("/"));
 	String objectUrl=wizzeyeRoot+"/getObject.html?id="+id;
 	System.out.println("objectUrl = "+objectUrl);
 %>
@@ -28,7 +28,6 @@ The following image was received in OpenClinic:<br/>
 	};
 	
 	function storeData(roomid,imagedata,type){
-		alert(1);
 	  	var url = '<c:url value="/util/storeWizzeyeData.jsp"/>?ts='+<%=getTs()%>;
 	  	new Ajax.Request(url,{
 	    	method: "POST",
@@ -38,7 +37,7 @@ The following image was received in OpenClinic:<br/>
 			    	  '&id=<%=id%>'+
 		          	  '&imagedata='+imagedata,
 	    	onSuccess: function(resp){
-	    		alert(2);
+	    		alert('Successfully stored');
 	    		//Image was successfully stored, send message back to IFRAME
 	    		console.log("Successfully stored "+type+" for room "+roomid+" into OpenClinic database");
 	    	}

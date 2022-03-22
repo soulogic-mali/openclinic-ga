@@ -319,7 +319,7 @@ public class DatacenterHelper {
 		Vector servers=new Vector();
 		Connection conn=MedwanQuery.getInstance().getOpenclinicConnection();
 		try{
-			PreparedStatement ps = conn.prepareStatement("select dc_server_serverid from DC_SERVERS");
+			PreparedStatement ps = conn.prepareStatement("select dc_server_serverid from DC_SERVERS order by DC_SERVER_SERVERID");
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				servers.add(rs.getString("DC_SERVER_SERVERID"));

@@ -75,7 +75,7 @@
 		conn.close();
 	}
 	else if(centerUid.length()>0){
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>> SoftwareVersion="+softwareVersion);
+		Debug.println(">>>>>>>>>>>>>>>>>>>>>>>>> SoftwareVersion="+softwareVersion);
 		try{
 			//First update/create server data
 			int serverid=0;

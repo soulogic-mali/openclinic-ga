@@ -15,7 +15,15 @@
 	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
 	PreparedStatement ps = null;
 	
-	// aflevering toevoegen aan oc_drugsoutlist
+	// aflevering verwijderen uit oc_drugsoutlist
+	ps=conn.prepareStatement("insert into OC_DRUGSOUTLISTHISTORY(OC_LIST_SERVERID,OC_LIST_OBJECTID,OC_LIST_PATIENTUID,OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER,OC_LIST_VERSION,OC_LIST_UPDATETIME)"+
+							 " select OC_LIST_SERVERID,OC_LIST_OBJECTID,OC_LIST_PATIENTUID,OC_LIST_PRODUCTSTOCKUID,OC_LIST_QUANTITY,OC_LIST_BATCHUID,OC_LIST_COMMENT,OC_LIST_ENCOUNTERUID,OC_LIST_PRESCRIPTIONUID,OC_LIST_PRESCRIBER,OC_LIST_VERSION,OC_LIST_UPDATETIME"+
+							 " from OC_DRUGSOUTLIST where OC_LIST_SERVERID=? and OC_LIST_OBJECTID=?");
+	ps.setInt(1,Integer.parseInt(listuid.split("\\.")[0]));
+	ps.setInt(2,Integer.parseInt(listuid.split("\\.")[1]));
+	ps.execute();
+	ps.close();
+
 	ps = conn.prepareStatement("delete from OC_DRUGSOUTLIST where OC_LIST_SERVERID=? and OC_LIST_OBJECTID=?");
 	ps.setInt(1,Integer.parseInt(listuid.split("\\.")[0]));
 	ps.setInt(2,Integer.parseInt(listuid.split("\\.")[1]));

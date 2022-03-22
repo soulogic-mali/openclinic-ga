@@ -216,7 +216,7 @@
         <%=ScreenHelper.setFormButtonsStart()%>
         	<%
         		if((activeUser.getAccessRight("financial.superuser.select") || !sEditWicketOperationType.equalsIgnoreCase("patient.payment")) && (activeUser.getAccessRight("financial.wicketoperation.edit") || sEditWicketOperationUID.length()==0)){
-        	        %><input class='button' type="button" name="EditSaveButton" value='<%=getTranNoLink("Web","save",sWebLanguage)%>' onclick="doSave();">&nbsp;<%
+        	        %><input class='button' type="button" name="EditSaveButton" id="EditSaveButton" value='<%=getTranNoLink("Web","save",sWebLanguage)%>' onclick="doSave();">&nbsp;<%
         		}
                 if(sEditWicketOperationUID.length()>0){
                     %><input class="button" type="button" name="buttonPrint" value='<%=getTranNoLink("Web","print",sWebLanguage)%>' onclick="doPrintPdf(document.getElementById('EditWicketOperationUID').value);"><%
@@ -287,6 +287,7 @@
 
   <%-- DO SAVE --%>
   function doSave(){
+    EditForm.EditSaveButton.disabled = true;
     if(EditForm.EditWicketOperationWicket.value==""){
                 window.showModalDialog?alertDialog("web.manage","dataMissing"):alertDialogDirectText('<%=getTran(null,"web.manage","dataMissing",sWebLanguage)%>');
       EditForm.EditWicketOperationWicket.focus();
@@ -304,8 +305,6 @@
       EditForm.EditWicketOperationAmount.focus();
     }
     else{
-      EditForm.EditSaveButton.disabled = true;
-      
       var url = '<c:url value="/financial/wicket/manageWicketOperationCreditSave.jsp"/>?ts='+new Date();
       new Ajax.Request(url,{
         method: "POST",
@@ -328,9 +327,8 @@
           $('divMessage').innerHTML = "Error in function doSave() => AJAX";
         }
       });
-
-      EditForm.EditSaveButton.disabled = false;
     }
+    window.setTimeout('EditForm.EditSaveButton.disabled = false',500);
   }
 
   <%-- SEARCH WICKET --%>

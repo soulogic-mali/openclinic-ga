@@ -24,7 +24,7 @@
                 <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTran(null,"web","clear",sWebLanguage)%>" onclick="transactionForm.cashier.value='';transactionForm.cashiername.value='';">
             </td>
             <%if(activePatient!=null){ %>
-				<td class="admin2" ><input type='checkbox' class='text' name='activepatient' id='activepatient' value='1'/> <b><%=activePatient.getFullName() %></b></td>
+				<td class="admin2" ><input type='checkbox' class='text' name='activepatient' id='activepatient' value='1' onchange='searchPayments()'/> <b><%=activePatient.getFullName() %></b></td>
 			<%}else{ %>
 				<input type='hidden' name='activepatient' id='activepatient'/>
 			<%} %>
@@ -71,6 +71,49 @@
           	  document.getElementById('divPayment').innerHTML = "ERROR";
           }
   		});
+	}
+	
+	function checkPaymentStatus(transactionId){
+		document.getElementById('image_'+transactionId).height=8;
+		document.getElementById('image_'+transactionId).src='<%=sCONTEXTPATH%>/_img/themes/default/ajax-loader.gif';
+	    var params = "transactionId="+transactionId;
+		var today = new Date();
+	    var url= '<c:url value="/financial/mobilemoney/getPaymentStatusMTN.jsp"/>?ts='+today;
+		new Ajax.Request(url,{
+		  	method: "POST",
+	      	parameters: params,
+	      	onSuccess: function(resp){
+              	var paymentRequest = eval('('+resp.responseText+')');
+           	  	if(paymentRequest.status.length==0 || paymentRequest.status=="SUCCESSFUL" || paymentRequest.status=="FAILED"){
+           	  		registerPaymentStatus(transactionId,paymentRequest.status,paymentRequest.financialTransactionId,paymentRequest.telephone);
+              	}
+           	  	else{
+            		document.getElementById('image_'+transactionId).height=16;
+              		document.getElementById('image_'+transactionId).src='<%=sCONTEXTPATH %>/_img/icons/icon_reload.png';
+           	  	}
+	      	},
+          	onError: function(resp){
+        	  	alert('MTN Status validation error');
+        		document.getElementById('image_'+transactionId).height=16;
+          		document.getElementById('image_'+transactionId).src='<%=sCONTEXTPATH %>/_img/icons/icon_reload.png';
+          	}
+		});
+	}
+	
+	function registerPaymentStatus(transactionId,status,financialTransactionId,telephone){
+	    var params = "transactionId="+transactionId+"&status="+status+"&financialTransactionId="+financialTransactionId+"&telephone="+telephone;
+		var today = new Date();
+	    var url= '<c:url value="/financial/mobilemoney/registerPaymentStatusMTN.jsp"/>?ts='+today;
+		new Ajax.Request(url,{
+		  	method: "POST",
+	      	parameters: params,
+	      	onSuccess: function(resp){
+	      		searchPayments();
+	      	},
+          	onError: function(resp){
+        	  	alert('MTN Status registration error');
+          	}
+		});
 	}
 	
 	function openInvoice(sInvoiceId){

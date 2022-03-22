@@ -179,6 +179,7 @@ if(MedwanQuery.getInstance(true).getConfigString("edition","openclinic").equalsI
     Object updateQueriesProcessedDate = application.getAttribute("updateQueriesProcessedDateOC");
     boolean processUpdateQueries = (updateQueriesProcessedDate == null);
     if (processUpdateQueries) {
+    	Debug.println("Processing UPDATEQUERIES");
 		UpdateQueries.updateQueries(application);
     }
     else {

@@ -2645,6 +2645,12 @@ public static String removeAccents(String sTest){
     }
 
     public static String writeDefaultTextArea(HttpSession session, TransactionVO transaction, String sName,int cols, int rows){
+    	boolean bMandatory=false;
+    	if(sName.startsWith("!")) {
+    		sName=sName.substring(1);
+    		bMandatory=true;
+    	}
+
     	if(transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName)==null){
     		return("Unknown item: <a href='javascript:createTransactionItem(\""+transaction.getTransactionType()+"\",\"be.mxs.common.model.vo.healthrecord.IConstants."+sName+"\");'>"+sName+"</a>");
     	}
@@ -2652,6 +2658,9 @@ public static String removeAccents(String sTest){
 	    	StringBuffer s = new StringBuffer();
 	    	s.append("<textarea onkeyup='resizeTextarea(this,10);limitChars(this,5000);' ");
 	    	s.append(setRightClick(session,sName));
+	    	if(bMandatory) {
+	    		s.append(" "+SH.cdm()+" ");
+	    	}
 	    	s.append(" class='text' cols='"+cols+"' rows='"+rows+"' id='"+sName+"' name='currentTransactionVO.items.<ItemVO[hashCode="+transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getItemId()+"]>.value'>");
 	    	s.append(transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getValue()+"</textarea>");
 	    	return s.toString();
@@ -2863,15 +2872,15 @@ public static String removeAccents(String sTest){
     	}
     }
     
-    public static String writeDefaultHiddenInput(TransactionVO transaction, String sName){
-    	if(transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName)==null){
-    		return("Unknown item: <a href='javascript:createTransactionItem(\""+transaction.getTransactionType()+"\",\"be.mxs.common.model.vo.healthrecord.IConstants."+sName+"\");'>"+sName+"</a>");
+    public static String writeDefaultHiddenInput(TransactionVO tran, String sName){
+    	if(tran.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName)==null){
+    		return("Unknown item: <a href='javascript:createTransactionItem(\""+tran.getTransactionType()+"\",\"be.mxs.common.model.vo.healthrecord.IConstants."+sName+"\");'>"+sName+"</a>");
     	}
     	else{
 	    	StringBuffer s = new StringBuffer();
 	    	s.append("<input type='hidden' id='"+sName+"' ");
-	    	s.append(" name='currentTransactionVO.items.<ItemVO[hashCode="+transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getItemId()+"]>.value'");
-	    	s.append(" value='"+transaction.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getValue().replaceAll("'", "´")+"'/>");
+	    	s.append(" name='currentTransactionVO.items.<ItemVO[hashCode="+tran.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getItemId()+"]>.value'");
+	    	s.append(" value='"+tran.getItem("be.mxs.common.model.vo.healthrecord.IConstants."+sName).getValue().replaceAll("'", "´")+"'/>");
 	    	return s.toString();
     	}
     }

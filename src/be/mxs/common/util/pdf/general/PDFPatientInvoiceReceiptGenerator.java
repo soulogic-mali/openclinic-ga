@@ -133,9 +133,14 @@ public class PDFPatientInvoiceReceiptGenerator extends PDFInvoiceGenerator {
 	        table.addCell(cell);
 	        
 	        double totalCredit=0;
+	        String credits="";
 	        for(int n=0;n<invoice.getCredits().size();n++){
 	            PatientCredit credit = PatientCredit.get((String)invoice.getCredits().elementAt(n));
 	            totalCredit+=credit.getAmount();
+	            if(credits.length()>0) {
+	            	credits+=", ";
+	            }
+	            credits+=credit.getUid().split("\\.")[1];
 	        }
 	        double totalDebet=0;
 	        double totalinsurardebet=0;
@@ -273,7 +278,7 @@ public class PDFPatientInvoiceReceiptGenerator extends PDFInvoiceGenerator {
 	        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 	        table.addCell(cell);
 	
-	        cell = createValueCell(ScreenHelper.getTran(null,"web","payments",sPrintLanguage)+": "+priceFormat.format(totalCredit)+" "+sCurrency, 25,new Double(7*scaleFactor).intValue(),Font.NORMAL);
+	        cell = createValueCell(ScreenHelper.getTran(null,"web","payments",sPrintLanguage)+" ["+credits+"]: "+priceFormat.format(totalCredit)+" "+sCurrency, 25,new Double(7*scaleFactor).intValue(),Font.NORMAL);
 	        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 	        table.addCell(cell);
 

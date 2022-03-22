@@ -236,8 +236,8 @@
 	        for(int n=0; n<examNames.size(); n++){
 	            examName = (String)examNames.get(n);
 	            verifiedExaminationVO = (VerifiedExaminationVO)exams.get(examName);
-	            
-	            if(MedwanQuery.getInstance().getConfigString("noShowExaminationsGender"+activePatient.gender,"").indexOf(verifiedExaminationVO.getTransactionType()+";")<0){
+	            if(SH.cs("noShowExaminationsGender"+activePatient.gender,"").indexOf(verifiedExaminationVO.getTransactionType()+";")<0){
+	            	
 	            	// alternate row-style
 	            	if(sClass.length()==0) sClass = "1";
 	            	else                   sClass = "";
@@ -245,7 +245,7 @@
 		            %>
 		            <tr class="<%=(verifiedExaminationVO.getPlannedExaminationDue().equalsIgnoreCase("medwan.common.true")?"menuItemRed":"list"+sClass)%>">
 		                <%-- examination name --%>
-		                <td><img src="<c:url value="/_img/themes/default/pijl.gif"/>"><button class='buttoninvisible'></button>  <%=ScreenHelper.uppercaseFirstLetter(examName)%></td>
+		                <td><table><tr><td width='1px'><img src="<c:url value="/_img/themes/default/pijl.gif"/>"><button class='buttoninvisible'></button></td><td><%=ScreenHelper.uppercaseFirstLetter(examName)%></td></tr></table></td>
 		                <%-- create --%>
 		                <td align="center">
 		                    <%
@@ -335,7 +335,7 @@
                 for(int n=0; n<otherServiceExams.size(); n++){
                     verifiedExaminationVO = (VerifiedExaminationVO)otherServiceExams.get(n);
                    
-                    if(MedwanQuery.getInstance().getConfigString("noShowExaminationsGender"+activePatient.gender,"").indexOf(verifiedExaminationVO.getTransactionType()+";")<0){
+                    if(SH.cs("noShowExaminationsGender"+activePatient.gender,"").indexOf(verifiedExaminationVO.getTransactionType()+";")<0){
 	                    examName = getTran(request,"examination",verifiedExaminationVO.examinationId+"",sWebLanguage);
 	                    otherExams.put(examName,verifiedExaminationVO);
                     }
@@ -381,7 +381,7 @@
                                 %>
                                 <tr class="list<%=sInnerClass%>">
                                     <%-- examination name --%>
-                                    <td><img src="<c:url value='/_img/themes/default/pijl.gif'/>"><button class="buttoninvisible"></button> <%=ScreenHelper.uppercaseFirstLetter(examName)%></td>
+                                    <td><table><tr><td width='1px'><img style='vertical-align: middle' src="<c:url value='/_img/themes/default/pijl.gif'/>"><button class="buttoninvisible"></button></td><td><%=ScreenHelper.uppercaseFirstLetter(examName)%></td></tr></table></td>
                                     <%-- create --%>
                                     <td align="center">
                                         <%

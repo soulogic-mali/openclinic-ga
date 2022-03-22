@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -111,16 +112,16 @@ public class MTN {
 			HttpPost req = new HttpPost(uri);
 		    req.setHeader("Authorization", "Bearer "+getToken().getToken());
 		    req.setHeader("X-Reference-Id", paymentTransactionId);
-		    req.setHeader("X-Callback-Url", SH.cs("momo.callbackURL", "http://cloud.hnrw.org/openclinic/registerPayment.jsp"));
-		    req.setHeader("X-Target-Environment", SH.cs("momo.targetsystem","sandbox"));
+		    req.setHeader("X-Target-Environment", SH.cs("momo.targetenvironment","mtnrwanda"));
 		    req.setHeader("Content-Type", "application/json");
 		    req.setHeader("Ocp-Apim-Subscription-Key", getCollectionSubscriptionKey());
-		    StringEntity reqEntity = new StringEntity("{'amount': '"+amount+"', 'currency': '"+(SH.cs("momo.targetsystem","sandbox").equalsIgnoreCase("sandbox")?"EUR":currency)+"', 'externalId': '"+invoiceId+"', 'payer': {'partyIdType': 'MSISDN', 'partyId': '"+phoneNumber+"'}, 'payerMessage': '"+payerMessage+"', 'payeeNote': '"+payeeMessage+"'}");
+		    String payload="{\"amount\": \""+new DecimalFormat(SH.cs("momo.decimalFormat", "#0")).format(amount)+"\", \"currency\": \""+currency+"\", \"externalId\": \""+invoiceId+"\", \"payer\": {\"partyIdType\": \"MSISDN\", \"partyId\": \""+phoneNumber+"\"}, \"payerMessage\": \""+payerMessage+"\", \"payeeNote\": \""+payeeMessage+"\"}";
+		    StringEntity reqEntity = new StringEntity(payload);
 		    req.setEntity(reqEntity);
 		    HttpResponse resp = httpclient.execute(req);
 		    HttpEntity entity = resp.getEntity();
 		    setLastEntity(entity);
-		    if (entity!=null && resp.getStatusLine().getStatusCode()==202) 
+		    if (entity!=null && (resp.getStatusLine().getStatusCode()==202 || resp.getStatusLine().getStatusCode()==200)) 
 		    {
 		    	MobileMoney.createPaymentRequest(paymentTransactionId, invoiceId, patientUid, amount, currency, phoneNumber, payerMessage, payeeMessage, userid,"MTN");
 		    	return paymentTransactionId;
@@ -150,10 +151,10 @@ public class MTN {
 		    req.setHeader("Authorization", "Bearer "+getDisbursementToken().getToken());
 		    req.setHeader("X-Reference-Id", paymentTransactionId);
 		    req.setHeader("X-Callback-Url", SH.cs("momo.callbackURL", "http://cloud.hnrw.org/openclinic/disbursePayment.jsp"));
-		    req.setHeader("X-Target-Environment", SH.cs("momo.targetsystem","sandbox"));
+		    req.setHeader("X-Target-Environment", SH.cs("momo.targetenvironment","mtnrwanda"));
 		    req.setHeader("Content-Type", "application/json");
 		    req.setHeader("Ocp-Apim-Subscription-Key", getDisbursementSubscriptionKey());
-		    StringEntity reqEntity = new StringEntity("{'amount': '"+amount+"', 'currency': '"+(SH.cs("momo.targetsystem","sandbox").equalsIgnoreCase("sandbox")?"EUR":currency)+"', 'externalId': '"+invoiceId+"', 'payee': {'partyIdType': 'MSISDN', 'partyId': '"+phoneNumber+"'}, 'payerMessage': '"+payerMessage+"', 'payeeNote': '"+payeeMessage+"'}");
+		    StringEntity reqEntity = new StringEntity("{\"amount\": \""+new DecimalFormat(SH.cs("momo.decimalFormat", "#0")).format(amount)+"\", \"currency\": \""+(SH.cs("momo.targetsystem","sandbox").equalsIgnoreCase("sandbox")?"EUR":currency)+"\", \"externalId\": \""+invoiceId+"\", \"payee\": {\"partyIdType\": \"MSISDN\", \"partyId\": \""+phoneNumber+"\"}, \"payerMessage\": \""+payerMessage+"\", \"payeeNote\": \""+payeeMessage+"\"}");
 		    req.setEntity(reqEntity);
 		    HttpResponse resp = httpclient.execute(req);
 		    HttpEntity entity = resp.getEntity();
@@ -185,7 +186,7 @@ public class MTN {
 		    HttpGet req = new HttpGet(uri);
 		    req.setHeader("Authorization", "Bearer "+getToken().getToken());
 		    req.setHeader("X-Reference-Id", paymentTransactionId);
-		    req.setHeader("X-Target-Environment", SH.cs("momo.targetsystem","sandbox"));
+		    req.setHeader("X-Target-Environment", SH.cs("momo.targetenvironment","mtnrwanda"));
 		    req.setHeader("Content-Type", "application/json");
 		    req.setHeader("Ocp-Apim-Subscription-Key", getCollectionSubscriptionKey());
 		    HttpResponse resp = httpclient.execute(req);
@@ -220,7 +221,7 @@ public class MTN {
 		    HttpGet req = new HttpGet(uri);
 		    req.setHeader("Authorization", "Bearer "+getDisbursementToken().getToken());
 		    req.setHeader("X-Reference-Id", paymentTransactionId);
-		    req.setHeader("X-Target-Environment", SH.cs("momo.targetsystem","sandbox"));
+		    req.setHeader("X-Target-Environment", SH.cs("momo.targetenvironment","mtnrwanda"));
 		    req.setHeader("Content-Type", "application/json");
 		    req.setHeader("Ocp-Apim-Subscription-Key", getDisbursementSubscriptionKey());
 		    HttpResponse resp = httpclient.execute(req);
@@ -280,9 +281,9 @@ public class MTN {
 		AuthorizationToken token =null;
 		try {
 			HttpClient httpclient = HttpClients.createDefault();
-			String baseurl=SH.cs("momo.sandbox.token.baseurl","https://sandbox.momodeveloper.mtn.com/disbursement");
+			String baseurl=SH.cs("momo.sandbox.disbursementtoken.baseurl","https://sandbox.momodeveloper.mtn.com/disbursement");
 			if(SH.cs("momo.targetsystem","sandbox").equalsIgnoreCase("production")) {
-				baseurl=SH.cs("momo.production.token.baseurl","https://momo.mtn.com/disbursement");
+				baseurl=SH.cs("momo.production.disbursementtoken.baseurl","https://momo.mtn.com/disbursement");
 			}
 			URIBuilder builder = new URIBuilder(baseurl+"/token/");
 			URI uri = builder.build();
@@ -349,7 +350,7 @@ public class MTN {
 		    req.setHeader("Ocp-Apim-Subscription-Key", getCollectionSubscriptionKey());
 	
 		    // Request body
-		    StringEntity reqEntity = new StringEntity("{'providerCallbackHost': '"+SH.cs("momo.callbackhost", "cloud.hnrw.org")+"'}");
+		    StringEntity reqEntity = new StringEntity("{\"providerCallbackHost\": \""+SH.cs("momo.callbackhost", "cloud.hnrw.org")+"\"}");
 		    req.setEntity(reqEntity);
 	
 		    HttpResponse resp = httpclient.execute(req);

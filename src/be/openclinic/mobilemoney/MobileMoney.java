@@ -188,7 +188,7 @@ public class MobileMoney {
 								w.calculateBalance();
 							}
 							PatientInvoice pi = (PatientInvoice)wc.getInvoice();
-							if(pi!=null && pi.getStatus().equalsIgnoreCase("closed")) {
+							if(pi!=null && pi.getStatus()!=null && pi.getStatus().equalsIgnoreCase("closed")) {
 								pi.setStatus("open");
 								pi.store();
 							}

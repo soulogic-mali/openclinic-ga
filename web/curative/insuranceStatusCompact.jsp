@@ -122,6 +122,24 @@
 </form>
 
 <script>
+  function checkEncounterType(){
+	  prestationlist='';
+	  showPrestationList(true);
+	  if(document.getElementById('EditEncounterType').value.length>0){
+		  document.getElementById('prestationname').readOnly=false;
+		  document.getElementById('prestationname').style.backgroundColor='white';
+		  document.getElementById('prestationname').style.color='black';
+		  document.getElementById('prestationname').style.fontStyle='';
+		  document.getElementById('prestationname').value='';
+	  }
+	  else{
+		  document.getElementById('prestationname').readOnly=true;
+		  document.getElementById('prestationname').style.backgroundColor='gray';
+		  document.getElementById('prestationname').style.color='white';
+		  document.getElementById('prestationname').style.fontStyle='italic';
+		  document.getElementById('prestationname').value='<%=getTranNoLink("web","selectencountertype",sWebLanguage)%>';
+	  }
+  }
   function doSelect(id){
     window.location.href = "<c:url value='/main.jsp'/>?Page=financial/insurance/editInsuranceCompact.jsp&EditInsuranceUID="+id+"&ts=<%=getTs()%>";
   }

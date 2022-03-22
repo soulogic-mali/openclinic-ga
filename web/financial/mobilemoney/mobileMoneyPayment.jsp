@@ -98,7 +98,7 @@
             	  document.getElementById('divPayment').innerHTML = "<img height='14px' src='<c:url value="/_img/icons/icon_error.gif"/>'> <%=getTranNoLink("web","paymentfailed",sWebLanguage)%>";
               }
               else{
-            	  window.setTimeout("checkPaymentMTN('"+paymentRequest.transactionId+"');",500);
+            	  window.setTimeout("checkPaymentMTN('"+transactionId+"');",500);
               }
 	      },
           onError: function(resp){

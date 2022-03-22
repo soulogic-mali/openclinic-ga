@@ -27,6 +27,7 @@
 		String[] records=exporter.showRecords(dataelement, option,attributeoption).split(";");
 		for(int n=0;n<records.length;n++){
 			String personid=records[n];
+			Debug.println(records[n]);
 			AdminPerson p = AdminPerson.getAdminPerson(personid);
 			out.println("<tr><td class='admin'>"+(n+1)+". <a href='"+sCONTEXTPATH+"/main.do?Page=curative/index.jsp&PersonID="+personid+"'>"+personid+"</a></td><td class='admin2'/>"+(p!=null?p.getFullName():"?")+"</td><td class='admin2'/>"+(p!=null?p.dateOfBirth:"?")+"</td></tr>");
 		}

@@ -29,7 +29,6 @@
         }
 	}
 	
-	System.out.println(sPsychology);
 	
     int iTotal = 1;
 

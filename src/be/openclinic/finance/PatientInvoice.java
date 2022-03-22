@@ -1,6 +1,7 @@
 package be.openclinic.finance;
 
 import net.admin.AdminPerson;
+import net.admin.User;
 
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -14,12 +15,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-
-
-
-
-
-
 import be.mxs.common.util.system.Pointer;
 import be.mxs.common.util.system.ScreenHelper;
 import be.mxs.common.util.system.Debug;
@@ -28,6 +23,7 @@ import be.openclinic.adt.Encounter;
 import be.openclinic.medical.Diagnosis;
 import be.openclinic.medical.ReasonForEncounter;
 import be.openclinic.pharmacy.ProductionOrder;
+import be.openclinic.system.SH;
 
 public class PatientInvoice extends Invoice {
     private String patientUid;
@@ -41,6 +37,49 @@ public class PatientInvoice extends Invoice {
     
 	public String getModifiers() {
 		return modifiers;
+	}
+	public String toXml() {
+		return toXml(false);
+	}
+
+	public String toXml(boolean bExtended) {
+		String s="<patientinvoice id='"+SH.c(getUid())+"' number='"+getInvoiceNumber()+"'>";
+		if(bExtended) {
+			s+="<patient personid='"+SH.c(getPatientUid())+"'>";
+			s+=AdminPerson.get(SH.c(getPatientUid())).toXml();
+			s+="</patient>";
+		}
+		else {
+			s+="<patient personid='"+SH.c(getPatientUid())+"'/>";
+		}
+		s+="<date>"+SH.formatDate(getDate(),SH.timestampFormat)+"</date>";
+		s+="<totalamount>"+getTotalAmount()+"</totalamount>";
+		s+="<patientamount>"+getPatientAmount()+"</patientamount>";
+		s+="<insureramount>"+getInsurarAmount()+"</insureramount>";
+		s+="<extrainsureramount>"+getExtraInsurarAmount()+"</extrainsureramount>";
+		s+="<patientamountpaid>"+getAmountPaid()+"</patientamountpaid>";
+		s+="<patientbalance>"+getBalance()+"</patientbalance>";
+		s+="<insurancereference>"+SH.cx(getInsurarreference())+"</insurancereference>";
+		s+="<updatetime>"+SH.formatDate(getUpdateDateTime(),SH.timestampFormat)+"</updatetime>";
+		s+="<updateuser id='"+SH.cx(getUpdateUser())+"'>";
+		if(bExtended) {
+			try {
+				User user = User.get(Integer.parseInt(getUpdateUser()));
+				if(user.person!=null && user.person.isNotEmpty()) {
+					s+=user.person.toXml();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		s+="</updateuser>";
+		for(int n=0;n<debets.size();n++) {
+			Debet debet = (Debet)debets.elementAt(n);
+			s+=debet.toXml(bExtended);
+		}
+		s+="</patientinvoice>";
+		return s;
 	}
 	
 	public boolean createProductionOrders(){
@@ -565,7 +604,6 @@ public class PatientInvoice extends Invoice {
     
     public Hashtable getInsurarAmounts(){
     	Hashtable amounts= new Hashtable();
-    	Vector debets=getDebets();
     	for(int n=0;n<debets.size();n++){
     		Debet debet = (Debet)debets.elementAt(n);
 			String insurar = "?";
@@ -604,7 +642,6 @@ public class PatientInvoice extends Invoice {
 
     public double getPatientAmount(){
     	double amount=0;
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -616,7 +653,6 @@ public class PatientInvoice extends Invoice {
     
     public double getTotalAmount(){
     	double amount=0;
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -628,7 +664,6 @@ public class PatientInvoice extends Invoice {
     
     public double getAmountPaid(){
     	double amount=0;
-    	Vector credits=getCredits();
     	if(credits!=null){
 	    	for(int n=0;n<credits.size();n++){
 	    		PatientCredit credit = PatientCredit.get((String)credits.elementAt(n));
@@ -642,7 +677,6 @@ public class PatientInvoice extends Invoice {
     
     public double getPatientOwnAmount(){
     	double amount=0;
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -656,7 +690,6 @@ public class PatientInvoice extends Invoice {
     
     public double getExtraInsurarAmount2(){
     	double amount=0;
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -670,7 +703,6 @@ public class PatientInvoice extends Invoice {
     
     public double getInsurarAmount(){
     	double amount=0;
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -682,7 +714,6 @@ public class PatientInvoice extends Invoice {
     
     public double getExtraInsurarAmount(){
     	double amount=0;
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -695,7 +726,6 @@ public class PatientInvoice extends Invoice {
     public String getInsurers(){
     	String insurers="";
     	Hashtable ins = new Hashtable();
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -717,7 +747,6 @@ public class PatientInvoice extends Invoice {
     public Vector getInsurerObjects(){
     	Vector insurers=new Vector();
     	Hashtable ins = new Hashtable();
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -736,7 +765,6 @@ public class PatientInvoice extends Invoice {
     public String getInsurerIds(){
     	String insurers="";
     	HashSet ins = new HashSet();
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -758,7 +786,6 @@ public class PatientInvoice extends Invoice {
     public String getExtraInsurers(){
     	String insurers="";
     	Hashtable ins = new Hashtable();
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -780,7 +807,6 @@ public class PatientInvoice extends Invoice {
     public String getExtraInsurers2(){
     	String insurers="";
     	Hashtable ins = new Hashtable();
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -802,7 +828,6 @@ public class PatientInvoice extends Invoice {
     public String getDiseases(String language){
     	String encounters="";
     	Hashtable ins = new Hashtable();
-    	Vector debets=getDebets();
     	if(debets!=null){
 	    	for(int n=0;n<debets.size();n++){
 	    		Debet debet = (Debet)debets.elementAt(n);
@@ -1720,6 +1745,71 @@ public class PatientInvoice extends Invoice {
         }
 
         return totalBalance;
+    }
+    
+    public boolean hasPrestationClass(String s) {
+    	boolean bResult = false;
+    	if(debets!=null) {
+    		for(int n=0;n<debets.size();n++) {
+    			Debet debet = (Debet)debets.elementAt(n);
+    			if(debet.getPrestation()!=null && debet.getPrestation().getPrestationClass().equalsIgnoreCase(s)) {
+    				return true;
+    			}
+    		}
+    	}
+    	return bResult;
+    }
+
+    public boolean hasPrestationType(String s) {
+    	boolean bResult = false;
+    	if(debets!=null) {
+    		for(int n=0;n<debets.size();n++) {
+    			Debet debet = (Debet)debets.elementAt(n);
+    			if(debet.getPrestation()!=null && debet.getPrestation().getType().equalsIgnoreCase(s)) {
+    				return true;
+    			}
+    		}
+    	}
+    	return bResult;
+    }
+
+    public boolean hasPrestationCostCenter(String s) {
+    	boolean bResult = false;
+    	if(debets!=null) {
+    		for(int n=0;n<debets.size();n++) {
+    			Debet debet = (Debet)debets.elementAt(n);
+    			if(debet.getPrestation()!=null && debet.getPrestation().getCostCenter().equalsIgnoreCase(s)) {
+    				return true;
+    			}
+    		}
+    	}
+    	return bResult;
+    }
+
+    public boolean hasPrestationInvoiceGroup(String s) {
+    	boolean bResult = false;
+    	if(debets!=null) {
+    		for(int n=0;n<debets.size();n++) {
+    			Debet debet = (Debet)debets.elementAt(n);
+    			if(debet.getPrestation()!=null && debet.getPrestation().getInvoiceGroup().equalsIgnoreCase(s)) {
+    				return true;
+    			}
+    		}
+    	}
+    	return bResult;
+    }
+
+    public boolean hasPrestationFamily(String s) {
+    	boolean bResult = false;
+    	if(debets!=null) {
+    		for(int n=0;n<debets.size();n++) {
+    			Debet debet = (Debet)debets.elementAt(n);
+    			if(debet.getPrestation()!=null && debet.getPrestation().getReferenceObject()!=null && debet.getPrestation().getReferenceObject().getObjectType().equalsIgnoreCase(s)) {
+    				return true;
+    			}
+    		}
+    	}
+    	return bResult;
     }
 
     //--- GET PATIENT INVOICES ------------------------------------------------------------------- 

@@ -1,15 +1,12 @@
-<%@page import="java.util.*"%>
-<%@page import="org.dom4j.*"%>
-<%@page import="be.mayele.*"%>
-<%@page import="be.mayele.bi.*"%>
+<%@include file="/includes/validateUser.jsp"%>
 <%
-	HashMap parameters = new HashMap();
-	parameters.put("key", "ABCD1234");
-	parameters.put("format","xml");
-	parameters.put("module","bi.hf");
-	Vector<hf> v = hf.find("http://10.0.0.1/mayele/mayele/find.jsp", parameters);
-	for(int n=0;n<v.size();n++){
-		hf hf = v.elementAt(n);
-		System.out.println("name ="+hf.getName());
-	}
+	Connection conn = SH.getOpenClinicConnection();
+	PreparedStatement ps = conn.prepareStatement("select oc_wicket_credit_operationdate as DATE from oc_wicket_credits limit 1");
+	ResultSet rs = ps.executeQuery();
+	rs.next();
+	Object o = rs.getObject("DATE");
+	out.println(o.getClass().getName());
+	rs.close();
+	ps.close();
+	conn.close();
 %>

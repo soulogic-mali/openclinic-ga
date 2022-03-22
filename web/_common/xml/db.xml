@@ -4519,6 +4519,31 @@
 			<column name="OC_LIST_PRESCRIPTIONUID" dbtype="varchar" size="50" javatype="string"/>
 			<column name="OC_LIST_INVOICED" dbtype="int" javatype="integer"/>
 			<column name="OC_LIST_PRESCRIBER" dbtype="int" javatype="integer"/>
+			<column name="OC_LIST_VERSION" dbtype="int" javatype="integer"/>
+			<column name="OC_LIST_UPDATETIME" dbtype="datetime" javatype="date"/>
+		</columns>
+		<indexes>
+			<index name="OC_LIST_PATIENTUID">
+				<indexcolumn order="ASC" name="OC_LIST_PATIENTUID"/>
+			</index>
+		</indexes>
+	</table>
+	
+	<table name="OC_DRUGSOUTLISTHISTORY" db="openclinic" sync="NONE">
+		<columns>
+			<column name="OC_LIST_SERVERID" dbtype="int" javatype="integer" primary="1" nulls="0"/>
+			<column name="OC_LIST_OBJECTID" dbtype="int" javatype="integer" primary="1" nulls="0"/>
+			<column name="OC_LIST_PATIENTUID" dbtype="varchar" size="25" javatype="string"/>
+			<column name="OC_LIST_PRODUCTSTOCKUID" dbtype="varchar" size="25" javatype="string"/>
+			<column name="OC_LIST_QUANTITY" dbtype="int" javatype="integer"/>
+			<column name="OC_LIST_BATCHUID" dbtype="varchar" size="25" javatype="string"/>
+			<column name="OC_LIST_COMMENT" dbtype="varchar" size="255" javatype="string"/>
+			<column name="OC_LIST_ENCOUNTERUID" dbtype="varchar" size="50" javatype="string"/>
+			<column name="OC_LIST_PRESCRIPTIONUID" dbtype="varchar" size="50" javatype="string"/>
+			<column name="OC_LIST_INVOICED" dbtype="int" javatype="integer"/>
+			<column name="OC_LIST_PRESCRIBER" dbtype="int" javatype="integer"/>
+			<column name="OC_LIST_VERSION" dbtype="int" javatype="integer"/>
+			<column name="OC_LIST_UPDATETIME" dbtype="datetime" javatype="date"/>
 		</columns>
 		<indexes>
 			<index name="OC_LIST_PATIENTUID">
@@ -4992,14 +5017,14 @@
 			<index name="OC_DEBET_DATE">
 				<indexcolumn order="ASC" name="OC_DEBET_DATE"/>
 			</index>
+			<index name="OC_DEBET_UPDATETIME">
+				<indexcolumn order="ASC" name="OC_DEBET_UPDATETIME"/>
+			</index>
 			<index name="OC_DEBET_BALANCEUID">
 				<indexcolumn order="ASC" name="OC_DEBET_BALANCEUID"/>
 			</index>
 			<index name="OC_DEBET_ENCOUNTERUID">
 				<indexcolumn order="ASC" name="OC_DEBET_ENCOUNTERUID"/>
-			</index>
-			<index name="OC_DEBET_PRESTATIONUID">
-				<indexcolumn order="ASC" name="OC_DEBET_PRESTATIONUID"/>
 			</index>
 			<index name="OC_DEBET_REFUID">
 				<indexcolumn order="ASC" name="OC_DEBET_REFUID"/>
@@ -5218,6 +5243,9 @@
 			</index>
 			<index name="OC_PATIENTINVOICE_PATIENTUID">
 				<indexcolumn order="ASC" name="OC_PATIENTINVOICE_PATIENTUID"/>
+			</index>
+			<index name="OC_PATIENTINVOICE_COMMENT">
+				<indexcolumn order="ASC" name="OC_PATIENTINVOICE_COMMENT"/>
 			</index>
 		</indexes>
     </table>
@@ -7033,6 +7061,21 @@
             </index>
         </indexes>
     </table>
+    <table name="BeninZipcodes" db="ocadmin" sync="MASTER">
+        <columns>
+            <column name="zipcode" dbtype="varchar" javatype="string" size="10" primary="1"/>
+            <column name="district" dbtype="varchar" javatype="string"  size="255" primary="1"/>
+            <column name="city" dbtype="varchar" javatype="string"  size="255"/>
+        </columns>
+        <indexes>
+            <index name="zipcode">
+                <indexcolumn name="zipcode" order="ASC"/>
+            </index>
+            <index name="district">
+                <indexcolumn name="district" order="ASC"/>
+            </index>
+        </indexes>
+    </table>
     <table name="UgandaZipcodes" db="ocadmin" sync="MASTER">
         <columns>
             <column name="zipcode" dbtype="varchar" javatype="string" size="10" primary="1"/>
@@ -7078,6 +7121,21 @@
             </index>
         </indexes>
     </table>
+    <table name="NigerZipcodes" db="ocadmin" sync="MASTER">
+        <columns>
+            <column name="zipcode" dbtype="varchar" javatype="string" size="10" primary="1"/>
+            <column name="district" dbtype="varchar" javatype="string"  size="255" primary="1"/>
+            <column name="city" dbtype="varchar" javatype="string"  size="255"/>
+        </columns>
+        <indexes>
+            <index name="zipcode">
+                <indexcolumn name="zipcode" order="ASC"/>
+            </index>
+            <index name="district">
+                <indexcolumn name="district" order="ASC"/>
+            </index>
+        </indexes>
+    </table>
     <table name="CameroonZipcodes" db="ocadmin" sync="MASTER">
         <columns>
             <column name="zipcode" dbtype="varchar" javatype="string" size="10" primary="1"/>
@@ -7085,6 +7143,39 @@
             <column name="city" dbtype="varchar" javatype="string"  size="255"/>
             <column name="region" dbtype="varchar" javatype="string"  size="255"/>
             <column name="sector" dbtype="varchar" javatype="string"  size="255"/>
+        </columns>
+        <indexes>
+            <index name="zipcode">
+                <indexcolumn name="zipcode" order="ASC"/>
+            </index>
+            <index name="district">
+                <indexcolumn name="district" order="ASC"/>
+            </index>
+        </indexes>
+    </table>
+    <table name="GuineaZipcodes" db="ocadmin" sync="MASTER">
+        <columns>
+            <column name="zipcode" dbtype="varchar" javatype="string" size="10" primary="1"/>
+            <column name="district" dbtype="varchar" javatype="string"  size="255" primary="1"/>
+            <column name="city" dbtype="varchar" javatype="string"  size="255"/>
+            <column name="region" dbtype="varchar" javatype="string"  size="255"/>
+            <column name="sector" dbtype="varchar" javatype="string"  size="255"/>
+        </columns>
+        <indexes>
+            <index name="zipcode">
+                <indexcolumn name="zipcode" order="ASC"/>
+            </index>
+            <index name="district">
+                <indexcolumn name="district" order="ASC"/>
+            </index>
+        </indexes>
+    </table>
+    <table name="BurkinaZipcodes" db="ocadmin" sync="MASTER">
+        <columns>
+            <column name="zipcode" dbtype="varchar" javatype="string" size="10" primary="1"/>
+            <column name="district" dbtype="varchar" javatype="string"  size="255" primary="1"/>
+            <column name="city" dbtype="varchar" javatype="string"  size="255"/>
+            <column name="region" dbtype="varchar" javatype="string"  size="255"/>
         </columns>
         <indexes>
             <index name="zipcode">

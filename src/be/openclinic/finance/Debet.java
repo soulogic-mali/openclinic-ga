@@ -2,6 +2,7 @@ package be.openclinic.finance;
 
 import be.openclinic.common.OC_Object;
 import be.openclinic.common.ObjectReference;
+import be.openclinic.system.SH;
 import be.openclinic.adt.Encounter;
 import be.openclinic.adt.Encounter.EncounterService;
 import be.mxs.common.util.system.Pointer;
@@ -18,7 +19,9 @@ import java.sql.ResultSet;
 import java.sql.SQLDataException;
 import java.sql.Timestamp;
 
+import net.admin.AdminPerson;
 import net.admin.Service;
+import net.admin.User;
 
 public class Debet extends OC_Object implements Comparable,Cloneable {
     private Date date;
@@ -163,6 +166,54 @@ public class Debet extends OC_Object implements Comparable,Cloneable {
         this.prestationUid = prestationUid;
         this.encounterUid = encounterUid;
     }
+	public String toXml() {
+		return toXml(false);
+	}
+	public String toXml(boolean bExtended) {
+		String s="<debet id='"+SH.c(getUid())+"'>";
+		s+="<date>"+SH.formatDate(getDate(),SH.timestampFormat)+"</date>";
+		if(getPrestation()!=null) {
+			s+="<healthservice id='"+getPrestationUid()+"'>";
+			s+="<name>"+SH.cx(getPrestation().getDescription())+"</name>";
+			s+="<type>"+SH.cx(getPrestation().getType())+"</type>";
+			s+="<invoicegroup>"+SH.cx(getPrestation().getInvoicegroup())+"</invoicegroup>";
+			s+="<class>"+SH.cx(getPrestation().getPrestationClass())+"</class>";
+			if(getPrestation().getReferenceObject()!=null) {
+				s+="<family>"+SH.cx(getPrestation().getReferenceObject().getObjectType())+"</family>";
+			}
+			s+="</healthservice>";
+		}
+		s+="<totalamount>"+getTotalAmount()+"</totalamount>";
+		s+="<patientamount>"+getAmount()+"</patientamount>";
+		s+="<insureramount>"+getInsurarAmount()+"</insureramount>";
+		s+="<extrainsureramount>"+getExtraInsurarAmount()+"</extrainsureramount>";
+		s+="<insurance id='"+getInsuranceUid()+"'>";
+		if(getInsurance()!=null && getInsurance().getInsurar()!=null) {
+			s+="<insurer id='"+getInsurance().getInsurarUid()+"'>";
+			if(bExtended) {
+				s+="<name>"+SH.cx(getInsurance().getInsurar().getName())+"</name>";
+				s+="<type>"+SH.cx(getInsurance().getInsurar().getType())+"</type>";
+			}
+			s+="</insurer>";
+		}
+		s+="</insurance>";
+		s+="<updatetime>"+SH.formatDate(getUpdateDateTime(),SH.timestampFormat)+"</updatetime>";
+		s+="<updateuser id='"+SH.cx(getUpdateUser())+"'>";
+		if(bExtended) {
+			try {
+				User user = User.get(Integer.parseInt(getUpdateUser()));
+				if(user.person!=null && user.person.isNotEmpty()) {
+					s+=user.person.toXml();
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		s+="</updateuser>";
+		s+="</debet>";
+		return s;
+	}
     public int getCredited() {
         return credited;
     }
@@ -3618,7 +3669,7 @@ public class Debet extends OC_Object implements Comparable,Cloneable {
     	boolean exists = false;
     	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
     	String sSelect="select max(OC_DEBET_DATE) OC_DEBET_DATE from OC_DEBETS a,OC_ENCOUNTERS b where " +
-    			" OC_DEBET_ENCOUNTERUID='"+MedwanQuery.getInstance().getConfigInt("serverId")+".'"+MedwanQuery.getInstance().concatSign()+MedwanQuery.getInstance().convert("varchar","OC_ENCOUNTER_OBJECTID")+" AND" +
+    			" OC_DEBET_ENCOUNTERUID='"+MedwanQuery.getInstance().getConfigInt("serverId")+".'"+MedwanQuery.getInstance().concatSign()+"OC_ENCOUNTER_OBJECTID AND" +
     			" OC_ENCOUNTER_PATIENTUID=? AND" +
     			" OC_DEBET_PRESTATIONUID=? AND" +
     			" OC_DEBET_CREDITED=0";
@@ -3659,7 +3710,7 @@ public class Debet extends OC_Object implements Comparable,Cloneable {
     	boolean exists = false;
     	Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
     	String sSelect="select max(OC_DEBET_DATE) OC_DEBET_DATE from OC_DEBETS a,OC_ENCOUNTERS b where " +
-    			" OC_DEBET_ENCOUNTERUID='"+MedwanQuery.getInstance().getConfigInt("serverId")+".'"+MedwanQuery.getInstance().concatSign()+MedwanQuery.getInstance().convert("varchar","OC_ENCOUNTER_OBJECTID")+" AND" +
+    			" OC_DEBET_ENCOUNTERUID='"+MedwanQuery.getInstance().getConfigInt("serverId")+".'"+MedwanQuery.getInstance().concatSign()+"OC_ENCOUNTER_OBJECTID AND" +
     			" OC_ENCOUNTER_PATIENTUID=? AND" +
     			" OC_DEBET_PRESTATIONUID=? AND" +
     			" OC_DEBET_CREDITED=0";

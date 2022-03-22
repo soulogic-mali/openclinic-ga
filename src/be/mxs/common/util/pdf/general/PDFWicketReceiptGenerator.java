@@ -42,7 +42,12 @@ public class PDFWicketReceiptGenerator extends PDFInvoiceGenerator {
             doc.addAuthor(user.person.firstname+" "+user.person.lastname);
 			doc.addCreationDate();
 			doc.addCreator("OpenClinic Software");
-			doc.setPageSize(PageSize.A4);
+			if(MedwanQuery.getInstance().getConfigString("paymentReceiptPaperFormat","A4").equalsIgnoreCase("A5")){
+				doc.setPageSize(PageSize.A5);
+			}
+			else{
+				doc.setPageSize(PageSize.A4);
+			}
             addFooter();
 
             doc.open();

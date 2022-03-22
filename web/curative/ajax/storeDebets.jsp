@@ -8,6 +8,7 @@
 	String encountertype = SH.p(request,"encountertype");
 	String encountermanager = SH.p(request,"encountermanager");
 	String encounterorigin = SH.p(request,"encounterorigin");
+	String reference = SH.p(request,"reference");
 	String amount = SH.p(request,"amount");
 	String invoiceuid = "";
 	session.setAttribute("defaultwicket",wicketuid);
@@ -44,12 +45,12 @@
 				if(insurance.getExtraInsurarUid().length()>0){
 					debet.setAmount(0);
 					debet.setExtraInsurarUid(insurance.getExtraInsurarUid());
-					debet.setExtraInsurarAmount(debet.getQuantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter()));
+					debet.setExtraInsurarAmount(debet.getQuantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter(),encountertype));
 				}
 				else{
-					debet.setAmount(debet.getQuantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter()));
+					debet.setAmount(debet.getQuantity()*prestation.getPatientPrice(insurance, insurance.getInsuranceCategoryLetter(),encountertype));
 				}
-				debet.setInsurarAmount(debet.getQuantity()*prestation.getInsurarPrice(insurance, insurance.getInsuranceCategoryLetter()));
+				debet.setInsurarAmount(debet.getQuantity()*prestation.getInsurarPrice(insurance, insurance.getInsuranceCategoryLetter(),encountertype));
 				debet.setCreateDateTime(new java.util.Date());
 				debet.setDate(new java.util.Date());
 				debet.setEncounterUid(encounteruid);
@@ -97,6 +98,7 @@
 		invoice.setStatus("closed");
 		invoice.setUpdateUser(activeUser.userid);
 		invoice.setVersion(1);
+		invoice.setComment(reference);
 		invoice.store();
 		invoiceuid=invoice.getUid();
 		wcredit.setAmount(credit.getAmount());

@@ -294,6 +294,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		}
 		finally {
@@ -373,6 +374,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		}
 		finally {
@@ -447,6 +449,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		}
 		finally {
@@ -519,6 +522,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		}
 		finally {
@@ -585,6 +589,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -650,6 +655,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		} catch (ParseException e) {
 			importMessage.setError(2);
@@ -711,6 +717,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		}
 		finally {
@@ -779,6 +786,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		}
 		finally {
@@ -852,6 +860,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		}
 		finally {
@@ -938,6 +947,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		}
 		finally {
@@ -1005,6 +1015,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		}
 		finally {
@@ -1095,6 +1106,7 @@ public class Importer {
 			e.printStackTrace();
 		} catch (DocumentException e) {
 			importMessage.setError(2);
+			System.out.println(importMessage.getData());
 			e.printStackTrace();
 		}
 		finally {

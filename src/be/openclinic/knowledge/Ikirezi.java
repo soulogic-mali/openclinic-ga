@@ -228,7 +228,7 @@ public class Ikirezi {
 		long interval = MedwanQuery.getInstance().getConfigInt("ikireziCleanInterval",3600*1000); //default = once an hour
 		long cutoff = new java.util.Date().getTime()-interval;
 		java.sql.Timestamp cutOffDate=new java.sql.Timestamp(cutoff);
-		System.out.println("Purging Ikirezi cutoff date = "+cutOffDate);
+		Debug.println("Purging Ikirezi cutoff date = "+cutOffDate);
 		Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
 		try{
 			PreparedStatement ps =conn.prepareStatement("select * from oc_ikirezisessions where oc_session_updatetime<?");
@@ -236,7 +236,7 @@ public class Ikirezi {
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				String sessionid = rs.getString("oc_session_id");
-				System.out.println("Purging Ikirezi sessionid = "+sessionid);
+				Debug.println("Purging Ikirezi sessionid = "+sessionid);
 				Connection iconn = MedwanQuery.getInstance().getIkireziConnection();
 				PreparedStatement ps2 = iconn.prepareStatement("delete from probabilita where sessionid=?");
 				ps2.setString(1, sessionid);

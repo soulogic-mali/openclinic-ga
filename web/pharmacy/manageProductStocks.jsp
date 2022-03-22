@@ -61,7 +61,7 @@
             // display stock in one row
             html.append("<tr class='list"+sClass+"' onmouseover=\"this.style.cursor='pointer';\" onmouseout=\"this.style.cursor='default';\" title='"+detailsTran+"'>");
         	//Only show delete button if user is stock manager
-        	if(productStock.getServiceStock()!=null && productStock.getServiceStock().getStockManagerUid().equalsIgnoreCase(userid)){
+        	if(productStock.getLevel()==0 && productStock.getServiceStock()!=null && productStock.getServiceStock().getStockManagerUid().equalsIgnoreCase(userid)){
                  html.append("<td onclick=\"doShowDetails('"+sStockUid+"');\" align='center'><img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' class='link' alt='"+deleteTran+"' onclick=\"doDelete('"+sStockUid+"');\"></td>");
         	}
             else{
@@ -122,7 +122,6 @@
         if(objects.size()>0){
         	ProductStock productStock = (ProductStock)objects.get(0);
         	opendeliveries=ProductStockOperation.getOpenProductStockDeliveries(productStock.getServiceStockUid(), SH.getTimeYear());
-        	System.out.println("opendeliveries="+opendeliveries.size());
         }
         ProductStockOperation.getOpenProductStockDeliveries();
         Hashtable productnames = Product.getProductNames();
@@ -155,10 +154,8 @@
             
             //*** display stock in one row ***
             html.append("<tr class='list"+sClass+"'>")
-                 .append("<td width='16'>"+(activeUser.getAccessRight("pharmacy.manageproductstocks.delete") && (productStock.getServiceStock()!=null && productStock.getServiceStock().getStockManagerUid().equalsIgnoreCase(activeUser.userid))?"<img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' class='link' alt='"+deleteTran+"' onclick=\"doDelete('"+sStockUid+"');\" title='"+deleteTran+"'></td>":"</td>"))
+                 .append("<td width='16'>"+(productStock.getLevel()==0 && activeUser.getAccessRight("pharmacy.manageproductstocks.delete") && (productStock.getServiceStock()!=null && productStock.getServiceStock().getStockManagerUid().equalsIgnoreCase(activeUser.userid))?"<img src='"+sCONTEXTPATH+"/_img/icons/icon_delete.png' class='link' alt='"+deleteTran+"' onclick=\"doDelete('"+sStockUid+"');\" title='"+deleteTran+"'></td>":"</td>"))
 		         .append("<td width='16'>"+(activeUser.getAccessRight("pharmacy.viewproductstockfiches.select")?"<img src='"+sCONTEXTPATH+"/_img/icons/icon_edit.png' class='link' onclick=\"printFiche('"+sStockUid+"');\" title='"+ficheTran+"'></td>":"<td/>"));
-            System.out.println("productStock.getProductUid()="+productStock.getProductUid());
-            System.out.println("opendeliveries.contains="+opendeliveries.contains(productStock.getProductUid()));
             if(productStock.getServiceStock().isReceivingUser(activeUser.userid) &&  opendeliveries.contains(productStock.getProductUid())){
                 html.append("<td width='16'><img src='"+sCONTEXTPATH+"/_img/icons/icon_incoming.gif' class='link' alt='"+incomingTran+"' onclick='javascript:receiveProduct(\""+sStockUid+"\",\""+sProductName+"\");'/></td>");
             }
@@ -1008,6 +1005,7 @@
                         <input class="button" type="button" name="calculateButton" value='<%=getTranNoLink("Web.manage","calculateOrder",sWebLanguage)%>' onclick="doCalculateOrder('<%=sEditServiceStockUid%>','<%=sServiceStockName%>');">
                         <input class="button" type="button" name="newButton" value="<%=getTranNoLink("Web","new",sWebLanguage)%>" onclick="doNew();">
                         <input class="button" type="button" name="returnButton" value='<%=getTranNoLink("Web.manage","manageservicestocks",sWebLanguage)%>' onclick="doBackToPrevModule();">
+                        <input class="button" type="button" name="copyButton" value="<%=getTranNoLink("Web","copy",sWebLanguage)%>" onclick="doCopy();">
                     <%=ScreenHelper.alignButtonsStop()%>
                 <%
             	}
@@ -1066,6 +1064,7 @@
                     <%=ScreenHelper.alignButtonsStart()%>
                         <input type="button" class="button" name="newButton" value="<%=getTranNoLink("Web","new",sWebLanguage)%>" onclick="doNew();">
                         <input type="button" class="button" name="returnButton" value='<%=getTranNoLink("Web.manage","manageservicestocks",sWebLanguage)%>' onclick="doBackToPrevModule();">
+                        <input class="button" type="button" name="copyButton" value="<%=getTranNoLink("Web","copy",sWebLanguage)%>" onclick="doCopy();">
                     <%=ScreenHelper.alignButtonsStop()%>
                 <%
             }
@@ -1239,9 +1238,11 @@
 	                        	<input type='text' class='text' size='2' name='EditSourceProductStockQuantity' id='EditSourceProductStockQuantity' value='0'/> x
 					            <input type="hidden" name="EditSourceProductStockUid" id="EditSourceProductStockUid">
 					            <input type="text" size="80" class="text" name="EditSourceProductStockName" id="EditSourceProductStockName"/>
-					            <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("Web","select",sWebLanguage)%>" onclick="searchProductStock('EditSourceProductStockUid','EditSourceProductStockName');">
-					            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="transactionForm.EditSourceProductStockUid.value='';transactionForm.EditSourceProductStockName.value='';">
-	                            <input type='button' class='button' name='addKitButton' value='<%=getTranNoLink("web","add",sWebLanguage) %>' onclick='addToKit();'/>
+					            <% if(activeUser.getAccessRightNoSA("pharmacy.kits.edit") || sSelectedLevel.length()==0 || Integer.parseInt(sSelectedLevel)==0){%>
+						            <img src="<c:url value="/_img/icons/icon_search.png"/>" class="link" alt="<%=getTranNoLink("Web","select",sWebLanguage)%>" onclick="searchProductStock('EditSourceProductStockUid','EditSourceProductStockName');">
+						            <img src="<c:url value="/_img/icons/icon_delete.png"/>" class="link" alt="<%=getTranNoLink("Web","clear",sWebLanguage)%>" onclick="transactionForm.EditSourceProductStockUid.value='';transactionForm.EditSourceProductStockName.value='';">
+		                            <input type='button' class='button' name='addKitButton' value='<%=getTranNoLink("web","add",sWebLanguage) %>' onclick='addToKit();'/>
+		                        <% } %>
 	                            <div id='divKit'/>
 	                        </td>
 	                    </tr>
@@ -1797,6 +1798,10 @@
 		transactionForm.submit();
   }
   
+  function doCopy(){
+      var url = "pharmacy/copyProductsFromProductList.jsp&serviceStockUid=<%=sEditServiceStockUid%>&PopupWidth=800&PopupHeight=600";
+	  openPopup(url);
+  }
   function doPrintBarcode(productStockUid){
       var url = "<c:url value='/pharmacy/createProductStockLabelPdf.jsp'/>?productStockUid="+productStockUid;
       printwindow=window.open(url,"ProductStockLabelPdf<%=new java.util.Date().getTime()%>","height=300,width=400,toolbar=yes,status=no,scrollbars=yes,resizable=yes,menubar=yes");

@@ -32,7 +32,7 @@
 	        	<table width='100%'>
 	        		<tr>
 			            <td class='admin'><%=getTran(request,"web","age.mother",sWebLanguage)%>&nbsp;</td>
-			            <td class='admin2'><input class="text" type="text" size="10" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_AGEMOTHER" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_AGEMOTHER" property="value"/>"/></td>
+			            <td class='admin2'><b><%=activePatient.getAgeOnDate(((TransactionVO)transaction).getUpdateTime()) %></b> <%=getTran(request,"web","years",sWebLanguage).toLowerCase() %></td>
 			            <td class='admin'><%=getTran(request,"web","parity",sWebLanguage)%>&nbsp;</td>
 			            <td class='admin2'><input class="text" type="text" size="10" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_PARITY" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_PARITY" property="value"/>"/></td>
 	        		</tr>
@@ -81,8 +81,8 @@
 			                <select class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_CHILDSTATUS" property="itemId"/>]>.value">
 			                	<option/>
 				            	<%=ScreenHelper.writeSelect(request,"msas.childstatus",((TransactionVO)transaction).getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_CHILDSTATUS"),sWebLanguage,false,true) %>
-			                </select>
-				            <input class="text" type="text" size="15" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CHILDSTATUSCOMMENT" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CHILDSTATUSCOMMENT" property="value"/>"/>
+			                </select><br/><br/>
+				            <input class="text" type="text" size="25" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CHILDSTATUSCOMMENT" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_CHILDSTATUSCOMMENT" property="value"/>"/>
 			            </td>
 			        </tr>
 		        	<tr>
@@ -94,23 +94,25 @@
 			                </select>
 			            </td>
 			            <td class="admin"><%=getTran(request,"web","infection.treatment",sWebLanguage)%>&nbsp;</td>
-			            <td class='admin2'><input class="text" type="text" size="30" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_INFECTIONTREATMENT" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_INFECTIONTREATMENT" property="value"/>"/></td>
+			            <td class='admin2'><input class="text" type="text" size="25" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_INFECTIONTREATMENT" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_INFECTIONTREATMENT" property="value"/>"/></td>
 			        </tr>
 			        <tr>
 			            <td class='admin'><%=getTran(request,"web","bcg",sWebLanguage)%>&nbsp;</td>
 			            <td class='admin2'>
-	                        <input type="text" class="text" size="12" maxLength="10" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_BCG" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_BCG" property="value" formatType="date"/>" onblur='checkDate(this);'/>
-	                        <script>writeMyDate("bcg", "<c:url value="/_img/icons/icon_agenda.png"/>", "<%=getTran(null,"Web","PutToday",sWebLanguage)%>");</script>
+			            	<%=SH.writeDefaultDateInput(session, (TransactionVO)transaction, "ITEM_TYPE_MSAS_POSTNATAL_BCG", sWebLanguage, sCONTEXTPATH) %>
 			            </td>
 			            <td class='admin'><%=getTran(request,"web","polio",sWebLanguage)%>&nbsp;</td>
 			            <td class='admin2'>
-	                        <input type="text" class="text" size="12" maxLength="10" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_POLIO" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_POLIO" property="value" formatType="date"/>" onblur='checkDate(this);'/>
-	                        <script>writeMyDate("polio", "<c:url value="/_img/icons/icon_agenda.png"/>", "<%=getTran(null,"Web","PutToday",sWebLanguage)%>");</script>
+			            	<%=SH.writeDefaultDateInput(session, (TransactionVO)transaction, "ITEM_TYPE_MSAS_POSTNATAL_POLIO", sWebLanguage, sCONTEXTPATH) %>
 			            </td>
 			        </tr>
 			        <tr>
+			            <td class='admin'><%=getTran(request,"web","hepatitisb",sWebLanguage)%>&nbsp;</td>
+			            <td class='admin2'>
+			            	<%=SH.writeDefaultDateInput(session, (TransactionVO)transaction, "ITEM_TYPE_MSAS_POSTNATAL_HEPATITISB", sWebLanguage, sCONTEXTPATH) %>
+			            </td>
 			            <td class="admin"><%=getTran(request,"web","milda",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2" colspan="3">
+			            <td class="admin2">
 			                <input type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_MILDA" property="itemId"/>]>.value" value="medwan.common.true"
 			                <mxs:propertyAccessorI18N name="transaction.items" scope="page"
 			                                          compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_MILDA;value=medwan.common.true"
@@ -155,47 +157,52 @@
 			        </tr>
 		        	<tr>
 			            <td class="admin"><%=getTran(request,"web","generalstatus",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2">
-			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="30" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERGENERALSTATUS" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERGENERALSTATUS" property="value"/></textarea>
+			            <td class="admin2" colspan='3'>
+			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="50" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERGENERALSTATUS" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERGENERALSTATUS" property="value"/></textarea>
 			            </td>
+			        </tr>
+		        	<tr>
 			            <td class="admin"><%=getTran(request,"web","mucosa",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2">
-			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="30" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERMUCOSA" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERMUCOSA" property="value"/></textarea>
+			            <td class="admin2" colspan='3'>
+			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="50" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERMUCOSA" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERMUCOSA" property="value"/></textarea>
 			            </td>
 			        </tr>
 		        	<tr>
 			            <td class="admin"><%=getTran(request,"web","oedema",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2">
-			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="30" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHEROEDEMA" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHEROEDEMA" property="value"/></textarea>
+			            <td class="admin2" colspan='3'>
+			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="50" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHEROEDEMA" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHEROEDEMA" property="value"/></textarea>
 			            </td>
+			        </tr>
+		        	<tr>
 			            <td class="admin"><%=getTran(request,"web","breasts",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2">
-			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="30" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERBREASTS" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERBREASTS" property="value"/></textarea>
+			            <td class="admin2" colspan='3'>
+			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="50" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERBREASTS" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERBREASTS" property="value"/></textarea>
 			            </td>
 			        </tr>
 		        	<tr>
 			            <td class="admin"><%=getTran(request,"web","uterus.inversion",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2">
-			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="30" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERUTERUSINVERSION" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERUTERUSINVERSION" property="value"/></textarea>
+			            <td class="admin2" colspan='3'>
+			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="50" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERUTERUSINVERSION" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERUTERUSINVERSION" property="value"/></textarea>
 			            </td>
+			        </tr>
+		        	<tr>
 			            <td class="admin"><%=getTran(request,"web","tv",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2">
-			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="30" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERTV" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERTV" property="value"/></textarea>
+			            <td class="admin2" colspan='3'>
+			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="50" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERTV" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERTV" property="value"/></textarea>
 			            </td>
 			        </tr>
 		        	<tr>
 			            <td class='admin'><%=getTran(request,"web","mother.condition",sWebLanguage)%>&nbsp;</td>
 			            <td class="admin2" colspan="3">
-			                <select class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_MOTHERCONDITION" property="itemId"/>]>.value">
-			                	<option/>
-				            	<%=ScreenHelper.writeSelect(request,"msas.mothercondition",((TransactionVO)transaction).getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_MOTHERCONDITION"),sWebLanguage,false,true) %>
-			                </select>
-			                <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="30" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERCONDITIONCOMMENT" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERCONDITIONCOMMENT" property="value"/></textarea>
+			            	<%=SH.writeDefaultCheckBoxes((TransactionVO)transaction, request, "msas.mothercondition", "ITEM_TYPE_MSAS_POSTNATAL_MOTHERCONDITION", sWebLanguage, true) %>
+			                <br/><%=getTran(request,"web","other",sWebLanguage) %>: <textarea rows="1" onKeyup="resizeTextarea(this,10);" class="text" cols="30" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERCONDITIONCOMMENT" property="itemId"/>]>.value"><mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_MOTHERCONDITIONCOMMENT" property="value"/></textarea>
 			            </td>
 			        </tr>
 		        	<tr>
 			            <td class="admin"><%=getTran(request,"web","vat",sWebLanguage)%>&nbsp;</td>
-			            <td class='admin2'><input class="text" type="text" size="3" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MOTHERVAT" property="itemId"/>]>.value" value="<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MOTHERVAT" property="value"/>"/></td>
+			            <td class='admin2'>
+			            	<%=SH.writeDefaultSelect(request, (TransactionVO)transaction, "ITEM_TYPE_MOTHERVAT", "msas.vatrank", sWebLanguage, "") %>
+			            </td>
 			            <td class="admin"><%=getTran(request,"web","iron",sWebLanguage)%>&nbsp;</td>
 			            <td class="admin2">
 			                <input type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_IRON" property="itemId"/>]>.value" value="medwan.common.true"
@@ -219,26 +226,6 @@
 			                <mxs:propertyAccessorI18N name="transaction.items" scope="page"
 			                                          compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_HIV;value=medwan.common.negative"
 			                                          property="value" outputString="checked"/>><label><%=getTran(request,"web","negative",sWebLanguage) %></label>
-			            </td>
-			        </tr>
-		        	<tr>
-			            <td class='admin'><%=getTran(request,"web","ptme.proposed",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2">
-			                <select class="text" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_PTME" property="itemId"/>]>.value">
-			                	<option/>
-				            	<%=ScreenHelper.writeSelect(request,"msas.ptme",((TransactionVO)transaction).getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_PTME"),sWebLanguage,false,true) %>
-			                </select>
-			            </td>
-			            <td class="admin"><%=getTran(request,"web","ptme.accepted",sWebLanguage)%>&nbsp;</td>
-			            <td class="admin2">
-			                <input type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_PTMEACCEPTED" property="itemId"/>]>.value" value="medwan.common.true"
-			                <mxs:propertyAccessorI18N name="transaction.items" scope="page"
-			                                          compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_PTMEACCEPTED;value=medwan.common.true"
-			                                          property="value" outputString="checked"/>><label><%=getTran(request,"web","yes",sWebLanguage) %></label>
-			                <input type="radio" onDblClick="uncheckRadio(this);" name="currentTransactionVO.items.<ItemVO[hashCode=<mxs:propertyAccessorI18N name="transaction.items" scope="page" compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_PTMEACCEPTED" property="itemId"/>]>.value" value="medwan.common.false"
-			                <mxs:propertyAccessorI18N name="transaction.items" scope="page"
-			                                          compare="type=be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_PTMEACCEPTED;value=medwan.common.false"
-			                                          property="value" outputString="checked"/>><label><%=getTran(request,"web","no",sWebLanguage) %></label>
 			            </td>
 			        </tr>
 		        	<tr>
@@ -275,6 +262,16 @@
 			                	<option/>
 				            	<%=ScreenHelper.writeSelect(request,"msas.pf",((TransactionVO)transaction).getItemValue("be.mxs.common.model.vo.healthrecord.IConstants.ITEM_TYPE_MSAS_POSTNATAL_PFFOLLOWUP"),sWebLanguage,false,true) %>
 			                </select>
+			            </td>
+			        </tr>
+		        	<tr>
+			            <td class='admin'><%=getTran(request,"web","method",sWebLanguage)%>&nbsp;</td>
+			            <td class="admin2">
+			            	<%=SH.writeDefaultTextInput(session, (TransactionVO)transaction, "ITEM_TYPE_MSAS_POSTNATAL_PFMETHOD", 30) %>
+			            </td>
+			            <td class="admin"><%=getTran(request,"web","pf.timing",sWebLanguage)%>&nbsp;</td>
+			            <td class="admin2">
+			            	<%=SH.writeDefaultRadioButtons((TransactionVO)transaction, request, "msas.pftiming", "ITEM_TYPE_MSAS_POSTNATAL_PFTIMING", sWebLanguage, false, "", "") %>
 			            </td>
 			        </tr>
 			        <tr>

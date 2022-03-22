@@ -85,7 +85,6 @@
 						}
 					}
 					Vector transactions = MedwanQuery.getInstance().getTransactionsAfter(Integer.parseInt(activePatient.personid), ScreenHelper.parseDate("01/01/1900"));
-					System.out.println(1);
 					if(transactions.size()>0){
 						%>
 							<tr class='admin'>
@@ -95,10 +94,8 @@
 						<%
 						for(int n=0;n<transactions.size();n++){
 							TransactionVO transaction = (TransactionVO)transactions.elementAt(n);
-							System.out.println(3);
 							if(transaction!=null && trans!=null && !trans.contains(transaction.getServerId()+"."+transaction.getTransactionId())){
 								trans.add(transaction.getServerId()+"."+transaction.getTransactionId());
-								System.out.println(4);
 								if(transaction.getServerId()==1){
 								%>
 									<tr>

@@ -77,12 +77,14 @@
 
 <script>
 	function checkResize(){
-		if(<%=SH.c(request.getQueryString()).indexOf("Page=/healthrecord")%>>-1 || <%=SH.c(request.getQueryString()).indexOf("Page=/system")%>>-1 || <%=SH.c(request.getQueryString()).indexOf("Page=/statistics")%>>-1){
-			if(window.confirm('<%=getTranNoLink("web","datamodified.doreload",sWebLanguage) %>')){window.setTimeout('window.location.reload();',200);}
-		}
-		else{
-			if(<%=SH.ci("enableAutoReloadAfterResize",0)%>==1){
-				window.location.reload();
+		if(<%=SH.ci("disableAutoReloadAfterResize",1)%>==0){
+			if(<%=SH.c(request.getQueryString()).indexOf("Page=/healthrecord")%>>-1 || <%=SH.c(request.getQueryString()).indexOf("Page=/system")%>>-1 || <%=SH.c(request.getQueryString()).indexOf("Page=/statistics")%>>-1){
+				if(window.confirm('<%=getTranNoLink("web","datamodified.doreload",sWebLanguage) %>')){window.setTimeout('window.location.reload();',200);}
+			}
+			else{
+				if(<%=SH.ci("enableAutoReloadAfterResize",0)%>==1){
+					window.location.reload();
+				}
 			}
 		}
 	}

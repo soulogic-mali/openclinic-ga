@@ -185,7 +185,6 @@
     	Iterator<ItemVO> items = ((TransactionVO)transaction).getItems().iterator();
     	while(items.hasNext()){
     		ItemVO item = items.next();
-    		System.out.println(item.getType()+" = "+item.getValue());
     	}
     %>
 <div id='divheader'>    

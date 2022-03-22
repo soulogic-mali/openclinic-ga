@@ -64,8 +64,17 @@ public class ProductStockOperation extends OC_Object{
     private int validated;
     private String productionOrderUid;
     private Date deliverytime;
+    private Debet debet = new Debet();
 
-    public Date getDeliverytime() {
+    public Debet getDebet() {
+		return debet;
+	}
+
+	public void setDebet(Debet debet) {
+		this.debet = debet;
+	}
+
+	public Date getDeliverytime() {
 		return deliverytime;
 	}
 
@@ -975,20 +984,12 @@ public class ProductStockOperation extends OC_Object{
                 //Add the batch units to this batch if it exists
                 if(getBatchUid()!=null && getBatchUid().length()>0){
                 	destinationBatchUid=Batch.copyBatch(getBatchUid(), productStock.getUid());
-                	
-                	//********** Source of all evil??????
-                	//Batch.updateBatchLevel(destinationBatchUid,this.getUnitsChanged());
-                	
                 }
                 else if(getBatchNumber()!=null && getBatchNumber().length()>0){
-                	Batch sourceBatch = Batch.getByBatchNumber(getProductStockUid(), getBatchNumber());
+                	Batch sourceBatch = Batch.getByBatchNumber(productStock.getUid(), getBatchNumber());
                 	if(sourceBatch!=null){
                 		setBatchUid(sourceBatch.getUid());
                     	destinationBatchUid=Batch.copyBatch(getBatchUid(), productStock.getUid());
-                    	
-                    	//********** Source of all evil??????
-                    	//Batch.updateBatchLevel(destinationBatchUid,this.getUnitsChanged());
-                    	
                 	}
                 }
             }
@@ -1028,6 +1029,7 @@ public class ProductStockOperation extends OC_Object{
             		debet.setDate(new java.util.Date());
             		debet.setEncounter(activeEncounter);
             		debet.setPrestation(prestation);
+            		debet.setServiceUid(debet.determineServiceUid());
             		debet.setQuantity(product.getPrestationquantity()*getUnitsChanged()*(this.getDescription().indexOf("receipt") > -1?-1:1));
             		debet.setComment("");
             		debet.setSupplierUid("");
@@ -1077,6 +1079,7 @@ public class ProductStockOperation extends OC_Object{
                     	Debug.println("Sauvegarde de la prestation");
                     	Debug.println("ExtraInsurarAmount="+debet.getExtraInsurarAmount()+" ("+extrainsuraramount+")");
                     	debet.store();
+                    	this.setDebet(debet);
 	            		MedwanQuery.getInstance().getObjectCache().removeObject("debet", debet.getUid());
             		}
             	}

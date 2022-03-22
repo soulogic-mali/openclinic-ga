@@ -30,8 +30,6 @@
                sImmatNew = checkString(request.getParameter("ImmatNew")).toUpperCase(),
                sNatReg = checkString(request.getParameter("NatReg")).toUpperCase();
 
-        System.out.println("activePatient.sourceid="+activePatient.sourceid);
-        System.out.println("sServiceSourceID="+sServiceSourceID);
         
         //--- CHECK ON DOUBLES --------------------------------------------------------------------
         //#####################################################################################

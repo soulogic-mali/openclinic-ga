@@ -269,7 +269,7 @@ public class Batch extends OC_Object{
 
                 sSelect = "UPDATE OC_BATCHES SET "+
                           "  OC_BATCH_PRODUCTSTOCKUID=?, OC_BATCH_NUMBER=?, OC_BATCH_LEVEL=?,"+
-                          "  OC_BATCH_END=?, OC_BATCH_COMMENT=?, OC_BATCH_CREATETIME=?,"+
+                          "  OC_BATCH_END=?, OC_BATCH_COMMENT=?,"+
                           "  OC_BATCH_UPDATETIME=?, OC_BATCH_UPDATEUID=?, OC_BATCH_TYPE=?"+
                           " WHERE OC_BATCH_SERVERID=? AND OC_BATCH_OBJECTID=?";
 
@@ -282,12 +282,11 @@ public class Batch extends OC_Object{
 
                 // OBJECT variables
                 ps.setTimestamp(6,new java.sql.Timestamp(new java.util.Date().getTime())); // now
-                ps.setTimestamp(7,new java.sql.Timestamp(new java.util.Date().getTime())); // now
-                ps.setString(8,this.getUpdateUser());
-                ps.setString(9,this.getType());
+                ps.setString(7,this.getUpdateUser());
+                ps.setString(8,this.getType());
 
-                ps.setInt(10,Integer.parseInt(this.getUid().substring(0,this.getUid().indexOf("."))));
-                ps.setInt(11,Integer.parseInt(this.getUid().substring(this.getUid().indexOf(".")+1)));
+                ps.setInt(9,Integer.parseInt(this.getUid().substring(0,this.getUid().indexOf("."))));
+                ps.setInt(10,Integer.parseInt(this.getUid().substring(this.getUid().indexOf(".")+1)));
 
                 ps.executeUpdate();
             }

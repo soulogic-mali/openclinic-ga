@@ -244,14 +244,10 @@ public class Label implements Serializable {
         ResultSet rs = null;
         Label label = null;
 
-        String lcaseLabelType = ScreenHelper.getConfigParam("lowerCompare","OC_LABEL_TYPE"),
-               lcaseLabelID   = ScreenHelper.getConfigParam("lowerCompare","OC_LABEL_ID"),
-               lcaseLabelLang = ScreenHelper.getConfigParam("lowerCompare","OC_LABEL_LANGUAGE");
-
         Connection conn = MedwanQuery.getInstance().getOpenclinicConnection();
         try{
             String sSql = "SELECT * FROM OC_LABELS"+
-                          " WHERE "+lcaseLabelType+"=? AND "+lcaseLabelID+"=? AND "+lcaseLabelLang+"=?";
+                          " WHERE OC_LABEL_TYPE=? AND OC_LABEL_ID=? AND OC_LABEL_LANGUAGE=?";
             ps = conn.prepareStatement(sSql);
             ps.setString(1,type.toLowerCase());
             ps.setString(2,id.toLowerCase());

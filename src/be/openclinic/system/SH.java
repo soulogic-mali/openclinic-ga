@@ -25,9 +25,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import be.mxs.common.model.vo.healthrecord.TransactionVO;
 import be.mxs.common.util.db.MedwanQuery;
 import be.mxs.common.util.system.ScreenHelper;
 import be.openclinic.knowledge.SPT;
+import net.admin.AdminPerson;
 
 public class SH extends ScreenHelper {
 	
@@ -111,6 +113,10 @@ public class SH extends ScreenHelper {
 		return c(request.getParameter(parameter));
 	}
 	
+	public static String p(HttpServletRequest request, String parameter, String defaultValue) {
+		return c(request.getParameter(parameter)).length()==0?defaultValue:c(request.getParameter(parameter));
+	}
+	
     public static int ci(String key, int defaultValue) {
     	return MedwanQuery.getInstance().getConfigInt(key,defaultValue);
     }
@@ -180,10 +186,45 @@ public class SH extends ScreenHelper {
     	}
     	finally {
     		try {
-				conn.close();
+    			if(conn!=null) {
+    				conn.close();
+    			}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+    	}
+    }
+    
+    public static String cdm() {
+    	return cdm("");
+    }
+    
+    public static String cdm(String alternateIds) {
+    	return getClinicalDataMandatory(alternateIds);
+    }
+    
+    public static String getClinicalDataMandatory(String alternateIds) {
+    	return "data-mandatory='"+SH.ci("enforceCompleteClinicalDataEntry",0)+"'"+(alternateIds.length()==0?"":" data-alternateids='"+alternateIds+"'");
+    }
+    
+    public static String dmf() {
+    	return dmf("");
+    }
+    
+    public static String dmf(String alternateIds) {
+    	return getDataMandatoryForced(alternateIds);
+    }
+    
+    public static String getDataMandatoryForced(String alternateIds) {
+    	return "data-mandatory='1'"+(alternateIds.length()==0?"":" data-alternateids='"+alternateIds+"'");
+    }
+    
+    public static void loadRecentItems(TransactionVO transaction,AdminPerson activePatient) {
+    	if(transaction.isNew()){
+    		transaction.setHealthrecordId(MedwanQuery.getInstance().getHealthRecordIdFromPersonId(Integer.parseInt(activePatient.personid)));
+    		if(MedwanQuery.getInstance().getConfigInt("loadRecentVitalSignsInRMHConsultation",0)==1) {
+	    		transaction.preloadRecentVitalSigns();
+    		}
     	}
     }
 }

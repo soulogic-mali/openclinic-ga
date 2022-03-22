@@ -522,10 +522,13 @@
             <td class="admin2">
             	<table width='100%' cellpadding='0' cellspacing='0'>
             		<tr>
-            			<td style='vertical-align: top'>
+            			<td style='vertical-align: top' nowrap>
 		            	<%
 			            	if(userWickets.size() > 0){
 			            	    %><input accesskey="S" class="button" type="button" name="buttonSave" id="buttonSave" value="<%=getTranNoLink("Web","save",sWebLanguage)%>" onclick="doSave();">&nbsp;&nbsp;<%
+			                	if(SH.ci("enableMobilePayment",0)==1 && activeUser.getAccessRight("financial.mobilepayment.select")){
+			                        %><button type='button' style='vertical-align: middle' class='button' name="buttonMoMo" onclick="doMobilePaymentMTN();"><img height='16px' style='vertical-align: middle' src='<%=sCONTEXTPATH%>/_img/themes/default/mtnmomopay.png'/></button><%
+			                	}
 			            	}
 			            	else{
 			            	    %><font color="red"><%=getTran(request,"web","nowicketassignedtouser",sWebLanguage)%></font><%
@@ -533,50 +536,41 @@
 		                %>
 		                </td>
 		                <td style='vertical-align: top'>
-		                <span id="printsection" name="printsection" style="vertical-align: top;visibility:hidden">
-		                    <%=getTran(request,"Web.Occup","PrintLanguage",sWebLanguage)%>&nbsp;
-		
-		                    <%
-		                        String sPrintLanguage = activeUser.person.language;
-		                        if(sPrintLanguage.length()==0){
-		                            sPrintLanguage = sWebLanguage;
-		                        }
-		
-		                        String sSupportedLanguages = MedwanQuery.getInstance().getConfigString("supportedLanguages","en,fr");
-		                    %>
-		
-		                    <select class="text" name="PrintLanguage" id="PrintLanguage">
-		                        <%
-		                            String tmpLang;
-		                            StringTokenizer tokenizer = new StringTokenizer(sSupportedLanguages,",");
-		                            while(tokenizer.hasMoreTokens()){
-		                                tmpLang = tokenizer.nextToken();
-		
-		                                %><option value="<%=tmpLang%>" <%=(tmpLang.equalsIgnoreCase(sPrintLanguage)?" selected":"")%>><%=getTranNoLink("Web.language",tmpLang,sWebLanguage)%></option><%
-		                            }
-		                        %>
-		                    </select>
-		
-		                    <%-- BUTTONS --%>
-		                    <input class="button" type="button" name="buttonPrint" value="<%=getTranNoLink("Web","print",sWebLanguage)%>" onclick="doPrintPdf(document.getElementById('EditCreditUid').value);">
-		                    <%
-		                    	if(MedwanQuery.getInstance().getConfigInt("javaPOSenabled",0)==1){
-		                            %><input class="button" type="button" name="buttonPrint" value='<%=getTranNoLink("Web","print.receipt",sWebLanguage)%>' onclick="doPrintPatientPaymentReceipt();"><%
-		                    	}
-			                	if(MedwanQuery.getInstance().getConfigInt("printPDFreceiptenabled",0)==1){
-			                        %><input class="button" type="button" name="buttonPrintPdf" value='<%=getTranNoLink("Web","print.receipt.pdf",sWebLanguage)%>' onclick="doPrintPatientReceiptPdf();"><%
-			                	}
-		                    %>                    
-		                </span>
-		                </td>
-		                <td style='vertical-align: top'>
-		                <%
-		                	if(SH.ci("enableMobilePayment",0)==1 && activeUser.getAccessRight("financial.mobilepayment.select")){
-		                %>
-		                		&nbsp;<img id='momoimage' style='vertical-align: top' height='30px' src='<%=sCONTEXTPATH%>/_img/themes/default/mtnmomopayblue.png' onclick='doMobilePaymentMTN()'/>
-		                <%	
-		                	}
-		                %>
+			                <span id="printsection" name="printsection" style="vertical-align: top;visibility:hidden">
+			                    <%=getTran(request,"Web.Occup","PrintLanguage",sWebLanguage)%>&nbsp;
+			
+			                    <%
+			                        String sPrintLanguage = activeUser.person.language;
+			                        if(sPrintLanguage.length()==0){
+			                            sPrintLanguage = sWebLanguage;
+			                        }
+			
+			                        String sSupportedLanguages = MedwanQuery.getInstance().getConfigString("supportedLanguages","en,fr");
+			                    %>
+			
+			                    <select class="text" name="PrintLanguage" id="PrintLanguage">
+			                        <%
+			                            String tmpLang;
+			                            StringTokenizer tokenizer = new StringTokenizer(sSupportedLanguages,",");
+			                            while(tokenizer.hasMoreTokens()){
+			                                tmpLang = tokenizer.nextToken();
+			
+			                                %><option value="<%=tmpLang%>" <%=(tmpLang.equalsIgnoreCase(sPrintLanguage)?" selected":"")%>><%=getTranNoLink("Web.language",tmpLang,sWebLanguage)%></option><%
+			                            }
+			                        %>
+			                    </select>
+			
+			                    <%-- BUTTONS --%>
+			                    <input class="button" type="button" name="buttonPrint" value="<%=getTranNoLink("Web","print",sWebLanguage)%>" onclick="doPrintPdf(document.getElementById('EditCreditUid').value);">
+			                    <%
+			                    	if(MedwanQuery.getInstance().getConfigInt("javaPOSenabled",0)==1){
+			                            %><input class="button" type="button" name="buttonPrint" value='<%=getTranNoLink("Web","print.receipt",sWebLanguage)%>' onclick="doPrintPatientPaymentReceipt();"/><%
+			                    	}
+				                	if(MedwanQuery.getInstance().getConfigInt("printPDFreceiptenabled",0)==1){
+				                        %><input class="button" type="button" name="buttonPrintPdf" value='<%=getTranNoLink("Web","print.receipt.pdf",sWebLanguage)%>' onclick="doPrintPatientReceiptPdf();"/><%
+				                	}
+			                    %>                    
+			                </span>
 		                </td>
                 	</tr>
                 </table>

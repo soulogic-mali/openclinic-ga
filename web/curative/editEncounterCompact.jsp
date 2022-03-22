@@ -43,5 +43,6 @@
 		document.getElementById('payment').style.display='';
 		document.getElementById('prestationsButton').style.display='none';
 		document.getElementById('prestationname').focus();
+  	    checkEncounterType();
 	}
 </script>

@@ -518,4 +518,18 @@
 		drop index admin_personid on admin;
 		create unique index admin_personid on admin(personid);
   	</Query>
+  	<Query id='QUERY.openclinic.drugsoutlisterrors' db='openclinic' date='06/01/2022' dbserver='Microsoft SQL Server'>
+		delete from oc_drugsoutlist WHERE oc_list_productstockuid&lt;&gt;(SELECT oc_batch_productstockuid FROM oc_batches WHERE
+		oc_batch_objectid=REPLACE(oc_list_batchuid,'1.',''));
+  	</Query>
+  	<Query id='QUERY.openclinic.drugsoutlisterrors' db='openclinic' date='06/01/2022' dbserver='MySQL'>
+		delete from oc_drugsoutlist WHERE oc_list_productstockuid&lt;&gt;(SELECT oc_batch_productstockuid FROM oc_batches WHERE
+		oc_batch_objectid=REPLACE(oc_list_batchuid,'1.',''));
+  	</Query>
+  	<Query id='QUERY.openclinic.labeditorparameters' db='openclinic' date='26/02/2022' dbserver='MySQL'>
+		alter table labanalysis modify column editorparameters varchar(3000);
+  	</Query>
+  	<Query id='QUERY.openclinic.extendexportdata' db='openclinic' date='20/03/2022' dbserver='MySQL'>
+		alter table oc_exports modify column oc_export_data MEDIUMTEXT;
+  	</Query>
 </Queries>
